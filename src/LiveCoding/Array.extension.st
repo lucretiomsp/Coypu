@@ -1,6 +1,14 @@
 Extension { #name : #Array }
 
 { #category : #'*LiveCoding' }
+Array >> * aNumber [
+"repeat the array aNumber of Times "
+^ (0 to: ((self size) * aNumber ) )collect: [  :i | self at:  
+	((i rem: (self size) ) + 1)
+	].
+]
+
+{ #category : #'*LiveCoding' }
 Array >> offset: aNumber [ 
 "offset the array by aNumber of 'steps' wrapping it around its size"
 ^ (0 to: (self size - 1)) collect: [ :i | self at: (((i + aNumber) rem: (self size)) + 1) ]
