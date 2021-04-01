@@ -215,15 +215,22 @@ pattern := #(1 0 0 1 0 0 1 0 0 0 1 1 0 0 0 0 ).
 { #category : #'*LiveCoding' }
 Integer >> stepsProcessfor: aDictionaryOfPatterns rate: aRateInSeconds [
 " iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address withou slash that will be sent out"
+|   maxLength  |
 
+maxLength := 64."~steps"
 [ 	| index |
 	index := 0.
-	self timesRepeat: [ (Delay forSeconds: aRateInSeconds) wait. 
+	self timesRepeat: [ (Delay forSeconds: (aRateInSeconds  /2) )wait. 
 		aDictionaryOfPatterns keysAndValuesDo: [ :key : value |
-		(value at: (index + 1)) toKyma: (key asString).
-			
+		(value at: (index rem: value size) + 1) toKyma: (key asString)].
+		(Delay forSeconds: (aRateInSeconds /2)) wait.
+		" if compare: result = 3, the key contains the strng Gate"
+		aDictionaryOfPatterns keysDo: [ :key  | (('Gate' compare: (key asString) ) = 3)
+			ifTrue: [ 0 toKyma: (key asString) ]
 			].
-		index  := (index + 1) rem: 16 
+		
+		"increment of one but within the boundaries of the maxLength"
+		index  := (index + 1) rem: maxLength .
 		  ]  
 	
 	
@@ -232,7 +239,7 @@ Integer >> stepsProcessfor: aDictionaryOfPatterns rate: aRateInSeconds [
 
 { #category : #'*LiveCoding' }
 Integer >> timesProcessFor: anArrayOfSharedQueues speed: anIntervalInSeconds to: anArrayOfStrings [
-" repeated process for live coding"
+" repeated process for live coding- deprecated  : do we really neeed all this complexity?"
 [|  arrayOfSentValues arrayOfNextValues numberOfEvents index |
 	index := 0.
 	numberOfEvents := (anArrayOfSharedQueues size).

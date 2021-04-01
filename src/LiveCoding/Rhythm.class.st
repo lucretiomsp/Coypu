@@ -1,5 +1,6 @@
 "
 Rhythm class is to be used to generate Arrays of values in the range 0,1 to be used mainly to feed sequencers.
+Deprecated at the moment, send message to Integers to create sequencer-like patterns.
 "
 Class {
 	#name : #Rhythm,
