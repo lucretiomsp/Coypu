@@ -76,6 +76,18 @@ Integer >> copiesOf: anInteger [
 ]
 
 { #category : #'*LiveCoding' }
+Integer >> copiesOfEach: anArray [
+" retuns an array of self repetitions of each element of anArray"
+| result  resultSize|
+result := Array new: ((anArray size) * self).
+resultSize := result  size.
+( 0 to: (resultSize -1)) do: 
+[ :i | result at: (i + 1) put: (anArray  at:  (i // (resultSize /anArray size)) + 1)].
+
+^ result
+]
+
+{ #category : #'*LiveCoding' }
 Integer >> downbeat [ 
 
  ^ (1 to: self) collect: [ :i | (((i rem: 4) = 1)) asBit ]. 
