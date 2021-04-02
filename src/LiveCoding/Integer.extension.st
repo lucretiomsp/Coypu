@@ -54,6 +54,12 @@ pattern := #(1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 ).
 ]
 
 { #category : #'*LiveCoding' }
+Integer >> bpm [
+"return the duration of 1/16th at self bpm"
+^ ((60/  self) /4).
+]
+
+{ #category : #'*LiveCoding' }
 Integer >> claveSon [
 " create an array of self size of  Cuban clave Son rhytm pulses. Better if the receiever is a multiple of 16."
 | pattern |
@@ -61,6 +67,12 @@ pattern := #(1 0 0 1 0 0 1 0 0 0 1 0 1 0 0 0).
 
 ^ (0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ].
 
+]
+
+{ #category : #'*LiveCoding' }
+Integer >> copiesOf: anInteger [
+" retuns an array of self size with all  anInteger"
+^ Array new: self withAll: anInteger.
 ]
 
 { #category : #'*LiveCoding' }
@@ -90,6 +102,12 @@ Integer >> major [
 Integer >> minor [
 "returns an aray with the major third, fith seventh and thiteenth relative to the note number that is the receiver"
  ^ #(3 7 10 14) collect: [ :i | i + self ].
+]
+
+{ #category : #'*LiveCoding' }
+Integer >> ones [
+	" retuns an array of self size with all  ones "
+^ Array new: self withAll: 1.
 ]
 
 { #category : #'*LiveCoding' }
@@ -224,10 +242,9 @@ maxLength := 64."~steps"
 		aDictionaryOfPatterns keysAndValuesDo: [ :key : value |
 		(value at: (index rem: value size) + 1) toKyma: (key asString)].
 		(Delay forSeconds: (aRateInSeconds /2)) wait.
-		" if compare: result = 3, the key contains the strng Gate"
-		aDictionaryOfPatterns keysDo: [ :key  | (('Gate' compare: (key asString) ) = 3)
-			ifTrue: [ 0 toKyma: (key asString) ]
-			].
+		
+		
+		aDictionaryOfPatterns keysDo: [ : key  | ((key asString) includesSubstring: 'Gate') ifTrue: [0 		toKyma: (key asString)]].
 		
 		"increment of one but within the boundaries of the maxLength"
 		index  := (index + 1) rem: maxLength .
