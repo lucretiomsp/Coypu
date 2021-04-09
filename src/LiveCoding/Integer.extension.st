@@ -176,6 +176,14 @@ Integer >> randomNotesFrom: anArray octaves: aNumber [
 ]
 
 { #category : #'*LiveCoding' }
+Integer >> randomTrigs [
+"generates an Array of random v0s and 1s of size: aNumber"
+	| r |
+	r := Random new.
+	^ (1 to: self) collect: [ :i | (r next ) rounded].
+]
+
+{ #category : #'*LiveCoding' }
 Integer >> randoms [
 "generates an Array of random values in the range (0,1) of size: aNumber, whith only 2 decimal places"
 	| r |
