@@ -1,6 +1,7 @@
 # PharoLiveCoding
 Package of convenient methods and classes for Pharo designed for live coding performances using Kyma or other musica languages by sending OSC messages in an economic, iconic and transparent way.
 It has been originally designed to work with SymbolicSound Kyma but can be used with any OSC compatible application.
+<br>
 ##########################
 BASIC USAGE
 Integers and arrays understand the messages 
