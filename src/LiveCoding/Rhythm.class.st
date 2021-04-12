@@ -1,6 +1,18 @@
 "
 Rhythm class is to be used to generate Arrays of values in the range 0,1 to be used mainly to feed sequencers.
 Deprecated at the moment, send message to Integers to create sequencer-like patterns.
+
+
+about OSC package in use: 
+Versions Stable	1.0
+###################	
+Repository
+Metacello script
+Metacello new
+	smalltalkhubUser: 'Pharo' project: 'MetaRepoForPharo50';
+	configuration: 'OSC';
+	version: #stable;
+	load. during: 
 "
 Class {
 	#name : #Rhythm,
