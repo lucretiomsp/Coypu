@@ -105,6 +105,30 @@ pattern := #(1 0 0 1 0 0 1 0 0 0 1 0 0 0 1 0 ).
 ]
 
 { #category : #'*LiveCoding' }
+Integer >> localStepsProcessFor: aDictionaryOfPatterns rate: aRateInSeconds [
+" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address withou slash that will be sent out"
+|   maxLength  |
+
+maxLength := 256."~steps"
+[ 	| index |
+	index := 0.
+	self timesRepeat: [ (Delay forSeconds: (aRateInSeconds  /2) )wait. 
+		aDictionaryOfPatterns keysAndValuesDo: [ :key : value |
+		(value at: (index rem: value size) + 1) toLocal: (key asString)].
+		(Delay forSeconds: (aRateInSeconds /2)) wait.
+		
+		
+		aDictionaryOfPatterns keysDo: [ : key  | ((key asString) includesSubstring: 'Gate') ifTrue: [0 		toLocal: (key asString)]].
+		
+		"increment of one but within the boundaries of the maxLength"
+		index  := (index + 1) rem: maxLength .
+		  ]  
+	
+	
+	] forkAt:  (Processor timingPriority )
+]
+
+{ #category : #'*LiveCoding' }
 Integer >> major [ 
 "returns an aray with the major third, fith seventh and thiteenth relative to the note number that is the receiver"
  ^ #(4 7 10 14) collect: [ :i | i + self ].
@@ -251,7 +275,7 @@ pattern := #(1 0 0 1 0 0 1 0 0 0 1 1 0 0 0 0 ).
 ]
 
 { #category : #'*LiveCoding' }
-Integer >> stepsProcessfor: aDictionaryOfPatterns rate: aRateInSeconds [
+Integer >> stepsProcessFor: aDictionaryOfPatterns rate: aRateInSeconds [
 " iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address withou slash that will be sent out"
 |   maxLength  |
 
@@ -275,27 +299,27 @@ maxLength := 64."~steps"
 ]
 
 { #category : #'*LiveCoding' }
-Integer >> timesProcessFor: anArrayOfSharedQueues speed: anIntervalInSeconds to: anArrayOfStrings [
-" repeated process for live coding- deprecated  : do we really neeed all this complexity?"
-[|  arrayOfSentValues arrayOfNextValues numberOfEvents index |
-	index := 0.
-	numberOfEvents := (anArrayOfSharedQueues size).
-arrayOfSentValues := Array new: numberOfEvents.
-arrayOfNextValues := Array new: numberOfEvents.
-self timesRepeat: [  (Delay forSeconds: anIntervalInSeconds) wait.
-(1 to: numberOfEvents) do: [ :i |
-		arrayOfNextValues at: i put: ((anArrayOfSharedQueues at: i) nextOrNil).
-		(arrayOfNextValues at: i)ifNotNil: [ (arrayOfSentValues at: i put: (arrayOfNextValues at: i) )].
-		((arrayOfSentValues at: i) isArray) ifTrue: [  
-			
-		((arrayOfSentValues at: i) at:  (index + 1) "(index + 1) )rem: ((arrayOfNextValues at: i) size))"
-		) toKyma: (anArrayOfStrings at: i)] ifFalse: [ Transcript show: 'one of the shared queues is not an array'; cr ].
-		index  := (index + 1) rem: 16 "((arrayOfNextValues at: i) size)".
-	 ]
-	
-] 	
+Integer >> stepsProcessfor: aDictionaryOfPatterns rate: aRateInSeconds [
+" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address withou slash that will be sent out"
+|   maxLength  |
 
-] forkAt: Processor timingPriority .
+maxLength := 64."~steps"
+[ 	| index |
+	index := 0.
+	self timesRepeat: [ (Delay forSeconds: (aRateInSeconds  /2) )wait. 
+		aDictionaryOfPatterns keysAndValuesDo: [ :key : value |
+		(value at: (index rem: value size) + 1) toKyma: (key asString)].
+		(Delay forSeconds: (aRateInSeconds /2)) wait.
+		
+		
+		aDictionaryOfPatterns keysDo: [ : key  | ((key asString) includesSubstring: 'Gate') ifTrue: [0 		toKyma: (key asString)]].
+		
+		"increment of one but within the boundaries of the maxLength"
+		index  := (index + 1) rem: maxLength .
+		  ]  
+	
+	
+	] forkAt:  (Processor timingPriority )
 ]
 
 { #category : #'*LiveCoding' }
