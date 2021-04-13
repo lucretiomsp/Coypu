@@ -106,11 +106,14 @@ pattern := #(1 0 0 1 0 0 1 0 0 0 1 0 0 0 1 0 ).
 
 { #category : #'*LiveCoding' }
 Integer >> localStepsProcessFor: aDictionaryOfPatterns rate: aRateInSeconds [
-" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address withou slash that will be sent out"
-|   maxLength  |
-
-maxLength := 256."~steps"
+" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address withou slash that will be sent out.
+the OSC message with the address /bpm and the value of aRateInSeconds converte to BeatPerMinutes is also sent.
+"
+|   maxLength bpm |
+bpm := 60 / (aRateInSeconds  * 4).
+maxLength := 256."~ number ofsteps"
 [ 	| index |
+	bpm toLocal: 'bpm'.
 	index := 0.
 	self timesRepeat: [ (Delay forSeconds: (aRateInSeconds  /2) )wait. 
 		aDictionaryOfPatterns keysAndValuesDo: [ :key : value |
@@ -276,36 +279,15 @@ pattern := #(1 0 0 1 0 0 1 0 0 0 1 1 0 0 0 0 ).
 
 { #category : #'*LiveCoding' }
 Integer >> stepsProcessFor: aDictionaryOfPatterns rate: aRateInSeconds [
-" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address withou slash that will be sent out"
-|   maxLength  |
+" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
+an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
+|   maxLength  bpm |
+bpm := 60 / (aRateInSeconds * 4).
 
-maxLength := 64."~steps"
+maxLength := 256." number of~steps in the process"
 [ 	| index |
 	index := 0.
-	self timesRepeat: [ (Delay forSeconds: (aRateInSeconds  /2) )wait. 
-		aDictionaryOfPatterns keysAndValuesDo: [ :key : value |
-		(value at: (index rem: value size) + 1) toKyma: (key asString)].
-		(Delay forSeconds: (aRateInSeconds /2)) wait.
-		
-		
-		aDictionaryOfPatterns keysDo: [ : key  | ((key asString) includesSubstring: 'Gate') ifTrue: [0 		toKyma: (key asString)]].
-		
-		"increment of one but within the boundaries of the maxLength"
-		index  := (index + 1) rem: maxLength .
-		  ]  
-	
-	
-	] forkAt:  (Processor timingPriority )
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> stepsProcessfor: aDictionaryOfPatterns rate: aRateInSeconds [
-" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address withou slash that will be sent out"
-|   maxLength  |
-
-maxLength := 64."~steps"
-[ 	| index |
-	index := 0.
+	bpm toKyma: 'BPM'.
 	self timesRepeat: [ (Delay forSeconds: (aRateInSeconds  /2) )wait. 
 		aDictionaryOfPatterns keysAndValuesDo: [ :key : value |
 		(value at: (index rem: value size) + 1) toKyma: (key asString)].
