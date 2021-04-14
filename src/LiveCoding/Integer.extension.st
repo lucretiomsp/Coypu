@@ -322,10 +322,22 @@ noteIndex := 1. "or 0???????"
 
 [ 	
 	bpm toKyma: 'BPM'.
-	self timesRepeat: [ (Delay forSeconds: (aRateInSeconds  /2) )wait. 
+	self timesRepeat: [ (Delay forSeconds: aRateInSeconds   )wait.
+		" test if dictionary values is an Array od two arrays or as defined, a sequence"
+		 
 		aDictionaryOfPatterns keysAndValuesDo: [ :key : value |
-		((value at: 1) at: (step modulo: ((value at: 1) size)))
-		toKyma: (key asString)].
+		(value isSequencer) ifTrue: [  	
+		(((value gates) at: (step modulo: (value gatesSize ))) = 1)
+		ifTrue:
+		[0 toKyma: ((key asString),'Gate'). 1 toKyma: ((key asString),'Gate'). 
+		((value notes) at: (noteIndex modulo: (value notesSize))) toKyma: ((key asString),'Notes').
+		noteIndex := noteIndex + 1.
+		] 
+		ifFalse: [ nil]]
+		ifFalse: [(value at: (step modulo: (value size))) toKyma: (key asString) ] 
+		].
+	
+		"step is incrementing in any case"
 		step := step + 1.
 		
 	]

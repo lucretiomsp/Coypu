@@ -9,6 +9,17 @@ Array >> * aNumber [
 ]
 
 { #category : #'*LiveCoding' }
+Array >> and: anArray [
+
+^ Sequencer with: self with: anArray
+]
+
+{ #category : #'*LiveCoding' }
+Array >> isSequencer [
+((self at: 2) isArray) ifTrue: [ ^true ] ifFalse: [ ^false ]
+]
+
+{ #category : #'*LiveCoding' }
 Array >> offset: aNumber [ 
 "offset the array by aNumber of 'steps' wrapping it around its size"
 ^ (0 to: (self size - 1)) collect: [ :i | self at: (((i + aNumber) rem: (self size)) + 1) ]
