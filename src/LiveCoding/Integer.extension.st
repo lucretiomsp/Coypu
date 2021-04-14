@@ -314,50 +314,23 @@ maxLength := 256." number of~steps in the process"
 Integer >> testStepsProcessFor: aDictionaryOfPatterns rate: aRateInSeconds [
 " iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
 an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
-|   maxLength  bpm |
+|   step noteIndex bpm |
 bpm := 60 / (aRateInSeconds * 4).
+step := 1.
+noteIndex := 1. "or 0???????"
 
-maxLength := 256." number of~steps in the process"
-[ 	| index |
-	index := 0.
+
+[ 	
 	bpm toKyma: 'BPM'.
 	self timesRepeat: [ (Delay forSeconds: (aRateInSeconds  /2) )wait. 
 		aDictionaryOfPatterns keysAndValuesDo: [ :key : value |
-		(value at: (index rem: value size) + 1) toKyma: (key asString)].
-		(Delay forSeconds: (aRateInSeconds /2)) wait.
+		((value at: 1) at: (step modulo: ((value at: 1) size)))
+		toKyma: (key asString)].
+		step := step + 1.
 		
-		
-		aDictionaryOfPatterns keysDo: [ : key  | ((key asString) includesSubstring: 'Gate') ifTrue: [0 		toKyma: (key asString)]].
-		
-		"increment of one but within the boundaries of the maxLength"
-		index  := (index + 1) rem: maxLength .
-		  ]  
+	]
 	
-	
-	] forkAt:  (Processor timingPriority ).
-
-
-"
-dic := Dictionary new.
-dic add: #BassNotes -> ((Array with: #(1 0 0 0 1 0 0 0) with: #(36 48))).
-bPattern := dic at: #BassNotes.
-
-index := 1.
-i := 0.
-
-[ 40 timesRepeat: [ (Delay forSeconds: 0.1) wait. 
-		i := i + 1.
-		
-		(((bPattern at: 1) at: (i modulo: ((bPattern at: 1) size))) = 1) ifTrue:
-		[Transcript show: 0; cr; show: ( (bPattern at: 2) at: 
-		( index modulo: ((bPattern at: 2) size)    ))
-		; cr.
-		index := (index +1)] ifFalse: [ nil].
-		
-		 ] ] fork.
-
-( 0 to: 10 ) collect: [ :i | i modulo: 2].
-"
+	] forkAt:  (Processor timingPriority )
 ]
 
 { #category : #'*LiveCoding' }
