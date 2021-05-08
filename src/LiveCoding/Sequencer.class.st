@@ -1,3 +1,7 @@
+"
+A Sequencer is a bidimensional Array containing two arrays, to feed the sequenceFor: aDictionary rate: aNumber method.
+The first array contains the gates, the second array contains the notes
+"
 Class {
 	#name : #Sequencer,
 	#superclass : #Array,
