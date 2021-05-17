@@ -68,7 +68,7 @@ Chord class >> minor13 [
 
 	| notes chord|
 	notes := Scale major.
-	chord := Array new: 7.
+	chord := self new: 7.
 	chord at: 1 put: (notes at: 1); at: 2 put: (notes at: 3); at: 3 put: (notes at: 5); at: 4 put: (notes at: 7); at: 5 put: (notes at: 9); at: 6 put: (notes at: 10); at: 7 put: (notes at: 11).
 ^ chord
 
@@ -149,4 +149,10 @@ Chord >> randomize: aNumber withRoot: aRoot [
 	s := (self size) - 1.
 	
 	^ (1 to: aNumber) collect: [ :i | (self at: (( (r next) * s) rounded) + 1) + aRoot ].
+]
+
+{ #category : #accessing }
+Chord >> root: aNumber [
+" return a Chord with aNumber nn as root"
+^ (self + aNumber).
 ]

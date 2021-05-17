@@ -9,6 +9,14 @@ Array >> * aNumber [
 ]
 
 { #category : #'*LiveCoding' }
+Array >> + aNumber [ 
+" sum aNumber to each element of the array"
+| result |
+result := (1 to: (self size)) collect: [ :i | (self at: i ) + aNumber ].
+^ result
+]
+
+{ #category : #'*LiveCoding' }
 Array >> and: anArray [
 
 ^ Sequencer with: self with: anArray
