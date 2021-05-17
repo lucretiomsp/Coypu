@@ -15,6 +15,12 @@ Array >> and: anArray [
 ]
 
 { #category : #'*LiveCoding' }
+Array >> asSequencer [
+"returns Sequencer with default note 60nn and default durations 1/16th"
+^ (Sequencer with: self with: #(60) with: #(0.125) )
+]
+
+{ #category : #'*LiveCoding' }
 Array >> isSequencer [
 ((self at: 2) isArray) ifTrue: [ ^true ] ifFalse: [ ^false ]
 ]
