@@ -10,6 +10,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+Sequencer >> durations [
+^ (self at: 3)
+]
+
+{ #category : #'as yet unclassified' }
 Sequencer >> gates [
 
 ^ (self at: 1)

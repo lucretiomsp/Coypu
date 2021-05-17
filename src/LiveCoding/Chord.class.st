@@ -1,3 +1,6 @@
+"
+""Creates a Chord as an array of MIDI note numbers""
+"
 Class {
 	#name : #Chord,
 	#superclass : #Scale,

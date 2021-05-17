@@ -242,6 +242,42 @@ Integer >> semiquavers [
 ]
 
 { #category : #'*LiveCoding' }
+Integer >> sequenceFor: aDictionaryOfPatterns rate: aRateInSeconds [
+" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
+an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
+|   step noteIndex bpm |
+bpm := 60 / (aRateInSeconds * 4).
+step := 1.
+noteIndex := 1. "or 0???????"
+
+
+[ 	
+	bpm toKyma: 'BPM'.
+	self timesRepeat: [ (Delay forSeconds: aRateInSeconds   )wait.
+		" test if dictionary values is an Array od two arrays or as defined, a sequence"
+		 
+		aDictionaryOfPatterns keysAndValuesDo: [ :key : value |
+		(value isSequencer) ifTrue: [  	
+		(((value gates) at: (step modulo: (value gatesSize ))) = 1)
+		ifTrue:
+		[0 toKyma: ((key asString),'Gate'). 1 toKyma: ((key asString),'Gate'). 
+		((value notes) at: (noteIndex modulo: (value notesSize))) toKyma: ((key asString),'Note').
+		((value durations ) at: (noteIndex modulo: (value notesSize))) toKyma: ((key asString),'Duration').
+		noteIndex := noteIndex + 1.
+		] 
+		ifFalse: [ nil]]
+		ifFalse: [(value at: (step modulo: (value size))) toKyma: (key asString) ] 
+		].
+	
+		"step is incrementing in any case"
+		step := step + 1.
+		
+	]
+	
+	] forkAt:  (Processor timingPriority )
+]
+
+{ #category : #'*LiveCoding' }
 Integer >> shiko [
 " create an array of self size of shiko (West-African / Caribbean) rhytm pulses. Better if used with self = 16 x anInteger "
 | pattern |
@@ -306,41 +342,6 @@ maxLength := 256." number of~steps in the process"
 		index  := (index + 1) rem: maxLength .
 		  ]  
 	
-	
-	] forkAt:  (Processor timingPriority )
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> testStepsProcessFor: aDictionaryOfPatterns rate: aRateInSeconds [
-" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
-an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
-|   step noteIndex bpm |
-bpm := 60 / (aRateInSeconds * 4).
-step := 1.
-noteIndex := 1. "or 0???????"
-
-
-[ 	
-	bpm toKyma: 'BPM'.
-	self timesRepeat: [ (Delay forSeconds: aRateInSeconds   )wait.
-		" test if dictionary values is an Array od two arrays or as defined, a sequence"
-		 
-		aDictionaryOfPatterns keysAndValuesDo: [ :key : value |
-		(value isSequencer) ifTrue: [  	
-		(((value gates) at: (step modulo: (value gatesSize ))) = 1)
-		ifTrue:
-		[0 toKyma: ((key asString),'Gate'). 1 toKyma: ((key asString),'Gate'). 
-		((value notes) at: (noteIndex modulo: (value notesSize))) toKyma: ((key asString),'Notes').
-		noteIndex := noteIndex + 1.
-		] 
-		ifFalse: [ nil]]
-		ifFalse: [(value at: (step modulo: (value size))) toKyma: (key asString) ] 
-		].
-	
-		"step is incrementing in any case"
-		step := step + 1.
-		
-	]
 	
 	] forkAt:  (Processor timingPriority )
 ]
