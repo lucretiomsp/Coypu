@@ -12,13 +12,13 @@ Class {
 { #category : #creating }
 Scale class >> major [ 
 
-^ #(0 2 4 5 7 9 11 12).
+^ #(0 2 4 5 7 9 11 12 14 17 21).
 ]
 
 { #category : #creating }
 Scale class >> minor [ 
 
-^ #(0 2 3 5 7 8 10 12)
+^ #(0 2 3 5 7 8 10 12 13 17 20)
 ]
 
 { #category : #creating }
