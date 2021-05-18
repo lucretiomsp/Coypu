@@ -40,6 +40,15 @@ Array >> offset: aNumber [
 ]
 
 { #category : #'*LiveCoding' }
+Array >> times: aNumber [
+"returns an Array with all the elements of self multiplicated for aNumber"
+
+| result |
+result := ( 1to: (self size)) collect: [ :i | (self at: i) * aNumber ].
+^ result
+]
+
+{ #category : #'*LiveCoding' }
 Array >> toKyma: aString [
 	"sends and array of oscmessages with the values of the array to the vcs labels with array indexes"
 	

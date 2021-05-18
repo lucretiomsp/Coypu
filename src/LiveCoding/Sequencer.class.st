@@ -11,7 +11,16 @@ Class {
 
 { #category : #'as yet unclassified' }
 Sequencer >> durations [
-^ (self at: 3)
+" returns the third array of the seuencer if there is one, otherwise returns false"
+(self size > 2)
+ifTrue: [ ^ (self at: 3)] ifFalse: [ ^ false ].
+
+]
+
+{ #category : #'as yet unclassified' }
+Sequencer >> durationsSize [
+
+^ ((self at: 3) size)
 ]
 
 { #category : #'as yet unclassified' }
@@ -29,7 +38,7 @@ Sequencer >> gatesSize [
 { #category : #testing }
 Sequencer >> isSequencer [
 
-(((self size) = 2) & ((self at: 1) isArray ))
+(((self size) > 1) & ((self at: 1) isArray ))
 ifTrue: [  ^ true ] ifFalse: [ ^ false ]
 ]
 

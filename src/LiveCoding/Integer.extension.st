@@ -245,8 +245,9 @@ Integer >> semiquavers [
 Integer >> sequenceFor: aDictionaryOfPatterns rate: aRateInSeconds [
 " iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
 an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
-|   step noteIndex bpm |
+|   step noteIndex bpm beatInSeconds|
 bpm := 60 / (aRateInSeconds * 4).
+beatInSeconds := aRateInSeconds * 4.
 step := 1.
 noteIndex := 1. "or 0???????"
 
@@ -262,7 +263,10 @@ noteIndex := 1. "or 0???????"
 		ifTrue:
 		[0 toKyma: ((key asString),'Gate'). 1 toKyma: ((key asString),'Gate'). 
 		((value notes) at: (noteIndex modulo: (value notesSize))) toKyma: ((key asString),'Note').
-		((value durations ) at: (noteIndex modulo: (value notesSize))) toKyma: ((key asString),'Duration').
+		
+		((value durations) isArray) ifTrue:
+		[((value durations ) at: (noteIndex modulo: (value durationsSize))) toKyma: ((key asString),'Duration')] ifFalse: [nil].
+	
 		noteIndex := noteIndex + 1.
 		] 
 		ifFalse: [ nil]]
