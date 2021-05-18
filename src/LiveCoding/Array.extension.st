@@ -23,6 +23,12 @@ Array >> and: anArray [
 ]
 
 { #category : #'*LiveCoding' }
+Array >> and: anArray and: anotherArray [
+
+^ Sequencer with: self with: anArray with: anotherArray 
+]
+
+{ #category : #'*LiveCoding' }
 Array >> asSequencer [
 "returns Sequencer with default note 60nn and default durations 1/16th"
 ^ (Sequencer with: self with: #(60) with: #(0.125) )
