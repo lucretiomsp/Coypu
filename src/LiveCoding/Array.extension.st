@@ -2,10 +2,11 @@ Extension { #name : #Array }
 
 { #category : #'*LiveCoding' }
 Array >> * aNumber [
-"repeat the array aNumber of Times "
-^ (0 to: ((self size) * aNumber ) )collect: [  :i | self at:  
-	((i rem: (self size) ) + 1)
-	].
+"returns an Array with all the elements of self multiplicated for aNumber"
+
+| result |
+result := ( 1to: (self size)) collect: [ :i | (self at: i) * aNumber ].
+^ result
 ]
 
 { #category : #'*LiveCoding' }
@@ -32,6 +33,15 @@ Array >> and: anArray and: anotherArray [
 Array >> asSequencer [
 "returns Sequencer with default note 60nn and default durations 1/16th"
 ^ (Sequencer with: self with: #(60) with: #(0.125) )
+]
+
+{ #category : #'*LiveCoding' }
+Array >> gates [ 
+"return number of elements in the array that are greater than 0"
+| result size |
+result := self select: [ :i | i > 0 ].
+size := result size.
+^ size
 ]
 
 { #category : #'*LiveCoding' }

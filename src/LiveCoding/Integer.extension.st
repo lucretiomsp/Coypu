@@ -79,7 +79,7 @@ Integer >> copiesOf: anInteger [
 Integer >> copiesOfEach: anArray [
 " retuns an array of self repetitions of each element of anArray"
 | result  resultSize|
-result := Array new: ((anArray size) * self).
+result := Array new: ((anArray size) times: self).
 resultSize := result  size.
 ( 0 to: (resultSize -1)) do: 
 [ :i | result at: (i + 1) put: (anArray  at:  (i // (resultSize /anArray size)) + 1)].
