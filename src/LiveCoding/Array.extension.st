@@ -50,6 +50,14 @@ Array >> isSequencer [
 ]
 
 { #category : #'*LiveCoding' }
+Array >> of: anotherArray [
+" economic implementation of self collect: [:i | anotherArray at: i]"
+| result |
+result := self collect: [ :i | anotherArray  at: i ].
+^ result
+]
+
+{ #category : #'*LiveCoding' }
 Array >> offset: aNumber [ 
 "offset the array by aNumber of 'steps' wrapping it around its size"
 ^ (0 to: (self size - 1)) collect: [ :i | self at: (((i + aNumber) rem: (self size)) + 1) ]

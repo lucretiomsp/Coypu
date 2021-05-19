@@ -26,6 +26,19 @@ Chord class >> major11 [
 
 ]
 
+{ #category : #'as yet unclassified' }
+Chord class >> major13 [
+
+	| notes chord|
+	notes := Scale major.
+	chord := self new: 7.
+	chord at: 1 put: (notes at: 1); at: 2 put: (notes at: 3); at: 3 put: (notes at: 5); at: 4 put: (notes at: 7); at: 5 put: (notes at: 9); at: 6 put: (notes at: 10); at: 7 put: (notes at: 11).
+^ chord
+
+
+
+]
+
 { #category : #creating }
 Chord class >> major7 [
 	| notes |
@@ -67,7 +80,7 @@ Chord class >> minor11 [
 Chord class >> minor13 [
 
 	| notes chord|
-	notes := Scale major.
+	notes := Scale minor.
 	chord := self new: 7.
 	chord at: 1 put: (notes at: 1); at: 2 put: (notes at: 3); at: 3 put: (notes at: 5); at: 4 put: (notes at: 7); at: 5 put: (notes at: 9); at: 6 put: (notes at: 10); at: 7 put: (notes at: 11).
 ^ chord

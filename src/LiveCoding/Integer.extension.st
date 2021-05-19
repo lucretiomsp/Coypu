@@ -79,7 +79,7 @@ Integer >> copiesOf: anInteger [
 Integer >> copiesOfEach: anArray [
 " retuns an array of self repetitions of each element of anArray"
 | result  resultSize|
-result := Array new: ((anArray size) times: self).
+result := Array new: ((anArray size) * self).
 resultSize := result  size.
 ( 0 to: (resultSize -1)) do: 
 [ :i | result at: (i + 1) put: (anArray  at:  (i // (resultSize /anArray size)) + 1)].
@@ -133,13 +133,13 @@ maxLength := 256."~ number ofsteps"
 
 { #category : #'*LiveCoding' }
 Integer >> major [ 
-"returns an aray with the major third, fith seventh and thiteenth relative to the note number that is the receiver"
+"returns an aray with the major third, fith seventh and ninth relative to the note number that is the receiver"
  ^ #(4 7 10 14) collect: [ :i | i + self ].
 ]
 
 { #category : #'*LiveCoding' }
 Integer >> minor [
-"returns an aray with the major third, fith seventh and thiteenth relative to the note number that is the receiver"
+"returns an aray with the major third, fith seventh and ninth relative to the note number that is the receiver"
  ^ #(3 7 10 14) collect: [ :i | i + self ].
 ]
 
@@ -177,6 +177,15 @@ Integer >> randomDiv: aDivision [
 	r := Random new.
 	array := ( 0 to: 1 by: (( 1/ aDivision) asFloat)  ) asArray.
 	^ (1 to: self) collect: [ :i | (array at: (r nextInt: (array size))) printShowingDecimalPlaces: 2 ].
+]
+
+{ #category : #'*LiveCoding' }
+Integer >> randomInts: aNumber [
+"return an array of self size with random integers with range [0, aNumber]"
+| floatsArray result |
+floatsArray := (self randoms) * aNumber.
+result := floatsArray collect: [ :i | i rounded ].
+^ result
 ]
 
 { #category : #'*LiveCoding' }
