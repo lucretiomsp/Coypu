@@ -65,11 +65,13 @@ Array >> offset: aNumber [
 
 { #category : #'*LiveCoding' }
 Array >> times: aNumber [
-"returns an Array with all the elements of self multiplicated for aNumber"
+"returns an Array containing aNumber repetition of self"
 
-| result |
-result := ( 1to: (self size)) collect: [ :i | (self at: i) * aNumber ].
-^ result
+| newSize newArray  |
+newSize := aNumber * self size.
+newArray := Array new: newSize.
+(1 to: newSize) do: [ :i | newArray  at: i put: (self at: ((i - 1) modulo: (self size )) ) ].
+^ newArray
 ]
 
 { #category : #'*LiveCoding' }

@@ -88,7 +88,7 @@ resultSize := result  size.
 ]
 
 { #category : #'*LiveCoding' }
-Integer >> downbeat [ 
+Integer >> downbeats [ 
 
  ^ (1 to: self) collect: [ :i | (((i rem: 4) = 1)) asBit ]. 
 ]
@@ -245,6 +245,12 @@ pattern := #(1 0 0 1 0 0 0 1 0 0 1 0 1 0 0 0 ).
 ]
 
 { #category : #'*LiveCoding' }
+Integer >> semibreves [
+" returns self number of bars with a trigger in the first position of the bars"
+^ (self copiesOfEach: ('8000' pattern))
+]
+
+{ #category : #'*LiveCoding' }
 Integer >> semiquavers [ 
 
 ^ Array new: self withAll: 1.
@@ -254,7 +260,7 @@ Integer >> semiquavers [
 Integer >> sequenceFor: aDictionaryOfPatterns rate: aRateInSeconds [
 " iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
 an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
-|   step noteIndex bpm beatInSeconds|
+| step noteIndex bpm beatInSeconds|
 bpm := 60 / (aRateInSeconds * 4).
 beatInSeconds := aRateInSeconds * 4.
 step := 1.
@@ -270,15 +276,15 @@ noteIndex := 1. "or 0???????"
 		(value isSequencer) ifTrue: [  	
 		(((value gates) at: (step modulo: (value gatesSize ))) = 1)
 		ifTrue:
-		[0 toKyma: ((key asString),'Gate'). 1 toKyma: ((key asString),'Gate'). 
+		[0.0 toKyma: ((key asString),'Gate'). 1 toKyma: ((key asString),'Gate'). 
 		((value notes) at: (noteIndex modulo: (value notesSize))) toKyma: ((key asString),'Note').
 		
 		((value durations) isArray) ifTrue:
 		[((value durations ) at: (noteIndex modulo: (value durationsSize))) toKyma: ((key asString),'Duration')] ifFalse: [nil].
-	
+		Transcript show: (noteIndex modulo: (value notesSize)).
 		noteIndex := noteIndex + 1.
 		] 
-		ifFalse: [ nil]]
+		ifFalse: [nil]]
 		ifFalse: [(value at: (step modulo: (value size))) toKyma: (key asString) ] 
 		].
 	
@@ -287,7 +293,7 @@ noteIndex := 1. "or 0???????"
 		
 	]
 	
-	] forkAt:  (Processor timingPriority )
+	] forkAt: (Processor timingPriority )
 ]
 
 { #category : #'*LiveCoding' }
@@ -392,7 +398,7 @@ pattern := #(1 0 0 1 1 0 1 0 ).
 ]
 
 { #category : #'*LiveCoding' }
-Integer >> upbeat [
+Integer >> upbeats [
 "creates an Array of size=self  of values (0,1) with 1 to the position corresponding to a 4/4 upbeat rhythm"
 	^ (1 to: self) collect: [ :i | (((i rem: 4) = 3)) asBit ].
 ]
