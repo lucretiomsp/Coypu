@@ -247,7 +247,9 @@ pattern := #(1 0 0 1 0 0 0 1 0 0 1 0 1 0 0 0 ).
 { #category : #'*LiveCoding' }
 Integer >> semibreves [
 " returns self number of bars with a trigger in the first position of the bars"
-^ (self copiesOfEach: ('8000' pattern))
+| result |
+result := ('8000' pattern ) times: 4.
+^ result
 ]
 
 { #category : #'*LiveCoding' }
