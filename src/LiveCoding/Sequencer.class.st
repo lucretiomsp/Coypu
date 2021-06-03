@@ -9,6 +9,13 @@ Class {
 	#category : #LiveCoding
 }
 
+{ #category : #controlling }
+Sequencer >> and: anotherArray [
+" add array of  values to the Sequencer"
+^ Sequencer with: (self at: 1) with: (self at: 2) with: anotherArray .
+
+]
+
 { #category : #'as yet unclassified' }
 Sequencer >> durations [
 " returns the third array of the seuencer if there is one, otherwise returns false"
@@ -52,4 +59,12 @@ Sequencer >> notes [
 Sequencer >> notesSize [
 
 ^ ((self at: 2) size)
+]
+
+{ #category : #'as yet unclassified' }
+Sequencer >> velocities [
+" returns the fourth array of the sequencer if there is one, otherwise returns false"
+(self size > 3)
+ifTrue: [ ^ (self at: 4)] ifFalse: [ ^ false ].
+
 ]

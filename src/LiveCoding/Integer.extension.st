@@ -27,7 +27,7 @@ Integer >> banda [
 | pattern |
 pattern := #(1 0 1 1 0 1 1 0).
 
-^ (0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ].
+^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm .
 
 "implement shifting to the left"
 ]
@@ -38,7 +38,7 @@ Integer >> bomba [
 | pattern |
 pattern := #(1 0 0 1 1 1 1 0 ).
 
-^ (0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ].
+^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm .
 
 ]
 
@@ -48,7 +48,7 @@ Integer >> bossa [
 | pattern |
 pattern := #(1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 ).
 
-^ (0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ].
+^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm .
 
 "implement shifting to the left"
 ]
@@ -65,7 +65,7 @@ Integer >> claveSon [
 | pattern |
 pattern := #(1 0 0 1 0 0 1 0 0 0 1 0 1 0 0 0).
 
-^ (0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ].
+^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm.
 
 ]
 
@@ -90,7 +90,7 @@ resultSize := result  size.
 { #category : #'*LiveCoding' }
 Integer >> downbeats [ 
 
- ^ (1 to: self) collect: [ :i | (((i rem: 4) = 1)) asBit ]. 
+ ^ ((1 to: self) collect: [ :i | (((i rem: 4) = 1)) asBit ]) asRhythm . 
 ]
 
 { #category : #'*LiveCoding' }
@@ -99,7 +99,7 @@ Integer >> gahu [
 | pattern |
 pattern := #(1 0 0 1 0 0 1 0 0 0 1 0 0 0 1 0 ).
 
-^ (0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ].
+^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm .
 
 "implement shifting to the left"
 ]
@@ -152,7 +152,7 @@ Integer >> modulo: anInteger [
 { #category : #'*LiveCoding' }
 Integer >> ones [
 	" retuns an array of self size with all  ones "
-^ Array new: self withAll: 1.
+^ (Array new: self withAll: 1) asRhythm.
 ]
 
 { #category : #'*LiveCoding' }
@@ -160,14 +160,14 @@ Integer >> pattern [
 	| arrayOfCharacters s|
 	arrayOfCharacters := (self printStringBase: 2) asArray.
 	s := arrayOfCharacters size.
-	^ (1 to: s) collect: [ :i | (arrayOfCharacters at: i) digitValue ]
+	^ (1 to: s) collect: [ :i | (arrayOfCharacters at: i) digitValue ] 
 	
 ]
 
 { #category : #'*LiveCoding' }
 Integer >> quavers [
 "creates an Array of aNumber of values (0,1) with 1 to the position corresponding to a rhtyhm of quavers (downbeat + upbeat)"
-	^ (1 to: self) collect: [ :i | ((((i rem: 4) = 1)) | (((i rem: 4) = 3)) ) asBit ].
+	^ ((1 to: self) collect: [ :i | ((((i rem: 4) = 1)) | (((i rem: 4) = 3)) ) asBit ]) asRhythm .
 ]
 
 { #category : #'*LiveCoding' }
@@ -239,7 +239,7 @@ Integer >> rumba [
 | pattern |
 pattern := #(1 0 0 1 0 0 0 1 0 0 1 0 1 0 0 0 ).
 
-^ (0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ].
+^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm .
 
 "implement shifting to the left"
 ]
@@ -248,14 +248,14 @@ pattern := #(1 0 0 1 0 0 0 1 0 0 1 0 1 0 0 0 ).
 Integer >> semibreves [
 " returns self number of bars with a trigger in the first position of the bars"
 | result |
-result := ('8000' pattern ) times: 4.
+result := (('8000' pattern ) times: 4) asRhythm .
 ^ result
 ]
 
 { #category : #'*LiveCoding' }
 Integer >> semiquavers [ 
 
-^ Array new: self withAll: 1.
+^ (Array new: self withAll: 1) asRhythm .
 ]
 
 { #category : #'*LiveCoding' }
@@ -304,19 +304,9 @@ Integer >> shiko [
 | pattern |
 pattern := #(1 0 0 0 1 0 1 0 0 0 1 0 1 0 0 0).
 
-^ (0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ].
+^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm.
 
 "implement shifting to the left"
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> sikiyi [
-" create an array of self size of  sikyi (by Ashanti people of Ghana) rhytm pulses. Better if the receiever is a multiple of 8."
-| pattern |
-pattern := #(0 0 0 1 0 1 0 1).
-
-^ (0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ].
-
 ]
 
 { #category : #'*LiveCoding' }
@@ -325,7 +315,7 @@ Integer >> sikyi [
 | pattern |
 pattern := #(0 0 0 1 0 1 0 1).
 
-^ (0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ].
+^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm .
 
 ]
 
@@ -335,7 +325,7 @@ Integer >> soukous [
 | pattern |
 pattern := #(1 0 0 1 0 0 1 0 0 0 1 1 0 0 0 0 ).
 
-^ (0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ].
+^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm .
 
 "implement shifting to the left"
 ]
@@ -394,7 +384,7 @@ Integer >> trueAksak [
 | pattern |
 pattern := #(1 0 1 0 1 0 1 0 0 1 0 1 0).
 
-^ (0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ].
+^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm .
 
 "implement shifting to the left"
 ]
@@ -402,21 +392,34 @@ pattern := #(1 0 1 0 1 0 1 0 0 1 0 1 0).
 { #category : #'*LiveCoding' }
 Integer >> tumbao [
 " create an array of self size of  habanera/tumbao rhytm pulses. Better if the receiever is a multiple of eight."
-| pattern |
+| pattern rhythm |
 pattern := #(1 0 0 1 1 0 1 0 ).
 
-^ (0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ].
+rhythm := ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm .
+^ Sequencer with: rhythm with: #(60) with: #(0.125).
 
+]
+
+{ #category : #'*LiveCoding' }
+Integer >> tumbao: aNoteNumber [
+" Creates a Sequencer with an array of self size of  habanera/tumbao rhytm pulses. With all notes equals to aNoteNumber.
+
+Better if the receiever is a multiple of eight."
+| pattern rhythm notes|
+pattern := #(1 0 0 1 1 0 1 0 ).
+notes := Array with: aNoteNumber .
+rhythm := ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm .
+^ Sequencer with: rhythm with: notes with: #(0.125).
 ]
 
 { #category : #'*LiveCoding' }
 Integer >> upbeats [
 "creates an Array of size=self  of values (0,1) with 1 to the position corresponding to a 4/4 upbeat rhythm"
-	^ (1 to: self) collect: [ :i | (((i rem: 4) = 3)) asBit ].
+	^ ((1 to: self) collect: [ :i | (((i rem: 4) = 3)) asBit ]) asRhythm .
 ]
 
 { #category : #'*LiveCoding' }
 Integer >> zeros [
 	" retuns an array of self size with all zeros"
-^ Array new: self withAll: 0.
+^ (Array new: self withAll: 0) asRhythm .
 ]

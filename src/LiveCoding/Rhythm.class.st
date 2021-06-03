@@ -29,6 +29,15 @@ Rhythm class >> random: aNumber [
 	^ (1 to: aNumber) collect: [ :i | (r next ) printShowingDecimalPlaces: 2].
 ]
 
+{ #category : #converting }
+Rhythm >> asArray [ 
+"convert Rhythm into an Array"
+| array |
+array := Array new: (self size).
+( 1 to: (self size)) do:[:i | array at: i put: (self at: i)].
+^ array
+]
+
 { #category : #'as yet unclassified' }
 Rhythm >> randomInts: aNumber [
 "return an array of self size with random integers with range [0, aNumber]"
