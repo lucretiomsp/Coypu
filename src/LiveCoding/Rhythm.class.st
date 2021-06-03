@@ -21,18 +21,6 @@ Class {
 	#category : #LiveCoding
 }
 
-{ #category : #'as yet unclassified' }
-Rhythm class >> downbeat: aNumber [
-"creates an Array of aNumber of values (0,1) with 1 to the position corresponding to a 4/4 beat"
-	^ (1 to: aNumber) collect: [ :i | (((i rem: 4) = 1)) asBit ].
-]
-
-{ #category : #'as yet unclassified' }
-Rhythm class >> quavers: aNumber [
-"creates an Array of aNumber of values (0,1) with 1 to the position corresponding to a rhtyhm of quavers (downbeat + upbeat)"
-	^ (1 to: aNumber) collect: [ :i | ((((i rem: 4) = 1)) | (((i rem: 4) = 3)) ) asBit ].
-]
-
 { #category : #responses }
 Rhythm class >> random: aNumber [
 "generates an Array of random values in the range (0,1) of size: aNumber, whith only 2 decimal places"
@@ -42,22 +30,41 @@ Rhythm class >> random: aNumber [
 ]
 
 { #category : #'as yet unclassified' }
-Rhythm class >> random: aNumber div: aDivision [
-"return an array of aNumber random values in the range of 0,1 , with a subdivision of 1/aDivision steps with 2 decimal places"
-	| r array|
+Rhythm >> randomInts: aNumber [
+"return an array of self size with random integers with range [0, aNumber]"
+| floatsArray result numberOfGates|
+numberOfGates  := self gates.
+floatsArray := (numberOfGates  randoms) * aNumber.
+result := floatsArray collect: [ :i | i rounded ].
+^ Sequencer with: self with: result
+]
+
+{ #category : #'as yet unclassified' }
+Rhythm >> randomNotesFrom: anArray [
+"return an array of self size of random notes from anArray"
+| numberOfGates result |
+numberOfGates := self gates.
+result := (1 to: numberOfGates ) collect: [ :i | anArray at: (Random new nextInt: (anArray size)) ].
+^ Sequencer with: self with: result
+]
+
+{ #category : #'as yet unclassified' }
+Rhythm >> randomNotesFrom: anArray octaves: aNumber [
+"return an array of self size of a random note from anArray + a random octave between 0 and aNumber"
+| numberOfGates result |
+numberOfGates := self gates.
+result := (1 to: numberOfGates) collect: [ :i | (anArray at: (Random new nextInt: (anArray size))) + (((Random new nextInt: (aNumber + 1)) -1) * 12).].
+^ Sequencer with: self with: result
+]
+
+{ #category : #'as yet unclassified' }
+Rhythm >> randoms [
+"generates an Array of random values in the range (0,1) of size: aNumber, whith only 2 decimal places"
+	| r numberOfGates values |
+	numberOfGates := self gates.
 	r := Random new.
-	array := ( 0 to: 1 by: (( 1/ aDivision) asFloat)  ) asArray.
-	^ (1 to: aNumber) collect: [ :i | (array at: (r nextInt: (array size))) printShowingDecimalPlaces: 2 ].
-]
-
-{ #category : #'as yet unclassified' }
-Rhythm class >> semiquavers: aNumber [
-"answer an Array of 1 with aNumber size"
-^ Array new: aNumber withAll: 1.
-]
-
-{ #category : #'as yet unclassified' }
-Rhythm class >> upbeat: aNumber [
-"creates an Array of aNumber of values (0,1) with 1 to the position corresponding to a 4/4 upbeat rhythm"
-	^ (1 to: aNumber) collect: [ :i | (((i rem: 4) = 3)) asBit ].
+	values := (1 to: numberOfGates) collect: [ :i | ((r next ) printShowingDecimalPlaces: 2) asNumber].
+	^ Sequencer  with: self with: values.
+	
+	
 ]

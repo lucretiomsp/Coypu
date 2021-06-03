@@ -6,7 +6,7 @@ Integer >> adowa [
 | pattern |
 pattern := #(0 0 0 1 0 1 0 1).
 
-^ (0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ].
+^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm .
 
 ]
 
@@ -16,7 +16,7 @@ Integer >> aksak [
 | pattern |
 pattern := #(1 0 1 0 0 0 1 0 0 0).
 
-^ (0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ].
+^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm .
 
 "implement shifting to the left"
 ]
@@ -43,7 +43,7 @@ pattern := #(1 0 0 1 1 1 1 0 ).
 ]
 
 { #category : #'*LiveCoding' }
-Integer >> bossanova [
+Integer >> bossa [
 " create an array of self size of  bossanova rhytm pulses. Better if used with self = 16 x anInteger "
 | pattern |
 pattern := #(1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 ).
@@ -266,7 +266,7 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 bpm := 60 / (aRateInSeconds * 4).
 beatInSeconds := aRateInSeconds * 4.
 step := 1.
-noteIndex := 1. "or 0???????"
+noteIndex := 0. "or 0???????"
 
 
 [ 	
@@ -283,7 +283,7 @@ noteIndex := 1. "or 0???????"
 		
 		((value durations) isArray) ifTrue:
 		[((value durations ) at: (noteIndex modulo: (value durationsSize))) toKyma: ((key asString),'Duration')] ifFalse: [nil].
-		Transcript show: (noteIndex modulo: (value notesSize)).
+		
 		noteIndex := noteIndex + 1.
 		] 
 		ifFalse: [nil]]
@@ -370,11 +370,21 @@ maxLength := 256." number of~steps in the process"
 { #category : #'*LiveCoding' }
 Integer >> tresillo [
 " create an array of self size of  tresillo rhytm pulses. Better if used with self = 8 x anInteger "
+| pattern newArray rhythm |
+
+pattern := #(1 0 0 1 0 0 1 0 ).
+
+newArray := (0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ].
+rhythm := Rhythm new: (newArray size).
+(1 to: (rhythm size)) do: [ :i | rhythm at: i put: (newArray  at: i) ].
+^ rhythm.
+
+"
 | pattern |
 pattern := #(1 0 0 1 0 0 1 0 ).
 
 ^ (0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ].
-
+"
 "implement shifting to the left"
 ]
 

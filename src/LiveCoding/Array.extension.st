@@ -30,7 +30,16 @@ Array >> and: anArray and: anotherArray [
 ]
 
 { #category : #'*LiveCoding' }
-Array >> asSequencer [
+Array >> asRhythm [
+" convert Array into a Rhythm"
+| rhythm |
+rhythm := Rhythm new: (self size).
+(1 to: ( self size)) do: [ :i | rhythm at: i put: (self at: i) ].
+^ rhythm
+]
+
+{ #category : #'*LiveCoding' }
+Array >> asSeq [
 "returns Sequencer with default note 60nn and default durations 1/16th"
 ^ (Sequencer with: self with: #(60) with: #(0.125) )
 ]
@@ -87,4 +96,13 @@ Array >> toKyma: aString [
 
 "this message alls sends an OSC message called aStringSize"
 	
+]
+
+{ #category : #'*LiveCoding' }
+Array >> withIts: anArray [ 
+| numberOfGates result |
+
+numberOfGates := anArray  size.
+result := (1 to: numberOfGates) collect: [ :i | anArray   at: (i modulo: numberOfGates) ].
+^ Sequencer with: self with: result
 ]
