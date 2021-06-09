@@ -29,6 +29,12 @@ Rhythm class >> random: aNumber [
 	^ (1 to: aNumber) collect: [ :i | (r next ) printShowingDecimalPlaces: 2].
 ]
 
+{ #category : #controlling }
+Rhythm >> and: anArray [
+"returns Sequencer with default note 60nn and default durations 1/16th"
+^ (Sequencer with: self with: anArray with: #(0.125) )
+]
+
 { #category : #converting }
 Rhythm >> asArray [ 
 "convert Rhythm into an Array"
@@ -39,11 +45,13 @@ array := Array new: (self size).
 ]
 
 { #category : #'as yet unclassified' }
-Rhythm >> randomInts: aNumber [
-"return an array of self size with random integers with range [0, aNumber]"
-| floatsArray result numberOfGates|
+Rhythm >> randomInts: anArrayWithRangeAndMin [
+"return an array of self size with random integers with range [anArrayWithRangeAndMin at: 1 +  anArrayWithRangeAndMin at: 2]"
+| floatsArray result numberOfGates range min|
+range := anArrayWithRangeAndMin at: 1.
+min := anArrayWithRangeAndMin at: 2.
 numberOfGates  := self gates.
-floatsArray := (numberOfGates  randoms) * aNumber.
+floatsArray := ((numberOfGates  randoms) * range) + min.
 result := floatsArray collect: [ :i | i rounded ].
 ^ Sequencer with: self with: result
 ]

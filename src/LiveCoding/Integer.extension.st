@@ -379,6 +379,27 @@ pattern := #(1 0 0 1 0 0 1 0 ).
 ]
 
 { #category : #'*LiveCoding' }
+Integer >> tresillo: aNoteNumberOrAnArrayOfNN [ 
+" create an array of self size of  tresillo rhytm pulses. Better if used with self = 8 x anInteger "
+| pattern newArray rhythm notes |
+notes := Array with: aNoteNumberOrAnArrayOfNN .
+pattern := #(1 0 0 1 0 0 1 0 ).
+
+newArray := (0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ].
+rhythm := Rhythm new: (newArray size).
+(1 to: (rhythm size)) do: [ :i | rhythm at: i put: (newArray  at: i) ].
+^ Sequencer with: rhythm with: notes.
+
+"
+| pattern |
+pattern := #(1 0 0 1 0 0 1 0 ).
+
+^ (0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ].
+"
+"implement shifting to the left"
+]
+
+{ #category : #'*LiveCoding' }
 Integer >> trueAksak [
 " create an array of self size of Balcan aksak rhytm pulses. Better if used with self = 13 x anInteger "
 | pattern |
@@ -396,18 +417,18 @@ Integer >> tumbao [
 pattern := #(1 0 0 1 1 0 1 0 ).
 
 rhythm := ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm .
-^ Sequencer with: rhythm with: #(60) with: #(0.125).
+^ rhythm.
 
 ]
 
 { #category : #'*LiveCoding' }
-Integer >> tumbao: aNoteNumber [
+Integer >> tumbao: aNoteNumberOrArrayOfNoteNumbers [
 " Creates a Sequencer with an array of self size of  habanera/tumbao rhytm pulses. With all notes equals to aNoteNumber.
 
 Better if the receiever is a multiple of eight."
 | pattern rhythm notes|
 pattern := #(1 0 0 1 1 0 1 0 ).
-notes := Array with: aNoteNumber .
+notes := Array with:aNoteNumberOrArrayOfNoteNumbers .
 rhythm := ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm .
 ^ Sequencer with: rhythm with: notes with: #(0.125).
 ]
