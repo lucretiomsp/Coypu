@@ -35,7 +35,7 @@ Number >> toLocal: aString [
 	localAddress := '127.0.0.1'. 
 
 	
-	(OSCMessage for: { aString  . (self asFloat)  }) sendToAddressString: localAddress  port: 8000.
+	(OSCMessage for: { ('/', aString)  . (self asFloat)  }) sendToAddressString: localAddress  port: 8000.
 ]
 
 { #category : #'*LiveCoding' }
