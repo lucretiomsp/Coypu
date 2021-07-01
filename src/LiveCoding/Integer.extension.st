@@ -116,7 +116,7 @@ noteIndex := 0. "or 0???????"
 
 
 [ 	
-	bpm toKyma: 'BPM'.
+	bpm toLocal: 'BPM'.
 	self timesRepeat: [ (Delay forSeconds: aRateInSeconds   )wait.
 		" test if dictionary values is an Array od two arrays or as defined, a sequence"
 		 
