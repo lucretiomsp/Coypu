@@ -124,7 +124,7 @@ noteIndex := 0. "or 0???????"
 		(value isSequencer) ifTrue: [  	
 		(((value gates) at: (step modulo: (value gatesSize ))) = 1)
 		ifTrue:
-		[0.0 toKyma: ((key asString),'Gate'). 1 toLocal: ((key asString),'Gate'). 
+		[0.0 toLocal: ((key asString),'Gate'). 1 toLocal: ((key asString),'Gate'). 
 		((value notes) at: (noteIndex modulo: (value notesSize))) toLocal: ((key asString),'Note').
 		
 		((value durations) isArray) ifTrue:
