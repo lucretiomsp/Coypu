@@ -88,6 +88,56 @@ resultSize := result  size.
 ]
 
 { #category : #'*LiveCoding' }
+Integer >> debugSequenceFor: aDictionaryOfPatterns rate: aRateInSeconds [
+" DEBUG THE PROCESS THAT iterates over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
+an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
+| step noteIndex bpm beatInSeconds|
+bpm := 60 / (aRateInSeconds * 4).
+beatInSeconds := aRateInSeconds * 4.
+step := 0.
+noteIndex := 0. "or 0???????"
+
+
+[ 	
+	bpm toLocal: 'BPM'.
+	self timesRepeat: [ (Delay forSeconds: aRateInSeconds   ) wait.
+		" test if dictionary values is an Array od two arrays or as defined, a sequence"
+		 
+		aDictionaryOfPatterns keysAndValuesDo: [ :key : value |
+		(value isSequencer) ifTrue: [  	
+		Transcript show: 'Step is '; tab; show: step; cr.
+		Transcript show: 'Step modulo =  '; tab; show: (step modulo: (value gatesSize )); cr.
+		
+		(((value gates) at: (step modulo: (value gatesSize ))) = 1)
+		ifTrue:
+		[ 
+			"first of all check the noteIndex"
+			Transcript show: 'Note Index is '; tab; show: noteIndex; cr.
+			
+		
+			Transcript show: 0; tab; show: ((key asString),'Gate'); tab; show: 1; tab; show: (' / '); tab; 
+			show: ((value notes) at: (noteIndex modulo: (value notesSize))); tab; tab;
+			show: ((key asString),'Note'); 
+			tab; show: ' / '.		
+		
+		((value durations) isArray) ifTrue:
+		[ Transcript  show: ((value durations ) at: (noteIndex modulo: (value durationsSize))); show: ((key asString),'Duration'); tab; 		cr. ] ifFalse: [Transcript cr].
+		
+		noteIndex := noteIndex + 1.
+		] 
+		ifFalse: [nil]]
+		ifFalse: [(value at: (step modulo: (value size))) toLocal: (key asString) ] 
+		].
+	
+		"step is incrementing in any case"
+		step := step + 1.
+		
+	]
+	
+	] forkAt: (Processor timingPriority )
+]
+
+{ #category : #'*LiveCoding' }
 Integer >> downbeats [ 
 
  ^ ((1 to: self) collect: [ :i | (((i rem: 4) = 1)) asBit ]) asRhythm . 
@@ -259,7 +309,7 @@ Integer >> randomNotesFrom: anArray octaves: aNumber [
 
 { #category : #'*LiveCoding' }
 Integer >> randomTrigs [
-"generates an Array of random v0s and 1s of size: aNumber"
+"generates an Array of random 0s and 1s of size: aNumber"
 	| r |
 	r := Random new.
 	^ (1 to: self) collect: [ :i | (r next ) rounded].

@@ -35,6 +35,12 @@ Rhythm >> and: anArray [
 ^ (Sequencer with: self with: anArray with: #(0.125) )
 ]
 
+{ #category : #'as yet unclassified' }
+Rhythm >> and: anArrayOfNotes and: anArrayOfDurations [
+"returns Sequencer with default note 60nn and default durations 1/16th"
+^ (Sequencer with: self with: anArrayOfNotes with: anArrayOfDurations )
+]
+
 { #category : #converting }
 Rhythm >> asArray [ 
 "convert Rhythm into an Array"
