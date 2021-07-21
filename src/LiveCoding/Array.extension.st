@@ -41,7 +41,7 @@ rhythm := Rhythm new: (self size).
 { #category : #'*LiveCoding' }
 Array >> asSeq [
 "returns Sequencer with default note 60nn and default durations 1/16th"
-^ (Sequencer with: self with: #(60) with: #(0.125) )
+^ (Sequencer with: self with: #(60) with: #(0.125) with: 0).
 ]
 
 { #category : #'*LiveCoding' }

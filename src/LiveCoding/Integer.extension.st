@@ -95,7 +95,8 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 bpm := 60 / (aRateInSeconds * 4).
 beatInSeconds := aRateInSeconds * 4.
 step := 0.
-noteIndex := 0. "or 0???????"
+noteIndex := 0. 
+"note index is inside the sequencer"
 
 
 [ 	
@@ -105,6 +106,8 @@ noteIndex := 0. "or 0???????"
 		 
 		aDictionaryOfPatterns keysAndValuesDo: [ :key : value |
 		(value isSequencer) ifTrue: [  	
+		"first of all, the noteIndex is equal to the 4th value of the Dictionary/Performance"
+		
 		Transcript show: 'Step is '; tab; show: step; cr.
 		Transcript show: 'Step modulo =  '; tab; show: (step modulo: (value gatesSize )); cr.
 		
@@ -112,18 +115,19 @@ noteIndex := 0. "or 0???????"
 		ifTrue:
 		[ 
 			"first of all check the noteIndex"
-			Transcript show: 'Note Index is '; tab; show: noteIndex; cr.
+			Transcript show: ((key asString),'Gate'); space; show: 'Note Index is '; tab; show: (value noteIndex); cr.
 			
 		
 			Transcript show: 0; tab; show: ((key asString),'Gate'); tab; show: 1; tab; show: (' / '); tab; 
-			show: ((value notes) at: (noteIndex modulo: (value notesSize))); tab; tab;
+			show: ((value notes) at: ((value noteIndex) modulo: (value notesSize))); tab; tab;
 			show: ((key asString),'Note'); 
 			tab; show: ' / '.		
 		
 		((value durations) isArray) ifTrue:
-		[ Transcript  show: ((value durations ) at: (noteIndex modulo: (value durationsSize))); show: ((key asString),'Duration'); tab; 		cr. ] ifFalse: [Transcript cr].
+		[ Transcript  show: ((value durations ) at: (( value noteIndex) modulo: (value durationsSize))); show: ((key asString),'Duration'); tab; 		cr. ] ifFalse: [Transcript cr].
 		
-		noteIndex := noteIndex + 1.
+		value at: 4 put: ((value noteIndex) + 1).
+		"noteIndex := noteIndex + 1."
 		] 
 		ifFalse: [nil]]
 		ifFalse: [(value at: (step modulo: (value size))) toLocal: (key asString) ] 
@@ -158,11 +162,11 @@ pattern := #(1 0 0 1 0 0 1 0 0 0 1 0 0 0 1 0 ).
 Integer >> localSequenceFor: aDictionaryOfPatterns rate: aRateInSeconds [
 " iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
 an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
-| step noteIndex bpm beatInSeconds|
+| step  bpm beatInSeconds|
 bpm := 60 / (aRateInSeconds * 4).
 beatInSeconds := aRateInSeconds * 4.
-step := 1.
-noteIndex := 0. "or 0???????"
+step := 0.
+
 
 
 [ 	
@@ -175,12 +179,13 @@ noteIndex := 0. "or 0???????"
 		(((value gates) at: (step modulo: (value gatesSize ))) = 1)
 		ifTrue:
 		[0.0 toLocal: ((key asString),'Gate'). 1 toLocal: ((key asString),'Gate'). 
-		((value notes) at: (noteIndex modulo: (value notesSize))) toLocal: ((key asString),'Note').
+		((value notes) at: ((value noteIndex) modulo: (value notesSize))) toLocal: ((key asString),'Note').
 		
 		((value durations) isArray) ifTrue:
-		[((value durations ) at: (noteIndex modulo: (value durationsSize))) toLocal: ((key asString),'Duration')] ifFalse: [nil].
+		[((value durations ) at: ((value noteIndex) modulo: (value durationsSize))) toLocal: ((key asString),'Duration')] ifFalse: [nil].
 		
-		noteIndex := noteIndex + 1.
+		value at: 4 put: ((value noteIndex) + 1).
+		
 		] 
 		ifFalse: [nil]]
 		ifFalse: [(value at: (step modulo: (value size))) toLocal: (key asString) ] 
@@ -355,7 +360,7 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 | step noteIndex bpm beatInSeconds|
 bpm := 60 / (aRateInSeconds * 4).
 beatInSeconds := aRateInSeconds * 4.
-step := 1.
+step := 0.
 noteIndex := 0. "or 0???????"
 
 
@@ -374,7 +379,8 @@ noteIndex := 0. "or 0???????"
 		((value durations) isArray) ifTrue:
 		[((value durations ) at: (noteIndex modulo: (value durationsSize))) toKyma: ((key asString),'Duration')] ifFalse: [nil].
 		
-		noteIndex := noteIndex + 1.
+		value at: 4 put: ((value noteIndex) + 1).
+		"noteIndex := noteIndex + 1."
 		] 
 		ifFalse: [nil]]
 		ifFalse: [(value at: (step modulo: (value size))) toKyma: (key asString) ] 

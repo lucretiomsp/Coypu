@@ -31,8 +31,8 @@ Rhythm class >> random: aNumber [
 
 { #category : #controlling }
 Rhythm >> and: anArray [
-"returns Sequencer with default note 60nn and default durations 1/16th"
-^ (Sequencer with: self with: anArray with: #(0.125) )
+"returns Sequencer with default note 60nn and default durations 1/16th and noteIndex = 0"
+^ (Sequencer with: self with: anArray with: #(0.125) with: 0 )
 ]
 
 { #category : #'as yet unclassified' }

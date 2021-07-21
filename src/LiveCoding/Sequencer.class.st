@@ -18,7 +18,7 @@ Sequencer >> and: anotherArray [
 
 { #category : #'as yet unclassified' }
 Sequencer >> durations [
-" returns the third array of the seuencer if there is one, otherwise returns false"
+" returns the third array of the sequencer if there is one, otherwise returns false"
 (self size > 2)
 ifTrue: [ ^ (self at: 3)] ifFalse: [ ^ false ].
 
@@ -47,6 +47,14 @@ Sequencer >> isSequencer [
 
 (((self size) > 1) & ((self at: 1) isArray ))
 ifTrue: [  ^ true ] ifFalse: [ ^ false ]
+]
+
+{ #category : #'as yet unclassified' }
+Sequencer >> noteIndex [
+
+" returns the fourth array of the sequencer if there is one, otherwise returns 0"
+(self size > 3)
+ifTrue: [ ^ (self at: 4)] ifFalse: [ ^ 0 ].
 ]
 
 { #category : #'as yet unclassified' }
