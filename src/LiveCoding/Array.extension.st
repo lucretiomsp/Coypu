@@ -55,6 +55,7 @@ size := result size.
 
 { #category : #'*LiveCoding' }
 Array >> isSequencer [
+" answer true if the Collection is a Sequencer from the LIveCodingPackage"
 ((self at: 2) isArray) ifTrue: [ ^true ] ifFalse: [ ^false ]
 ]
 
