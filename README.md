@@ -23,10 +23,9 @@ OSC package versions stable 1.0 must be available in your Pharo image.
 <br>
 You can get it with this Metacello script (just copy and paste it into your Playground) 
 <br>
-Metacello script
+
 <br>
 Metacello new
-	smalltalkhubUser: 'Pharo' project: 'MetaRepoForPharo50';
-	configuration: 'OSC';
-	version: #stable;
-	load. during: 
+  baseline: 'OSC';
+  repository: 'github://Ducasse/OSC/src';
+  load.
