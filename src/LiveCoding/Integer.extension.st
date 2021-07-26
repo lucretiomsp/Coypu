@@ -109,7 +109,7 @@ noteIndex := 0.
 		"first of all, the noteIndex is equal to the 4th value of the Dictionary/Performance"
 		
 		Transcript show: 'Step is '; tab; show: step; cr.
-		Transcript show: 'Step modulo =  '; tab; show: (step modulo: (value gatesSize )); cr.
+		
 		
 		(((value gates) at: (step modulo: (value gatesSize ))) = 1)
 		ifTrue:
@@ -374,7 +374,7 @@ noteIndex := 0. "or 0???????"
 		(((value gates) at: (step modulo: (value gatesSize ))) = 1)
 		ifTrue:
 		[0.0 toKyma: ((key asString),'Gate'). 1 toKyma: ((key asString),'Gate'). 
-		((value notes) at: (noteIndex modulo: (value notesSize))) toKyma: ((key asString),'Note').
+		((value notes) at: ((value noteIndex) modulo: (value notesSize))) toKyma: ((key asString),'Note').
 		
 		((value durations) isArray) ifTrue:
 		[((value durations ) at: (noteIndex modulo: (value durationsSize))) toKyma: ((key asString),'Duration')] ifFalse: [nil].
