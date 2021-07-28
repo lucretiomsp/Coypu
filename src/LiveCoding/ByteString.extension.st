@@ -8,5 +8,5 @@ ByteString >> pattern [
 strings := (1 to: (self size)) collect: [ :i | 
 ((self at: i) digitValue printStringBase: 2 length: 4 padded: true ) ].
 flat := strings flatCollect: [ :each | each ].
-^ ( 1 to: (flat size)) collect: [ :i | (flat at: i ) digitValue ].
+^ (( 1 to: (flat size)) collect: [ :i | (flat at: i ) digitValue ]) asRhythm .
 ]
