@@ -366,6 +366,7 @@ Integer >> semiquavers [
 
 { #category : #'*LiveCoding' }
 Integer >> sequenceFor: aDictionaryOfPatterns rate: aRateInSeconds [
+"test"
 " iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
 an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 | step noteIndex bpm beatInSeconds|
@@ -403,6 +404,8 @@ noteIndex := 0. "or 0???????"
 	]
 	
 	] forkAt: (Processor timingPriority )
+
+
 ]
 
 { #category : #'*LiveCoding' }
