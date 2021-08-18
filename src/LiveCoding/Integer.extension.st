@@ -175,10 +175,12 @@ step := 0.
 		" test if dictionary values is an Array od two arrays or as defined, a sequence"
 		 
 		aDictionaryOfPatterns keysAndValuesDo: [ :key : value |
-		(value isSequencer) ifTrue: [  	
+		(value isSequencer) ifTrue: [
+	
 		(((value gates) at: (step modulo: (value gatesSize ))) = 1)
 		ifTrue:
-		[0.0 toLocal: ((key asString),'Gate'). 1 toLocal: ((key asString),'Gate'). 
+		" do we need a delay between 0 and 1, origially 0 is sent before"
+		[0.0 toLocal: ((key asString),'Gate'). (Delay forMilliseconds: 3) wait. 1 toLocal: ((key asString),'Gate'). 
 		((value notes) at: ((value noteIndex) modulo: (value notesSize))) toLocal: ((key asString),'Note').
 		
 		
@@ -433,41 +435,6 @@ pattern := #(1 0 0 1 0 0 1 0 0 0 1 1 0 0 0 0 ).
 ^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm .
 
 "implement shifting to the left"
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> stepsProcessFor: aDictionaryOfPatterns rate: aRateInSeconds [
-
-	" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
-an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
-
-	| maxLength bpm |
-	self
-		deprecated: 'Use #sequenceFor:rate: instead'
-		on: '26 July 2021'
-		in:
-		'Pharo-9.0.0+build.1539.sha.9b91f54a6e46f7518d14baf92fe0698c8a3260a3 (64 Bit)'.
-	bpm := 60 / (aRateInSeconds * 4).
-
-	maxLength := 256. " number of~steps in the process"
-	[ 
-	| index |
-	index := 0.
-	bpm toKyma: 'BPM'.
-	self timesRepeat: [ 
-		(Delay forSeconds: aRateInSeconds / 2) wait.
-		aDictionaryOfPatterns keysAndValuesDo: [ :key :value | 
-			(value at: (index rem: value size) + 1) toKyma: key asString ].
-		(Delay forSeconds: aRateInSeconds / 2) wait.
-
-
-		aDictionaryOfPatterns keysDo: [ :key | 
-			(key asString includesSubstring: 'Gate') ifTrue: [ 
-				0 toKyma: key asString ] ].
-
-		"increment of one but within the boundaries of the maxLength"
-		index := index + 1 rem: maxLength ] ] forkAt:
-		Processor timingPriority
 ]
 
 { #category : #'*LiveCoding' }
