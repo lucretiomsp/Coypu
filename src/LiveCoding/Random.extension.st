@@ -7,6 +7,12 @@ Random >> nextIntFromZero: anInteger [
 ]
 
 { #category : #'*LiveCoding' }
+Random >> nextTrig [
+"return 0 or 1 randomly"
+^ self next rounded.
+]
+
+{ #category : #'*LiveCoding' }
 Random >> sign [ 
 "return 1 or -1 "
 	| condition  |

@@ -29,6 +29,13 @@ Rhythm class >> random: aNumber [
 	^ (1 to: aNumber) collect: [ :i | (r next ) printShowingDecimalPlaces: 2].
 ]
 
+{ #category : #'bit manipulation' }
+Rhythm >> >> anArray [
+" same as and: anArray, but rewritten to test precedence improvement"
+"returns Sequencer with default note 60nn and default durations 1/16th and noteIndex = 0"
+^ (Sequencer with: self with: anArray with: #(0.125) with: 0 )
+]
+
 { #category : #controlling }
 Rhythm >> and: anArray [
 "returns Sequencer with default note 60nn and default durations 1/16th and noteIndex = 0"

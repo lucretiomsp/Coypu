@@ -60,6 +60,14 @@ Integer >> bpm [
 ]
 
 { #category : #'*LiveCoding' }
+Integer >> breves [
+" returns self number of brevesin the first position of the bars"
+| result |
+result := (('80000000' pattern ) times: self) asRhythm .
+^ result
+]
+
+{ #category : #'*LiveCoding' }
 Integer >> claveSon [
 " create an array of self size of  Cuban clave Son rhytm pulses. Better if the receiever is a multiple of 16."
 | pattern |
@@ -180,13 +188,16 @@ step := 0.
 		(((value gates) at: (step modulo: (value gatesSize ))) = 1)
 		ifTrue:
 		" do we need a delay between 0 and 1, origially 0 is sent before"
-		[0.0 toLocal: ((key asString),'Gate'). (Delay forMilliseconds: 3) wait. 1 toLocal: ((key asString),'Gate'). 
+		[0.0 toLocal: ((key asString),'Gate').1 toLocal: ((key asString),'Gate'). 
 		((value notes) at: ((value noteIndex) modulo: (value notesSize))) toLocal: ((key asString),'Note').
 		
 		
 		((value durations) isArray) ifTrue:
 		[((value durations ) at: ((value noteIndex) modulo: (value durationsSize))) toLocal: ((key asString),'Duration')] ifFalse: [nil].
 		
+		" experimental, for extra control parameter"
+		((value extra1) isArray) ifTrue:
+		[((value extra1 at: 2 ) at: ((value noteIndex) modulo: (value extra1Size))) toLocal: ((key asString), value extra1 at: 1 )] ifFalse: [nil].
 		value at: 4 put: ((value noteIndex) + 1).
 		
 		] 
@@ -286,6 +297,15 @@ Integer >> randomDiv: aDivision [
 ]
 
 { #category : #'*LiveCoding' }
+Integer >> randomFrom: anArray [
+
+	"return an array of self size of random notes from anArray"
+
+	^ (1 to: self) collect: [ :i | 
+		  anArray at: (Random new nextInteger: anArray size) ]
+]
+
+{ #category : #'*LiveCoding' }
 Integer >> randomInts: aNumber [
 "return an array of self size with random integers with range [0, aNumber]"
 | floatsArray result |
@@ -307,9 +327,11 @@ range := 1 + max - min.
 
 { #category : #'*LiveCoding' }
 Integer >> randomNotesFrom: anArray [
-"return an array of self size of random notes from anArray"
 
-^ (1 to: self) collect: [ :i | anArray at: (Random new nextInt: (anArray size)) ].
+	"return an array of self size of random notes from anArray"
+
+	^ (1 to: self) collect: [ :i | 
+		  anArray at: (Random new nextInteger: anArray size) ]
 ]
 
 { #category : #'*LiveCoding' }
@@ -328,7 +350,7 @@ Integer >> randomTrigs [
 "generates an Array of random 0s and 1s of size: aNumber"
 	| r |
 	r := Random new.
-	^ (1 to: self) collect: [ :i | (r next ) rounded].
+	^ ((1 to: self) collect: [ :i | (r next ) rounded]) asRhythm .
 ]
 
 { #category : #'*LiveCoding' }
@@ -352,9 +374,9 @@ pattern := #(1 0 0 1 0 0 0 1 0 0 1 0 1 0 0 0 ).
 
 { #category : #'*LiveCoding' }
 Integer >> semibreves [
-" returns self number of bars with a trigger in the first position of the bars"
+" returns self number of semibrevesin the first position of the bars"
 | result |
-result := (('8000' pattern ) times: 4) asRhythm .
+result := (('8000' pattern ) times: self) asRhythm .
 ^ result
 ]
 
@@ -379,7 +401,7 @@ noteIndex := 0. "or 0???????"
 [ 	
 	bpm toKyma: 'BPM'.
 	self timesRepeat: [ (Delay forSeconds: aRateInSeconds   )wait.
-		" test if dictionary values is an Array od two arrays or as defined, a sequence"
+		" test if dictionary values is an Array of two arrays or as defined, a sequence"
 		 
 		aDictionaryOfPatterns keysAndValuesDo: [ :key : value |
 		(value isSequencer) ifTrue: [  	
@@ -390,6 +412,15 @@ noteIndex := 0. "or 0???????"
 		
 		((value durations) isArray) ifTrue:
 		[((value durations ) at: (noteIndex modulo: (value durationsSize))) toKyma: ((key asString),'Duration')] ifFalse: [nil].
+
+     "new experimental for extra control"
+     ((value extra1) isArray) ifTrue:
+		[ ((value extra1 at: 2 ) at: (value noteIndex modulo: (value extra1Size))) toKyma: ((key asString),(value extra1 at: 1))] ifFalse: [nil].
+		
+		"new experimental for second extra control"
+     ((value extra2) isArray) ifTrue:
+		[ ((value extra2 at: 2 ) at: (value noteIndex modulo: (value extra2Size))) toKyma: ((key asString),(value extra2 at: 1))] ifFalse: [nil].
+		
 		
 		value at: 4 put: ((value noteIndex) + 1).
 		"noteIndex := noteIndex + 1."
