@@ -18,6 +18,14 @@ result := (1 to: (self size)) collect: [ :i | (self at: i ) + aNumber ].
 ]
 
 { #category : #'*LiveCoding' }
+Array >> - aNumber [ 
+" sum aNumber to each element of the array"
+| result |
+result := (1 to: (self size)) collect: [ :i | (self at: i ) - aNumber ].
+^ result
+]
+
+{ #category : #'*LiveCoding' }
 Array >> and: anArray [
 
 ^ Sequencer with: self with: anArray
@@ -45,18 +53,33 @@ Array >> asSeq [
 ]
 
 { #category : #'*LiveCoding' }
-Array >> gates [ 
-"return number of elements in the array that are greater than 0"
-| result size |
-result := self select: [ :i | i > 0 ].
-size := result size.
-^ size
+Array >> innestedWithTrigs: anotherArray [
+" add trigs in self if anotherArray has trigs at indexes where self have not"
+(1 to: (self size)) do: [ :i  |  self at: i put: (1 min: ((self at: i) + (anotherArray at: i)))].
+
+^ self
+]
+
+{ #category : #'*LiveCoding' }
+Array >> into: anotherArray [
+"return a new array with anotherArray at the desired indexes; if the index is out of bound, the last element of another array is collected"
+^ self collect: [ :i | anotherArray  at: (i min: anotherArray size)]
+	
 ]
 
 { #category : #'*LiveCoding' }
 Array >> isSequencer [
 " answer true if the Collection is a Sequencer from the LIveCodingPackage"
 ((self at: 2) isArray) ifTrue: [ ^true ] ifFalse: [ ^false ]
+]
+
+{ #category : #'*LiveCoding' }
+Array >> numberOfGates [ 
+"return number of elements in the array that are greater than 0"
+| result size |
+result := self select: [ :i | i > 0 ].
+size := result size.
+^ size
 ]
 
 { #category : #'*LiveCoding' }
@@ -71,6 +94,15 @@ result := self collect: [ :i | anotherArray  at: i ].
 Array >> offset: aNumber [ 
 "offset the array by aNumber of 'steps' wrapping it around its size"
 ^ (0 to: (self size - 1)) collect: [ :i | self at: (((i + aNumber) rem: (self size)) + 1) ]
+]
+
+{ #category : #'*LiveCoding' }
+Array >> root: anIntegerRoot octaves: anIntegerOctave [
+| x |
+x := OrderedCollection new.
+(0 to: anIntegerOctave) do: [ :i | x addAll: (self + (anIntegerRoot  + (i * 12) ) )].
+^ x
+
 ]
 
 { #category : #'*LiveCoding' }
@@ -101,6 +133,7 @@ Array >> toKyma: aString [
 
 { #category : #'*LiveCoding' }
 Array >> withIts: anArray [ 
+"convenience method to create a Sequence"
 | numberOfGates result |
 
 numberOfGates := anArray  size.

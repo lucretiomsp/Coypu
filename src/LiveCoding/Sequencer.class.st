@@ -95,6 +95,16 @@ Sequencer >> notesSize [
 ^ ((self at: 2) size)
 ]
 
+{ #category : #counting }
+Sequencer >> numberOfGates [ 
+
+"return number of elements in the Sequencer gates array that are greater than 0"
+| result size |
+result := (self gates) select: [ :i | i > 0 ].
+size := result size.
+^ size
+]
+
 { #category : #accessing }
 Sequencer >> to: aSymbol with: anArray [
 

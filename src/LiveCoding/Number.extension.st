@@ -9,7 +9,7 @@ Number >> bars: aNumber [
 { #category : #'*LiveCoding' }
 Number >> bpm [
 "returns time in milliseconds of one bar at self bpm"
-^ (60 / self) * 4
+^ (60 / self) / 4
 ]
 
 { #category : #'*LiveCoding' }
@@ -17,11 +17,17 @@ Number >> delay [
 ]
 
 { #category : #'*LiveCoding' }
+Number >> secondsInStepAt: aDuration [
+"return the number of steps at aDuration time as 1/16th of a bar which corresponding to self seconds"
+^ (self / aDuration) asInteger.
+]
+
+{ #category : #'*LiveCoding' }
 Number >> toKyma: aString [
 	"comment stating purpose of instance-side message"
 	"scope: class-variables  &  instance-variables"	
-	| vcslabel pacaAddress |
-	pacaAddress := NetNameResolver stringFromAddress: (NetNameResolver 	addressForName:'beslime-691.local'). 
+	| vcslabel "pacaAddress" |
+"	pacaAddress := NetNameResolver stringFromAddress: (NetNameResolver 	addressForName:'beslime-691.local'). "
 
 	vcslabel := '/vcs/', aString, '/1'.
 	(OSCMessage for: { vcslabel  . (self asFloat)  }) sendToAddressString: pacaAddress  port: 8000.
