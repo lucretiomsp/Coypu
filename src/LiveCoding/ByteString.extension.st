@@ -30,10 +30,32 @@ Smalltalk at: #pacaAddress put: (NetNameResolver stringFromAddress: (NetNameReso
 { #category : #'*LiveCoding' }
 ByteString >> pattern [ 
 " convert a string with an Hexadecimal number to the Kyma array correspondong to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex)"
-|   strings flat|
+|   strings flat |
 
 strings := (1 to: (self size)) collect: [ :i | 
 ((self at: i) digitValue printStringBase: 2 length: 4 padded: true ) ].
 flat := strings flatCollect: [ :each | each ].
-^ (( 1 to: (flat size)) collect: [ :i | (flat at: i ) digitValue ]) asRhythm .
+^ ((( 1 to: (flat size)) collect: [ :i | (flat at: i ) digitValue ]) asRhythm ) asSeq.
+]
+
+{ #category : #'*LiveCoding' }
+ByteString >> pattern: anArrayOfNoteNumbers [ 
+" convert a string with an Hexadecimal number to the Kyma array corresponding to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex) , and with  anArrayOfNoteNumbers as Notes"
+|   strings flat |
+
+strings := (1 to: (self size)) collect: [ :i | 
+((self at: i) digitValue printStringBase: 2 length: 4 padded: true ) ].
+flat := strings flatCollect: [ :each | each ].
+^ ((( 1 to: (flat size)) collect: [ :i | (flat at: i ) digitValue ]) asRhythm ) and: anArrayOfNoteNumbers  .
+]
+
+{ #category : #'*LiveCoding' }
+ByteString >> pattern: anArrayOfNoteNumbers and: anArrayOfDurations [
+" convert a string with an Hexadecimal number to the Kyma array corresponding to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex) , and with  anArrayOfNoteNumbers as Notes and anArrayOfDurations as Durations"
+|   strings flat |
+
+strings := (1 to: (self size)) collect: [ :i | 
+((self at: i) digitValue printStringBase: 2 length: 4 padded: true ) ].
+flat := strings flatCollect: [ :each | each ].
+^ ((( 1 to: (flat size)) collect: [ :i | (flat at: i ) digitValue ]) asRhythm ) and: anArrayOfNoteNumbers and: anArrayOfDurations .
 ]
