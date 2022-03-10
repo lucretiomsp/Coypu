@@ -567,7 +567,7 @@ Integer >> tumbao [
 pattern := #(1 0 0 1 1 0 1 0 ).
 
 rhythm := ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm .
-^ rhythm.
+^ rhythm asSeq.
 
 ]
 

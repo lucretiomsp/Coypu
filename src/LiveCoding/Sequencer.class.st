@@ -89,6 +89,12 @@ Sequencer >> notes [
 ^ (self at: 2)
 ]
 
+{ #category : #'as yet unclassified' }
+Sequencer >> notes: anArray [
+" change notes in the sequencer"
+^ (Sequencer with: (self at: 1) with: anArray with: #(0.125) with: 0).
+]
+
 { #category : #accessing }
 Sequencer >> notesSize [
 
