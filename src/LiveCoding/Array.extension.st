@@ -26,6 +26,12 @@ result := (1 to: (self size)) collect: [ :i | (self at: i ) - aNumber ].
 ]
 
 { #category : #'*LiveCoding' }
+Array >> > aString [
+"experimental"
+Transcript show: aString; open.
+]
+
+{ #category : #'*LiveCoding' }
 Array >> and: anArray [
 
 ^ Sequencer with: self with: anArray
@@ -114,6 +120,12 @@ newSize := aNumber * self size.
 newArray := Array new: newSize.
 (1 to: newSize) do: [ :i | newArray  at: i put: (self at: ((i - 1) modulo: (self size )) ) ].
 ^ newArray
+]
+
+{ #category : #'*LiveCoding' }
+Array >> to: aPerformance at: aKey [
+
+aPerformance add: aKey -> self
 ]
 
 { #category : #'*LiveCoding' }

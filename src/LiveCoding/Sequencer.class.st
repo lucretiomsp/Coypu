@@ -6,13 +6,41 @@ Class {
 	#name : #Sequencer,
 	#superclass : #Array,
 	#type : #variable,
+	#instVars : [
+		'seqKey',
+		'extra1String',
+		'extra2String'
+	],
 	#category : #LiveCoding
 }
 
+{ #category : #copying }
+Sequencer >> , anotherSequencer [
+"combine the gates of two sequencers, returns an array"
+| newGates notes1 notes2|
+notes1 := (self at: 2).
+notes2:= (anotherSequencer  at: 2).
+newGates := (self at: 1), (anotherSequencer at: 1).
+( (notes1 = #(60)) & (notes1 = #(60)))
+ ifTrue: [ ^ (newGates asSeq) ] ifFalse:
+[^ newGates].
+]
+
 { #category : #controlling }
 Sequencer >> and: anotherArray [
-" add array of  values to the Sequencer"
+" add array of  extravalues to the Sequencer
+the first element of the array should be a string - for example 'Index'' - the second element o the array should be an array of numbers - for xample #( 1 2 3)
+"
 ^ Sequencer with: (self at: 1) with: (self at: 2) with: (self at: 3) with: (self at: 4) with: anotherArray .
+
+]
+
+{ #category : #controlling }
+Sequencer >> and: anArray and: anotherArray [
+" add array of  extravalues to the Sequencer
+the first element of both arrays should be a string - for example 'Index'' - the second element o the array should be an array of numbers - for xample #( 1 2 3)
+"
+^ Sequencer with: (self at: 1) with: (self at: 2) with: (self at: 3) with: (self at: 4) with: anArray with: anotherArray .
 
 ]
 
@@ -44,6 +72,12 @@ Sequencer >> extra1Size [
 ]
 
 { #category : #accessing }
+Sequencer >> extra1String: aString [
+"allows the definition of extra1 sufffix"
+extra1String := aString.
+]
+
+{ #category : #accessing }
 Sequencer >> extra2 [
 " returns the fifth array of the sequencer if there is one, otherwise returns false"
 (self size > 5)
@@ -54,6 +88,12 @@ ifTrue: [ ^ (self at: 6)] ifFalse: [ ^ false ].
 Sequencer >> extra2Size [
 
 ^ (((self at: 6) at: 2) size)	
+]
+
+{ #category : #accessing }
+Sequencer >> extra2String: aString [
+"allows the definition of extra1 sufffix"
+extra2String := aString.
 ]
 
 { #category : #accessing }
@@ -95,6 +135,12 @@ Sequencer >> notes: anArray [
 ^ (Sequencer with: (self at: 1) with: anArray with: #(0.125) with: 0).
 ]
 
+{ #category : #'as yet unclassified' }
+Sequencer >> notes: anArrayOfNotes durs: anArrayOfDurations [
+" change notes in the sequencer"
+^ (Sequencer with: (self at: 1) with: anArrayOfNotes with: anArrayOfDurations  with: 0).
+]
+
 { #category : #accessing }
 Sequencer >> notesSize [
 
@@ -109,6 +155,17 @@ Sequencer >> numberOfGates [
 result := (self gates) select: [ :i | i > 0 ].
 size := result size.
 ^ size
+]
+
+{ #category : #accessing }
+Sequencer >> seqKey [
+^seqKey
+]
+
+{ #category : #'as yet unclassified' }
+Sequencer >> to: aPerformance at: aKey [
+
+aPerformance add: aKey -> self
 ]
 
 { #category : #accessing }

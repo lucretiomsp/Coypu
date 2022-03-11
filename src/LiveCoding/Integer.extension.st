@@ -38,7 +38,7 @@ Integer >> bomba [
 | pattern |
 pattern := #(1 0 0 1 1 1 1 0 ).
 
-^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm .
+^ (((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm ) asSeq .
 
 ]
 
@@ -64,7 +64,7 @@ Integer >> breves [
 " returns self number of brevesin the first position of the bars"
 | result |
 result := (('80000000' pattern ) times: self) asRhythm .
-^ result
+^ result asSeq.
 ]
 
 { #category : #'*LiveCoding' }
@@ -73,7 +73,7 @@ Integer >> claveSon [
 | pattern |
 pattern := #(1 0 0 1 0 0 1 0 0 0 1 0 1 0 0 0).
 
-^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm.
+^ (((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm) asSeq.
 
 ]
 
@@ -152,7 +152,7 @@ noteIndex := 0.
 { #category : #'*LiveCoding' }
 Integer >> downbeats [ 
 
- ^ ((1 to: self) collect: [ :i | (((i rem: 4) = 1)) asBit ]) asRhythm . 
+ ^ (((1 to: self) collect: [ :i | (((i rem: 4) = 1)) asBit ]) asRhythm) asSeq . 
 ]
 
 { #category : #'*LiveCoding' }
@@ -161,7 +161,7 @@ Integer >> gahu [
 | pattern |
 pattern := #(1 0 0 1 0 0 1 0 0 0 1 0 0 0 1 0 ).
 
-^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm .
+^ (((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm) asSeq .
 
 "implement shifting to the left"
 ]
@@ -274,17 +274,18 @@ Integer >> ones [
 
 { #category : #'*LiveCoding' }
 Integer >> pattern [ 
-	| arrayOfCharacters s|
+	| arrayOfCharacters s result|
 	arrayOfCharacters := (self printStringBase: 2) asArray.
 	s := arrayOfCharacters size.
-	^ (1 to: s) collect: [ :i | (arrayOfCharacters at: i) digitValue ] 
+	result := (1 to: s) collect: [ :i | (arrayOfCharacters at: i) digitValue ].
+	^ result asSeq. 
 	
 ]
 
 { #category : #'*LiveCoding' }
 Integer >> quavers [
 "creates an Array of aNumber of values (0,1) with 1 to the position corresponding to a rhtyhm of quavers (downbeat + upbeat)"
-	^ ((1 to: self) collect: [ :i | ((((i rem: 4) = 1)) | (((i rem: 4) = 3)) ) asBit ]) asRhythm .
+	^ (((1 to: self) collect: [ :i | ((((i rem: 4) = 1)) | (((i rem: 4) = 3)) ) asBit ]) asRhythm ) asSeq.
 ]
 
 { #category : #'*LiveCoding' }
@@ -403,7 +404,7 @@ Integer >> rumba [
 | pattern |
 pattern := #(1 0 0 1 0 0 0 1 0 0 1 0 1 0 0 0 ).
 
-^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm .
+^ (((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm ) asSeq.
 
 "implement shifting to the left"
 ]
@@ -419,7 +420,7 @@ result := (('8000' pattern ) times: self) asRhythm .
 { #category : #'*LiveCoding' }
 Integer >> semiquavers [ 
 
-^ (Array new: self withAll: 1) asRhythm .
+^ ((Array new: self withAll: 1) asRhythm ) asSeq .
 ]
 
 { #category : #'*LiveCoding' }
@@ -586,11 +587,11 @@ rhythm := ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size)
 { #category : #'*LiveCoding' }
 Integer >> upbeats [
 "creates an Array of size=self  of values (0,1) with 1 to the position corresponding to a 4/4 upbeat rhythm"
-	^ ((1 to: self) collect: [ :i | (((i rem: 4) = 3)) asBit ]) asRhythm .
+	^ (((1 to: self) collect: [ :i | (((i rem: 4) = 3)) asBit ]) asRhythm ) asSeq.
 ]
 
 { #category : #'*LiveCoding' }
 Integer >> zeros [
 	" retuns an array of self size with all zeros"
-^ (Array new: self withAll: 0) asRhythm .
+^ ((Array new: self withAll: 0) asRhythm) asSeq .
 ]
