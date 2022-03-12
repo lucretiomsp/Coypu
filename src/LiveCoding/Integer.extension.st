@@ -33,6 +33,12 @@ pattern := #(1 0 1 1 0 1 1 0).
 ]
 
 { #category : #'*LiveCoding' }
+Integer >> bars [
+"convert bars into steps. 16 steps per bar"
+^ (self * 16).
+]
+
+{ #category : #'*LiveCoding' }
 Integer >> bomba [
 " create an array of self size of  puertorican Bomba rhytm pulses. Better if the receiever is a multiple of eight."
 | pattern |
