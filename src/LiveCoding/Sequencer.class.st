@@ -26,6 +26,16 @@ newGates := (self at: 1), (anotherSequencer at: 1).
 [^ newGates].
 ]
 
+{ #category : #comparing }
+Sequencer >> < anotherArray [
+"same as and: but binary!"
+" add array of  extravalues to the Sequencer
+the first element of the array should be a string - for example 'Index'' - the second element o the array should be an array of numbers - for xample #( 1 2 3)
+"
+^ Sequencer with: (self at: 1) with: (self at: 2) with: (self at: 3) with: (self at: 4) with: anotherArray .
+
+]
+
 { #category : #controlling }
 Sequencer >> and: anotherArray [
 " add array of  extravalues to the Sequencer
