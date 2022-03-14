@@ -27,7 +27,7 @@ Integer >> banda [
 | pattern |
 pattern := #(1 0 1 1 0 1 1 0).
 
-^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm .
+^ (((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm ) asSeq.
 
 "implement shifting to the left"
 ]
@@ -54,7 +54,7 @@ Integer >> bossa [
 | pattern |
 pattern := #(1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 ).
 
-^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm .
+^ (((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm) asSeq .
 
 "implement shifting to the left"
 ]
@@ -358,7 +358,7 @@ Integer >> randomTrigs [
 "generates an Array of random 0s and 1s of size: aNumber"
 	| r |
 	r := Random new.
-	^ ((1 to: self) collect: [ :i | (r next ) rounded]) asRhythm .
+	^ (((1 to: self) collect: [ :i | (r next ) rounded]) asRhythm) asSeq .
 ]
 
 { #category : #'*LiveCoding' }
@@ -488,7 +488,7 @@ Integer >> shiko [
 | pattern |
 pattern := #(1 0 0 0 1 0 1 0 0 0 1 0 1 0 0 0).
 
-^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm.
+^ (((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm) asSeq.
 
 "implement shifting to the left"
 ]
@@ -509,7 +509,7 @@ Integer >> soukous [
 | pattern |
 pattern := #(1 0 0 1 0 0 1 0 0 0 1 1 0 0 0 0 ).
 
-^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm .
+^ (((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm) asSeq .
 
 "implement shifting to the left"
 ]
@@ -524,7 +524,7 @@ pattern := #(1 0 0 1 0 0 1 0 ).
 newArray := (0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ].
 rhythm := Rhythm new: (newArray size).
 (1 to: (rhythm size)) do: [ :i | rhythm at: i put: (newArray  at: i) ].
-^ rhythm.
+^ rhythm asSeq.
 
 "
 | pattern |
