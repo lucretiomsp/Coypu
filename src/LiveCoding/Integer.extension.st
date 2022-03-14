@@ -419,7 +419,7 @@ pattern := #(1 0 0 1 0 0 0 1 0 0 1 0 1 0 0 0 ).
 Integer >> semibreves [
 " returns self number of semibrevesin the first position of the bars"
 | result |
-result := (('8000' pattern ) times: self) asRhythm .
+result := (('8000' pattern ) times: self)  .
 ^ result
 ]
 
@@ -499,7 +499,7 @@ Integer >> sikyi [
 | pattern |
 pattern := #(0 0 0 1 0 1 0 1).
 
-^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm .
+^ (((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm ) asSeq.
 
 ]
 
