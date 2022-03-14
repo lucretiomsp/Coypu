@@ -36,6 +36,12 @@ the first element of the array should be a string - for example 'Index'' - the s
 
 ]
 
+{ #category : #'as yet unclassified' }
+Sequencer >> > anArray [
+" change notes in the sequencer - binary variant for notes:"
+^ (Sequencer with: (self at: 1) with: anArray with: #(0.125) with: 0).
+]
+
 { #category : #controlling }
 Sequencer >> and: anotherArray [
 " add array of  extravalues to the Sequencer
@@ -170,6 +176,18 @@ size := result size.
 { #category : #accessing }
 Sequencer >> seqKey [
 ^seqKey
+]
+
+{ #category : #'as yet unclassified' }
+Sequencer >> times: anInteger [
+"returns a sequence containing anInteger repetition of allthe arrays in the sequencer"
+
+| newGates newNotes newDurations |
+newNotes := self notes times: anInteger.
+newGates := self gates  times: anInteger.
+newDurations := self durations times: anInteger.
+
+^ (Sequencer with: newGates with: newNotes with: newDurations with: 0)
 ]
 
 { #category : #'as yet unclassified' }
