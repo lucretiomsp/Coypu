@@ -166,25 +166,27 @@ Integer >> expSequenceFor: aDictionaryOfPatterns rate: aRateInSeconds [
 "test"
 " iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
 an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
-| step  bpm beatInSeconds|
+| step  bpm beatInSeconds gateTime|
+"as in early hardware sequencers, default gatetime is 80% of the step duration"
 bpm := 60 / (aRateInSeconds * 4).
 beatInSeconds := aRateInSeconds * 4.
+gateTime := aRateInSeconds * 0.8.
 step := 0.
 
 
 ^
 [ 	
 	bpm toKyma: 'BPM'.
-	self timesRepeat: [ 
+	self timesRepeat: [ (Delay forSeconds: aRateInSeconds   ) wait.
 		" test if dictionary values is an Array of two arrays or as defined, a sequence"
 		 
 		aDictionaryOfPatterns keysAndValuesDo: [ :key : value |
 		(value isSequencer) ifTrue: [  	
 		(((value gates) at: (step modulo: (value gatesSize ))) = 1)
 		ifTrue:
-		[0.0 toKyma: ((key asString),'Gate'). 1 toKyma: ((key asString),'Gate'). 
-		((value notes) at: ((value noteIndex ) modulo: (value notesSize))) toKyma: ((key asString),'Note').
+		[ (key asString) toKymaAsGate: ( gateTime * ((value durations ) at: (value noteIndex modulo: (value durationsSize)))) note: ((value notes) at: ((value    noteIndex ) modulo: (value notesSize))).
 		
+		"maybe this part is not useful anymore"
 		((value durations) isArray) ifTrue:
 		[((value durations ) at: (value noteIndex modulo: (value durationsSize))) toKyma: ((key asString),'Duration')] ifFalse: [nil].
 
@@ -208,7 +210,7 @@ step := 0.
 	
 		"step is incrementing in any case"
 		step := step + 1.
-		(Delay forSeconds: aRateInSeconds   ) wait.
+		
 	]
 	
 	] forkAt: (Processor timingPriority )

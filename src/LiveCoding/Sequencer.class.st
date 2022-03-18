@@ -39,7 +39,7 @@ the first element of the array should be a string - for example 'Index'' - the s
 { #category : #'as yet unclassified' }
 Sequencer >> > anArray [
 " change notes in the sequencer - polysemic binary version of notes:"
-^ (Sequencer with: (self at: 1) with: anArray with: #(0.125) with: 0).
+^ (Sequencer with: (self at: 1) with: anArray with: #(1) with: 0).
 ]
 
 { #category : #controlling }
@@ -149,7 +149,7 @@ Sequencer >> notes [
 { #category : #'as yet unclassified' }
 Sequencer >> notes: anArray [
 " change notes in the sequencer"
-^ (Sequencer with: (self at: 1) with: anArray with: #(0.125) with: 0).
+^ (Sequencer with: (self at: 1) with: anArray with: #(1) with: 0).
 ]
 
 { #category : #'as yet unclassified' }

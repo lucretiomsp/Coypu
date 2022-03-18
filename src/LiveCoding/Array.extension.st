@@ -55,7 +55,12 @@ rhythm := Rhythm new: (self size).
 { #category : #'*LiveCoding' }
 Array >> asSeq [
 "returns Sequencer with default note 60nn and default durations 1/16th and noteIndex = 0"
-^ (Sequencer with: self with: #(60) with: #(0.125) with: 0).
+"duration now expressed in number of steps"
+^ (Sequencer with: self with: #(60) with: #(1) with: 0)
+
+" durations formerly in fraction of bar
+(Sequencer with: self with: #(60) with: #(0.125) with: 0).
+"
 ]
 
 { #category : #'*LiveCoding' }
