@@ -36,6 +36,12 @@ the first element of the array should be a string - for example 'Index'' - the s
 
 ]
 
+{ #category : #'as yet unclassified' }
+Sequencer >> > anArray [
+" change notes in the sequencer - polysemic binary version of notes:"
+^ (Sequencer with: (self at: 1) with: anArray with: #(0.125) with: 0).
+]
+
 { #category : #controlling }
 Sequencer >> and: anotherArray [
 " add array of  extravalues to the Sequencer
@@ -173,6 +179,19 @@ Sequencer >> seqKey [
 ]
 
 { #category : #'as yet unclassified' }
+Sequencer >> times: anInteger [
+"returns a sequencer containing anInteger repetition of self"
+| newGates newNotes newDurations |
+newGates := self gates times: anInteger.
+newNotes := self notes times: anInteger.
+newDurations := self durations times: anInteger.
+
+
+
+^ (Sequencer with: newGates with: newNotes with: newDurations with: 0).
+]
+
+{ #category : #'as yet unclassified' }
 Sequencer >> to: aPerformance at: aKey [
 
 aPerformance add: aKey -> self
@@ -183,4 +202,13 @@ Sequencer >> to: aSymbol with: anArray [
 
 ^ 'cicisbeo'
 
+]
+
+{ #category : #'as yet unclassified' }
+Sequencer >> trigs [
+"return the number of trigs, i.e. gates = 1,  of the sequencer"
+| result |
+result := 0.
+(1 to: (self gates size)) do: [ :i | ((self gates at: i) = 1) ifTrue: [result := result + 1] ifFalse: [ nil]].
+^ result.
 ]

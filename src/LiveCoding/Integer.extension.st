@@ -69,8 +69,8 @@ Integer >> bpm [
 Integer >> breves [
 " returns self number of brevesin the first position of the bars"
 | result |
-result := (('80000000' pattern ) times: self) asRhythm .
-^ result asSeq.
+result := (('80000000' pattern ) times: self) .
+^ result .
 ]
 
 { #category : #'*LiveCoding' }
@@ -159,6 +159,61 @@ noteIndex := 0.
 Integer >> downbeats [ 
 
  ^ (((1 to: self) collect: [ :i | (((i rem: 4) = 1)) asBit ]) asRhythm) asSeq . 
+]
+
+{ #category : #'*LiveCoding' }
+Integer >> expSequenceFor: aDictionaryOfPatterns rate: aRateInSeconds [
+"test"
+" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
+an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
+| step noteIndex bpm beatInSeconds|
+bpm := 60 / (aRateInSeconds * 4).
+beatInSeconds := aRateInSeconds * 4.
+step := 0.
+noteIndex := 0. "or 0???????"
+
+^
+[ 	
+	bpm toKyma: 'BPM'.
+	self timesRepeat: [ 
+		" test if dictionary values is an Array of two arrays or as defined, a sequence"
+		 
+		aDictionaryOfPatterns keysAndValuesDo: [ :key : value |
+		(value isSequencer) ifTrue: [  	
+		(((value gates) at: (step modulo: (value gatesSize ))) = 1)
+		ifTrue:
+		[0.0 toKyma: ((key asString),'Gate'). 1 toKyma: ((key asString),'Gate'). 
+		((value notes) at: ((value noteIndex) modulo: (value notesSize))) toKyma: ((key asString),'Note').
+		
+		((value durations) isArray) ifTrue:
+		[((value durations ) at: (noteIndex modulo: (value durationsSize))) toKyma: ((key asString),'Duration')] ifFalse: [nil].
+
+     "new experimental for extra control"
+     ((value extra1) isArray) ifTrue:
+		[ ((value extra1 at: 2 ) at: (value noteIndex modulo: (value extra1Size))) toKyma: ((key asString),(value extra1 at: 1))] ifFalse: [nil].
+		
+		"new experimental for second extra control"
+     ((value extra2) isArray) ifTrue:
+		[ ((value extra2 at: 2 ) at: (value noteIndex modulo: (value extra2Size))) toKyma: ((key asString),(value extra2 at: 1))] ifFalse: [nil].
+		
+		
+		value at: 4 put: ((value noteIndex) + 1).
+		
+		"noteIndex := noteIndex + 1."
+		] 
+		ifFalse: [nil]]
+	"end of the isSequencer true condition"
+		ifFalse: [(value at: (step modulo: (value size))) toKyma: (key asString). (Delay forSeconds: aRateInSeconds   )wait. ] 
+		].
+	
+		"step is incrementing in any case"
+		step := step + 1.
+		(Delay forSeconds: aRateInSeconds   ) wait.
+	]
+	
+	] forkAt: (Processor timingPriority )
+
+
 ]
 
 { #category : #'*LiveCoding' }
@@ -420,7 +475,7 @@ Integer >> semibreves [
 " returns self number of semibrevesin the first position of the bars"
 | result |
 result := (('8000' pattern ) times: self) asRhythm .
-^ result
+^ result asSeq.
 ]
 
 { #category : #'*LiveCoding' }
@@ -434,13 +489,14 @@ Integer >> sequenceFor: aDictionaryOfPatterns rate: aRateInSeconds [
 "test"
 " iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
 an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
+"return the current process, it can be suspended!"
 | step noteIndex bpm beatInSeconds|
 bpm := 60 / (aRateInSeconds * 4).
 beatInSeconds := aRateInSeconds * 4.
 step := 0.
 noteIndex := 0. "or 0???????"
 
-
+^
 [ 	
 	bpm toKyma: 'BPM'.
 	self timesRepeat: [ (Delay forSeconds: aRateInSeconds   )wait.
