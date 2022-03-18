@@ -59,3 +59,15 @@ strings := (1 to: (self size)) collect: [ :i |
 flat := strings flatCollect: [ :each | each ].
 ^ ((( 1 to: (flat size)) collect: [ :i | (flat at: i ) digitValue ]) asRhythm ) and: anArrayOfNoteNumbers and: anArrayOfDurations .
 ]
+
+{ #category : #'*LiveCoding' }
+ByteString >> toKymaAsGate [
+	" send an OSC message that mimics the behaviour oa MIDI note on message"
+	| vcslabel  |
+"	pacaAddress := NetNameResolver stringFromAddress: (NetNameResolver 	addressForName:'beslime-691.local'). "
+
+	vcslabel := '/vcs/', self , 'Gate', '/1'.
+	(OSCMessage for: { vcslabel  . 1.0  }) sendToAddressString: pacaAddress  port: 8000.
+	(Delay forSeconds: 2) wait.
+	(OSCMessage for: { vcslabel  . 0.0  }) sendToAddressString: pacaAddress  port: 8000.
+]

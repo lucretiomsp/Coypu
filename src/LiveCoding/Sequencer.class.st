@@ -134,7 +134,8 @@ ifTrue: [  ^ true ] ifFalse: [ ^ false ]
 { #category : #accessing }
 Sequencer >> noteIndex [
 
-" returns the fourth array of the sequencer if there is one, otherwise returns 0"
+" returns the fourth array of the sequencer if there is one, otherwise returns 0.
+noteIndex is used to play the folloowing note in the array. Only if there is a trig in the gates the noteIndex  will be incremented"
 (self size > 3)
 ifTrue: [ ^ (self at: 4)] ifFalse: [ ^ 0 ].
 ]

@@ -166,11 +166,11 @@ Integer >> expSequenceFor: aDictionaryOfPatterns rate: aRateInSeconds [
 "test"
 " iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
 an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
-| step noteIndex bpm beatInSeconds|
+| step  bpm beatInSeconds|
 bpm := 60 / (aRateInSeconds * 4).
 beatInSeconds := aRateInSeconds * 4.
 step := 0.
-noteIndex := 0. "or 0???????"
+
 
 ^
 [ 	
@@ -183,10 +183,10 @@ noteIndex := 0. "or 0???????"
 		(((value gates) at: (step modulo: (value gatesSize ))) = 1)
 		ifTrue:
 		[0.0 toKyma: ((key asString),'Gate'). 1 toKyma: ((key asString),'Gate'). 
-		((value notes) at: ((value noteIndex) modulo: (value notesSize))) toKyma: ((key asString),'Note').
+		((value notes) at: ((value noteIndex ) modulo: (value notesSize))) toKyma: ((key asString),'Note').
 		
 		((value durations) isArray) ifTrue:
-		[((value durations ) at: (noteIndex modulo: (value durationsSize))) toKyma: ((key asString),'Duration')] ifFalse: [nil].
+		[((value durations ) at: (value noteIndex modulo: (value durationsSize))) toKyma: ((key asString),'Duration')] ifFalse: [nil].
 
      "new experimental for extra control"
      ((value extra1) isArray) ifTrue:
