@@ -103,7 +103,7 @@ ByteString >> toLocalAsGate: gateTimeInSeconds [
 	gateTime is expressed in seconds"
 	| vcslabel  localAddress|
    localAddress := '127.0.0.1'.
-	vcslabel := self , 'Gate'.
+	vcslabel := '/', self , 'Gate'.
 	^ [(OSCMessage for: { vcslabel  . 1.0  }) sendToAddressString: localAddress  port: 8000.
 	(Delay forSeconds: gateTimeInSeconds ) wait.
 	(OSCMessage for: { vcslabel  . 0.0  }) sendToAddressString: localAddress  port: 8000.
@@ -117,11 +117,11 @@ ByteString >> toLocalAsGate: gateTimeInSeconds note: aNoteNumber [
 	| vcsGatelabel  vcsNoteLabel localAddress|
    localAddress := '127.0.0.1'.
 
-	vcsGatelabel := '/vcs/', self , 'Gate', '/1'.
-	vcsNoteLabel := '/vcs/', self , 'Note', '/1'.
+	vcsGatelabel := '/', self , 'Gate'.
+	vcsNoteLabel := '/', self , 'Note'.
 	
 ^ [(OSCMessage for: { vcsNoteLabel  . aNoteNumber asFloat }) sendToAddressString: localAddress  port: 8000.
 	(OSCMessage for: { vcsGatelabel  . 1.0  }) sendToAddressString: localAddress  port: 8000.
 	(Delay forSeconds: gateTimeInSeconds ) wait.
-	(OSCMessage for: { vcsGatelabel  . 0.0  }) sendToAddressString: pacaAddress  port: 8000.] fork
+	(OSCMessage for: { vcsGatelabel  . 0.0  }) sendToAddressString: localAddress  port: 8000.] fork
 ]

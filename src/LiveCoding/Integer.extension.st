@@ -27,7 +27,7 @@ Integer >> banda [
 | pattern |
 pattern := #(1 0 1 1 0 1 1 0).
 
-^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm .
+^ (((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm ) asSeq.
 
 "implement shifting to the left"
 ]
