@@ -251,13 +251,8 @@ step := 0.
 	
 		(((value gates) at: (step modulo: (value gatesSize ))) = 1)
 		ifTrue:
-		" do we need a delay between 0 and 1, origially 0 is sent before"
-		[0.0 toLocal: ((key asString),'Gate').1 toLocal: ((key asString),'Gate'). 
-		((value notes) at: ((value noteIndex) modulo: (value notesSize))) toLocal: ((key asString),'Note').
+		[ (key asString) toLocalAsGate: ( gateTime * ((value durations ) at: (value noteIndex modulo: (value durationsSize)))) note: ((value notes) at: ((value       noteIndex ) modulo: (value notesSize))).
 		
-		
-		((value durations) isArray) ifTrue:
-		[((value durations ) at: ((value noteIndex) modulo: (value durationsSize))) toLocal: ((key asString),'Duration')] ifFalse: [nil].
 		
 		" experimental, for extra control parameter"
 		((value extra1) isArray) ifTrue:

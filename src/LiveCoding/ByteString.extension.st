@@ -91,7 +91,7 @@ ByteString >> toLocalAsGate [
    
    localAddress  :=  '127.0.0.1'.
 
-	vcslabel := self , 'Gate'.
+	vcslabel := '/', self , 'Gate'.
 	(OSCMessage for: { vcslabel  . 1.0  }) sendToAddressString: localAddress  port: 8000.
 	(Delay forSeconds: 2) wait.
 	(OSCMessage for: { vcslabel  . 0.0  }) sendToAddressString: localAddress  port: 8000.
