@@ -1,15 +1,6 @@
 Extension { #name : #ByteString }
 
 { #category : #'*LiveCoding' }
-ByteString >> asLocalGate [
-"experimental - send a local trigger"
-| destination|
-destination := self,'Gate'.
-0 toLocal: destination. 1 toLocal: destination.
-
-]
-
-{ #category : #'*LiveCoding' }
 ByteString >> asPacaAddress [
 "set the pacaAddress globally from the corresponding Paca(rana) serial number"
 
@@ -89,6 +80,48 @@ ByteString >> toKymaAsGate: gateTimeInSeconds note: aNoteNumber [
 	
 ^ [(OSCMessage for: { vcsNoteLabel  . aNoteNumber asFloat }) sendToAddressString: pacaAddress  port: 8000.
 	(OSCMessage for: { vcsGatelabel  . 1.0  }) sendToAddressString: pacaAddress  port: 8000.
+	(Delay forSeconds: gateTimeInSeconds ) wait.
+	(OSCMessage for: { vcsGatelabel  . 0.0  }) sendToAddressString: pacaAddress  port: 8000.] fork
+]
+
+{ #category : #'*LiveCoding' }
+ByteString >> toLocalAsGate [
+	" send an OSC message that mimics the behaviour oa MIDI note on message, note is held for a default duration of 2 seconds"
+	| vcslabel localAddress  |
+   
+   localAddress  :=  '127.0.0.1'.
+
+	vcslabel := self , 'Gate'.
+	(OSCMessage for: { vcslabel  . 1.0  }) sendToAddressString: localAddress  port: 8000.
+	(Delay forSeconds: 2) wait.
+	(OSCMessage for: { vcslabel  . 0.0  }) sendToAddressString: localAddress  port: 8000.
+]
+
+{ #category : #'*LiveCoding' }
+ByteString >> toLocalAsGate: gateTimeInSeconds [
+	" send an OSC message that mimics the behaviour oa MIDI note on message.
+	gateTime is expressed in seconds"
+	| vcslabel  localAddress|
+   localAddress := '127.0.0.1'.
+	vcslabel := self , 'Gate'.
+	^ [(OSCMessage for: { vcslabel  . 1.0  }) sendToAddressString: localAddress  port: 8000.
+	(Delay forSeconds: gateTimeInSeconds ) wait.
+	(OSCMessage for: { vcslabel  . 0.0  }) sendToAddressString: localAddress  port: 8000.
+	] fork
+]
+
+{ #category : #'*LiveCoding' }
+ByteString >> toLocalAsGate: gateTimeInSeconds note: aNoteNumber [
+	" send an OSC message that mimics the behaviour oa MIDI note on message.
+	gateTime is expressed in seconds"
+	| vcsGatelabel  vcsNoteLabel localAddress|
+   localAddress := '127.0.0.1'.
+
+	vcsGatelabel := '/vcs/', self , 'Gate', '/1'.
+	vcsNoteLabel := '/vcs/', self , 'Note', '/1'.
+	
+^ [(OSCMessage for: { vcsNoteLabel  . aNoteNumber asFloat }) sendToAddressString: localAddress  port: 8000.
+	(OSCMessage for: { vcsGatelabel  . 1.0  }) sendToAddressString: localAddress  port: 8000.
 	(Delay forSeconds: gateTimeInSeconds ) wait.
 	(OSCMessage for: { vcsGatelabel  . 0.0  }) sendToAddressString: pacaAddress  port: 8000.] fork
 ]

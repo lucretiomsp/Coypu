@@ -233,8 +233,9 @@ pattern := #(1 0 0 1 0 0 1 0 0 0 1 0 0 0 1 0 ).
 Integer >> localSequenceFor: aDictionaryOfPatterns rate: aRateInSeconds [
 " iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
 an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
-| step  bpm beatInSeconds|
+| step  bpm beatInSeconds gateTime|
 bpm := 60 / (aRateInSeconds * 4).
+gateTime := aRateInSeconds * 0.8.
 beatInSeconds := aRateInSeconds * 4.
 step := 0.
 
