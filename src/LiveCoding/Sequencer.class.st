@@ -17,13 +17,13 @@ Class {
 { #category : #copying }
 Sequencer >> , anotherSequencer [
 "combine the gates of two sequencers, returns an array"
-| newGates notes1 notes2|
+| newGates newNotes newDurations notes1 notes2|
 notes1 := (self at: 2).
 notes2:= (anotherSequencer  at: 2).
 newGates := (self at: 1), (anotherSequencer at: 1).
-( (notes1 = #(60)) & (notes1 = #(60)))
- ifTrue: [ ^ (newGates asSeq) ] ifFalse:
-[^ newGates].
+newDurations := (self at: 3), (anotherSequencer at: 3).
+newNotes := notes1, notes2.
+^ Sequencer with: newGates with: newNotes with: newDurations with: 0.
 ]
 
 { #category : #comparing }
@@ -183,7 +183,7 @@ Sequencer >> seqKey [
 Sequencer >> times: anInteger [
 "returns a sequencer containing anInteger repetition of self"
 | newGates newNotes newDurations |
-newGates := self gates times: anInteger.
+newGates := (self gates times: anInteger) asRhythm.
 newNotes := self notes times: anInteger.
 newDurations := self durations times: anInteger.
 

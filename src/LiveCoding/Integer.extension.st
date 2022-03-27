@@ -233,6 +233,8 @@ pattern := #(1 0 0 1 0 0 1 0 0 0 1 0 0 0 1 0 ).
 Integer >> localSequenceFor: aDictionaryOfPatterns rate: aRateInSeconds [
 " iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
 an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
+
+"if the value in the dictionay is a Sequencer, an OSC message is sent to the key as OSC address with two arguments, one for the gate, and one for the note. the gate stays at 1 for the duration selected."
 | step  bpm beatInSeconds gateTime|
 bpm := 60 / (aRateInSeconds * 4).
 gateTime := aRateInSeconds * 0.8.
@@ -251,7 +253,7 @@ step := 0.
 	
 		(((value gates) at: (step modulo: (value gatesSize ))) = 1)
 		ifTrue:
-		[ (key asString) toLocalAsGate: ( gateTime * ((value durations ) at: (value noteIndex modulo: (value durationsSize)))) note: ((value notes) at: ((value       noteIndex ) modulo: (value notesSize))).
+		[ (key asString) toLocalFor: ( gateTime * ((value durations ) at: (value noteIndex modulo: (value durationsSize)))) note: ((value notes) at: ((value       noteIndex ) modulo: (value notesSize))).
 		
 		
 		" experimental, for extra control parameter"

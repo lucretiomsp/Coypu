@@ -1,6 +1,23 @@
 Extension { #name : #ByteString }
 
 { #category : #'*LiveCoding' }
+ByteString >> asLocalGate: gateTimeInSeconds note: aNoteNumber [
+" gate-like OSC messsage with multiple arguments"
+	" send an OSC message that mimics the behaviour oa MIDI note on message.
+	gateTime is expressed in seconds"
+	| label localAddress|
+   localAddress := '127.0.0.1'.
+
+	label := '/', self.
+	
+	
+^ [(OSCMessage for: { label  . aNoteNumber asFloat }) sendToAddressString: localAddress  port: 8000.
+	(OSCMessage for: { label  . 1.0  }) sendToAddressString: localAddress  port: 8000.
+	(Delay forSeconds: gateTimeInSeconds ) wait.
+	(OSCMessage for: { label  . 0.0  }) sendToAddressString: localAddress  port: 8000.] fork
+]
+
+{ #category : #'*LiveCoding' }
 ByteString >> asPacaAddress [
 "set the pacaAddress globally from the corresponding Paca(rana) serial number"
 
@@ -124,4 +141,21 @@ ByteString >> toLocalAsGate: gateTimeInSeconds note: aNoteNumber [
 	(OSCMessage for: { vcsGatelabel  . 1.0  }) sendToAddressString: localAddress  port: 8000.
 	(Delay forSeconds: gateTimeInSeconds ) wait.
 	(OSCMessage for: { vcsGatelabel  . 0.0  }) sendToAddressString: localAddress  port: 8000.] fork
+]
+
+{ #category : #'*LiveCoding' }
+ByteString >> toLocalFor: gateTimeInSeconds note: aNoteNumber [
+" gate-like OSC messsage with multiple arguments"
+	" send an OSC message that mimics the behaviour oa MIDI note on message.
+	gateTime is expressed in seconds"
+	| label localAddress|
+   localAddress := '127.0.0.1'.
+
+	label := '/', self.
+	
+	
+^ [(OSCMessage for: { label  . aNoteNumber asFloat. 1.0  }) sendToAddressString: localAddress  port: 8000.
+	
+	(Delay forSeconds: gateTimeInSeconds ) wait.
+	(OSCMessage for: { label  . aNoteNumber asFloat. 0.0  }) sendToAddressString: localAddress  port: 8000.] fork
 ]
