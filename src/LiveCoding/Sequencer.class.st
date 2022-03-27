@@ -118,6 +118,12 @@ Sequencer >> gates [
 ^ (self at: 1)
 ]
 
+{ #category : #'as yet unclassified' }
+Sequencer >> gates: aRhythm [
+"change the rhythm inside the sequencer".
+self at:1 put: aRhythm.
+]
+
 { #category : #accessing }
 Sequencer >> gatesSize [
 
@@ -172,6 +178,15 @@ Sequencer >> numberOfGates [
 result := (self gates) select: [ :i | i > 0 ].
 size := result size.
 ^ size
+]
+
+{ #category : #accessing }
+Sequencer >> offset: aNumber [ 
+"offset the rhythm inside the sequencerby aNumber of 'steps' wrapping it around its size"
+| rhythm|
+rhythm := self gates.
+self gates: (rhythm offset: aNumber) .
+
 ]
 
 { #category : #accessing }
