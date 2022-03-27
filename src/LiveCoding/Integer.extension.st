@@ -157,8 +157,10 @@ noteIndex := 0.
 
 { #category : #'*LiveCoding' }
 Integer >> downbeats [ 
-
- ^ (((1 to: self) collect: [ :i | (((i rem: 4) = 1)) asBit ]) asRhythm) asSeq . 
+"create a sequence of self bars downbeats"
+| size |
+size := self bars.
+ ^ (((1 to: size) collect: [ :i | (((i rem: 4) = 1)) asBit ]) asRhythm) asSeq . 
 ]
 
 { #category : #'*LiveCoding' }
