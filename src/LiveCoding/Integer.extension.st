@@ -411,11 +411,11 @@ Integer >> randomNotesFrom: anArray octaves: aNumber [
 ]
 
 { #category : #'*LiveCoding' }
-Integer >> randomTrigs [
-"generates an Array of random 0s and 1s of size: aNumber"
-	| r |
-	r := Random new.
-	^ (((1 to: self) collect: [ :i | (r next ) rounded]) asRhythm ) asSeq.
+Integer >> randomTrigs [ 
+
+"must be implemented"
+
+^ 1
 ]
 
 { #category : #'*LiveCoding' }
