@@ -415,7 +415,9 @@ Integer >> randomTrigs [
 
 "must be implemented"
 
-^ 1
+| randoms |
+randoms := ( 1 to: self) collect: [ :i | Random new next rounded].
+^ randoms asSeq.
 ]
 
 { #category : #'*LiveCoding' }
