@@ -38,8 +38,10 @@ the first element of the array should be a string - for example 'Index'' - the s
 
 { #category : #'as yet unclassified' }
 Sequencer >> > anArray [
+
 " change notes in the sequencer - polysemic binary version of notes:"
 ^ (Sequencer with: (self at: 1) with: anArray with: #(1) with: 0).
+
 ]
 
 { #category : #controlling }
@@ -196,6 +198,7 @@ Sequencer >> seqKey [
 
 { #category : #'as yet unclassified' }
 Sequencer >> times: anInteger [
+
 "returns a sequencer containing anInteger repetition of self"
 | newGates newNotes newDurations |
 newGates := (self gates times: anInteger) asRhythm.
@@ -205,6 +208,7 @@ newDurations := self durations times: anInteger.
 
 
 ^ (Sequencer with: newGates with: newNotes with: newDurations with: 0).
+
 ]
 
 { #category : #'as yet unclassified' }

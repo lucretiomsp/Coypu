@@ -54,7 +54,7 @@ Integer >> bossa [
 | pattern |
 pattern := #(1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 ).
 
-^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm .
+^ (((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm) asSeq .
 
 "implement shifting to the left"
 ]
@@ -411,6 +411,7 @@ Integer >> randomNotesFrom: anArray octaves: aNumber [
 ]
 
 { #category : #'*LiveCoding' }
+
 Integer >> randomTrigs [ 
 
 "must be implemented"
@@ -418,6 +419,7 @@ Integer >> randomTrigs [
 | randoms |
 randoms := ( 1 to: self) collect: [ :i | Random new next rounded].
 ^ randoms asSeq.
+
 ]
 
 { #category : #'*LiveCoding' }
@@ -478,8 +480,10 @@ pattern := #(1 0 0 1 0 0 0 1 0 0 1 0 1 0 0 0 ).
 Integer >> semibreves [
 " returns self number of semibrevesin the first position of the bars"
 | result |
+
 result := (('8000' pattern ) times: self) asRhythm .
 ^ result asSeq.
+
 ]
 
 { #category : #'*LiveCoding' }
@@ -548,7 +552,7 @@ Integer >> shiko [
 | pattern |
 pattern := #(1 0 0 0 1 0 1 0 0 0 1 0 1 0 0 0).
 
-^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm.
+^ (((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm) asSeq.
 
 "implement shifting to the left"
 ]
@@ -559,7 +563,7 @@ Integer >> sikyi [
 | pattern |
 pattern := #(0 0 0 1 0 1 0 1).
 
-^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm .
+^ (((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm ) asSeq.
 
 ]
 
@@ -569,7 +573,7 @@ Integer >> soukous [
 | pattern |
 pattern := #(1 0 0 1 0 0 1 0 0 0 1 1 0 0 0 0 ).
 
-^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm .
+^ (((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm) asSeq .
 
 "implement shifting to the left"
 ]
@@ -584,7 +588,7 @@ pattern := #(1 0 0 1 0 0 1 0 ).
 newArray := (0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ].
 rhythm := Rhythm new: (newArray size).
 (1 to: (rhythm size)) do: [ :i | rhythm at: i put: (newArray  at: i) ].
-^ rhythm.
+^ rhythm asSeq.
 
 "
 | pattern |
