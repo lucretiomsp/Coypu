@@ -17,13 +17,13 @@ Class {
 { #category : #copying }
 Sequencer >> , anotherSequencer [
 "combine the gates of two sequencers, returns an array"
-| newGates notes1 notes2|
+| newGates newNotes newDurations notes1 notes2|
 notes1 := (self at: 2).
 notes2:= (anotherSequencer  at: 2).
 newGates := (self at: 1), (anotherSequencer at: 1).
-( (notes1 = #(60)) & (notes1 = #(60)))
- ifTrue: [ ^ (newGates asSeq) ] ifFalse:
-[^ newGates].
+newDurations := (self at: 3), (anotherSequencer at: 3).
+newNotes := notes1, notes2.
+^ Sequencer with: newGates with: newNotes with: newDurations with: 0.
 ]
 
 { #category : #comparing }
@@ -38,8 +38,10 @@ the first element of the array should be a string - for example 'Index'' - the s
 
 { #category : #'as yet unclassified' }
 Sequencer >> > anArray [
-" change notes in the sequencer - binary variant for notes:"
-^ (Sequencer with: (self at: 1) with: anArray with: #(0.125) with: 0).
+
+" change notes in the sequencer - polysemic binary version of notes:"
+^ (Sequencer with: (self at: 1) with: anArray with: #(1) with: 0).
+
 ]
 
 { #category : #controlling }
@@ -118,6 +120,12 @@ Sequencer >> gates [
 ^ (self at: 1)
 ]
 
+{ #category : #'as yet unclassified' }
+Sequencer >> gates: aRhythm [
+"change the rhythm inside the sequencer".
+self at:1 put: aRhythm.
+]
+
 { #category : #accessing }
 Sequencer >> gatesSize [
 
@@ -134,7 +142,8 @@ ifTrue: [  ^ true ] ifFalse: [ ^ false ]
 { #category : #accessing }
 Sequencer >> noteIndex [
 
-" returns the fourth array of the sequencer if there is one, otherwise returns 0"
+" returns the fourth array of the sequencer if there is one, otherwise returns 0.
+noteIndex is used to play the folloowing note in the array. Only if there is a trig in the gates the noteIndex  will be incremented"
 (self size > 3)
 ifTrue: [ ^ (self at: 4)] ifFalse: [ ^ 0 ].
 ]
@@ -148,7 +157,7 @@ Sequencer >> notes [
 { #category : #'as yet unclassified' }
 Sequencer >> notes: anArray [
 " change notes in the sequencer"
-^ (Sequencer with: (self at: 1) with: anArray with: #(0.125) with: 0).
+^ (Sequencer with: (self at: 1) with: anArray with: #(1) with: 0).
 ]
 
 { #category : #'as yet unclassified' }
@@ -174,20 +183,32 @@ size := result size.
 ]
 
 { #category : #accessing }
+Sequencer >> offset: aNumber [ 
+"offset the rhythm inside the sequencerby aNumber of 'steps' wrapping it around its size"
+| rhythm|
+rhythm := self gates.
+self gates: (rhythm offset: aNumber) .
+
+]
+
+{ #category : #accessing }
 Sequencer >> seqKey [
 ^seqKey
 ]
 
 { #category : #'as yet unclassified' }
 Sequencer >> times: anInteger [
-"returns a sequence containing anInteger repetition of allthe arrays in the sequencer"
 
+"returns a sequencer containing anInteger repetition of self"
 | newGates newNotes newDurations |
+newGates := (self gates times: anInteger) asRhythm.
 newNotes := self notes times: anInteger.
-newGates := self gates  times: anInteger.
 newDurations := self durations times: anInteger.
 
-^ (Sequencer with: newGates with: newNotes with: newDurations with: 0)
+
+
+^ (Sequencer with: newGates with: newNotes with: newDurations with: 0).
+
 ]
 
 { #category : #'as yet unclassified' }
@@ -201,4 +222,13 @@ Sequencer >> to: aSymbol with: anArray [
 
 ^ 'cicisbeo'
 
+]
+
+{ #category : #'as yet unclassified' }
+Sequencer >> trigs [
+"return the number of trigs, i.e. gates = 1,  of the sequencer"
+| result |
+result := 0.
+(1 to: (self gates size)) do: [ :i | ((self gates at: i) = 1) ifTrue: [result := result + 1] ifFalse: [ nil]].
+^ result.
 ]

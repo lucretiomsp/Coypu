@@ -57,6 +57,16 @@ array := Array new: (self size).
 ^ array
 ]
 
+{ #category : #accessing }
+Rhythm >> offset: aNumber [
+"offset the rhythm by aNumber of 'steps' wrapping it around its size"
+| newRhythm |
+newRhythm := Rhythm new: (self size).
+0 to: ((self size) - 1) do: [ :i | newRhythm at: ((i + aNumber) modulo: (self size)) put: (self at: i + 1)].
+^ newRhythm .
+
+]
+
 { #category : #'as yet unclassified' }
 Rhythm >> randomInts: anArrayWithRangeAndMin [
 "return an array of self size with random integers with range [anArrayWithRangeAndMin at: 1 +  anArrayWithRangeAndMin at: 2]"

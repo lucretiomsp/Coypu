@@ -54,8 +54,13 @@ rhythm := Rhythm new: (self size).
 
 { #category : #'*LiveCoding' }
 Array >> asSeq [
-"returns Sequencer with default note 60nn and default durations 1/16th"
-^ (Sequencer with: self with: #(60) with: #(0.125) with: 0).
+"returns Sequencer with default note 60nn and default durations 1/16th and noteIndex = 0"
+"duration now expressed in number of steps"
+^ (Sequencer with: self with: #(60) with: #(1) with: 0)
+
+" durations formerly in fraction of bar
+(Sequencer with: self with: #(60) with: #(0.125) with: 0).
+"
 ]
 
 { #category : #'*LiveCoding' }
@@ -97,9 +102,13 @@ result := self collect: [ :i | anotherArray  at: i ].
 ]
 
 { #category : #'*LiveCoding' }
-Array >> offset: aNumber [ 
-"offset the array by aNumber of 'steps' wrapping it around its size"
-^ (0 to: (self size - 1)) collect: [ :i | self at: (((i + aNumber) rem: (self size)) + 1) ]
+Array >> offset: aNumber [
+"offset the rhythm by aNumber of 'steps' wrapping it around its size"
+| newArray |
+newArray := self class new: (self size).
+0 to: ((self size) - 1) do: [ :i | newArray at: ((i + aNumber) modulo: (self size)) put: (self at: i + 1)].
+^ newArray .
+
 ]
 
 { #category : #'*LiveCoding' }
