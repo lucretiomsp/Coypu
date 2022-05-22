@@ -411,7 +411,6 @@ Integer >> randomNotesFrom: anArray octaves: aNumber [
 ]
 
 { #category : #'*LiveCoding' }
-
 Integer >> randomTrigs [ 
 
 "must be implemented"
