@@ -9,6 +9,15 @@ PortMidi class >> countDevices [
 ^ self ffiCall: #(int Pm_CountDevices()) library: '//Users/domenicocipriani/MyStuff/portmidi-master/Release/libportmidi.2.0.3.dylib'
 ]
 
+{ #category : #writing }
+PortMidi class >> createNewPointerForStreamWithType: pointerType [
+	"Create a new instance of FFIExternalValueHolder and an instance of this new class to get a pointer for poiterType."
+	| midiStream valueHolderClass |
+	valueHolderClass := FFIExternalValueHolder ofType: pointerType.
+	midiStream := valueHolderClass new.
+	^ midiStream tfPointerAddress.
+]
+
 { #category : #'as yet unclassified' }
 PortMidi class >> getDeviceInfo: aDeviceID [
 ^ self ffiCall: #(PmDeviceInfo * Pm_GetDeviceInfo (int aDeviceID)) library: '/Users/domenicocipriani/MyStuff/portmidi-master/Release/libportmidi.2.0.3.dylib'
@@ -88,6 +97,12 @@ PortMidi >> macModuleName [
 ]
 
 { #category : #'as yet unclassified' }
+PortMidi >> openOutput: aDeviceIntID on: aPortMidiStream [
+self ffiCall: 
+#(PmError Pm_OpenOutput #(void ** aPortMidiStream, int aDeviceIntID, NULL, int 0, NULL, NULL, int 0))
+]
+
+{ #category : #'as yet unclassified' }
 PortMidi >> pm_Initialize [
 self ffiCall: #(PmError Pm_Initialize ()) 
 ]
@@ -102,8 +117,13 @@ PortMidi >> terminate [
 ^ self ffiCall: #(PmError Pm_Terminate()) 
 ]
 
+{ #category : #writing }
+PortMidi >> writeOn: aPointerToStream event: aBuffer length: aLength [
+^ self ffiCall: #(PmError Pm_Write(void * aPointerToStream, PmEvent* aBuffer, int aLength))
+]
+
 { #category : #'as yet unclassified' }
 PortMidi >> writeShortOn: aPointerToAStream for: aPmMessage [
 "messages is sent out immediately, so timestamp is 0"
-^ self ffiCall: #(PmError Pm_WriteShort (void *aPointerToAStream, 0, int aPmMessage))
+^ self ffiCall: #(PmError Pm_WriteShort (void *aPointerToAStream, int -1, int aPmMessage))
 ]
