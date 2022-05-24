@@ -1,6 +1,12 @@
+"
+PortMidi for Pharo, Lucretio's edition
+"
 Class {
 	#name : #PortMidi,
 	#superclass : #FFILibrary,
+	#instVars : [
+		'outStream'
+	],
 	#category : #LiveCoding
 }
 
@@ -87,6 +93,13 @@ PortMidi >> createNewPointerForStreamWithType: pointerType [
 ]
 
 { #category : #'as yet unclassified' }
+PortMidi >> createOutStream [
+
+outStream  := self class createNewPointerForStreamWithType: 'void**'.
+^ outStream 
+]
+
+{ #category : #'as yet unclassified' }
 PortMidi >> getDeviceInfo: aDeviceID [
 ^ self ffiCall: #(PmDeviceInfo * Pm_GetDeviceInfo (int aDeviceID)) 
 ]
@@ -97,6 +110,11 @@ PortMidi >> getDeviceNameid: aDeviceID [
 name := (self getDeviceInfo: aDeviceID ) name fromCString .
 (((self getDeviceInfo: aDeviceID ) input) = 1) ifTrue:  [ type := ' is input' ] ifFalse: [ type := 'is output' ].
 ^ name , type.
+]
+
+{ #category : #initialization }
+PortMidi >> initialize [ 
+outStream  := 99.
 ]
 
 { #category : #'accessing - platform' }
@@ -115,9 +133,31 @@ result := (((data2 bitShift: 16) bitAnd: 16rFF0000) bitOr: ((data1 bitShift: 8) 
 ]
 
 { #category : #'as yet unclassified' }
+PortMidi >> openOutput: aDeviceIntID [ 
+self ffiCall: 
+#(PmError Pm_OpenOutput #(void ** outStream, int aDeviceIntID, NULL, int 0, NULL, NULL, int 0))
+]
+
+{ #category : #'as yet unclassified' }
 PortMidi >> openOutput: aDeviceIntID on: aPortMidiStream [
 self ffiCall: 
 #(PmError Pm_OpenOutput #(void ** aPortMidiStream, int aDeviceIntID, NULL, int 0, NULL, NULL, int 0))
+]
+
+{ #category : #'as yet unclassified' }
+PortMidi >> outStream [ 
+^ outStream .
+]
+
+{ #category : #'as yet unclassified' }
+PortMidi >> playNote: aNoteNumber onChannel: aMIDIChannel [
+" play aNoteNumber on channel aChannel for a standard duration of 250 ms"
+| noteOn noteOff channel|
+channel := aMIDIChannel -1.
+noteOn := self message: 144 + aMIDIChannel and: aNoteNumber  and: 100.
+noteOff := self message: 128 + aMIDIChannel and: aNoteNumber  and: 100.
+
+
 ]
 
 { #category : #'as yet unclassified' }
