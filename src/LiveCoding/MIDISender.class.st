@@ -60,6 +60,21 @@ MIDISender >> openMidiOutWithDevice: aDeviceID [
 															andLatency: 0 ] ifTrue: [ ^ -1 ]
 ]
 
+{ #category : #'as yet unclassified' }
+MIDISender >> playDrum: aNoteNumber onChannel: aMIDIChannel [
+" play aNoteNumber on channel aChannel with no corresponding noteOff - intended for drums"
+| instance noteOn channel |
+instance := PortMidiLibrary uniqueInstance . 
+channel := aMIDIChannel -1.
+noteOn := PortMidi  message: 144 + channel and: aNoteNumber  and: 100.
+
+instance writeShortOn: self midiOut value when: 0 theMessage: noteOn.
+
+^ 'Drum was played'
+
+
+]
+
 { #category : #initialization }
 MIDISender >> playNote: aNoteNumber onChannel: aMIDIChannel [
 " play aNoteNumber on channel aChannel for a standard duration of 250 ms"
@@ -69,7 +84,7 @@ channel := aMIDIChannel -1.
 noteOn := PortMidi  message: 144 + aMIDIChannel and: aNoteNumber  and: 100.
 noteOff := PortMidi  message: 128 + aMIDIChannel and: aNoteNumber  and: 100.
 instance writeShortOn: self midiOut value when: 0 theMessage: noteOn.
-(Delay forSeconds: 0.15) wait. 
+(Delay forSeconds: 0.05) wait. 
 instance writeShortOn: self midiOut value when: 0 theMessage: noteOff.
 ^ 'note was played'
 
