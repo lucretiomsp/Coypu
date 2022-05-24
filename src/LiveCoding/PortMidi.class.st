@@ -77,6 +77,15 @@ PortMidi >> countDevices [
 ^ self ffiCall: #(int Pm_CountDevices()) 
 ]
 
+{ #category : #ioManagement }
+PortMidi >> createNewPointerForStreamWithType: pointerType [
+	"Create a new instance of FFIExternalValueHolder and an instance of this new class to get a pointer for poiterType."
+	| midiStream valueHolderClass |
+	valueHolderClass := FFIExternalValueHolder ofType: pointerType.
+	midiStream := valueHolderClass new.
+	^ midiStream tfPointerAddress.
+]
+
 { #category : #'as yet unclassified' }
 PortMidi >> getDeviceInfo: aDeviceID [
 ^ self ffiCall: #(PmDeviceInfo * Pm_GetDeviceInfo (int aDeviceID)) 
@@ -94,6 +103,15 @@ name := (self getDeviceInfo: aDeviceID ) name fromCString .
 PortMidi >> macModuleName [
 	"Returns the name of the PortMidi library for Mac."
 	^ 'libportmidi.2.0.3.dylib'
+]
+
+{ #category : #'as yet unclassified' }
+PortMidi >> message: status and: data1 and: data2 [
+| result|
+
+result := (((data2 bitShift: 16) bitAnd: 16rFF0000) bitOr: ((data1 bitShift: 8) bitAnd: 16rFF00)) 
+          bitOr: (status bitAnd: 16rFF).
+^ result
 ]
 
 { #category : #'as yet unclassified' }
