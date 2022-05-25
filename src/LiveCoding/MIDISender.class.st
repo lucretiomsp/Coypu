@@ -107,3 +107,18 @@ instance writeShortOn: self midiOut value when: 0 theMessage: noteOff.
 
 
 ]
+
+{ #category : #'as yet unclassified' }
+MIDISender >> sendCC: aCCNumber withValue: aValue onChannel: aMIDIChannel [
+" play aNoteNumber on channel aChannel with no corresponding noteOff - intended for drums"
+| instance cChange channel |
+instance := PortMidiLibrary uniqueInstance . 
+channel := aMIDIChannel -1.
+cChange := PortMidi  message: 176 + channel and: aCCNumber  and: aValue.
+
+instance writeShortOn: self midiOut value when: 0 theMessage: cChange.
+
+^ 'CC was sent'
+
+
+]

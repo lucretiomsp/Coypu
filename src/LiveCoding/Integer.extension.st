@@ -70,7 +70,7 @@ Integer >> breves [
 " returns self number of brevesin the first position of the bars"
 | result |
 result := (('80000000' pattern ) times: self) .
-^ result .
+^ result asSeq .
 ]
 
 { #category : #'*LiveCoding' }
