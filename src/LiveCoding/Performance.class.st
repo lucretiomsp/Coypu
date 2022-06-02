@@ -64,6 +64,10 @@ step := 0.
 		((value extra1) isArray) ifTrue:
 		[ aMIDISender sendCC: (value extra1 at: 1 )   withValue: ((value extra1 at: 2 ) at: (value noteIndex modulo: (value extra1Size)))  onChannel: (((key asString) at: 3) digitValue )  ] ifFalse: [nil].
 	
+	"sends another ControlChange message on the same channel, if provided"
+		((value extra2) isArray) ifTrue:
+		[ aMIDISender sendCC: (value extra2 at: 1 )   withValue: ((value extra2 at: 2 ) at: (value noteIndex modulo: (value extra2Size)))  onChannel: (((key asString) at: 3) digitValue )  ] ifFalse: [nil].
+	
 	   "advance"
 		value at: 4 put: ((value noteIndex) + 1).
 		
