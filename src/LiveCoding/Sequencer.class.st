@@ -47,7 +47,9 @@ Sequencer >> > anArray [
 { #category : #controlling }
 Sequencer >> and: anotherArray [
 " add array of  extravalues to the Sequencer
-the first element of the array should be a string - for example 'Index'' - the second element o the array should be an array of numbers - for xample #( 1 2 3)
+the first element of both arrays should be a string - for example 'Index'' if sending out OSC or an integer value corresponding to CC message if sending out MIDI
+- the second element o the array should be an array of numbers - for example #( 1 2 3)
+#('Cutoff' #(34 56 78)
 "
 ^ Sequencer with: (self at: 1) with: (self at: 2) with: (self at: 3) with: (self at: 4) with: anotherArray .
 
@@ -56,9 +58,32 @@ the first element of the array should be a string - for example 'Index'' - the s
 { #category : #controlling }
 Sequencer >> and: anArray and: anotherArray [
 " add array of  extravalues to the Sequencer
-the first element of both arrays should be a string - for example 'Index'' - the second element o the array should be an array of numbers - for xample #( 1 2 3)
+the first element of both arrays should be a string - for example 'Index'' if sending out OSC or an integer value corresponding to CC message if sending out MIDI
+- the second element o the array should be an array of numbers - for example #( 1 2 3)
+#('Cutoff' #(34 56 78)
 "
 ^ Sequencer with: (self at: 1) with: (self at: 2) with: (self at: 3) with: (self at: 4) with: anArray with: anotherArray .
+
+]
+
+{ #category : #controlling }
+Sequencer >> and: anArray and: anotherArray and: aThirdArray [
+" add array of  extravalues to the Sequencer
+the first element of both arrays should be a string - for example 'Index'' if sending out OSC or an integer value corresponding to CC message if sending out MIDI
+- the second element o the array should be an array of numbers - for example #( 1 2 3)
+#('Cutoff' #(34 56 78)
+"
+| seq |
+seq := Sequencer new: 7.
+
+
+(1 to: 4) do:
+[:i | seq at: i put: (self at: i)].
+seq at: 5 put: anArray.
+seq at: 6 put: anotherArray .
+seq at: 7 put: aThirdArray.
+
+^ seq.
 
 ]
 

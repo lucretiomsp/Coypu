@@ -43,7 +43,7 @@ key := self keyAsMIDINoteNumber: anEvent.
  .
 kv :=  anEvent keyValue.
 (kv = 30) ifTrue: [  octave := octave + 1] ifFalse: [(kv = 31) ifTrue: [octave := octave -1] ifFalse: [ nil]].
- Transcript show: key + (octave * 12); cr.
+ Transcript show: (key + (octave * 12)) asString, ' '.
 ^ true
 ]
 
@@ -92,7 +92,7 @@ KeyboardToOSC >> keyAsMIDINoteNumber: anEvent [
 "if the key pressed corresponds to a MIDI note, returns the MIDI note otherwise returns -1"
 | keyPressed result |
 keyPressed := anEvent keyCharacter asSymbol.
-(noteDictionary includesKey: key) ifTrue: [ result := noteDictionary at: keyPressed ] ifFalse: [ result := -1].
+(noteDictionary includesKey: keyPressed) ifTrue: [ result := noteDictionary at: keyPressed ] ifFalse: [ result := -1].
 ^ result
 
 
@@ -105,7 +105,7 @@ KeyboardToOSC >> keyDown: anEvent [
 key := self keyAsMIDINoteNumber: anEvent.
 "key = 60 ifTrue: [ self color: Color yellow ]."
 " if the key pressed corresponds to a MIDI note"
-((key ~= 0) & isHandlingKeyDown) ifTrue: [  address toLocalAsGate: 0.1 note: key] ifFalse:[nil]
+((key ~= -1) & isHandlingKeyDown) ifTrue: [  address toLocalAsGate: 0.1 note: key + (octave * 12)] ifFalse:[nil]
 ]
 
 { #category : #'event handling' }
