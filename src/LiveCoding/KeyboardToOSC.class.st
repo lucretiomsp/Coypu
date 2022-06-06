@@ -5,6 +5,7 @@ Class {
 	#name : #KeyboardToOSC,
 	#superclass : #SimpleSwitchMorph,
 	#instVars : [
+		'noteArray',
 		'noteDictionary',
 		'address',
 		'octave',
@@ -85,14 +86,51 @@ noteDictionary at: #h put: 70.
 noteDictionary at: #j put: 71.
 noteDictionary at: #k put: 72.
 
+"the note Array, 2 octaves chromatic keyboard"
+noteArray := Array new: 128.
+"lower octave"
+noteArray at: $z asciiValue  put: 36. "C"
+noteArray at: $s asciiValue put: 37.
+noteArray at: $x asciiValue put: 38. "D"
+noteArray at: $d asciiValue  put: 39.
+noteArray at: $c asciiValue put: 41. "E"
+noteArray at: $v asciiValue put: 42. "F"
+noteArray at: $g asciiValue  put: 43. 
+noteArray at: $b asciiValue put: 44.
+noteArray at: $h asciiValue put: 45.
+noteArray at: $n asciiValue  put: 46.
+noteArray at: $j asciiValue put: 47.
+noteArray at: $m asciiValue put: 48.
+
+"upper octave"
+noteArray at: $q asciiValue  put: 48. "C"
+noteArray at: $2 asciiValue put: 49.
+noteArray at: $w asciiValue put: 50. "D"
+noteArray at: $3 asciiValue  put: 51.
+noteArray at: $e asciiValue put: 52. "E"
+noteArray at: $r asciiValue put: 53. "F"
+noteArray at: $5 asciiValue  put: 54.
+noteArray at: $t asciiValue put: 55. "G"
+noteArray at: $6 asciiValue put: 56.
+noteArray at: $y asciiValue  put: 57. "A"
+noteArray at: $7 asciiValue put: 58.
+noteArray at: $u asciiValue put: 59.
+noteArray at: $u asciiValue put: 60.
+
 ]
 
 { #category : #'as yet unclassified' }
 KeyboardToOSC >> keyAsMIDINoteNumber: anEvent [
 "if the key pressed corresponds to a MIDI note, returns the MIDI note otherwise returns -1"
 | keyPressed result |
+"implementation with noteDictionary
 keyPressed := anEvent keyCharacter asSymbol.
 (noteDictionary includesKey: keyPressed) ifTrue: [ result := noteDictionary at: keyPressed ] ifFalse: [ result := -1].
+"
+
+"implementation with noteArray"
+keyPressed := anEvent keyCharacter asciiValue .
+(noteArray at: keyPressed ) isNotNil ifTrue: [ result := noteArray at: keyPressed ] ifFalse: [ result := -1 ].
 ^ result
 
 
