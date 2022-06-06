@@ -101,7 +101,12 @@ noteArray at: $h asciiValue put: 45.
 noteArray at: $n asciiValue  put: 46.
 noteArray at: $j asciiValue put: 47.
 noteArray at: $m asciiValue put: 48.
-
+noteArray at: $, asciiValue put: 50.
+noteArray at: $k asciiValue put: 50.
+noteArray at: $. asciiValue put: 52.
+noteArray at: $l asciiValue put: 53.
+noteArray at: $. asciiValue put: 54.
+noteArray at: $/ asciiValue put: 55.
 "upper octave"
 noteArray at: $q asciiValue  put: 48. "C"
 noteArray at: $2 asciiValue put: 49.
@@ -115,8 +120,14 @@ noteArray at: $6 asciiValue put: 56.
 noteArray at: $y asciiValue  put: 57. "A"
 noteArray at: $7 asciiValue put: 58.
 noteArray at: $u asciiValue put: 59.
-noteArray at: $u asciiValue put: 60.
-
+noteArray at: $i asciiValue put: 60. "C"
+noteArray at: $9 asciiValue put: 61.
+noteArray at: $o asciiValue put: 62. "D"
+noteArray at: $0 asciiValue put: 63.
+noteArray at: $p asciiValue put: 64. "E"
+noteArray at: $[ asciiValue put: 65. "F"
+noteArray at: $= asciiValue put: 65. "F"
+noteArray at: $] asciiValue put: 67.
 ]
 
 { #category : #'as yet unclassified' }
@@ -130,7 +141,7 @@ keyPressed := anEvent keyCharacter asSymbol.
 
 "implementation with noteArray"
 keyPressed := anEvent keyCharacter asciiValue .
-(noteArray at: keyPressed ) isNotNil ifTrue: [ result := noteArray at: keyPressed ] ifFalse: [ result := -1 ].
+ ((keyPressed ~= 0) & (keyPressed < 128)) ifTrue: [ ((noteArray at: keyPressed ) isNotNil )  ifTrue: [ result := noteArray at: keyPressed ] ifFalse: [ result := -1 ]] ifFalse: [result := -1].
 ^ result
 
 

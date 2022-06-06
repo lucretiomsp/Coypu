@@ -102,6 +102,35 @@ ByteString >> toKymaAsGate: gateTimeInSeconds note: aNoteNumber [
 ]
 
 { #category : #'*LiveCoding' }
+ByteString >> toKymaAsNoteOff: aNoteNumber [
+	" send an OSC message that mimics the behaviour oa MIDI note on message."
+	| vcsGatelabel  vcsNoteLabel|
+"	pacaAddress := NetNameResolver stringFromAddress: (NetNameResolver 	addressForName:'beslime-691.local'). "
+
+	vcsGatelabel := '/vcs/', self , 'Gate', '/1'.
+	vcsNoteLabel := '/vcs/', self , 'Note', '/1'.
+	
+(OSCMessage for: { vcsNoteLabel  . aNoteNumber asFloat }) sendToAddressString: pacaAddress  port: 8000.
+(OSCMessage for: { vcsGatelabel  . 0.0  }) sendToAddressString: pacaAddress  port: 8000.
+
+]
+
+{ #category : #'*LiveCoding' }
+ByteString >> toKymaAsNoteOn: aNoteNumber [
+	" send an OSC message that mimics the behaviour oa MIDI note on message.
+	gateTime is expressed in seconds"
+	| vcsGatelabel  vcsNoteLabel|
+"	pacaAddress := NetNameResolver stringFromAddress: (NetNameResolver 	addressForName:'beslime-691.local'). "
+
+	vcsGatelabel := '/vcs/', self , 'Gate', '/1'.
+	vcsNoteLabel := '/vcs/', self , 'Note', '/1'.
+	
+(OSCMessage for: { vcsNoteLabel  . aNoteNumber asFloat }) sendToAddressString: pacaAddress  port: 8000.
+(OSCMessage for: { vcsGatelabel  . 1.0  }) sendToAddressString: pacaAddress  port: 8000.
+
+]
+
+{ #category : #'*LiveCoding' }
 ByteString >> toLocalAsGate [
 	" send an OSC message that mimics the behaviour oa MIDI note on message, note is held for a default duration of 2 seconds"
 	| vcslabel localAddress  |
