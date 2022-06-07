@@ -10,7 +10,8 @@ Class {
 		'address',
 		'octave',
 		'isHandlingKeyDown',
-		'key'
+		'key',
+		'mouseWheelValue'
 	],
 	#category : #LiveCoding
 }
@@ -18,7 +19,7 @@ Class {
 { #category : #'instance creation' }
 KeyboardToOSC class >> newWithAddress: anAddress [
 
-	^(self new) 
+	^ (self new) 
 		label: anAddress ;
 		address: anAddress ;
 		yourself
@@ -49,12 +50,23 @@ kv :=  anEvent keyValue.
 ]
 
 { #category : #'event handling' }
+KeyboardToOSC >> handlesKeyUp: anEvent [
+
+^ true
+]
+
+{ #category : #'event handling' }
 KeyboardToOSC >> handlesMouseDown: anEvent [
 ^ true
 ]
 
 { #category : #'event handling' }
 KeyboardToOSC >> handlesMouseOver: anEvent [
+^ true
+]
+
+{ #category : #'event handling' }
+KeyboardToOSC >> handlesMouseWheel: anEvent [
 ^ true
 ]
 
@@ -70,6 +82,10 @@ isHandlingKeyDown := false.
 address := 'nothing'.
 " octave"
 octave := 0.
+
+"initial mouseWheelValue"
+mouseWheelValue := 0.
+
 "the notea dictionary"
 noteDictionary := Dictionary new.
 noteDictionary at: #a put: 60.
@@ -173,6 +189,13 @@ KeyboardToOSC >> mouseEnter: anEvent [
 { #category : #'event handling' }
 KeyboardToOSC >> mouseLeave: anEvent [
 anEvent hand newKeyboardFocus: self
+]
+
+{ #category : #'event handling' }
+KeyboardToOSC >> mouseWheel: anEvent [
+
+anEvent isUp ifTrue: [ mouseWheelValue  := mouseWheelValue  -1. mouseWheelValue  toKyma: 'SawDetune'] ifFalse: [ nil ].
+anEvent isDown ifTrue: [ mouseWheelValue  := mouseWheelValue  +1. mouseWheelValue  toKyma: 'SawDetune'] ifFalse: [ nil ].
 ]
 
 { #category : #accessing }
