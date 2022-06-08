@@ -51,10 +51,18 @@ keysDictionary at: $k put: 8.
 ^ keysDictionary
 ]
 
-{ #category : #'as yet unclassified' }
-KeyboardToKymaDrums >> handlesKeyDown [
+{ #category : #'event handling' }
+KeyboardToKymaDrums >> handlesKeyDown: anEvent [
 
 ^ true
+
+]
+
+{ #category : #'event handling' }
+KeyboardToKymaDrums >> handlesKeyUp: anEvent [
+
+^ true
+
 ]
 
 { #category : #'event handling' }
@@ -67,7 +75,43 @@ KeyboardToKymaDrums >> initialize [
 super initialize .
 "not handling keydon if not clicked"
 isHandlingKeyDown := false.
+"create basic keysDictionary for US keyboardkeyboardFocusChange"
+self createKeyDictionary .
+]
 
+{ #category : #'event handling' }
+KeyboardToKymaDrums >> keyDown: anEvent [
+
+
+
+| key index|
+key := anEvent keyCharacter.
+index := (keysDictionary at: key) min: arrayOfAddresses  size.
+
+( (keysDictionary includesKey: key) & isHandlingKeyDown) ifTrue: 
+[  Transcript show: (arrayOfAddresses at: index). (arrayOfAddresses at: index) toKymaAsNoteOn: 60] 
+ifFalse:[nil]
+
+]
+
+{ #category : #'event handling' }
+KeyboardToKymaDrums >> keyUp: anEvent [
+
+
+
+| key |
+key := anEvent keyCharacter.
+
+
+( (keysDictionary includesKey: key) & isHandlingKeyDown) ifTrue: 
+[  Transcript show: (arrayOfAddresses at: (keysDictionary at: key)). (arrayOfAddresses at: (keysDictionary at: key)) toKymaAsNoteOff: 60] 
+ifFalse:[nil]
+
+]
+
+{ #category : #accessing }
+KeyboardToKymaDrums >> keysDictionary [
+^ keysDictionary .
 ]
 
 { #category : #'event handling' }
@@ -75,5 +119,7 @@ KeyboardToKymaDrums >> mouseDown: anEvent [
 super mouseDown: anEvent.
 
 isHandlingKeyDown := isHandlingKeyDown not.
-isHandlingKeyDown ifTrue: [ anEvent hand newKeyboardFocus: self. ] ifFalse: [ anEvent hand releaseKeyboardFocus: self ]
+isHandlingKeyDown ifTrue: [ anEvent hand newKeyboardFocus: self. ] ifFalse: [ anEvent hand releaseKeyboardFocus: self ].
+
+
 ]
