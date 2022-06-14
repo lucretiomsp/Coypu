@@ -6,7 +6,10 @@ Class {
 	#superclass : #Morph,
 	#instVars : [
 		'faderAddress',
-		'cursor'
+		'faderCanMove',
+		'cursor',
+		'minValue',
+		'maxValue'
 	],
 	#category : #LiveCoding
 }
@@ -16,6 +19,8 @@ VerticalFader class >> newWithAddress: anAddress [
 " the fader label is also the OSC address"
 ^ (self new) 
 		address: anAddress ;
+		minValue: 0;
+		maxValue: 1;
 		yourself
 ]
 
@@ -42,23 +47,58 @@ VerticalFader >> handlesMouseDown: anEvent [
 ^ true
 ]
 
+{ #category : #'event handling' }
+VerticalFader >> handlesMouseMove: anEvent [
+^ true
+]
+
+{ #category : #'event handling' }
+VerticalFader >> handlesMouseUp: anEvent [
+^ true
+]
+
 { #category : #initialization }
 VerticalFader >> initialize [ 
 super initialize. 
 self extent: 400@500.
 ]
 
+{ #category : #accessing }
+VerticalFader >> maxValue: aNumber [
+maxValue := aNumber asFloat .
+]
+
+{ #category : #accessing }
+VerticalFader >> minValue: aNumber [
+minValue := aNumber asFloat .
+]
+
 { #category : #'event handling' }
 VerticalFader >> mouseDown: anEvent [
 
+
+faderCanMove := true.
+
+
+
+
+]
+
+{ #category : #'as yet unclassified' }
+VerticalFader >> mouseMove: anEvent [
+
 | newLocation |
-newLocation := Point x: (self center y) y: anEvent position y.
 
-cursor center: newLocation .
+faderCanMove ifTrue:
+[newLocation := Point x: (self center x) y: anEvent position y.
+cursor center: newLocation .]
+ifFalse: [ nil] .
 
-Transcript show: newLocation  ; cr.
+]
 
-
+{ #category : #'event handling' }
+VerticalFader >> mouseUp: anEvent [
+faderCanMove := false
 ]
 
 { #category : #'as yet unclassified' }
