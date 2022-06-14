@@ -24,6 +24,16 @@ VerticalFader class >> newWithAddress: anAddress [
 		yourself
 ]
 
+{ #category : #'instance creation' }
+VerticalFader class >> newWithAddress: anAddress range: anArrayWithMinAndMax [
+" the fader label is also the OSC address"
+^ (self new) 
+		address: anAddress ;
+		minValue: (anArrayWithMinAndMax  at: 1);
+		maxValue: (anArrayWithMinAndMax  at: 2);
+		yourself
+]
+
 { #category : #accessing }
 VerticalFader >> address: anAddress [
 "set address (and labels)"
@@ -60,7 +70,10 @@ VerticalFader >> handlesMouseUp: anEvent [
 { #category : #initialization }
 VerticalFader >> initialize [ 
 super initialize. 
+faderCanMove := false.
+
 self extent: 400@500.
+self drawCursor .
 ]
 
 { #category : #accessing }
@@ -91,8 +104,7 @@ VerticalFader >> mouseMove: anEvent [
 
 faderCanMove ifTrue:
 [newLocation := Point x: (self center x) y: anEvent position y.
-cursor center: newLocation .]
-ifFalse: [ nil] .
+cursor center: newLocation .] ifFalse: [ nil] .
 
 ]
 
@@ -104,5 +116,5 @@ faderCanMove := false
 { #category : #'as yet unclassified' }
 VerticalFader >> openInWindow [
 
-	^self openInWindowLabeled: faderAddress 
+	^ (self openInWindowLabeled: faderAddress ) position: (800@200)
 ]
