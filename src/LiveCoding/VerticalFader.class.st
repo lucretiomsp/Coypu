@@ -104,8 +104,11 @@ VerticalFader >> mouseMove: anEvent [
 
 faderCanMove ifTrue:
 [newLocation := Point x: (self center x) y: anEvent position y.
-cursor center: newLocation .] ifFalse: [ nil] .
+cursor center: newLocation .
+Transcript show: newLocation ; cr.
+] ifFalse: [ nil] .
 
+"for debug"
 ]
 
 { #category : #'event handling' }
