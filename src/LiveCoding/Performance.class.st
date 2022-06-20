@@ -177,7 +177,7 @@ step := 0.
 		] 
 		ifFalse: [nil]]
 	"end of the isSequencer true condition"
-		ifFalse: [aMIDISender sendCC:74  withValue:  (value at: (step modulo: (value size))) onChannel: (((key asString) at: 3) digitValue). (Delay forSeconds: aRateInSeconds   )wait. ] 
+		ifFalse: [aMIDISender sendCC:74  withValue:  (value at: (step modulo: (value size))) onChannel: (((key asString) at: 3) digitValue).  ] 
 		].
 	
 		"step is incrementing in any case"
