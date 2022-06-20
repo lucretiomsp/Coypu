@@ -100,12 +100,17 @@ faderCanMove := true.
 { #category : #'as yet unclassified' }
 VerticalFader >> mouseMove: anEvent [
 
-| newLocation |
+| newLocation mappedY cursorY faderBottom  |
 
 faderCanMove ifTrue:
-[newLocation := Point x: (self center x) y: anEvent position y.
+[
+faderBottom := self extent y + self position y.
+cursorY := anEvent position y.
+newLocation := Point x: (self center x) y: cursorY.
 cursor center: newLocation .
+mappedY := ((cursorY min: faderBottom )- faderBottom ) abs.
 Transcript show: newLocation ; cr.
+Transcript show: 'mapped value' , ' ' , mappedY asString ; cr.
 ] ifFalse: [ nil] .
 
 "for debug"
@@ -118,6 +123,6 @@ faderCanMove := false
 
 { #category : #'as yet unclassified' }
 VerticalFader >> openInWindow [
-
+   
 	^ (self openInWindowLabeled: faderAddress ) position: (800@200)
 ]

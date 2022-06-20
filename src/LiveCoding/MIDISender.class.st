@@ -118,7 +118,7 @@ cChange := PortMidi  message: 176 + channel and: aCCNumber  and: aValue.
 
 instance writeShortOn: self midiOut value when: 0 theMessage: cChange.
 
-^ 'CC was sent'
+
 
 
 ]
