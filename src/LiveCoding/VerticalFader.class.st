@@ -108,7 +108,8 @@ faderBottom := self extent y + self position y.
 cursorY := anEvent position y.
 newLocation := Point x: (self center x) y: cursorY.
 cursor center: newLocation .
-mappedY := ((cursorY min: faderBottom )- faderBottom ) abs.
+"map cursorY to value from 0 to 1"
+mappedY := ((((cursorY min: faderBottom )- faderBottom ) abs) min: self extent y) / self extent y.
 Transcript show: newLocation ; cr.
 Transcript show: 'mapped value' , ' ' , mappedY asString ; cr.
 ] ifFalse: [ nil] .

@@ -3,7 +3,8 @@ Class {
 	#superclass : #VerticalFader,
 	#instVars : [
 		'ccNumber',
-		'midiSender'
+		'midiSender',
+		'midiChannel'
 	],
 	#category : #LiveCoding
 }
@@ -14,6 +15,18 @@ VerticalFaderForMIDI class >> newWithCC: aCCNumber forSender: aMIDISender [
 ^ (self new) 
 		ccNumber: aCCNumber ;
 		midiSender: aMIDISender;
+		minValue: 0;
+		maxValue: 127;
+		yourself
+]
+
+{ #category : #'instance creation' }
+VerticalFaderForMIDI class >> newWithCC: aCCNumber forSender: aMIDISender channel: aMIDIChannel [
+" the fader label is also the OSC address"
+^ (self new) 
+		ccNumber: aCCNumber ;
+		midiSender: aMIDISender;
+		midiChannel:  aMIDIChannel ;
 		minValue: 0;
 		maxValue: 127;
 		yourself
@@ -31,6 +44,16 @@ ccNumber := aCCNumber .
 ]
 
 { #category : #accessing }
+VerticalFaderForMIDI >> midiChannel [ 
+^ midiChannel 
+]
+
+{ #category : #accessing }
+VerticalFaderForMIDI >> midiChannel: aChannelNumber [ 
+midiChannel := aChannelNumber 
+]
+
+{ #category : #accessing }
 VerticalFaderForMIDI >> midiSender [
 ^ midiSender 
 ]
@@ -43,20 +66,18 @@ midiSender  := aMIDISender .
 { #category : #'event handling' }
 VerticalFaderForMIDI >> mouseMove: anEvent [
 
-| newLocation faderValue|
-
-
+| newLocation mappedY cursorY faderBottom  |
 
 faderCanMove ifTrue:
-[newLocation := Point x: (self center x) y: anEvent position y.
-"change the argument"
-
-
-"move the cursor"
+[
+faderBottom := self extent y + self position y.
+cursorY := anEvent position y.
+newLocation := Point x: (self center x) y: cursorY.
 cursor center: newLocation .
-faderValue := 50.
-midiSender sendCC: ccNumber  withValue: faderValue onChannel: 6
-
+"map cursorY to value from 0 to 1"
+mappedY := (((((cursorY min: faderBottom )- faderBottom ) abs) min: self extent y) / self extent y) * 127.
+Transcript show: newLocation ; cr.
+midiSender sendCC: ccNumber withValue: (mappedY asInteger) onChannel: midiChannel 
 ] ifFalse: [ nil] .
 
 "for debug"
