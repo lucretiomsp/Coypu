@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'ccNumber',
 		'midiSender',
-		'midiChannel'
+		'midiChannel',
+		'faderLabel'
 	],
 	#category : #LiveCoding
 }
@@ -15,6 +16,7 @@ VerticalFaderForMIDI class >> newWithCC: aCCNumber forSender: aMIDISender [
 ^ (self new) 
 		ccNumber: aCCNumber ;
 		midiSender: aMIDISender;
+		cursorColor: Color red;
 		minValue: 0;
 		maxValue: 127;
 		yourself
@@ -41,6 +43,16 @@ VerticalFaderForMIDI >> ccNumber [
 VerticalFaderForMIDI >> ccNumber: aCCNumber [
 
 ccNumber := aCCNumber .
+]
+
+{ #category : #accessing }
+VerticalFaderForMIDI >> faderLabel [
+^ faderLabel 
+]
+
+{ #category : #accessing }
+VerticalFaderForMIDI >> faderLabel: aString [
+faderLabel := aString
 ]
 
 { #category : #accessing }
@@ -81,4 +93,10 @@ midiSender sendCC: ccNumber withValue: (mappedY asInteger) onChannel: midiChanne
 ] ifFalse: [ nil] .
 
 "for debug"
+]
+
+{ #category : #'as yet unclassified' }
+VerticalFaderForMIDI >> openInWindow [
+   
+	^ (self openInWindowLabeled: faderLabel ) position: (800@200)
 ]

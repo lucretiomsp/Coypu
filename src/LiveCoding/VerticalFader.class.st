@@ -9,7 +9,8 @@ Class {
 		'faderCanMove',
 		'cursor',
 		'minValue',
-		'maxValue'
+		'maxValue',
+		'cursorColor'
 	],
 	#category : #LiveCoding
 }
@@ -19,6 +20,8 @@ VerticalFader class >> newWithAddress: anAddress [
 " the fader label is also the OSC address"
 ^ (self new) 
 		address: anAddress ;
+		extent: 200@600;
+		cursorColor: Color red;
 		minValue: 0;
 		maxValue: 1;
 		yourself
@@ -40,13 +43,25 @@ VerticalFader >> address: anAddress [
 faderAddress := anAddress 
 ]
 
+{ #category : #accessing }
+VerticalFader >> cursorColor [
+^ cursorColor
+]
+
+{ #category : #accessing }
+VerticalFader >> cursorColor: aColor [
+cursorColor := aColor
+]
+
 { #category : #'as yet unclassified' }
 VerticalFader >> drawCursor [
 "draw the fader cursor"
-
-cursor := EllipseMorph new.
-cursor color: Color red.
-cursor extent: 400@100.
+| cursorWidth cursorHeight |
+cursorHeight := self extent y /5.
+cursorWidth := self width.
+cursor := Morph new.
+cursor color: Color black  .
+cursor extent: 400@cursorHeight .
 
 self addMorph: cursor.
 cursor center: self center.
@@ -72,7 +87,7 @@ VerticalFader >> initialize [
 super initialize. 
 faderCanMove := false.
 
-self extent: 400@500.
+"self extent: 400@500".
 self drawCursor .
 ]
 
