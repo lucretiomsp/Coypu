@@ -11,6 +11,22 @@ Class {
 	#category : #LiveCoding
 }
 
+{ #category : #'as yet unclassified' }
+Performance class >> basic [
+
+	^ self new
+		  visualization: NoneVisualization new;
+		  yourself
+]
+
+{ #category : #'as yet unclassified' }
+Performance class >> withCircles [
+
+	^ self new
+		  visualization: CircleVisualization new;
+		  yourself
+]
+
 { #category : #accessing }
 Performance >> length [
 "return the number of steps of the largest array contained in the performance values"
