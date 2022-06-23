@@ -175,15 +175,20 @@ step := 0.
 ^
 [ 	
 	"bpm toKyma: 'BPM'."
+	visualization startWith: bpm.
 	aNumberOfSteps timesRepeat: [ (Delay forSeconds: aRateInSeconds   ) wait.
 		" test if dictionary values is an Array of two arrays or as defined, a sequence"
 		 
 		self keysAndValuesDo: [ :key : value |
+		
 		(value isSequencer) ifTrue: [  	
 		(((value gates) at: (step modulo: (value gatesSize ))) = 1)
 		ifTrue:
 		[  "aMIDISender playDrum: 56 onChannel: (((key asString) at: 3) asInteger)."
 		aMIDISender playDrum: ((value notes) at: ((value    noteIndex ) modulo: (value notesSize))) onChannel: (((key asString) at: 3) digitValue ).
+		
+		visualization showSound: key withNote: 60.
+		
 		"old imlementation"
 		"(key asString) toKymaAsGate: ( gateTime * ((value durations ) at: (value noteIndex modulo: (value durationsSize)))) note: ((value notes) at: ((value    noteIndex ) modulo: (value notesSize)))."
 		

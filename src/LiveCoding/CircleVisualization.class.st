@@ -9,6 +9,12 @@ Class {
 }
 
 { #category : #accessing }
+CircleVisualization >> clock [
+
+	^ clock
+]
+
+{ #category : #accessing }
 CircleVisualization >> ellipses [
 
 	ellipses ifNotNil: [ ^ ellipses ].
@@ -23,7 +29,7 @@ CircleVisualization >> showSound: soundName withNote: note [
 
 	| color |
 	color := Color r: note * 2 g: 0 b: note / 2.
-	clock radius: note; update.
+"	clock radius: note; update."
 	self ellipses color: color; update
 ]
 

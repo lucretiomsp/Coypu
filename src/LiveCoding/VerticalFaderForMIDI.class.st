@@ -5,7 +5,8 @@ Class {
 		'ccNumber',
 		'midiSender',
 		'midiChannel',
-		'faderLabel'
+		'faderLabel',
+		'visualization'
 	],
 	#category : #LiveCoding
 }
@@ -89,7 +90,8 @@ cursor center: newLocation .
 "map cursorY to value from 0 to 1"
 mappedY := (((((cursorY min: faderBottom )- faderBottom ) abs) min: self extent y) / self extent y) * 127.
 Transcript show: newLocation ; cr.
-midiSender sendCC: ccNumber withValue: (mappedY asInteger) onChannel: midiChannel 
+visualization clock radius: (mappedY asInteger / 2); update.
+midiSender sendCC: ccNumber withValue: (mappedY asInteger ) onChannel: midiChannel 
 ] ifFalse: [ nil] .
 
 "for debug"
@@ -99,4 +101,9 @@ midiSender sendCC: ccNumber withValue: (mappedY asInteger) onChannel: midiChanne
 VerticalFaderForMIDI >> openInWindow [
    
 	^ (self openInWindowLabeled: faderLabel ) position: (800@200)
+]
+
+{ #category : #accessing }
+VerticalFaderForMIDI >> visualization: aVisualization [
+visualization := aVisualization .
 ]
