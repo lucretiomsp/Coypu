@@ -37,6 +37,15 @@ sdf addAll: #(0 1). "if just one synth definition"
 
 "pstring - the name of the synth definition - first size and then the charachters"
 sdf add: aString size.
+aString do: [ :i | sdf addLast: i asciiValue ].
+
+"int32 - number of constants (K)"
+sdf addAll: #(0 0 0 7) . "if for example we have 7 constants"
+
+"[float32] * K - constant values"
+"int32 - number of parameters (P)"
+"[float32] * P - initial parameter values"
+"int32 - number of parameter names (N)"
 
 
 
