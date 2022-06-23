@@ -5,6 +5,9 @@ Class {
 	#name : #Performance,
 	#superclass : #Dictionary,
 	#type : #variable,
+	#instVars : [
+		'visualization'
+	],
 	#category : #LiveCoding
 }
 
@@ -92,32 +95,38 @@ Performance >> playLocalSequenceAt: aRateInSeconds for: aNumberOfSteps [
 an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 
 "if the value in the dictionay is a Sequencer, an OSC message is sent to the key as OSC address with two arguments, one for the gate, and one for the note. the gate stays at 1 for the duration selected."
-| step  bpm beatInSeconds gateTime|
+| step  bpm beatInSeconds gateTime |
 bpm := 60 / (aRateInSeconds * 4).
 gateTime := aRateInSeconds * 0.8.
 beatInSeconds := aRateInSeconds * 4.
 step := 0.
 
-
-
 [ 	
 	bpm toLocal: 'BPM'.
+	
+	visualization startWith: bpm.
+	
+	('BPM: ', bpm asString) traceCr.
 	aNumberOfSteps  timesRepeat: [ (Delay forSeconds: aRateInSeconds   )wait.
 		" test if dictionary values is an Array od two arrays or as defined, a sequence"
 		 
-		self keysAndValuesDo: [ :key : value |
+		self keysAndValuesDo: [ :key :value |
+			
 		(value isSequencer) ifTrue: [
 	
 		(((value gates) at: (step modulo: (value gatesSize ))) = 1)
-		ifTrue:
-		[ (key asString) toLocalFor: ( gateTime * ((value durations ) at: (value noteIndex modulo: (value durationsSize)))) note: ((value notes) at: ((value       noteIndex ) modulo: (value notesSize))).
-		
-		
-		" experimental, for extra control parameter"
-		((value extra1) isArray) ifTrue:
-		[((value extra1 at: 2 ) at: ((value noteIndex) modulo: (value extra1Size))) toLocal: ((key asString), value extra1 at: 1 )] ifFalse: [nil].
-		value at: 4 put: ((value noteIndex) + 1).
-		
+		ifTrue: [ |note|
+			note := (value notes) at: ((value       noteIndex ) modulo: (value notesSize)).
+			(key asString) toLocalFor: ( gateTime * ((value durations ) at: (value noteIndex modulo: (value durationsSize)))) note: note.
+			
+			"(value noteIndex modulo: (value durationsSize)) traceCr."
+			( key , ': ', note asString) traceCr.
+			visualization showSound: key withNote: note.
+
+			" experimental, for extra control parameter"
+			((value extra1) isArray) ifTrue:
+			[((value extra1 at: 2 ) at: ((value noteIndex) modulo: (value extra1Size))) toLocal: ((key asString), value extra1 at: 1 )] ifFalse: [nil].
+			value at: 4 put: ((value noteIndex) + 1).
 		] 
 		ifFalse: [nil]]
 		ifFalse: [(value at: (step modulo: (value size))) toLocal: (key asString) ] 
@@ -188,4 +197,16 @@ step := 0.
 	] forkAt: (Processor timingPriority )
 
 
+]
+
+{ #category : #accessing }
+Performance >> visualization [
+
+	^ visualization
+]
+
+{ #category : #accessing }
+Performance >> visualization: anObject [
+
+	visualization := anObject
 ]
