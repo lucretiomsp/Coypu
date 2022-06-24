@@ -6,9 +6,10 @@ Class {
 	#superclass : #Dictionary,
 	#type : #variable,
 	#instVars : [
-		'visualization'
+		'visualization',
+		'performer'
 	],
-	#category : #LiveCoding
+	#category : #'LiveCoding-Performance'
 }
 
 { #category : #'as yet unclassified' }
@@ -49,114 +50,205 @@ self keysDo: [ :i | self removeKey: i ifAbsent: [ ] ] .
 ]
 
 { #category : #accessing }
-Performance >> playKymaSequenceAt: aRateInSeconds for: aNumberOfSteps [
-"test"
-" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
-an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
-| step  bpm beatInSeconds gateTime|
-"as in early hardware sequencers, default gatetime is 80% of the step duration"
-bpm := 60 / (aRateInSeconds * 4).
-beatInSeconds := aRateInSeconds * 4.
-gateTime := aRateInSeconds * 0.8.
-step := 0.
+Performance >> performer [
 
-
-^
-[ 	
-	bpm toKyma: 'BPM'.
-	aNumberOfSteps timesRepeat: [ (Delay forSeconds: aRateInSeconds   ) wait.
-		" test if dictionary values is an Array of two arrays or as defined, a sequence"
-		 
-		self keysAndValuesDo: [ :key : value |
-		(value isSequencer) ifTrue: [  	
-		(((value gates) at: (step modulo: (value gatesSize ))) = 1)
-		ifTrue:
-		[ (key asString) toKymaAsGate: ( gateTime * ((value durations ) at: (value noteIndex modulo: (value durationsSize)))) note: ((value notes) at: ((value    noteIndex ) modulo: (value notesSize))).
-		
-		"maybe this part is not useful anymore"
-		((value durations) isArray) ifTrue:
-		[((value durations ) at: (value noteIndex modulo: (value durationsSize))) toKyma: ((key asString),'Duration')] ifFalse: [nil].
-
-     "new experimental for extra control"
-     ((value extra1) isArray) ifTrue:
-		[ ((value extra1 at: 2 ) at: (value noteIndex modulo: (value extra1Size))) toKyma: ((key asString),(value extra1 at: 1))] ifFalse: [nil].
-		
-		"new experimental for second extra control"
-     ((value extra2) isArray) ifTrue:
-		[ ((value extra2 at: 2 ) at: (value noteIndex modulo: (value extra2Size))) toKyma: ((key asString),(value extra2 at: 1))] ifFalse: [nil].
-		
-		
-		value at: 4 put: ((value noteIndex) + 1).
-		
-		"noteIndex := noteIndex + 1."
-		] 
-		ifFalse: [nil]]
-	"end of the isSequencer true condition"
-		ifFalse: [(value at: (step modulo: (value size))) toKyma: (key asString). (Delay forSeconds: aRateInSeconds   )wait. ] 
-		].
-	
-		"step is incrementing in any case"
-		step := step + 1.
-		
-	]
-	
-	] forkAt: (Processor timingPriority )
-
-
+	^ performer
 ]
 
 { #category : #accessing }
-Performance >> playLocalSequenceAt: aRateInSeconds for: aNumberOfSteps [
-" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
+Performance >> performer: anObject [
+
+	performer := anObject
+]
+
+{ #category : #playing }
+Performance >> play: aRateInSeconds for: aNumberOfSteps [
+
+	" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
 an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 
-"if the value in the dictionay is a Sequencer, an OSC message is sent to the key as OSC address with two arguments, one for the gate, and one for the note. the gate stays at 1 for the duration selected."
-| step  bpm beatInSeconds gateTime |
-bpm := 60 / (aRateInSeconds * 4).
-gateTime := aRateInSeconds * 0.8.
-beatInSeconds := aRateInSeconds * 4.
-step := 0.
+	"if the value in the dictionay is a Sequencer, an OSC message is sent to the key as OSC address with two arguments, one for the gate, and one for the note. the gate stays at 1 for the duration selected."
 
-[ 	
-	bpm toLocal: 'BPM'.
-	
+	| step bpm beatInSeconds gateTime |
+	bpm := 60 / (aRateInSeconds * 4).
+	gateTime := aRateInSeconds * 0.8.
+	beatInSeconds := aRateInSeconds * 4.
+	step := 0.
+
+	[ 
+	performer bpm: bpm.
 	visualization startWith: bpm.
-	
-	('BPM: ', bpm asString) traceCr.
-	aNumberOfSteps  timesRepeat: [ (Delay forSeconds: aRateInSeconds   )wait.
-		" test if dictionary values is an Array od two arrays or as defined, a sequence"
-		 
-		self keysAndValuesDo: [ :key :value |
-			
-		(value isSequencer) ifTrue: [
-	
-		(((value gates) at: (step modulo: (value gatesSize ))) = 1)
-		ifTrue: [ |note|
-			note := (value notes) at: ((value       noteIndex ) modulo: (value notesSize)).
-			(key asString) toLocalFor: ( gateTime * ((value durations ) at: (value noteIndex modulo: (value durationsSize)))) note: note.
-			
-			"(value noteIndex modulo: (value durationsSize)) traceCr."
-			( key , ': ', note asString) traceCr.
-			visualization showSound: key withNote: note.
 
-			" experimental, for extra control parameter"
-			((value extra1) isArray) ifTrue:
-			[((value extra1 at: 2 ) at: ((value noteIndex) modulo: (value extra1Size))) toLocal: ((key asString), value extra1 at: 1 )] ifFalse: [nil].
-			value at: 4 put: ((value noteIndex) + 1).
-		] 
-		ifFalse: [nil]]
-		ifFalse: [(value at: (step modulo: (value size))) toLocal: (key asString) ] 
-		].
-	
+	aNumberOfSteps timesRepeat: [ 
+		(Delay forSeconds: aRateInSeconds) wait. "WAIT time"
+		" test if dictionary values is an Array of two arrays or as defined, a sequence"
+
+		self keysAndValuesDo: [ :key :value | 
+			value isSequencer
+				ifTrue: [ 
+					(value gates at: (step modulo: value gatesSize)) = 1
+						ifTrue: [ 
+							| note gateTimeInSeconds |
+							note := value notes at:
+								        (value noteIndex modulo: value notesSize).
+							gateTimeInSeconds := gateTime *
+							                     (value durations at:
+								                      (value noteIndex modulo:
+									                       value durationsSize)).
+
+							performer
+								playGate: key
+								withTime: gateTimeInSeconds
+								withNote: note. 
+							visualization showSound: key withNote: note.
+
+							" experimental, for extra control parameter"
+							value extra1 isArray
+								ifTrue: [ 
+									| gate |
+									note := (value extra1 at: 2) at:
+										        (value noteIndex modulo: value extra1Size).
+									gate := key , (value extra1 at: 1).
+									performer playGate: key withNote: note  ]
+								ifFalse: [ nil ].
+							value at: 4 put: value noteIndex + 1 ]
+						ifFalse: [ nil ] ]
+				ifFalse: [ 
+					| note |
+					note := value at: (step modulo: value size).
+					performer playGate: key withNote: note ] ].
+
 		"step is incrementing in any case"
-		step := step + 1.
-		
-	]
-	
-	] forkAt: (Processor timingPriority )
+		step := step + 1 ] ] forkAt: Processor timingPriority
 ]
 
-{ #category : #accessing }
+{ #category : #playing }
+Performance >> playKymaSequenceAt: aRateInSeconds for: aNumberOfSteps [
+
+	" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
+an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
+
+	| step bpm beatInSeconds gateTime |
+	"as in early hardware sequencers, default gatetime is 80% of the step duration"
+	bpm := 60 / (aRateInSeconds * 4).
+	gateTime := aRateInSeconds * 0.8.
+	beatInSeconds := aRateInSeconds * 4.
+	step := 0.
+
+
+	^ [ 
+	  bpm toKyma: 'BPM'.
+
+	  aNumberOfSteps timesRepeat: [ 
+		  (Delay forSeconds: aRateInSeconds) wait.
+		  " test if dictionary values is an Array of two arrays or as defined, a sequence"
+
+		  self keysAndValuesDo: [ :key :value | 
+			  value isSequencer
+				  ifTrue: [ 
+					  (value gates at: (step modulo: value gatesSize)) = 1
+						  ifTrue: [ 
+							  | note |
+							  note := value notes at:
+								          (value noteIndex modulo: value notesSize).
+							  key asString
+								  toKymaAsGate: gateTime
+									  *
+									  (value durations at:
+										   (value noteIndex modulo: value durationsSize))
+								  note: note.
+
+							  "maybe this part is not useful anymore"
+							  value durations isArray
+								  ifTrue: [ 
+									  (value durations at:
+										   (value noteIndex modulo: value durationsSize)) toKyma:
+										  key asString , 'Duration' ]
+								  ifFalse: [ nil ].
+
+							  "experimental, for extra control parameter"
+							  value extra1 isArray
+								  ifTrue: [ 
+									  ((value extra1 at: 2) at:
+										   (value noteIndex modulo: value extra1Size)) toKyma:
+										  key asString , (value extra1 at: 1) ]
+								  ifFalse: [ nil ].
+
+							  "new experimental, for second extra control"
+							  value extra2 isArray
+								  ifTrue: [ 
+									  ((value extra2 at: 2) at:
+										   (value noteIndex modulo: value extra2Size)) toKyma:
+										  key asString , (value extra2 at: 1) ]
+								  ifFalse: [ nil ].
+
+
+							  value at: 4 put: value noteIndex + 1
+
+							  "noteIndex := noteIndex + 1." ]
+						  ifFalse: [ nil ] ]
+				  ifFalse: [ 
+					  (value at: (step modulo: value size)) toKyma: key asString.
+					  (Delay forSeconds: aRateInSeconds) wait ] ].
+
+		  "step is incrementing in any case"
+		  step := step + 1 ] ] forkAt: Processor timingPriority
+]
+
+{ #category : #playing }
+Performance >> playLocalSequenceAt: aRateInSeconds for: aNumberOfSteps [
+
+	" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
+an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
+
+	"if the value in the dictionay is a Sequencer, an OSC message is sent to the key as OSC address with two arguments, one for the gate, and one for the note. the gate stays at 1 for the duration selected."
+
+	| step bpm beatInSeconds gateTime |
+	bpm := 60 / (aRateInSeconds * 4).
+	gateTime := aRateInSeconds * 0.8.
+	beatInSeconds := aRateInSeconds * 4.
+	step := 0.
+
+	^ [ 
+	  bpm toLocal: 'BPM'.
+
+	  aNumberOfSteps timesRepeat: [ 
+		  (Delay forSeconds: aRateInSeconds) wait.
+		  " test if dictionary values is an Array of two arrays or as defined, a sequence"
+
+		  self keysAndValuesDo: [ :key :value | 
+			  value isSequencer
+				  ifTrue: [ 
+					  (value gates at: (step modulo: value gatesSize)) = 1
+						  ifTrue: [ 
+							  | note |
+							  note := value notes at:
+								          (value noteIndex modulo: value notesSize).
+							  key asString
+								  toLocalFor: gateTime
+									  *
+									  (value durations at:
+										   (value noteIndex modulo: value durationsSize))
+								  note: note.
+
+
+							  "experimental, for extra control parameter"
+							  value extra1 isArray
+								  ifTrue: [ 
+									  ((value extra1 at: 2) at:
+										   (value noteIndex modulo: value extra1Size)) toLocal:
+										  (key asString , value extra1 at: 1) ]
+								  ifFalse: [ nil ].
+							  value at: 4 put: value noteIndex + 1 ]
+						  ifFalse: [ nil ] ]
+				  ifFalse: [ 
+				  (value at: (step modulo: value size)) toLocal: key asString ] ].
+
+		  "step is incrementing in any case"
+		  step := step + 1 ] ] forkAt: Processor timingPriority
+]
+
+{ #category : #playing }
 Performance >> playMIDISequenceAt: aRateInSeconds steps: aNumberOfSteps on: aMIDISender [
 "test"
 " iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through athe Performance containing arrays of numbers as values
