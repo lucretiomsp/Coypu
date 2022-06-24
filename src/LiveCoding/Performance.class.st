@@ -37,13 +37,13 @@ maxLength := valuesSizes inject: 0 into: [ :a :c | (a > c) ifTrue: [ a ] ifFalse
 ^ maxLength 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #playing }
 Performance >> mute: anArrayOfKeys [
 "remove all the keys in the arrayOfKeys from the Performance"
 anArrayOfKeys do: [ :i | self removeKey: i ifAbsent: [ ] ] 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #playing }
 Performance >> muteAll [
 " remove all keys from the Performance"
 self keysDo: [ :i | self removeKey: i ifAbsent: [ ] ] .
@@ -75,51 +75,55 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 	beatInSeconds := aRateInSeconds * 4.
 	step := 0.
 
-	[ 
-	performer bpm: bpm.
-	visualization startWith: bpm.
+	^ [ 
+	  performer bpm: bpm.
+	  visualization startWith: bpm.
 
-	aNumberOfSteps timesRepeat: [ 
-		(Delay forSeconds: aRateInSeconds) wait. "WAIT time"
-		" test if dictionary values is an Array of two arrays or as defined, a sequence"
+	  aNumberOfSteps timesRepeat: [ 
+		  (Delay forSeconds: aRateInSeconds) wait. "WAIT time"
+		  " test if dictionary values is an Array of two arrays or as defined, a sequence"
 
-		self keysAndValuesDo: [ :key :value | 
-			value isSequencer
-				ifTrue: [ 
-					(value gates at: (step modulo: value gatesSize)) = 1
-						ifTrue: [ 
-							| note gateTimeInSeconds |
-							note := value notes at:
-								        (value noteIndex modulo: value notesSize).
-							gateTimeInSeconds := gateTime *
-							                     (value durations at:
-								                      (value noteIndex modulo:
-									                       value durationsSize)).
+		  self keysAndValuesDo: [ :key :value | 
+			  value isSequencer
+				  ifTrue: [ 
+					  (value gates at: (step modulo: value gatesSize)) = 1 ifTrue: [ 
+						  | note gateTimeInSeconds |
+						  note := value note.
+						  gateTimeInSeconds := gateTime * value duration.
 
-							performer
-								playGate: key
-								withTime: gateTimeInSeconds
-								withNote: note. 
-							visualization showSound: key withNote: note.
+						  performer
+							  playGate: key
+							  withTime: gateTimeInSeconds
+							  withNote: note.
+						  visualization showSound: key withNote: note.
 
-							" experimental, for extra control parameter"
-							value extra1 isArray
-								ifTrue: [ 
-									| gate |
-									note := (value extra1 at: 2) at:
-										        (value noteIndex modulo: value extra1Size).
-									gate := key , (value extra1 at: 1).
-									performer playGate: key withNote: note  ]
-								ifFalse: [ nil ].
-							value at: 4 put: value noteIndex + 1 ]
-						ifFalse: [ nil ] ]
-				ifFalse: [ 
-					| note |
-					note := value at: (step modulo: value size).
-					performer playGate: key withNote: note ] ].
+						  "experimental, for extra control parameter"
+						  value extra1 isArray ifTrue: [ 
+							  self playExtra: value extra1 of: key at: value noteIndex ].
+						  value extra2 isArray ifTrue: [ 
+							  self playExtra: value extra2 of: key at: value noteIndex ].
 
-		"step is incrementing in any case"
-		step := step + 1 ] ] forkAt: Processor timingPriority
+						  value stepIndex ] ]
+				  ifFalse: [ 
+					  | note |
+					  note := value at: (step modulo: value size).
+					  performer playGate: key withNote: note ] ].
+
+		  "step is incrementing in any case"
+		  step := step + 1 ] ] forkAt: Processor timingPriority
+]
+
+{ #category : #'as yet unclassified' }
+Performance >> playExtra: anExtraCollection of: baseGate at: index [
+
+	| extraGate fullGate notes currentNote |
+	extraGate := anExtraCollection at: 1.
+	notes := anExtraCollection at: 2.
+
+	currentNote := notes at: (index modulo: notes size).
+	fullGate := baseGate , extraGate.
+
+	performer playGate: fullGate withNote: currentNote
 ]
 
 { #category : #playing }
@@ -250,66 +254,79 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 
 { #category : #playing }
 Performance >> playMIDISequenceAt: aRateInSeconds steps: aNumberOfSteps on: aMIDISender [
-"test"
-" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through athe Performance containing arrays of numbers as values
+
+	"test"
+
+	" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through athe Performance containing arrays of numbers as values
 keys in the Performance represents MIDI channels and must be written as #ch1 #ch2 #ch3 and so on if you want to send noteOn/off or
 
 if you want to send out ccs
 "
-| step  bpm beatInSeconds gateTime|
-"as in early hardware sequencers, default gatetime is 80% of the step duration"
-bpm := 60 / (aRateInSeconds * 4).
-beatInSeconds := aRateInSeconds * 4.
-gateTime := aRateInSeconds * 0.8.
-step := 0.
+
+	| step bpm beatInSeconds gateTime |
+	"as in early hardware sequencers, default gatetime is 80% of the step duration"
+	bpm := 60 / (aRateInSeconds * 4).
+	beatInSeconds := aRateInSeconds * 4.
+	gateTime := aRateInSeconds * 0.8.
+	step := 0.
 
 
-^
-[ 	
-	"bpm toKyma: 'BPM'."
-	visualization startWith: bpm.
-	aNumberOfSteps timesRepeat: [ (Delay forSeconds: aRateInSeconds   ) wait.
-		" test if dictionary values is an Array of two arrays or as defined, a sequence"
-		 
-		self keysAndValuesDo: [ :key : value |
-		
-		(value isSequencer) ifTrue: [  	
-		(((value gates) at: (step modulo: (value gatesSize ))) = 1)
-		ifTrue:
-		[  "aMIDISender playDrum: 56 onChannel: (((key asString) at: 3) asInteger)."
-		aMIDISender playDrum: ((value notes) at: ((value    noteIndex ) modulo: (value notesSize))) onChannel: (((key asString) at: 3) digitValue ).
-		
-		visualization showSound: key withNote: 60.
-		
-		"old imlementation"
-		"(key asString) toKymaAsGate: ( gateTime * ((value durations ) at: (value noteIndex modulo: (value durationsSize)))) note: ((value notes) at: ((value    noteIndex ) modulo: (value notesSize)))."
-		
-	   	"sends a ControlChange message on the same channel, if provided"
-		((value extra1) isArray) ifTrue:
-		[ aMIDISender sendCC: (value extra1 at: 1 )   withValue: ((value extra1 at: 2 ) at: (value noteIndex modulo: (value extra1Size)))  onChannel: (((key asString) at: 3) digitValue )  ] ifFalse: [nil].
-	
-	"sends another ControlChange message on the same channel, if provided"
-		((value extra2) isArray) ifTrue:
-		[ aMIDISender sendCC: (value extra2 at: 1 )   withValue: ((value extra2 at: 2 ) at: (value noteIndex modulo: (value extra2Size)))  onChannel: (((key asString) at: 3) digitValue )  ] ifFalse: [nil].
-	
-	   "advance"
-		value at: 4 put: ((value noteIndex) + 1).
-		
-		"noteIndex := noteIndex + 1."
-		] 
-		ifFalse: [nil]]
-	"end of the isSequencer true condition"
-		ifFalse: [aMIDISender sendCC:74  withValue:  (value at: (step modulo: (value size))) onChannel: (((key asString) at: 3) digitValue).  ] 
-		].
-	
-		"step is incrementing in any case"
-		step := step + 1.
-		
-	]
-	
-	] forkAt: (Processor timingPriority )
+	^ [ "bpm toKyma: 'BPM'."
+	  visualization startWith: bpm.
+	  aNumberOfSteps timesRepeat: [ 
+		  (Delay forSeconds: aRateInSeconds) wait.
+		  " test if dictionary values is an Array of two arrays or as defined, a sequence"
 
+		  self keysAndValuesDo: [ :key :value | 
+			  value isSequencer
+				  ifTrue: [ "end of the isSequencer true condition"
+					  (value gates at: (step modulo: value gatesSize)) = 1
+						  ifTrue: [ "aMIDISender playDrum: 56 onChannel: (((key asString) at: 3) asInteger)."
+							  aMIDISender
+								  playDrum:
+								  (value notes at: (value noteIndex modulo: value notesSize))
+								  onChannel: (key asString at: 3) digitValue.
 
+							  visualization showSound: key withNote: 60.
+
+							  "old imlementation"
+							  "(key asString) toKymaAsGate: ( gateTime * ((value durations ) at: (value noteIndex modulo: (value durationsSize)))) note: ((value notes) at: ((value    noteIndex ) modulo: (value notesSize)))."
+
+							  "sends a ControlChange message on the same channel, if provided"
+							  value extra1 isArray
+								  ifTrue: [ 
+									  aMIDISender
+										  sendCC: (value extra1 at: 1)
+										  withValue:
+										  ((value extra1 at: 2) at:
+											   (value noteIndex modulo: value extra1Size))
+										  onChannel: (key asString at: 3) digitValue ]
+								  ifFalse: [ nil ].
+
+							  "sends another ControlChange message on the same channel, if provided"
+							  value extra2 isArray
+								  ifTrue: [ 
+									  aMIDISender
+										  sendCC: (value extra2 at: 1)
+										  withValue:
+										  ((value extra2 at: 2) at:
+											   (value noteIndex modulo: value extra2Size))
+										  onChannel: (key asString at: 3) digitValue ]
+								  ifFalse: [ nil ].
+
+							  "advance"
+							  value at: 4 put: value noteIndex + 1
+
+							  "noteIndex := noteIndex + 1." ]
+						  ifFalse: [ nil ] ]
+				  ifFalse: [ 
+					  aMIDISender
+						  sendCC: 74
+						  withValue: (value at: (step modulo: value size))
+						  onChannel: (key asString at: 3) digitValue ] ].
+
+		  "step is incrementing in any case"
+		  step := step + 1 ] ] forkAt: Processor timingPriority
 ]
 
 { #category : #accessing }

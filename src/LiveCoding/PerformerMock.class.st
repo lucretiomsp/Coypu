@@ -39,6 +39,12 @@ PerformerMock >> noteFor: gate [
 ]
 
 { #category : #api }
+PerformerMock >> playGate: gate withNote: note [
+
+	playedGates at: gate put: note
+]
+
+{ #category : #api }
 PerformerMock >> playGate: gate withTime: gateTimeInSeconds withNote: note [
 
 	playedGates at: gate put: note

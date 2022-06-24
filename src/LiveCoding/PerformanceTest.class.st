@@ -9,46 +9,62 @@ Class {
 }
 
 { #category : #tests }
-PerformanceTest >> setUp [ 
+PerformanceTest >> playPerformance [
+
+	performance at: #gate put: ((15 rumba notes: #( 10 20 30 ))
+			 and: #( 'extra1' #( 40 60 90 ) )
+			 and: #( 'extra2' #( 45 65 95 ) )).
+
+	performance play: 60 bpm for: 1 bars.
+
+	self waitASecond
+]
+
+{ #category : #tests }
+PerformanceTest >> setUp [
 
 	performance := Performance basic.
 	performer := PerformerMock new.
 	performance performer: performer.
-
+	self playPerformance
 ]
 
 { #category : #tests }
 PerformanceTest >> testPerformanceSendBPMOnPlay [
 
-	performance play: 42 bpm for: 1 bars.
+	self assert: performer bpm equals: 60
+]
 
-	self assert: performer bpm equals: 42
+{ #category : #tests }
+PerformanceTest >> testPerformanceSendGateWithExtra1 [
+
+	self assert: (performer noteFor: 'gateextra1') equals: 40
+]
+
+{ #category : #tests }
+PerformanceTest >> testPerformanceSendGateWithExtra2 [
+
+	self assert: (performer noteFor: 'gateextra2') equals: 45
 ]
 
 { #category : #tests }
 PerformanceTest >> testPerformanceSendGateWithFirstNote [
 
-	performance at: #kick put: (15 rumba notes: #( 20 30 40 50 )).
-
-	performance play: 60 bpm for: 1 bars.
-
-	self flag: #TODO. "Change time management"
-	(Delay forSeconds: 1) wait.
-
-	self assert: performer lastGate equals: 'kick'.
-	self assert: (performer noteFor: 'kick') equals: 20
+	self assert: performer lastGate equals: 'gate'.
+	self assert: (performer noteFor: 'gate') equals: 10
 ]
 
 { #category : #tests }
 PerformanceTest >> testPerformanceSendGateWithSecondNote [
 
-	performance at: #kick put: (15 rumba notes: #( 20 30 40 50 )).
+	self waitASecond. "Wait another second"
 
-	performance play: 60 bpm for: 1 bars.
+	self assert: (performer noteFor: 'gate') equals: 20
+]
+
+{ #category : #tests }
+PerformanceTest >> waitASecond [
 
 	self flag: #TODO. "Change time management"
-	(Delay forSeconds: 2) wait.
-
-	self assert: performer lastGate equals: 'kick'.
-	self assert: (performer noteFor: 'kick') equals: 30
+	(Delay forSeconds: 1) wait
 ]

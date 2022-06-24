@@ -88,6 +88,12 @@ seq at: 7 put: aThirdArray.
 ]
 
 { #category : #accessing }
+Sequencer >> duration [
+
+	^ self durations at: (self noteIndex modulo: self durationsSize)
+]
+
+{ #category : #accessing }
 Sequencer >> durations [
 " returns the third array of the sequencer if there is one, otherwise returns false"
 (self size > 2)
@@ -165,6 +171,12 @@ ifTrue: [  ^ true ] ifFalse: [ ^ false ]
 ]
 
 { #category : #accessing }
+Sequencer >> note [
+
+	^ self notes at: (self noteIndex modulo: self notesSize)
+]
+
+{ #category : #accessing }
 Sequencer >> noteIndex [
 
 " returns the fourth array of the sequencer if there is one, otherwise returns 0.
@@ -219,6 +231,12 @@ self gates: (rhythm offset: aNumber) .
 { #category : #accessing }
 Sequencer >> seqKey [
 ^seqKey
+]
+
+{ #category : #accessing }
+Sequencer >> stepIndex [
+
+	self at: 4 put: self noteIndex + 1
 ]
 
 { #category : #'as yet unclassified' }
