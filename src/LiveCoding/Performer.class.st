@@ -11,6 +11,12 @@ Performer >> bpm: bpm [
 ]
 
 { #category : #api }
+Performer >> duration: duration forGate: gate [
+
+	self subclassResponsibility
+]
+
+{ #category : #api }
 Performer >> playGate: gate withNote: note [
 
 	self subclassResponsibility 

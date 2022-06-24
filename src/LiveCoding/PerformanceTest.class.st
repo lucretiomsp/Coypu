@@ -36,6 +36,12 @@ PerformanceTest >> testPerformanceSendBPMOnPlay [
 ]
 
 { #category : #tests }
+PerformanceTest >> testPerformanceSendDurations [
+
+	self assert: (performer durationFor: 'gate') equals: 1
+]
+
+{ #category : #tests }
 PerformanceTest >> testPerformanceSendGateWithExtra1 [
 
 	self assert: (performer noteFor: 'gateextra1') equals: 40

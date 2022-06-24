@@ -3,7 +3,8 @@ Class {
 	#superclass : #Performer,
 	#instVars : [
 		'bpm',
-		'playedGates'
+		'playedGates',
+		'durations'
 	],
 	#category : #'LiveCoding-Tests'
 }
@@ -21,9 +22,22 @@ PerformerMock >> bpm: aBPM [
 ]
 
 { #category : #api }
+PerformerMock >> duration: duration forGate: gate [
+
+	durations at: gate put: duration
+]
+
+{ #category : #accessing }
+PerformerMock >> durationFor: gate [
+
+	^ durations at: gate
+]
+
+{ #category : #initialization }
 PerformerMock >> initialize [
 
-	playedGates := Dictionary new
+	playedGates := Dictionary new.
+	durations := Dictionary new
 ]
 
 { #category : #accessing }

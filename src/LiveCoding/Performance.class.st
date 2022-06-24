@@ -97,6 +97,10 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 							  withNote: note.
 						  visualization showSound: key withNote: note.
 
+						  "maybe this part is not useful anymore"
+						  value durations isArray ifTrue: [ 
+							  performer duration: value duration forGate: key ].
+
 						  "experimental, for extra control parameter"
 						  value extra1 isArray ifTrue: [ 
 							  self playExtra: value extra1 of: key at: value noteIndex ].

@@ -11,6 +11,14 @@ PerformerLocal >> bpm: bpm [
 ]
 
 { #category : #api }
+PerformerLocal >> duration: duration forGate: gate [
+
+	"Do nothing?"
+
+	
+]
+
+{ #category : #api }
 PerformerLocal >> playGate: gate withNote: note [
 
 	note toLocal: gate asString
