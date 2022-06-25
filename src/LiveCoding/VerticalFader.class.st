@@ -50,17 +50,17 @@ VerticalFader >> cursorColor [
 
 { #category : #accessing }
 VerticalFader >> cursorColor: aColor [
-cursorColor := aColor
+cursor color: aColor
 ]
 
 { #category : #'as yet unclassified' }
 VerticalFader >> drawCursor [
 "draw the fader cursor"
 | cursorWidth cursorHeight |
+
 cursorHeight := self extent y /5.
 cursorWidth := self width.
-cursor := Morph new.
-cursor color: Color black  .
+
 cursor extent: 400@cursorHeight .
 
 self addMorph: cursor.
@@ -88,6 +88,8 @@ super initialize.
 faderCanMove := false.
 
 "self extent: 400@500".
+cursor := Morph new.
+cursor color: Color black.
 self drawCursor .
 ]
 
@@ -140,5 +142,5 @@ faderCanMove := false
 { #category : #'as yet unclassified' }
 VerticalFader >> openInWindow [
    
-	^ (self openInWindowLabeled: faderAddress ) position: (800@200)
+	^ ((self openInWindowLabeled: faderAddress ) position: (800@200)) extent: 100@500.
 ]
