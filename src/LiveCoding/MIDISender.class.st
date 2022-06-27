@@ -8,6 +8,13 @@ Class {
 	#category : #LiveCoding
 }
 
+{ #category : #'as yet unclassified' }
+MIDISender >> allNotesOff [
+
+(1 to: 16) do: [ :i | 
+self sendCC: 123 withValue: 0 onChannel: i]
+]
+
 { #category : #initialization }
 MIDISender >> closeMidiOut [
 	"Close the MidiOUT stream (where the score sends notes)."
@@ -92,18 +99,18 @@ instance writeShortOn: self midiOut value when: 0 theMessage: noteOff.
 ]
 
 { #category : #initialization }
-MIDISender >> playNote: aNoteNumber onChannel: aMIDIChannel duration: aDurationInMs [
+MIDISender >> playNote: aNoteNumber onChannel: aMIDIChannel duration: aDurationInSeconds [
 " play aNoteNumber on channel aChannel for aDurationInMs"
 | instance noteOn noteOff channel dur|
-dur := aDurationInMs / 1000 asFloat .
+
 instance := PortMidiLibrary uniqueInstance . 
 channel := aMIDIChannel -1.
 noteOn := PortMidi  message: 144 + aMIDIChannel and: aNoteNumber  and: 100.
 noteOff := PortMidi  message: 128 + aMIDIChannel and: aNoteNumber  and: 100.
-instance writeShortOn: self midiOut value when: 0 theMessage: noteOn.
+[instance writeShortOn: self midiOut value when: 0 theMessage: noteOn.
 (Delay forSeconds: 0.1) wait  . 
-instance writeShortOn: self midiOut value when: 0 theMessage: noteOff.
-^ 'note was played'
+instance writeShortOn: self midiOut value when: 0 theMessage: noteOff.] fork
+
 
 
 ]
