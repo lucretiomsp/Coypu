@@ -3,7 +3,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'midiOut',
-		'defaultOutput'
+		'defaultOutput',
+		'instance'
 	],
 	#category : #LiveCoding
 }
@@ -35,11 +36,21 @@ MIDISender >> defaultOutput: aDevice [
 
 { #category : #initialization }
 MIDISender >> initialize [
-	| instance |
-	instance := PortMidiLibrary uniqueInstance.
+
+	self instance: PortMidiLibrary uniqueInstance.
 	self defaultOutput: instance getDefaultOutputDeviceID.
 	self midiOut: (instance createNewPointerForStreamWithType: 'void**').
 	
+]
+
+{ #category : #accessing }
+MIDISender >> instance [
+^ instance
+]
+
+{ #category : #accessing }
+MIDISender >> instance: aPortMIDIInstance [
+instance := PortMidiLibrary uniqueInstance.
 ]
 
 { #category : #initialization }
@@ -57,14 +68,50 @@ MIDISender >> midiOut: anOutputStream [
 { #category : #initialization }
 MIDISender >> openMidiOutWithDevice: aDeviceID [
 	"Opens a new MidiOUT Stream with output device id aDeviceID to play notes."
+	
+	self instance: PortMidiLibrary uniqueInstance.
+	
+	self midiOut: (instance createNewPointerForStreamWithType: 'void**').
 	^ (aDeviceID = -1) ifFalse: 
-		[PortMidiLibrary uniqueInstance openOutputForStream: midiOut  
+		[instance openOutputForStream: midiOut  
 															withDevice: aDeviceID 
 															withOutputDriverInfos: nil 
 															withBufferSize: 512 
 															withTimeProcedure: nil 
 															withTimeInfos: nil 
 															andLatency: 0 ] ifTrue: [ ^ -1 ]
+]
+
+{ #category : #initialization }
+MIDISender >> playChord: aNoteNumber type: aChordType onChannel: aMIDIChannel duration: aDurationInSeconds [
+" play aChord of aChordType with root aNoteNumber on the selected channel with a fixed velocity of 100"
+
+
+|  noteOn noteOff chordOn chordOff mout|
+
+instance := self instance . 
+
+noteOn := 144 + (aMIDIChannel - 1).
+noteOff := 128 + (aMIDIChannel - 1) .
+chordOn := Array new: aChordType size.
+chordOff :=  Array new: aChordType size.
+
+mout := self .
+" create the chord"
+
+
+(1 to: aChordType size) do:  [:i | chordOn at: i put: (PortMidi message: noteOn  and: aNoteNumber + (aChordType at: i)  and: 100).
+	chordOff at: i put: (PortMidi message: noteOff  and: aNoteNumber + (aChordType at: i)  and: 100).
+	].
+
+[(1 to: aChordType size) do: [:i |instance writeShortOn: mout midiOut value when: 0 theMessage: (chordOn at: i)]. 
+(Delay forSeconds: aDurationInSeconds ) wait  . 
+
+(1 to: aChordType size) do: [:i |instance writeShortOn: mout  midiOut value when: 0 theMessage: (chordOff at: i)]] fork.
+
+
+
+
 ]
 
 { #category : #'as yet unclassified' }
