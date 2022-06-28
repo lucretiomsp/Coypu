@@ -423,15 +423,18 @@ randoms := ( 1 to: self) collect: [ :i | Random new next rounded].
 
 { #category : #'*LiveCoding' }
 Integer >> randomTrigsWithProbability: anIntegerProbability [
-"generates an Array of random 0s and 1s of size: aNumber with a probability of having a trig of anIntegerProbability "
-	| r rytm|
-	rytm:= Array new: self.
-	r := Random new.
-	( 1 to: self) do: [ :i| (r next) < (anIntegerProbability / 100) 
-	ifTrue: [ rytm at: i put: 1 ]	ifFalse: [ rytm at: i put: 0 ]
-		 ].
 
-^ rytm asRhythm
+	"generates an Array of random 0s and 1s of size: aNumber with a probability of having a trig of anIntegerProbability "
+
+	| r rytm |
+	rytm := Array new: self.
+	r := Random new.
+	(1 to: self) do: [ :i | 
+		r next < (anIntegerProbability / 100)
+			ifTrue: [ rytm at: i put: 1 ]
+			ifFalse: [ rytm at: i put: 0 ] ].
+
+	^ rytm asSeq
 ]
 
 { #category : #'*LiveCoding' }

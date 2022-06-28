@@ -285,7 +285,7 @@ if you want to send out ccs
 			  value isSequencer
 				  ifTrue: [ "end of the isSequencer true condition"
 					  (value gates at: (step modulo: value gatesSize)) = 1
-						  ifTrue: [ "aMIDISender playDrum: 56 onChannel: (((key asString) at: 3) asInteger)."
+						  ifTrue: [ 
 							  aMIDISender
 								  playDrum:
 								  (value notes at: (value noteIndex modulo: value notesSize))
@@ -293,8 +293,6 @@ if you want to send out ccs
 
 							  visualization showSound: key withNote: 60.
 
-							  "old imlementation"
-							  "(key asString) toKymaAsGate: ( gateTime * ((value durations ) at: (value noteIndex modulo: (value durationsSize)))) note: ((value notes) at: ((value    noteIndex ) modulo: (value notesSize)))."
 
 							  "sends a ControlChange message on the same channel, if provided"
 							  value extra1 isArray
@@ -330,7 +328,9 @@ if you want to send out ccs
 						  onChannel: (key asString at: 3) digitValue ] ].
 
 		  "step is incrementing in any case"
-		  step := step + 1 ] ] forkAt: Processor timingPriority
+		  step := step + 1 ] ] forkAt: Processor timingPriority.
+
+
 ]
 
 { #category : #accessing }
