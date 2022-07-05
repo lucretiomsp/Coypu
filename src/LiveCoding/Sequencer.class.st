@@ -220,12 +220,15 @@ size := result size.
 ]
 
 { #category : #accessing }
-Sequencer >> offset: aNumber [ 
-"offset the rhythm inside the sequencerby aNumber of 'steps' wrapping it around its size"
-| rhythm|
-rhythm := self gates.
-self gates: (rhythm offset: aNumber) .
+Sequencer >> offset: aNumber [
 
+	"offset the rhythm inside the sequencerby aNumber of 'steps' wrapping it around its size"
+
+	| rhythm melody |
+	rhythm := self gates.
+	melody := self notes.
+	self gates: (rhythm offset: aNumber).
+	self notes: (melody offset: aNumber)
 ]
 
 { #category : #accessing }

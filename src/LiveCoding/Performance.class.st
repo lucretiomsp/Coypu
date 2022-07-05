@@ -56,9 +56,9 @@ Performance >> performer [
 ]
 
 { #category : #accessing }
-Performance >> performer: anObject [
-
-	performer := anObject
+Performance >> performer: aPerformer [
+"choose a Performer for the Performance"
+	performer := aPerformer 
 ]
 
 { #category : #playing }
