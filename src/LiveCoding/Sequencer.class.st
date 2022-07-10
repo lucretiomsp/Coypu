@@ -270,6 +270,14 @@ Sequencer >> to: aSymbol with: anArray [
 
 ]
 
+{ #category : #accessing }
+Sequencer >> transpose: aNumberOfSemitones [
+
+	| melody |
+	melody := self notes.
+	self notes: (melody + aNumberOfSemitones)
+]
+
 { #category : #'as yet unclassified' }
 Sequencer >> trigs [
 "return the number of trigs, i.e. gates = 1,  of the sequencer"

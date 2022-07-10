@@ -318,6 +318,19 @@ Integer >> major [
 ]
 
 { #category : #'*LiveCoding' }
+Integer >> melodyFrom: aScale [
+
+	| array |
+	array := self randomNotesFrom: aScale.
+	array at: 1 put: (aScale at: 1).
+	2 to: array size do: [ :i | 
+		((array at: i) rem: 12)= 0 ifTrue: [ array at: i - 1 put: (aScale at: 6) ].
+		((array at: i) rem: 12)= 2 ifTrue: [ array at: i - 1 put: (aScale at: 5) ] ].
+	"last note is mediante or dominante"
+	^ array
+]
+
+{ #category : #'*LiveCoding' }
 Integer >> minor [
 "returns an aray with the major third, fith seventh and ninth relative to the note number that is the receiver"
  ^ #(3 7 10 14) collect: [ :i | i + self ].
@@ -349,122 +362,6 @@ Integer >> pattern [
 Integer >> quavers [
 "creates an Array of aNumber of values (0,1) with 1 to the position corresponding to a rhtyhm of quavers (downbeat + upbeat)"
 	^ (((1 to: self) collect: [ :i | ((((i rem: 4) = 1)) | (((i rem: 4) = 3)) ) asBit ]) asRhythm ) asSeq.
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> randomDiv: aDivision [
-"return an array of size=self random values in the range of 0,1 , with a subdivision of 1/aDivision steps with 2 decimal places"
-	| r array|
-	r := Random new.
-	array := ( 0 to: 1 by: (( 1/ aDivision) asFloat)  ) asArray.
-	^ (1 to: self) collect: [ :i | (array at: (r nextInt: (array size))) printShowingDecimalPlaces: 2 ].
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> randomFrom: anArray [
-
-	"return an array of self size of random notes from anArray"
-
-	^ (1 to: self) collect: [ :i | 
-		  anArray at: (Random new nextInteger: anArray size) ]
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> randomInts: aNumber [
-"return an array of self size with random integers with range [0, aNumber]"
-| floatsArray result |
-floatsArray := (self randoms) * aNumber.
-result := floatsArray collect: [ :i | i rounded ].
-^ result
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> randomNotes: anArray [
-
-	"answer an Array of size=self with random note numbers between "
-
-	| max min range |
-	min := anArray at: 1.
-	max := anArray at: 2.
-	range := 1 + max - min.
-	^ (1 to: self) collect: [ :i | 
-		  (Random new nextInteger: range) + min - 1 ]
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> randomNotesFrom: anArray [
-
-	"return an array of self size of random notes from anArray"
-
-	^ (1 to: self) collect: [ :i | 
-		  anArray at: (Random new nextInteger: anArray size) ]
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> randomNotesFrom: anArray octaves: aNumber [
-
-	"return an array of self size of a random note from anArray + a random octave between 0 and aNumber"
-
-	^ (1 to: self) collect: [ :i | 
-		  (anArray at: (Random new nextInteger: anArray size))
-		  + ((Random new nextInteger: aNumber + 1) - 1 * 12) ]
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> randomTrigs [ 
-
-"must be implemented"
-
-| randoms |
-randoms := ( 1 to: self) collect: [ :i | Random new next rounded].
-^ randoms asSeq.
-
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> randomTrigsWithProbability: anIntegerProbability [
-
-	"generates an Array of random 0s and 1s of size: aNumber with a probability of having a trig of anIntegerProbability "
-
-	| r rytm |
-	rytm := Array new: self.
-	r := Random new.
-	(1 to: self) do: [ :i | 
-		r next < (anIntegerProbability / 100)
-			ifTrue: [ rytm at: i put: 1 ]
-			ifFalse: [ rytm at: i put: 0 ] ].
-
-	^ rytm asSeq
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> randomWalksOn: anArrayOfNotes [
-
-	"random walk inside an array of notes"
-
-	| start nix randomWalker r |
-	start := anArrayOfNotes at:
-		         ((anArrayOfNotes size / 2) rounded).
-	nix := anArrayOfNotes indexOf: start.
-	randomWalker := (1 to: self) collect: [ :i | 
-		                r := Random new next.
-		                r > 0.5
-			                ifTrue: [ 
-				                nix := (nix + 1 ) min: (anArrayOfNotes size) ]
-			                ifFalse: [ 
-				                 nix := (nix -1) max: 1 ].
-
-
-		                anArrayOfNotes at: nix ].
-	^ randomWalker
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> randoms [
-"generates an Array of random values in the range (0,1) of size: aNumber, whith only 2 decimal places"
-	| r |
-	r := Random new.
-	^ (1 to: self) collect: [ :i | ((r next ) printShowingDecimalPlaces: 2) asNumber].
 ]
 
 { #category : #'*LiveCoding' }

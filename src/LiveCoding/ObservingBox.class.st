@@ -36,10 +36,12 @@ ObservingBox >> initialize [
 { #category : #subscription }
 ObservingBox >> subscribeTo: anAnnouncer [
 
-	| rand |
 	anAnnouncer when: OSCMsgReceivedAnnouncement do: [ 
-		rand := #( 0 255 ) at: (Random new nextInteger: 2).
-		self color: (Color r: rand g: rand b: rand).
-		self box size: ((OSCMsgReceivedAnnouncement values at: #'/snareGate') * 400).
+		| kickG |
+		kickG := (OSCMsgReceivedAnnouncement values at: #'/kickGate') * 255.
+		self color: (Color r: kickG g: kickG b: kickG).
+		"(OSCMsgReceivedAnnouncement values at: #'/kickGate') * 255"
+		self box size:
+			(OSCMsgReceivedAnnouncement values at: #'/snareGate') * 400.
 		self signalUpdate ]
 ]

@@ -128,6 +128,16 @@ newArray := self class new: (self size).
 ]
 
 { #category : #'*LiveCoding' }
+Array >> randomOctaves: anInteger [
+
+	| newArray |
+	newArray := (1 to: self size) collect: [ :i | 
+		            (self at: i)
+		            + (12 * (Random new nextInteger: anInteger - 1)) ].
+	^ newArray
+]
+
+{ #category : #'*LiveCoding' }
 Array >> root: anIntegerRoot octaves: anIntegerOctave [
 | x |
 x := OrderedCollection new.
