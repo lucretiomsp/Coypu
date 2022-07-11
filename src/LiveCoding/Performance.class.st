@@ -197,7 +197,7 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 						  ifFalse: [ nil ] ]
 				  ifFalse: [ 
 					  (value at: (step modulo: value size)) toKyma: key asString.
-					  (Delay forSeconds: aRateInSeconds) wait ] ].
+					   ] ].
 
 		  "step is incrementing in any case"
 		  step := step + 1 ] ] forkAt: Processor timingPriority
