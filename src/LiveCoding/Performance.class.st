@@ -175,7 +175,7 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 								  ifFalse: [ nil ].
 
 							  "experimental, for extra control parameter"
-							  value extra1 isArray
+							  value extra1 notNil
 								  ifTrue: [ 
 									  ((value extra1 at: 2) at:
 										   (value noteIndex modulo: value extra1Size)) toKyma:
@@ -183,7 +183,7 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 								  ifFalse: [ nil ].
 
 							  "new experimental, for second extra control"
-							  value extra2 isArray
+							  value extra2 notNil
 								  ifTrue: [ 
 									  ((value extra2 at: 2) at:
 										   (value noteIndex modulo: value extra2Size)) toKyma:
@@ -196,8 +196,7 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 							  "noteIndex := noteIndex + 1." ]
 						  ifFalse: [ nil ] ]
 				  ifFalse: [ 
-					  (value at: (step modulo: value size)) toKyma: key asString.
-					   ] ].
+				  (value at: (step modulo: value size)) toKyma: key asString ] ].
 
 		  "step is incrementing in any case"
 		  step := step + 1 ] ] forkAt: Processor timingPriority

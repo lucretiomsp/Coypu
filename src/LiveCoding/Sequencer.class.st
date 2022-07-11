@@ -9,7 +9,9 @@ Class {
 	#instVars : [
 		'seqKey',
 		'extra1String',
-		'extra2String'
+		'extra2String',
+		'extra1',
+		'extra2'
 	],
 	#category : #LiveCoding
 }
@@ -109,15 +111,28 @@ Sequencer >> durationsSize [
 
 { #category : #accessing }
 Sequencer >> extra1 [
-" returns the fifth array of the sequencer if there is one, otherwise returns false"
-(self size > 4)
-ifTrue: [ ^ (self at: 5)] ifFalse: [ ^ false ].
+
+	" returns extra1 if it is defined, otherwise returns a dummy array"
+
+	^ extra1
+]
+
+{ #category : #accessing }
+Sequencer >> extra1: anArrayWithStringAndArray [
+
+"example #('cutoff' #(99 111 87 56))"
+extra1 := anArrayWithStringAndArray .
 ]
 
 { #category : #accessing }
 Sequencer >> extra1Size [
 
-^ (((self at: 5) at: 2) size)	
+"return the size of the array of values for extra1"
+| values |
+values := extra1 at: 2.
+	^ extra1 notNil
+		  ifTrue: [ ^ values size ]
+		  ifFalse: [ ^ 1 ]
 ]
 
 { #category : #accessing }
@@ -128,15 +143,30 @@ extra1String := aString.
 
 { #category : #accessing }
 Sequencer >> extra2 [
-" returns the fifth array of the sequencer if there is one, otherwise returns false"
-(self size > 5)
-ifTrue: [ ^ (self at: 6)] ifFalse: [ ^ false ].
+
+	" returns extra1 if it is defined, otherwise returns a dummy array"
+
+	^ extra2
+]
+
+{ #category : #accessing }
+Sequencer >> extra2: anArrayWithStringAndArray [
+
+	"example #('cutoff' #(99 111 87 56))"
+
+	extra2 := anArrayWithStringAndArray
 ]
 
 { #category : #accessing }
 Sequencer >> extra2Size [
 
-^ (((self at: 6) at: 2) size)	
+		"return the size of the array of values for extra2"
+
+	| values |
+	values := extra1 at: 2.
+	^ extra1 notNil
+		  ifTrue: [ ^ values size ]
+		  ifFalse: [ ^ 1 ]
 ]
 
 { #category : #accessing }
