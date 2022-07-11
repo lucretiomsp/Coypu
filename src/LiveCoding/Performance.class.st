@@ -333,6 +333,13 @@ if you want to send out ccs
 
 ]
 
+{ #category : #removing }
+Performance >> remove: aKey [
+"shorter version of removeKey:"
+
+self removeKey: aKey ifAbsent: [  ] 
+]
+
 { #category : #accessing }
 Performance >> visualization [
 
