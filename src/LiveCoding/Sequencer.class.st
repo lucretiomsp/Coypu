@@ -20,16 +20,22 @@ Class {
 	#category : #'LiveCoding-Sequencers'
 }
 
-{ #category : #copying }
+{ #category : #combination }
 Sequencer >> , anotherSequencer [
-"combine the gates of two sequencers, returns an array"
-| newGates newNotes newDurations notes1 notes2|
-notes1 := (self at: 2).
-notes2:= (anotherSequencer  at: 2).
-newGates := (self at: 1), (anotherSequencer at: 1).
-newDurations := (self at: 3), (anotherSequencer at: 3).
-newNotes := notes1, notes2.
-^ Sequencer with: newGates with: newNotes with: newDurations with: 0.
+
+	"combine the gates of two sequencers, returns an array"
+
+	| newGates newNotes newDurations notes1 notes2 |
+	notes1 := self notes.
+	notes2 := anotherSequencer notes.
+	newGates := self gates , anotherSequencer gates.
+	newDurations := self durations , anotherSequencer durations.
+	newNotes := notes1 , notes2.
+	^ self class new
+		  gates: newGates;
+		  notes: newNotes;
+		  durations: newDurations;
+		  noteIndex: 0
 ]
 
 { #category : #comparing }
@@ -45,9 +51,9 @@ the first element of the array should be a string - for example 'Index'' - the s
 { #category : #'as yet unclassified' }
 Sequencer >> > anArray [
 
-" change notes in the sequencer - polysemic binary version of notes:"
-^ (Sequencer with: (self at: 1) with: anArray with: #(1) with: 0).
+	" change notes in the sequencer - polysemic binary version of notes:"
 
+	notes := anArray
 ]
 
 { #category : #controlling }
@@ -339,7 +345,11 @@ Sequencer >> transpose: aNumberOfSemitones [
 
 	| melody |
 	melody := self notes.
-	self notes: (melody + aNumberOfSemitones)
+	^ self class new
+		  gates: self gates;
+		  notes: melody + aNumberOfSemitones;
+		  durations: self durations;
+		  noteIndex: self noteIndex 
 ]
 
 { #category : #'as yet unclassified' }

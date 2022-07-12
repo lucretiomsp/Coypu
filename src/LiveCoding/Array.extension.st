@@ -59,9 +59,11 @@ Array >> asSeq [
 
 	"duration now expressed in number of steps"
 
-	^ Sequencer new 
+	| numberOfNotes |
+	numberOfNotes := Array new: self size withAll: 60.
+	^ Sequencer new
 		  gates: self;
-		  notes: #( 60 );
+		  notes: numberOfNotes;
 		  durations: #( 1 );
 		  noteIndex: 0
 
