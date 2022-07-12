@@ -11,9 +11,13 @@ Class {
 		'extra1String',
 		'extra2String',
 		'extra1',
-		'extra2'
+		'extra2',
+		'notes',
+		'durations',
+		'noteIndex',
+		'gates'
 	],
-	#category : #LiveCoding
+	#category : #'LiveCoding-Sequencers'
 }
 
 { #category : #copying }
@@ -97,16 +101,20 @@ Sequencer >> duration [
 
 { #category : #accessing }
 Sequencer >> durations [
-" returns the third array of the sequencer if there is one, otherwise returns false"
-(self size > 2)
-ifTrue: [ ^ (self at: 3)] ifFalse: [ ^ false ].
 
+^ durations
+]
+
+{ #category : #accessing }
+Sequencer >> durations: anArray [
+
+durations := anArray .
 ]
 
 { #category : #accessing }
 Sequencer >> durationsSize [
 
-^ ((self at: 3) size)
+	^ durations size
 ]
 
 { #category : #accessing }
@@ -178,26 +186,27 @@ extra2String := aString.
 { #category : #accessing }
 Sequencer >> gates [
 
-^ (self at: 1)
+	^ gates
 ]
 
 { #category : #'as yet unclassified' }
 Sequencer >> gates: aRhythm [
-"change the rhythm inside the sequencer".
-self at:1 put: aRhythm.
+
+	"change the rhythm inside the sequencer"
+
+	gates := aRhythm
 ]
 
 { #category : #accessing }
 Sequencer >> gatesSize [
 
-^ ((self at: 1) size)
+	^ gates size
 ]
 
 { #category : #testing }
 Sequencer >> isSequencer [
 
-(((self size) > 1) & ((self at: 1) isArray ))
-ifTrue: [  ^ true ] ifFalse: [ ^ false ]
+^ true
 ]
 
 { #category : #accessing }
@@ -209,22 +218,33 @@ Sequencer >> note [
 { #category : #accessing }
 Sequencer >> noteIndex [
 
-" returns the fourth array of the sequencer if there is one, otherwise returns 0.
+	" returns the fourth array of the sequencer if there is one, otherwise returns 0.
 noteIndex is used to play the folloowing note in the array. Only if there is a trig in the gates the noteIndex  will be incremented"
-(self size > 3)
-ifTrue: [ ^ (self at: 4)] ifFalse: [ ^ 0 ].
+
+^ noteIndex
+]
+
+{ #category : #accessing }
+Sequencer >> noteIndex: anInteger [
+
+	" returns the fourth array of the sequencer if there is one, otherwise returns 0.
+noteIndex is used to play the folloowing note in the array. Only if there is a trig in the gates the noteIndex  will be incremented"
+
+noteIndex := anInteger
 ]
 
 { #category : #accessing }
 Sequencer >> notes [
 
-^ (self at: 2)
+	^ notes
 ]
 
 { #category : #'as yet unclassified' }
 Sequencer >> notes: anArray [
-" change notes in the sequencer"
-^ (Sequencer with: (self at: 1) with: anArray with: #(1) with: 0).
+
+	" change notes in the sequencer"
+
+	notes := anArray
 ]
 
 { #category : #'as yet unclassified' }
@@ -236,7 +256,7 @@ Sequencer >> notes: anArrayOfNotes durs: anArrayOfDurations [
 { #category : #accessing }
 Sequencer >> notesSize [
 
-^ ((self at: 2) size)
+	^ notes size
 ]
 
 { #category : #counting }
@@ -261,7 +281,7 @@ Sequencer >> offset: aNumber [
 	self notes: (melody offset: aNumber)
 ]
 
-{ #category : #'*LiveCoding' }
+{ #category : #'as yet unclassified' }
 Sequencer >> randomCounterPoint [
 
 	" creates aSequencer of trigs randomly counterpointed with self array"

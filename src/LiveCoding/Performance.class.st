@@ -191,7 +191,7 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 								  ifFalse: [ nil ].
 
 
-							  value at: 4 put: value noteIndex + 1
+							 value noteIndex:  value noteIndex + 1
 
 							  "noteIndex := noteIndex + 1." ]
 						  ifFalse: [ nil ] ]
@@ -240,13 +240,13 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 
 
 							  "experimental, for extra control parameter"
-							  value extra1 isArray
+							  value extra1 notNil
 								  ifTrue: [ 
 									  ((value extra1 at: 2) at:
 										   (value noteIndex modulo: value extra1Size)) toLocal:
 										  (key asString , value extra1 at: 1) ]
 								  ifFalse: [ nil ].
-							  value at: 4 put: value noteIndex + 1 ]
+							  value noteIndex:  value noteIndex + 1 ]
 						  ifFalse: [ nil ] ]
 				  ifFalse: [ 
 				  (value at: (step modulo: value size)) toLocal: key asString ] ].
@@ -294,7 +294,7 @@ if you want to send out ccs
 
 
 							  "sends a ControlChange message on the same channel, if provided"
-							  value extra1 isArray
+							  value extra1 notNil
 								  ifTrue: [ 
 									  aMIDISender
 										  sendCC: (value extra1 at: 1)
@@ -305,7 +305,7 @@ if you want to send out ccs
 								  ifFalse: [ nil ].
 
 							  "sends another ControlChange message on the same channel, if provided"
-							  value extra2 isArray
+							  value extra2 notNil
 								  ifTrue: [ 
 									  aMIDISender
 										  sendCC: (value extra2 at: 1)
@@ -316,7 +316,7 @@ if you want to send out ccs
 								  ifFalse: [ nil ].
 
 							  "advance"
-							  value at: 4 put: value noteIndex + 1
+							  value noteIndex: value noteIndex + 1
 
 							  "noteIndex := noteIndex + 1." ]
 						  ifFalse: [ nil ] ]
@@ -327,9 +327,7 @@ if you want to send out ccs
 						  onChannel: (key asString at: 3) digitValue ] ].
 
 		  "step is incrementing in any case"
-		  step := step + 1 ] ] forkAt: Processor timingPriority.
-
-
+		  step := step + 1 ] ] forkAt: Processor timingPriority
 ]
 
 { #category : #removing }

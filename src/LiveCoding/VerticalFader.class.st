@@ -12,7 +12,7 @@ Class {
 		'maxValue',
 		'cursorColor'
 	],
-	#category : #LiveCoding
+	#category : #'LiveCoding-GUI'
 }
 
 { #category : #'instance creation' }
@@ -35,6 +35,11 @@ VerticalFader class >> newWithAddress: anAddress range: anArrayWithMinAndMax [
 		minValue: (anArrayWithMinAndMax  at: 1);
 		maxValue: (anArrayWithMinAndMax  at: 2);
 		yourself
+]
+
+{ #category : #accessing }
+VerticalFader >> address [ 
+^ faderAddress 
 ]
 
 { #category : #accessing }

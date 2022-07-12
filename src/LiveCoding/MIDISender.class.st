@@ -6,7 +6,7 @@ Class {
 		'defaultOutput',
 		'instance'
 	],
-	#category : #LiveCoding
+	#category : #'LiveCoding-MIDI'
 }
 
 { #category : #'as yet unclassified' }

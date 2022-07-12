@@ -54,11 +54,18 @@ rhythm := Rhythm new: (self size).
 
 { #category : #'*LiveCoding' }
 Array >> asSeq [
-"returns Sequencer with default note 60nn and default durations 1/16th and noteIndex = 0"
-"duration now expressed in number of steps"
-^ (Sequencer with: self with: #(60) with: #(1) with: 0)
 
-" durations formerly in fraction of bar
+	"returns Sequencer with default note 60nn and default durations 1/16th and noteIndex = 0"
+
+	"duration now expressed in number of steps"
+
+	^ Sequencer new 
+		  gates: self;
+		  notes: #( 60 );
+		  durations: #( 1 );
+		  noteIndex: 0
+
+	" durations formerly in fraction of bar
 (Sequencer with: self with: #(60) with: #(0.125) with: 0).
 "
 ]
@@ -96,8 +103,8 @@ Array >> into: anotherArray [
 
 { #category : #'*LiveCoding' }
 Array >> isSequencer [
-" answer true if the Collection is a Sequencer from the LIveCodingPackage"
-((self at: 2) isArray) ifTrue: [ ^true ] ifFalse: [ ^false ]
+
+	^ false
 ]
 
 { #category : #'*LiveCoding' }

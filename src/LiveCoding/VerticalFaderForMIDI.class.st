@@ -8,7 +8,7 @@ Class {
 		'faderLabel',
 		'visualization'
 	],
-	#category : #LiveCoding
+	#category : #'LiveCoding-GUI'
 }
 
 { #category : #'instance creation' }

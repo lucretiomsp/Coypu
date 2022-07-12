@@ -25,8 +25,11 @@ box := anRSBox
 ObservingBox >> initialize [
 
 	super initialize.
-	self color: #black.
-	self box: (RSBox new size: 140; color: #red).
+	
+	self color: Color transparent. " #black ".
+	self box: (RSBox new
+			 size: 140;
+			 color: #red).
 	self add: box.
 	self when: RSMouseClick do: [ 
 		self box size: (Random new nextInteger: 400).
@@ -39,7 +42,7 @@ ObservingBox >> subscribeTo: anAnnouncer [
 	anAnnouncer when: OSCMsgReceivedAnnouncement do: [ 
 		| kickG |
 		kickG := (OSCMsgReceivedAnnouncement values at: #'/kickGate') * 255.
-		self color: (Color r: kickG g: kickG b: kickG).
+		"self color: (Color r: kickG g: kickG b: kickG)."
 		"(OSCMsgReceivedAnnouncement values at: #'/kickGate') * 255"
 		self box size:
 			(OSCMsgReceivedAnnouncement values at: #'/snareGate') * 400.

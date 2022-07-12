@@ -5,7 +5,7 @@ Class {
 		'midiIn',
 		'defaultInput'
 	],
-	#category : #LiveCoding
+	#category : #'LiveCoding-MIDI'
 }
 
 { #category : #accessing }

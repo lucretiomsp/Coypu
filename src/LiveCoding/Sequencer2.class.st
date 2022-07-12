@@ -16,7 +16,7 @@ Class {
 		'durations',
 		'index'
 	],
-	#category : #LiveCoding
+	#category : #'LiveCoding-Sequencers'
 }
 
 { #category : #copying }

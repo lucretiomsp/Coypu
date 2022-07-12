@@ -5,7 +5,7 @@ Class {
 		'destination',
 		'parameter'
 	],
-	#category : #LiveCoding
+	#category : #'LiveCoding-GUI'
 }
 
 { #category : #'instance creation' }
