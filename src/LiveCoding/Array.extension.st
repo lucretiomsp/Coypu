@@ -60,7 +60,7 @@ Array >> asSeq [
 	"duration now expressed in number of steps"
 
 	| numberOfNotes |
-	numberOfNotes := Array new: self size withAll: 60.
+	numberOfNotes := Array new: self trigs withAll: 60.
 	^ Sequencer new
 		  gates: self;
 		  notes: numberOfNotes;
@@ -185,6 +185,20 @@ Array >> toKyma: aString [
 
 "this message alls sends an OSC message called aStringSize"
 	
+]
+
+{ #category : #'*LiveCoding' }
+Array >> trigs [
+
+	"return the number of trigs (value  = 1),  of the array"
+
+	| result |
+	result := 0.
+	(1 to: self size) do: [ :i | 
+		(self  at: i) = 1
+			ifTrue: [ result := result + 1 ]
+			ifFalse: [ nil ] ].
+	^ result
 ]
 
 { #category : #'*LiveCoding' }

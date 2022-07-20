@@ -1,5 +1,5 @@
 Class {
-	#name : #VerticalFaderForSC,
+	#name : #VerticalFaderForOSC,
 	#superclass : #VerticalFader,
 	#instVars : [
 		'destination',
@@ -9,7 +9,7 @@ Class {
 }
 
 { #category : #'instance creation' }
-VerticalFaderForSC class >> new: anArrayWithDestinationAndParameter [
+VerticalFaderForOSC class >> new: anArrayWithDestinationAndParameter [
 
 ^ (self new) 
 		destination: (anArrayWithDestinationAndParameter at: 1) ;
@@ -20,12 +20,12 @@ VerticalFaderForSC class >> new: anArrayWithDestinationAndParameter [
 ]
 
 { #category : #accessing }
-VerticalFaderForSC >> destination: aDestination [
+VerticalFaderForOSC >> destination: aDestination [
 destination  := aDestination
 ]
 
 { #category : #'event handling' }
-VerticalFaderForSC >> mouseMove: anEvent [
+VerticalFaderForOSC >> mouseMove: anEvent [
 
 | newLocation receiver keyword argument|
 
@@ -47,6 +47,6 @@ receiver perform: keyword withArguments: (Array with: argument )
 ]
 
 { #category : #accessing }
-VerticalFaderForSC >> parameter: aParameter [
+VerticalFaderForOSC >> parameter: aParameter [
 parameter := parameter
 ]

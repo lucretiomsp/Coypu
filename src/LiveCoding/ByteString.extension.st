@@ -131,6 +131,24 @@ ByteString >> toKymaAsNoteOn: aNoteNumber [
 ]
 
 { #category : #'*LiveCoding' }
+ByteString >> toKymaAsTrig [
+
+	" send an OSC message acting as a 10ms dutyCycle trigger"
+
+	| vcslabel |
+	"	pacaAddress := NetNameResolver stringFromAddress: (NetNameResolver 	addressForName:'beslime-691.local'). "
+	vcslabel := '/vcs/' , self , '/1'.
+	^ [ 
+	  (OSCMessage for: { 
+			   vcslabel.
+			   1.0 }) sendToAddressString: pacaAddress port: 8000.
+	  (Delay forSeconds: 0.01) wait.
+	  (OSCMessage for: { 
+			   vcslabel.
+			   0.0 }) sendToAddressString: pacaAddress port: 8000 ] fork
+]
+
+{ #category : #'*LiveCoding' }
 ByteString >> toLocalAsGate [
 	" send an OSC message that mimics the behaviour oa MIDI note on message, note is held for a default duration of 2 seconds"
 	| vcslabel localAddress  |
