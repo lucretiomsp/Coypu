@@ -1,3 +1,7 @@
+"
+MIDISender
+Use MIDISendere to send out MIDI events
+"
 Class {
 	#name : #MIDISender,
 	#superclass : #Object,

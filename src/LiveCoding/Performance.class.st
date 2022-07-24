@@ -137,6 +137,7 @@ Performance >> playKymaSequenceAt: aRateInSeconds for: aNumberOfSteps [
 an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 
 	| step bpm beatInSeconds gateTime |
+	'x' asPacaAddress .
 	"as in early hardware sequencers, default gatetime is 80% of the step duration"
 	bpm := 60 / (aRateInSeconds * 4).
 	gateTime := aRateInSeconds * 0.8.
@@ -191,7 +192,7 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 								  ifFalse: [ nil ].
 
 
-							 value noteIndex:  value noteIndex + 1
+							  value noteIndex: value noteIndex + 1
 
 							  "noteIndex := noteIndex + 1." ]
 						  ifFalse: [ nil ] ]

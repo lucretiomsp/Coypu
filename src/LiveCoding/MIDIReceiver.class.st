@@ -1,3 +1,7 @@
+"
+MIDIReceiver
+Use the MIDIReceiever to receive MIDI events.
+"
 Class {
 	#name : #MIDIReceiver,
 	#superclass : #Object,
