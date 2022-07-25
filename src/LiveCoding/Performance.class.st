@@ -141,7 +141,8 @@ Performance >> playKymaSequenceAt: aRateInSeconds for: aNumberOfSteps [
 an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 
 	| step bpm beatInSeconds gateTime |
-	'x' asPacaAddress .
+	'x' asPacaAddress. "if PacaAddress is not stored yet"
+	self resetAllSequencers . "reset all the sequencers"
 	"as in early hardware sequencers, default gatetime is 80% of the step duration"
 	bpm := 60 / (aRateInSeconds * 4).
 	gateTime := aRateInSeconds * 0.8.
@@ -340,6 +341,15 @@ Performance >> remove: aKey [
 "shorter version of removeKey:"
 
 self removeKey: aKey ifAbsent: [  ] 
+]
+
+{ #category : #initialization }
+Performance >> resetAllSequencers [
+"reset noteIndex fro all the sequencers in the Performance. "
+	self keysAndValuesDo: [ :key :value | 
+		value isSequencer
+			ifTrue: [ value noteIndex: 0 ]
+			ifFalse: [ nil ] ]
 ]
 
 { #category : #accessing }

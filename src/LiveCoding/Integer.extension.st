@@ -72,6 +72,7 @@ Integer >> breves [
 
 	| result |
 	result := '80000000' pattern times: self.
+	result durations: #(32).
 	^ result
 ]
 
@@ -195,7 +196,8 @@ Integer >> semibreves [
 
 	| result |
 	result := '8000' pattern times: self.
-	^ result 
+	result durations: #(16).
+	^ result
 ]
 
 { #category : #'*LiveCoding' }
