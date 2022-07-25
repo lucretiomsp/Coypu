@@ -38,9 +38,13 @@ maxLength := valuesSizes inject: 0 into: [ :a :c | (a > c) ifTrue: [ a ] ifFalse
 ]
 
 { #category : #playing }
-Performance >> mute: anArrayOfKeys [
-"remove all the keys in the arrayOfKeys from the Performance"
-anArrayOfKeys do: [ :i | self removeKey: i ifAbsent: [ ] ] 
+Performance >> mute: aKeyOrAnArrayOfKeys [
+
+	"remove all the keys in the arrayOfKeys from the Performance or remove just a single key"
+   aKeyOrAnArrayOfKeys isArray ifTrue:
+	[aKeyOrAnArrayOfKeys  do: [ :i | self removeKey: i ifAbsent: [  ] ]]
+ifFalse:  [ self removeKey: aKeyOrAnArrayOfKeys  ]
+
 ]
 
 { #category : #playing }

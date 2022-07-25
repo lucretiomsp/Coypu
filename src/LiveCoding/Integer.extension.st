@@ -67,10 +67,12 @@ Integer >> bpm [
 
 { #category : #'*LiveCoding' }
 Integer >> breves [
-" returns self number of brevesin the first position of the bars"
-| result |
-result := (('80000000' pattern ) times: self) .
-^ result asSeq .
+
+	" returns self number of brevesin the first position of the bars"
+
+	| result |
+	result := '80000000' pattern times: self.
+	^ result
 ]
 
 { #category : #'*LiveCoding' }
@@ -102,60 +104,6 @@ resultSize := result  size.
 ]
 
 { #category : #'*LiveCoding' }
-Integer >> debugSequenceFor: aDictionaryOfPatterns rate: aRateInSeconds [
-" DEBUG THE PROCESS THAT iterates over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
-an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
-| step noteIndex bpm beatInSeconds|
-bpm := 60 / (aRateInSeconds * 4).
-beatInSeconds := aRateInSeconds * 4.
-step := 0.
-noteIndex := 0. 
-"note index is inside the sequencer"
-
-
-[ 	
-	bpm toLocal: 'BPM'.
-	self timesRepeat: [ (Delay forSeconds: aRateInSeconds   ) wait.
-		" test if dictionary values is an Array od two arrays or as defined, a sequence"
-		 
-		aDictionaryOfPatterns keysAndValuesDo: [ :key : value |
-		(value isSequencer) ifTrue: [  	
-		"first of all, the noteIndex is equal to the 4th value of the Dictionary/Performance"
-		
-		Transcript show: 'Step is '; tab; show: step; cr.
-		
-		
-		(((value gates) at: (step modulo: (value gatesSize ))) = 1)
-		ifTrue:
-		[ 
-			"first of all check the noteIndex"
-			Transcript show: ((key asString),'Gate'); space; show: 'Note Index is '; tab; show: (value noteIndex); cr.
-			
-		
-			Transcript show: 0; tab; show: ((key asString),'Gate'); tab; show: 1; tab; show: (' / '); tab; 
-			show: ((value notes) at: ((value noteIndex) modulo: (value notesSize))); tab; tab;
-			show: ((key asString),'Note'); 
-			tab; show: ' / '.		
-		
-		((value durations) isArray) ifTrue:
-		[ Transcript  show: ((value durations ) at: (( value noteIndex) modulo: (value durationsSize))); show: ((key asString),'Duration'); tab; 		cr. ] ifFalse: [Transcript cr].
-		
-		value at: 4 put: ((value noteIndex) + 1).
-		"noteIndex := noteIndex + 1."
-		] 
-		ifFalse: [nil]]
-		ifFalse: [(value at: (step modulo: (value size))) toLocal: (key asString) ] 
-		].
-	
-		"step is incrementing in any case"
-		step := step + 1.
-		
-	]
-	
-	] forkAt: (Processor timingPriority )
-]
-
-{ #category : #'*LiveCoding' }
 Integer >> downbeats [
 
 	"create a sequence of self downbeats"
@@ -163,63 +111,6 @@ Integer >> downbeats [
 	
 	^ ((1 to: self) collect: [ :i | ((i rem: 4) = 1) asBit ]) asRhythm
 		  asSeq
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> expSequenceFor: aDictionaryOfPatterns rate: aRateInSeconds [
-"test"
-" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
-an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
-| step  bpm beatInSeconds gateTime|
-"as in early hardware sequencers, default gatetime is 80% of the step duration"
-bpm := 60 / (aRateInSeconds * 4).
-beatInSeconds := aRateInSeconds * 4.
-gateTime := aRateInSeconds * 0.8.
-step := 0.
-
-
-^
-[ 	
-	bpm toKyma: 'BPM'.
-	self timesRepeat: [ (Delay forSeconds: aRateInSeconds   ) wait.
-		" test if dictionary values is an Array of two arrays or as defined, a sequence"
-		 
-		aDictionaryOfPatterns keysAndValuesDo: [ :key : value |
-		(value isSequencer) ifTrue: [  	
-		(((value gates) at: (step modulo: (value gatesSize ))) = 1)
-		ifTrue:
-		[ (key asString) toKymaAsGate: ( gateTime * ((value durations ) at: (value noteIndex modulo: (value durationsSize)))) note: ((value notes) at: ((value    noteIndex ) modulo: (value notesSize))).
-		
-		"maybe this part is not useful anymore"
-		((value durations) isArray) ifTrue:
-		[((value durations ) at: (value noteIndex modulo: (value durationsSize))) toKyma: ((key asString),'Duration')] ifFalse: [nil].
-
-     "new experimental for extra control"
-     ((value extra1) isArray) ifTrue:
-		[ ((value extra1 at: 2 ) at: (value noteIndex modulo: (value extra1Size))) toKyma: ((key asString),(value extra1 at: 1))] ifFalse: [nil].
-		
-		"new experimental for second extra control"
-     ((value extra2) isArray) ifTrue:
-		[ ((value extra2 at: 2 ) at: (value noteIndex modulo: (value extra2Size))) toKyma: ((key asString),(value extra2 at: 1))] ifFalse: [nil].
-		
-		
-		value at: 4 put: ((value noteIndex) + 1).
-		
-		"noteIndex := noteIndex + 1."
-		] 
-		ifFalse: [nil]]
-	"end of the isSequencer true condition"
-		ifFalse: [(value at: (step modulo: (value size))) toKyma: (key asString). (Delay forSeconds: aRateInSeconds   )wait. ] 
-		].
-	
-		"step is incrementing in any case"
-		step := step + 1.
-		
-	]
-	
-	] forkAt: (Processor timingPriority )
-
-
 ]
 
 { #category : #'*LiveCoding' }
@@ -231,86 +122,6 @@ pattern := #(1 0 0 1 0 0 1 0 0 0 1 0 0 0 1 0 ).
 ^ (((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm) asSeq .
 
 "implement shifting to the left"
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> localSequenceFor: aDictionaryOfPatterns rate: aRateInSeconds [
-" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
-an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
-
-"if the value in the dictionay is a Sequencer, an OSC message is sent to the key as OSC address with two arguments, one for the gate, and one for the note. the gate stays at 1 for the duration selected."
-| step  bpm beatInSeconds gateTime|
-bpm := 60 / (aRateInSeconds * 4).
-gateTime := aRateInSeconds * 0.8.
-beatInSeconds := aRateInSeconds * 4.
-step := 0.
-
-
-
-[ 	
-	bpm toLocal: 'BPM'.
-	self timesRepeat: [ (Delay forSeconds: aRateInSeconds   )wait.
-		" test if dictionary values is an Array od two arrays or as defined, a sequence"
-		 
-		aDictionaryOfPatterns keysAndValuesDo: [ :key : value |
-		(value isSequencer) ifTrue: [
-	
-		(((value gates) at: (step modulo: (value gatesSize ))) = 1)
-		ifTrue:
-		[ (key asString) toLocalFor: ( gateTime * ((value durations ) at: (value noteIndex modulo: (value durationsSize)))) note: ((value notes) at: ((value       noteIndex ) modulo: (value notesSize))).
-		
-		
-		" experimental, for extra control parameter"
-		((value extra1) isArray) ifTrue:
-		[((value extra1 at: 2 ) at: ((value noteIndex) modulo: (value extra1Size))) toLocal: ((key asString), value extra1 at: 1 )] ifFalse: [nil].
-		value at: 4 put: ((value noteIndex) + 1).
-		
-		] 
-		ifFalse: [nil]]
-		ifFalse: [(value at: (step modulo: (value size))) toLocal: (key asString) ] 
-		].
-	
-		"step is incrementing in any case"
-		step := step + 1.
-		
-	]
-	
-	] forkAt: (Processor timingPriority )
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> localStepsProcessFor: aDictionaryOfPatterns rate: aRateInSeconds [
-
-	" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address withou slash that will be sent out.
-the OSC message with the address /bpm and the value of aRateInSeconds converte to BeatPerMinutes is also sent.
-"
-
-	| maxLength bpm |
-	self
-		deprecated: 'Use #localSequenceFor:rate: instead'
-		on: '26 July 2021'
-		in:
-		'Pharo-9.0.0+build.1539.sha.9b91f54a6e46f7518d14baf92fe0698c8a3260a3 (64 Bit)'.
-	bpm := 60 / (aRateInSeconds * 4).
-	maxLength := 256. "~ number ofsteps"
-	[ 
-	| index |
-	bpm toLocal: 'bpm'.
-	index := 0.
-	self timesRepeat: [ 
-		(Delay forSeconds: aRateInSeconds / 2) wait.
-		aDictionaryOfPatterns keysAndValuesDo: [ :key :value | 
-			(value at: (index rem: value size) + 1) toLocal: key asString ].
-		(Delay forSeconds: aRateInSeconds / 2) wait.
-
-
-		aDictionaryOfPatterns keysDo: [ :key | 
-			(key asString includesSubstring: 'Gate') ifTrue: [ 
-				0 toLocal: key asString ] ].
-
-		"increment of one but within the boundaries of the maxLength"
-		index := index + 1 rem: maxLength ] ] forkAt:
-		Processor timingPriority
 ]
 
 { #category : #'*LiveCoding' }

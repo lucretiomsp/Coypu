@@ -1,6 +1,7 @@
 "
-A Sequencer is a bidimensional Array containing two arrays, to feed the sequenceFor: aDictionary rate: aNumber method.
-The first array contains the gates, the second array contains the notes, the third array contains the durations.
+A Sequencer contains gates, notes, duration and a noteIndex. extra1 and extra2 controls can be added.
+The Sequencer is the basi unit to play a Performance.
+It is conceived as a Digital Audio Workstation track.
 "
 Class {
 	#name : #Sequencer,
@@ -195,7 +196,7 @@ Sequencer >> gates [
 	^ gates
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #modifying }
 Sequencer >> gates: aRhythm [
 
 	"change the rhythm inside the sequencer"
@@ -245,7 +246,7 @@ Sequencer >> notes [
 	^ notes
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #modifying }
 Sequencer >> notes: anArray [
 
 	" change notes in the sequencer"
@@ -287,6 +288,19 @@ Sequencer >> offset: aNumber [
 	self notes: (melody offset: aNumber)
 ]
 
+{ #category : #combination }
+Sequencer >> progression: anArrayOfIntervals [
+
+	"return a new Sequencer that join together the original sequencer with as many transpositions of self  for as many intervals in anArrayOfIntervals"
+
+	| oldSeq newSeq |
+	oldSeq := self.
+	newSeq := self.
+	(1 to: anArrayOfIntervals size) do: [ :i | 
+		newSeq := newSeq , (oldSeq transpose: (anArrayOfIntervals at: i)) ].
+	^ newSeq
+]
+
 { #category : #'as yet unclassified' }
 Sequencer >> randomCounterPoint [
 
@@ -312,19 +326,23 @@ Sequencer >> stepIndex [
 	self at: 4 put: self noteIndex + 1
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #replication }
 Sequencer >> times: anInteger [
 
-"returns a sequencer containing anInteger repetition of self"
-| newGates newNotes newDurations |
-newGates := (self gates times: anInteger) asRhythm.
-newNotes := self notes times: anInteger.
-newDurations := self durations times: anInteger.
+	"returns a sequencer containing anInteger repetition of self"
+
+	| newGates newNotes newDurations |
+	newGates := (self gates times: anInteger) asRhythm.
+	newNotes := self notes times: anInteger.
+	newDurations := self durations times: anInteger.
 
 
 
-^ (Sequencer with: newGates with: newNotes with: newDurations with: 0).
-
+	^ Sequencer new
+		  gates: newGates;
+		  notes: newNotes;
+		  durations: newDurations;
+		  noteIndex: 0
 ]
 
 { #category : #'as yet unclassified' }
@@ -340,7 +358,7 @@ Sequencer >> to: aSymbol with: anArray [
 
 ]
 
-{ #category : #accessing }
+{ #category : #modifying }
 Sequencer >> transpose: aNumberOfSemitones [
 
 	| melody |
@@ -359,4 +377,18 @@ Sequencer >> trigs [
 result := 0.
 (1 to: (self gates size)) do: [ :i | ((self gates at: i) = 1) ifTrue: [result := result + 1] ifFalse: [ nil]].
 ^ result.
+]
+
+{ #category : #random }
+Sequencer >> withRandomNotesFrom: anArray root: aRootNote octaves: aNumber [
+
+	"return an array of self size of a random note from anArray of note numbers with root aRootNote, and aNumber octave range"
+
+	| intervals melody |
+	intervals := (1 to: self numberOfGates) collect: [ :i | 
+		             (anArray at: (Random new nextInteger: anArray size))
+		             + ((Random new nextInteger: aNumber + 1) - 1 * 12) ].
+	melody := intervals + aRootNote.
+	self notes: melody.
+	
 ]

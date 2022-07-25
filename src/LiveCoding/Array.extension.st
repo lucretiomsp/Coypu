@@ -73,22 +73,6 @@ Array >> asSeq [
 ]
 
 { #category : #'*LiveCoding' }
-Array >> asSeq2 [
-
-	"returns Sequencer with default note 60nn and default durations 1/16th and noteIndex = 0"
-
-	"duration now expressed in number of steps"
-| newSequencer |
-newSequencer := Sequencer2 new.
-newSequencer gates: self;
-		  notes: #( 60 );
-		  durations: #( 1 );
-		  index: 0.
-
-	" durations formerly in fraction of bar" 
-]
-
-{ #category : #'*LiveCoding' }
 Array >> innestedWithTrigs: anotherArray [
 " add trigs in self if anotherArray has trigs at indexes where self have not"
 (1 to: (self size)) do: [ :i  |  self at: i put: (1 min: ((self at: i) + (anotherArray at: i)))].
