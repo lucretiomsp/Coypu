@@ -190,12 +190,12 @@ pattern := #(1 0 0 1 0 0 0 1 0 0 1 0 1 0 0 0 ).
 
 { #category : #'*LiveCoding' }
 Integer >> semibreves [
-" returns self number of semibrevesin the first position of the bars"
-| result |
 
-result := (('8000' pattern ) times: self) asRhythm .
-^ result asSeq.
+	" returns self number of semibrevesin the first position of the bars"
 
+	| result |
+	result := '8000' pattern times: self.
+	^ result 
 ]
 
 { #category : #'*LiveCoding' }

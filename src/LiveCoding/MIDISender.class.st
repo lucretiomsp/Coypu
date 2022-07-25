@@ -1,6 +1,10 @@
 "
 MIDISender
 Use MIDISendere to send out MIDI events
+
+example
+mout := MIDISender new.
+mout openMidiOutWithDevice: 5.
 "
 Class {
 	#name : #MIDISender,
