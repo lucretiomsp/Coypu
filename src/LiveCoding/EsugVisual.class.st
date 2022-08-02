@@ -9,10 +9,24 @@ Class {
 		'nodez',
 		'shapezSize',
 		'shapezColorRed',
-		'layoutz'
+		'layoutz',
+		'shapez2',
+		'layoutz2'
 	],
-	#category : #'LiveCoding-Announcements'
+	#category : #'LiveCoding-Visuals'
 }
+
+{ #category : #'instance creation' }
+EsugVisual class >> for: anObservable [
+
+	" Initialize a new EsugVisual, connect my visualization to anObservable Annoucer and open it"
+anObservable announcer isNotNil ifTrue: 
+	[self new
+		subscribeTo: anObservable announcer;
+		zoomToFit;
+		open]
+	ifFalse: [ ] 
+]
 
 { #category : #'as yet unclassified' }
 EsugVisual >> changeLayout: aTypeofLayout [
@@ -30,27 +44,51 @@ EsugVisual >> changeLayout: aTypeofLayout [
 { #category : #initialization }
 EsugVisual >> initialize [
 
+	| center |
+	center := 0.
 	super initialize.
 
-	self color: #transparent. " transparent"
+	self color: #black. " transparent"
 	self shapezSize ifNil: [ shapezSize := 30 ].
 	self shapezColorRed ifNil: [ shapezColorRed := 0 ].
-	self nodez ifNil: [ nodez := 1 to: 5 ].
-	self layoutz ifNil: [ layoutz := RSCircleLayout new radius: 120 ].
-
+	self nodez ifNil: [ nodez := 1 to: 16 ].
+	self layoutz ifNil: [ layoutz := RSCircleLayout new radius: 220 ].
+	self layoutz2 ifNil: [ layoutz2 := RSRectanglePackLayout new ].
 
 
 	shapez := RSCircle models: nodez.
+	shapez2 := RSBox models: nodez.
+
 	shapez color: (Color r: shapezColorRed g: 0 b: 220).
+	shapez2 color: (Color r: 200 g: 110 b: 0).
 	shapez size: shapezSize.
-	self addAll: shapez.
-layoutz on: shapez
+	shapez2 size: 50.
+	self
+		addAll: shapez;
+		addAll: shapez2.
+	layoutz on: shapez.
+	shapez translateTo: center.
+
+	layoutz2 on: shapez2.
+	shapez2 translateTo: 0 @ 0
 ]
 
 { #category : #accessing }
 EsugVisual >> layoutz [
 
 	^ layoutz
+]
+
+{ #category : #accessing }
+EsugVisual >> layoutz2 [
+
+	^ layoutz2
+]
+
+{ #category : #accessing }
+EsugVisual >> layoutz2: anObject [
+
+	layoutz2 := anObject
 ]
 
 { #category : #accessing }
@@ -82,6 +120,18 @@ EsugVisual >> nodez: anInteger [
 EsugVisual >> shapez [
 
 	^ shapez
+]
+
+{ #category : #accessing }
+EsugVisual >> shapez2 [
+
+	^ shapez2
+]
+
+{ #category : #accessing }
+EsugVisual >> shapez2: anObject [
+
+	shapez2 := anObject
 ]
 
 { #category : #accessing }
@@ -127,6 +177,12 @@ EsugVisual >> subscribeTo: anAnnouncer [
 		"self color: (Color r: kickG g: kickG b: kickG)."
 		"(OSCMsgReceivedAnnouncement values at: #'/kickGate') * 255"
 		self shapezColorRed:
-			(OSCMsgReceivedAnnouncement values at: #'/snareGate') * 1
-		"self signalUpdate " ]
+			(OSCMsgReceivedAnnouncement values at: #'/snareGate') * 1.
+
+		self shapez2 size:
+			(OSCMsgReceivedAnnouncement values at: #'/chGate') * 36.
+
+
+
+		self signalUpdate  ]
 ]

@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'box'
 	],
-	#category : #'LiveCoding-Announcements'
+	#category : #'LiveCoding-Visuals'
 }
 
 { #category : #accessing }
