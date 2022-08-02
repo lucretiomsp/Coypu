@@ -57,6 +57,17 @@ Sequencer >> > anArray [
 	notes := anArray
 ]
 
+{ #category : #modifying }
+Sequencer >> allNotes: anInteger [
+
+	"fill sequencer notes with anArray with all equals notenumbers"
+
+	| newNotes |
+	newNotes := Array new: self numberOfGates.
+	1 to: newNotes size do: [ :i | newNotes at: i put: anInteger ].
+	self notes: newNotes.
+]
+
 { #category : #controlling }
 Sequencer >> and: anotherArray [
 " add array of  extravalues to the Sequencer

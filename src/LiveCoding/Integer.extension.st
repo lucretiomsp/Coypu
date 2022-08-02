@@ -357,18 +357,6 @@ rhythm := ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size)
 ]
 
 { #category : #'*LiveCoding' }
-Integer >> tumbao: aNoteNumberOrArrayOfNoteNumbers [
-" Creates a Sequencer with an array of self size of  habanera/tumbao rhytm pulses. With all notes equals to aNoteNumber.
-
-Better if the receiever is a multiple of eight."
-| pattern rhythm notes|
-pattern := #(1 0 0 1 1 0 1 0 ).
-notes := Array with:aNoteNumberOrArrayOfNoteNumbers .
-rhythm := ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm .
-^ Sequencer with: rhythm with: notes with: #(0.125).
-]
-
-{ #category : #'*LiveCoding' }
 Integer >> upbeats [
 "creates an Array of size=self  of values (0,1) with 1 to the position corresponding to a 4/4 upbeat rhythm"
 	^ (((1 to: self) collect: [ :i | (((i rem: 4) = 3)) asBit ]) asRhythm ) asSeq.
