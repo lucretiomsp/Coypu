@@ -13,7 +13,10 @@ Class {
 		'shapez2',
 		'shapez2Size',
 		'layoutz2',
-		'bassLine'
+		'bassLine',
+		'alanText',
+		'textAlpha',
+		'groupToFill1'
 	],
 	#category : #'LiveCoding-Visuals'
 }
@@ -24,17 +27,18 @@ EsugVisual class >> alanSpeech [
 	"convenience method that returns a String containing the initial speech"
 
 	| speech |
-	speech := 'The main thing about doing OOP work
-or any kind of programming work
-is that there has to be some
-exquisite blend
-between beauty and practicality
-there is no reason to sacrifice 
-either one of those and
-who are willing to sacrifice either one of those I don''t think really 
-get what computing is all about
-It is like saying I have really great ideas for painting but I am just gonna use a brush with no paint so my ideas will be represented by the gestures I make over the paper
-Dont tell any twentieth century artists that or they might decide to make a videotape of them doing that an putting it in a museum
+	speech := 'The main thing about doing OOP work /
+or any kind of programming work /
+is that there has to be some / 
+exquisite blend / 
+between beauty and practicality / 
+there is no reason to sacrifice /
+either one of those and /
+who are willing to sacrifice /  either one of those  / I dont think really 
+get /  what computing is all about / 
+It is like saying  / I have really great ideas for painting / but I am just gonna use / a brush with no paint /
+so my ideas will be represented / by the gestures I make over the paper / 
+Dont tell / any twentieth century artist / that / or they might decide to make a videotape of them doing that /  an putting it in a museum
 '.
 	^ speech
 ]
@@ -54,6 +58,11 @@ EsugVisual class >> for: anObservable [
 				openOnce ]
 		ifFalse: [  ].
 	^ canvas
+]
+
+{ #category : #accessing }
+EsugVisual >> alanText [
+^ alanText
 ]
 
 { #category : #accessing }
@@ -97,20 +106,32 @@ EsugVisual >> circleRadius: anInteger [
 	self signalUpdate
 ]
 
+{ #category : #accessing }
+EsugVisual >> groupToFill1 [
+
+	^ groupToFill1
+]
+
+{ #category : #accessing }
+EsugVisual >> groupToFill1: anObject [
+
+	groupToFill1 := anObject
+]
+
 { #category : #initialization }
 EsugVisual >> initialize [
 
 	| center |
 	center := 0.
 	super initialize.
-    
-   self visualizeAlanSpeech .
+	self initializeAlanSpeech.
 	self color: #black. " transparent"
 	self shapezSize ifNil: [ shapezSize := 30 ].
 	self shapezColorRed ifNil: [ shapezColorRed := 0 ].
 	self nodez ifNil: [ nodez := 1 to: 16 ].
 	self layoutz ifNil: [ layoutz := RSCircleLayout new radius: 220 ].
 	self layoutz2 ifNil: [ layoutz2 := RSRectanglePackLayout new ].
+	self groupToFill1: RSGroup new.
 
 	" bassline"
 	bassLine := RSLine new
@@ -138,6 +159,34 @@ EsugVisual >> initialize [
 
 	layoutz2 on: shapez2.
 	shapez2 translateTo: 0 @ 0
+]
+
+{ #category : #'sub item creating' }
+EsugVisual >> initializeAlanSpeech [
+
+
+	| r r2 r3 red blue words label |
+	alanText := RSGroup new.
+	textAlpha ifNil: [ textAlpha := 1.0 ].
+	words := self class alanSpeech substrings.
+	r := Random new.
+	r2 := Random new.
+	r3 := Random new.
+	words do: [ :w | 
+		label := RSLabel text: w.
+		red := r2 next.
+		blue := r3 next.
+		label color: ((Color r: red g: 0 b: blue) alpha: textAlpha).
+		label fontSize: (r nextInteger: 38) + 10.
+
+		
+		alanText add: label ].
+
+	RSRectanglePackLayout on: alanText.
+	"RSFlowLayout new
+		alignLabel;
+		on: alanText."
+
 ]
 
 { #category : #accessing }
@@ -168,6 +217,12 @@ EsugVisual >> layoutz: aLayout [
 EsugVisual >> nodez [
 
 	^ nodez
+]
+
+{ #category : #accessing }
+EsugVisual >> nodez1: anObject [
+
+	^ nodez := anObject
 ]
 
 { #category : #accessing }
@@ -242,6 +297,12 @@ EsugVisual >> shapezSize [
 ]
 
 { #category : #accessing }
+EsugVisual >> shapezSize1: anObject [
+
+	^ shapezSize := anObject
+]
+
+{ #category : #accessing }
 EsugVisual >> shapezSize: anInteger [
 
 	shapezSize := anInteger.
@@ -254,7 +315,8 @@ EsugVisual >> subscribeTo: anAnnouncer [
 
 	anAnnouncer when: OSCMsgReceivedAnnouncement do: [ 
 		self shapezSize:
-			(OSCMsgReceivedAnnouncement values at: #'/kickGate') * 2 * (OSCMsgReceivedAnnouncement values at: #'/thereIsKick').
+			(OSCMsgReceivedAnnouncement values at: #'/kickGate') * 2
+			* (OSCMsgReceivedAnnouncement values at: #'/thereIsKick').
 		"self color: (Color r: kickG g: kickG b: kickG)."
 		"(OSCMsgReceivedAnnouncement values at: #'/kickGate') * 255"
 		self shapezColorRed:
@@ -268,30 +330,70 @@ EsugVisual >> subscribeTo: anAnnouncer [
 
 		self bassLineWidth:
 			(OSCMsgReceivedAnnouncement values at: #'/acidNote')
-			* (OSCMsgReceivedAnnouncement values at: #'/acidGate')
+			* (OSCMsgReceivedAnnouncement values at: #'/acidGate').
+
+		self visualizeAlanSpeechAtIndex:
+			(OSCMsgReceivedAnnouncement values at: #'/alanCount') 
 
 
 		"self signalUpdate" ]
+]
+
+{ #category : #accessing }
+EsugVisual >> textAlpha [
+
+	^ textAlpha
+]
+
+{ #category : #accessing }
+EsugVisual >> textAlpha: aFloat [
+
+	" alpha value for texts"
+
+	| r r2 |
+	r := Random new.
+	r2 := Random new.
+	textAlpha := aFloat.
+	alanText do: [ :w | 
+		w color: (Color
+				 r: r next * aFloat rounded
+				 g: 0
+				 b: aFloat * (r2 next)) ].
+
+	self signalUpdate
 ]
 
 { #category : #'sub item creating' }
 EsugVisual >> visualizeAlanSpeech [
 
 	| r r2 r3 red blue words label |
+	alanText := RSGroup new.
+	textAlpha ifNil: [ textAlpha := 1.0 ].
 	words := self class alanSpeech substrings.
-	r := Random seed: 52.
-	r2 := Random seed: 62.
-	r3 := Random seed: 72.
+	r := Random new.
+	r2 := Random new.
+	r3 := Random new.
 	words do: [ :w | 
 		label := RSLabel text: w.
 		red := r2 next.
 		blue := r3 next.
-		label color: (Color r: red g: 0 b: blue).
+		label color: ((Color r: red g: 0 b: blue) alpha: textAlpha).
 		label fontSize: (r nextInteger: 38) + 10.
 
-		self add: label ].
-	RSFlowLayout new
+		self add: label.
+		alanText add: label ].
+	
+	RSRectanglePackLayout on: alanText.
+	"RSFlowLayout new
 		alignLabel;
-		on: self shapes.
+		on: alanText."
 	self shapes translateTo: 10 @ 0
+]
+
+{ #category : #'sub item creating' }
+EsugVisual >> visualizeAlanSpeechAtIndex: anInteger [
+
+	self groupToFill1 add: (alanText at: anInteger asInteger).
+	self add: groupToFill1 asShape.
+	anInteger asInteger traceCr .
 ]
