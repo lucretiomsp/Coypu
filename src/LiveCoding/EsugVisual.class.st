@@ -18,6 +18,27 @@ Class {
 	#category : #'LiveCoding-Visuals'
 }
 
+{ #category : #'as yet unclassified' }
+EsugVisual class >> alanSpeech [
+
+	"convenience method that returns a String containing the initial speech"
+
+	| speech |
+	speech := 'The main thing about doing OOP work
+or any kind of programming work
+is that there has to be some
+exquisite blend
+between beauty and practicality
+there is no reason to sacrifice 
+either one of those and
+who are willing to sacrifice either one of those I don''t think really 
+get what computing is all about
+It is like saying I have really great ideas for painting but I am just gonna use a brush with no paint so my ideas will be represented by the gestures I make over the paper
+Dont tell any twentieth century artists that or they might decide to make a videotape of them doing that an putting it in a museum
+'.
+	^ speech
+]
+
 { #category : #'instance creation' }
 EsugVisual class >> for: anObservable [
 
@@ -82,7 +103,8 @@ EsugVisual >> initialize [
 	| center |
 	center := 0.
 	super initialize.
-
+    
+   self visualizeAlanSpeech .
 	self color: #black. " transparent"
 	self shapezSize ifNil: [ shapezSize := 30 ].
 	self shapezColorRed ifNil: [ shapezColorRed := 0 ].
@@ -250,4 +272,26 @@ EsugVisual >> subscribeTo: anAnnouncer [
 
 
 		"self signalUpdate" ]
+]
+
+{ #category : #'sub item creating' }
+EsugVisual >> visualizeAlanSpeech [
+
+	| r r2 r3 red blue words label |
+	words := self class alanSpeech substrings.
+	r := Random seed: 52.
+	r2 := Random seed: 62.
+	r3 := Random seed: 72.
+	words do: [ :w | 
+		label := RSLabel text: w.
+		red := r2 next.
+		blue := r3 next.
+		label color: (Color r: red g: 0 b: blue).
+		label fontSize: (r nextInteger: 38) + 10.
+
+		self add: label ].
+	RSFlowLayout new
+		alignLabel;
+		on: self shapes.
+	self shapes translateTo: 10 @ 0
 ]

@@ -299,7 +299,7 @@ Sequencer >> offset: aNumber [
 	self notes: (melody offset: aNumber)
 ]
 
-{ #category : #combination }
+{ #category : #progressions }
 Sequencer >> progression: anArrayOfIntervals [
 
 	"return a new Sequencer that join together the original sequencer with as many transpositions of self  for as many intervals in anArrayOfIntervals"
