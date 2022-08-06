@@ -421,14 +421,15 @@ Sequencer >> visualizeOn: aRSCanvas [
 	self gates do: [ :g | 
 		nIndex := nIndex + 1.
 		visualGroup add: (RSCircle new
-				 size: 100 - (self notes at: (nIndex modulo: self notesSize));
+				 size:
+					 3.1 * (90 - (self notes at: (nIndex modulo: self notesSize)));
 				 border: border;
 				 color: color * g) ].
 	layout := RSCircleLayout new
 		          radius:
 			          (Random new
-				           nextIntegerBetween: minimumRadius * 2
-				           and: minimumRadius * 15);
+				           nextIntegerBetween: minimumRadius * 2 + 50
+				           and: 400);
 		          initialAngleInDegree: 270.
 	layout on: visualGroup.
 	visualGroup translateTo: 0 @ 0.

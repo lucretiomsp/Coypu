@@ -5,10 +5,27 @@ Class {
 	#name : #EsugVisual2,
 	#superclass : #RSCanvas,
 	#instVars : [
-		'alanTextGroup'
+		'alanTextGroup',
+		'tickline'
 	],
 	#category : #'LiveCoding-Visuals'
 }
+
+{ #category : #'instance creation' }
+EsugVisual2 class >> for: anObservable [
+
+	" Initialize a new EsugVisual, connect my visualization to anObservable Annoucer and open it"
+
+	| canvas |
+	canvas := self new.
+	anObservable announcer isNotNil
+		ifTrue: [ 
+			canvas
+				subscribeTo: anObservable announcer;
+				"zoomToFit;"openOnce ]
+		ifFalse: [  ].
+	^ canvas
+]
 
 { #category : #accessing }
 EsugVisual2 >> alanTextGroup [
@@ -22,12 +39,55 @@ EsugVisual2 >> alanTextGroup: anObject [
 	alanTextGroup := anObject
 ]
 
+{ #category : #modifying }
+EsugVisual2 >> backcgroundColor: aFloat [
+
+
+	self color: (Color r: aFloat g: aFloat b: aFloat ).
+		self signalUpdate
+]
+
 { #category : #initialization }
 EsugVisual2 >> initialize [
 
 	super initialize.
-	self color: #black.
-	self visualizeAlanSpeech 
+	self color: #white.
+   self visualizeAlanSpeech.
+
+	tickline := RSBox new
+		            color: Color white;
+		            width: 28;
+		            height: 200;
+		            yourself.
+
+	"add bassline"
+	self add: tickline.
+	
+	
+]
+
+{ #category : #modifying }
+EsugVisual2 >> moveTick: aFloat [
+
+	tickline rotateByDegrees: 2.5.
+	self signalUpdate
+]
+
+{ #category : #modifying }
+EsugVisual2 >> scale: aFloat [
+
+	self shapes do: [:i | i scaleBy: aFloat].
+	self signalUpdate
+]
+
+{ #category : #subscription }
+EsugVisual2 >> subscribeTo: anAnnouncer [
+
+	anAnnouncer when: OSCMsgReceivedAnnouncement do: [ 
+		self backcgroundColor:
+			(OSCMsgReceivedAnnouncement values at: #'/snareGate') * 255.
+		self moveTick:
+			(OSCMsgReceivedAnnouncement values at: #'/bpmTick') * 1 ]
 ]
 
 { #category : #'sub item creating' }
