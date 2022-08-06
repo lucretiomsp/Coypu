@@ -16,7 +16,8 @@ Class {
 		'notes',
 		'durations',
 		'noteIndex',
-		'gates'
+		'gates',
+		'visualGroup'
 	],
 	#category : #'LiveCoding-Sequencers'
 }
@@ -388,6 +389,45 @@ Sequencer >> trigs [
 result := 0.
 (1 to: (self gates size)) do: [ :i | ((self gates at: i) = 1) ifTrue: [result := result + 1] ifFalse: [ nil]].
 ^ result.
+]
+
+{ #category : #'as yet unclassified' }
+Sequencer >> visualGroup [
+
+	^ visualGroup
+]
+
+{ #category : #'as yet unclassified' }
+Sequencer >> visualGroup: aRSGroup [
+
+	visualGroup := aRSGroup
+]
+
+{ #category : #visualization }
+Sequencer >> visualizeOn: aRSCanvas [
+
+	"visualize the sequencer on a Roassal canvas"
+
+	| color red green blue border layout gatesSize |
+	color := Color random.
+	gatesSize := 40.
+	border := red := Random new nextInteger: 255.
+	green := Random new nextInteger: 255.
+	blue := Random new nextInteger: 255.
+	border := RSBorder new color: (Color r: red g: green b: blue).
+	visualGroup := RSGroup new.
+	self gates do: [ :g | 
+		visualGroup add: (RSCircle new
+				 size: gatesSize;
+				 border: border;
+				 color: color * g) ].
+	layout := RSCircleLayout new
+		          radius: (Random new nextIntegerBetween: 30 and: 400);
+		          initialAngleInDegree: 270.
+	layout on: visualGroup.
+	visualGroup translateTo: 0 @ 0.
+	aRSCanvas add: visualGroup asShape.
+	aRSCanvas signalUpdate
 ]
 
 { #category : #random }

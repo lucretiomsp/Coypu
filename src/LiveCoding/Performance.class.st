@@ -7,7 +7,9 @@ Class {
 	#type : #variable,
 	#instVars : [
 		'visualization',
-		'performer'
+		'performer',
+		'canvas',
+		'rsGroupDictionary'
 	],
 	#category : #'LiveCoding-Performance'
 }
@@ -21,11 +23,47 @@ Performance class >> basic [
 ]
 
 { #category : #'as yet unclassified' }
+Performance class >> withCanvas: aRSCanvas [
+
+	^ self new canvas: aRSCanvas; rsGroupDictionary: Dictionary new.
+]
+
+{ #category : #'as yet unclassified' }
 Performance class >> withCircles [
 
 	^ self new
 		  visualization: CircleVisualization new;
 		  yourself
+]
+
+{ #category : #accessing }
+Performance >> at: key put: anObject [
+
+	"Set the value at key to be anObject.  If key is not found, create a
+	new entry for key and set is value to anObject. Answer anObject.
+	If a RsCanvas have been associated to the Performance add the visualisation of the sequencer to the RSCanvas"
+
+	super at: key put: anObject.
+	canvas isNotNil & anObject isSequencer ifTrue: [ 
+		anObject visualizeOn: canvas ].
+	rsGroupDictionary at: key put: anObject visualGroup 
+]
+
+{ #category : #accessing }
+Performance >> canvas [ 
+^ canvas 
+]
+
+{ #category : #accessing }
+Performance >> canvas: aRSCanvas [
+canvas := aRSCanvas 
+]
+
+{ #category : #initialization }
+Performance >> initialize [
+
+	super initialize.
+	
 ]
 
 { #category : #accessing }
@@ -41,10 +79,15 @@ maxLength := valuesSizes inject: 0 into: [ :a :c | (a > c) ifTrue: [ a ] ifFalse
 Performance >> mute: aKeyOrAnArrayOfKeys [
 
 	"remove all the keys in the arrayOfKeys from the Performance or remove just a single key"
-   aKeyOrAnArrayOfKeys isArray ifTrue:
-	[aKeyOrAnArrayOfKeys  do: [ :i | self removeKey: i ifAbsent: [  ] ]]
-ifFalse:  [ self removeKey: aKeyOrAnArrayOfKeys  ]
 
+	aKeyOrAnArrayOfKeys isArray
+		ifTrue: [ 
+		aKeyOrAnArrayOfKeys do: [ :i | self removeKey: i ifAbsent: [  ] ] ]
+		ifFalse: [ 
+			self removeKey: aKeyOrAnArrayOfKeys ].
+		"if the Performance has an associated canvas, it also removes the shapes group visualizing the key sequencer" 
+		canvas isNotNil ifTrue: [  
+		canvas removeShape: (rsGroupDictionary at: aKeyOrAnArrayOfKeys) asShape  ]
 ]
 
 { #category : #playing }
@@ -350,6 +393,18 @@ Performance >> resetAllSequencers [
 		value isSequencer
 			ifTrue: [ value noteIndex: 0 ]
 			ifFalse: [ nil ] ]
+]
+
+{ #category : #accessing }
+Performance >> rsGroupDictionary [
+
+	^ rsGroupDictionary
+]
+
+{ #category : #accessing }
+Performance >> rsGroupDictionary: anRSGroupDictionary [
+
+	rsGroupDictionary := anRSGroupDictionary
 ]
 
 { #category : #accessing }

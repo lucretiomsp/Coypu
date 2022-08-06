@@ -124,7 +124,7 @@ EsugVisual >> initialize [
 	| center |
 	center := 0.
 	super initialize.
-	self initializeAlanSpeech.
+	self visualizeAlanSpeech. 
 	self color: #black. " transparent"
 	self shapezSize ifNil: [ shapezSize := 30 ].
 	self shapezColorRed ifNil: [ shapezColorRed := 0 ].
@@ -132,6 +132,8 @@ EsugVisual >> initialize [
 	self layoutz ifNil: [ layoutz := RSCircleLayout new radius: 220 ].
 	self layoutz2 ifNil: [ layoutz2 := RSRectanglePackLayout new ].
 	self groupToFill1: RSGroup new.
+	RSFlowLayout on: groupToFill1.
+	self groupToFill1 translateTo: 0 @ 0.
 
 	" bassline"
 	bassLine := RSLine new
@@ -332,8 +334,8 @@ EsugVisual >> subscribeTo: anAnnouncer [
 			(OSCMsgReceivedAnnouncement values at: #'/acidNote')
 			* (OSCMsgReceivedAnnouncement values at: #'/acidGate').
 
-		self visualizeAlanSpeechAtIndex:
-			(OSCMsgReceivedAnnouncement values at: #'/alanCount') 
+		"self visualizeAlanSpeechAtIndex:
+			(OSCMsgReceivedAnnouncement values at: #'/alanCount')"
 
 
 		"self signalUpdate" ]
@@ -395,5 +397,5 @@ EsugVisual >> visualizeAlanSpeechAtIndex: anInteger [
 
 	self groupToFill1 add: (alanText at: anInteger asInteger).
 	self add: groupToFill1 asShape.
-	anInteger asInteger traceCr .
+	"anInteger asInteger traceCr"
 ]
