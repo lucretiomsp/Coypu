@@ -13,6 +13,16 @@ ManifestLiveCoding class >> ruleCollectionProtocolRuleV1FalsePositive [
 ]
 
 { #category : #'code-critics' }
+ManifestLiveCoding class >> ruleGuardingClauseRuleV1FalsePositive [
+	^ #(#(#(#RGMethodDefinition #(#Performance #mute: #false)) #'2022-08-06T10:51:34.471387+02:00') )
+]
+
+{ #category : #'code-critics' }
+ManifestLiveCoding class >> ruleReGuardClauseRuleV1FalsePositive [
+	^ #(#(#(#RGMethodDefinition #(#Performance #mute: #false)) #'2022-08-06T10:51:48.618469+02:00') )
+]
+
+{ #category : #'code-critics' }
 ManifestLiveCoding class >> ruleUnoptimizedToDoRuleV1FalsePositive [
 	^ #(#(#(#RGMethodDefinition #(#MIDISender #playChord:type:onChannel:duration: #false)) #'2022-06-27T11:28:11.059804+02:00') )
 ]

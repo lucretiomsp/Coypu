@@ -45,8 +45,14 @@ Performance >> at: key put: anObject [
 
 	super at: key put: anObject.
 	canvas isNotNil & anObject isSequencer ifTrue: [ 
-		anObject visualizeOn: canvas ].
-	rsGroupDictionary at: key put: anObject visualGroup 
+		(self rsGroupDictionary  includesKey: key)
+			ifTrue: [ 
+				canvas removeShape: (rsGroupDictionary at: key) asShape.
+				anObject visualizeOn: canvas.
+				rsGroupDictionary at: key put: anObject visualGroup ]
+			ifFalse: [ 
+				anObject visualizeOn: canvas.
+				rsGroupDictionary at: key put: anObject visualGroup ] ]
 ]
 
 { #category : #accessing }
@@ -83,11 +89,16 @@ Performance >> mute: aKeyOrAnArrayOfKeys [
 	aKeyOrAnArrayOfKeys isArray
 		ifTrue: [ 
 		aKeyOrAnArrayOfKeys do: [ :i | self removeKey: i ifAbsent: [  ] ] ]
-		ifFalse: [ 
-			self removeKey: aKeyOrAnArrayOfKeys ].
-		"if the Performance has an associated canvas, it also removes the shapes group visualizing the key sequencer" 
-		canvas isNotNil ifTrue: [  
-		canvas removeShape: (rsGroupDictionary at: aKeyOrAnArrayOfKeys) asShape  ]
+		ifFalse: [ self removeKey: aKeyOrAnArrayOfKeys ].
+	"if the Performance has an associated canvas, it also removes the shapes group visualizing the key sequencer"
+	canvas isNotNil ifTrue: [ 
+		aKeyOrAnArrayOfKeys isArray
+			ifTrue: [ 
+				aKeyOrAnArrayOfKeys do: [ :i | 
+					canvas removeShape: (rsGroupDictionary at: i) asShape ] ]
+			ifFalse: [ 
+				canvas removeShape:
+					(rsGroupDictionary at: aKeyOrAnArrayOfKeys) asShape ]. canvas signalUpdate  ]
 ]
 
 { #category : #playing }
