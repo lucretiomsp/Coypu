@@ -408,7 +408,9 @@ Sequencer >> visualizeOn: aRSCanvas [
 
 	"visualize the sequencer on a Roassal canvas"
 
-	| color red green blue border layout gatesSize |
+	| nIndex color red green blue border layout gatesSize minimumRadius |
+	nIndex := 0. " to represent noteNumber"
+	minimumRadius := self gates size.
 	color := Color random.
 	gatesSize := 40.
 	border := red := Random new nextInteger: 255.
@@ -417,12 +419,16 @@ Sequencer >> visualizeOn: aRSCanvas [
 	border := RSBorder new color: (Color r: red g: green b: blue).
 	visualGroup := RSGroup new.
 	self gates do: [ :g | 
+		nIndex := nIndex + 1.
 		visualGroup add: (RSCircle new
-				 size: gatesSize;
+				 size: 100 - (self notes at: (nIndex modulo: self notesSize));
 				 border: border;
 				 color: color * g) ].
 	layout := RSCircleLayout new
-		          radius: (Random new nextIntegerBetween: 30 and: 400);
+		          radius:
+			          (Random new
+				           nextIntegerBetween: minimumRadius * 2
+				           and: minimumRadius * 15);
 		          initialAngleInDegree: 270.
 	layout on: visualGroup.
 	visualGroup translateTo: 0 @ 0.
