@@ -43,6 +43,18 @@ Dont tell / any twentieth century artist / that / or they might decide to make a
 	^ speech
 ]
 
+{ #category : #'as yet unclassified' }
+EsugVisual class >> cornholioSpeech [
+
+	"convenience method that returns a String containing the initial speech"
+
+	| speech |
+	speech := 'EXCUSE ME YOUNG BROTHER * MAY BE ASK YOU A QUESTION ? ARE YOU THREATING ME * MY BUNGHOLE WILL ASK THE QUESTION *
+	WHY I DONT USE TP FOR MY TP ?? YOU WILL LOVE MY BUNGHOLE * FOR I AM THE GREAT CORNHOLIO * I NEED TP FOR MY BUNGHOLE * LOOK * HIS HANDS HE HAS THE STIGMATA
+	* STIGMATA FROM THE TITICACA'.
+	^ speech
+]
+
 { #category : #'instance creation' }
 EsugVisual class >> for: anObservable [
 

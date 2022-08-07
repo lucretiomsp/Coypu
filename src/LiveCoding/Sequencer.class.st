@@ -5,7 +5,7 @@ It is conceived as a Digital Audio Workstation track.
 "
 Class {
 	#name : #Sequencer,
-	#superclass : #Array,
+	#superclass : #Object,
 	#type : #variable,
 	#instVars : [
 		'seqKey',
@@ -67,28 +67,6 @@ Sequencer >> allNotes: anInteger [
 	newNotes := Array new: self numberOfGates.
 	1 to: newNotes size do: [ :i | newNotes at: i put: anInteger ].
 	self notes: newNotes.
-]
-
-{ #category : #controlling }
-Sequencer >> and: anotherArray [
-" add array of  extravalues to the Sequencer
-the first element of both arrays should be a string - for example 'Index'' if sending out OSC or an integer value corresponding to CC message if sending out MIDI
-- the second element o the array should be an array of numbers - for example #( 1 2 3)
-#('Cutoff' #(34 56 78)
-"
-^ Sequencer with: (self at: 1) with: (self at: 2) with: (self at: 3) with: (self at: 4) with: anotherArray .
-
-]
-
-{ #category : #controlling }
-Sequencer >> and: anArray and: anotherArray [
-" add array of  extravalues to the Sequencer
-the first element of both arrays should be a string - for example 'Index'' if sending out OSC or an integer value corresponding to CC message if sending out MIDI
-- the second element o the array should be an array of numbers - for example #( 1 2 3)
-#('Cutoff' #(34 56 78)
-"
-^ Sequencer with: (self at: 1) with: (self at: 2) with: (self at: 3) with: (self at: 4) with: anArray with: anotherArray .
-
 ]
 
 { #category : #controlling }
@@ -420,11 +398,12 @@ Sequencer >> visualizeOn: aRSCanvas [
 	visualGroup := RSGroup new.
 	self gates do: [ :g | 
 		nIndex := nIndex + 1.
-		visualGroup add: (RSCircle new
-				 size:
-					 3.1 * (90 - (self notes at: (nIndex modulo: self notesSize)));
-				 border: border;
-				 color: color * g) ].
+		visualGroup
+			add: (RSCircle new
+					 size:
+						 3.1 * (80 - (self notes at: (nIndex modulo: self notesSize)));
+					 border: border;
+					 color: color * g) ].
 	layout := RSCircleLayout new
 		          radius:
 			          (Random new
