@@ -47,30 +47,91 @@ EsugVisual2 >> backcgroundColor: aFloat [
 		self signalUpdate
 ]
 
+{ #category : #'sub item creating' }
+EsugVisual2 >> cornholio [
+
+	| r r2 r3 red blue words label |
+	self removeShape: (self shapes at: 1) children asShape.
+	alanTextGroup := RSGroup new.
+
+	words := EsugVisual cornholioSpeech substrings.
+	r := Random new.
+	r2 := Random new.
+	r3 := Random new.
+	words do: [ :w | 
+		label := RSLabel text: w.
+		red := r2 next.
+		blue := r3 next.
+		label color: (Color r: red g: blue b: 0).
+		label fontSize: (r nextInteger: 48) + 10.
+
+		"self add: label."
+		alanTextGroup add: label ].
+
+	RSRectanglePackLayout on: alanTextGroup.
+	self add: alanTextGroup asShape.
+	"RSFlowLayout new
+		alignLabel;
+		on: alanText."
+	self shapes translateTo: -100 @ -220.
+	tickline translateTo: 0@0.
+	self signalUpdate
+]
+
 { #category : #initialization }
 EsugVisual2 >> initialize [
 
 	super initialize.
 	self color: #white.
-   self visualizeAlanSpeech.
+	self visualizeAlanSpeech.
 
 	tickline := RSBox new
 		            color: Color white;
 		            width: 28;
 		            height: 200;
+		            cornerRadius: 60;
 		            yourself.
 
 	"add bassline"
-	self add: tickline.
-	
-	
+	self add: tickline
 ]
 
 { #category : #modifying }
 EsugVisual2 >> moveTick: aFloat [
 
-	tickline rotateByDegrees: 2.5.
+	tickline rotateByDegrees: 1.3.
 	tickline pushFront.
+	self signalUpdate
+]
+
+{ #category : #'sub item creating' }
+EsugVisual2 >> neoPhoneCall [
+
+	| r r2 r3 red blue words label |
+	self removeShape: (self shapes at: 1) children asShape.
+	alanTextGroup := RSGroup new.
+
+	words := EsugVisual neoSpeech substrings.
+	r := Random new.
+	r2 := Random new.
+	r3 := Random new.
+	words do: [ :w | 
+		label := RSLabel text: w.
+		red := r2 next.
+		blue := r3 next.
+		label color: (Color r: 0 g: blue b: red).
+		label fontSize: (r nextInteger: 48) + 10.
+
+		"self add: label."
+		alanTextGroup add: label ].
+
+	RSRectanglePackLayout on: alanTextGroup.
+	self add: alanTextGroup asShape.
+	"RSFlowLayout new
+		alignLabel;
+		on: alanText."
+	self shapes translateTo: -100 @ -220.
+	tickline translateTo: 0 @ 0.
 	self signalUpdate
 ]
 
@@ -88,7 +149,8 @@ EsugVisual2 >> subscribeTo: anAnnouncer [
 		self backcgroundColor:
 			(OSCMsgReceivedAnnouncement values at: #'/snareGate') * 255.
 		self moveTick:
-			(OSCMsgReceivedAnnouncement values at: #'/bpmTick') * 1 ]
+			(OSCMsgReceivedAnnouncement values at: #'/bpmTick') * 1.
+		 ]
 ]
 
 { #category : #'sub item creating' }
@@ -117,33 +179,4 @@ EsugVisual2 >> visualizeAlanSpeech [
 		alignLabel;
 		on: alanText."
 	self shapes translateTo: 0 @ 0
-]
-
-{ #category : #'sub item creating' }
-EsugVisual2 >> visualizeCornholioSpeech [
-
-	| r r2 r3 red blue words label |
-	alanTextGroup := RSGroup new.
-
-	words := EsugVisual cornholioSpeech substrings.
-	r := Random new.
-	r2 := Random new.
-	r3 := Random new.
-	words do: [ :w | 
-		label := RSLabel text: w.
-		red := r2 next.
-		blue := r3 next.
-		label color: (Color r: red g: blue b: 0).
-		label fontSize: (r nextInteger: 48) + 10.
-
-		"self add: label."
-		alanTextGroup add: label ].
-
-	RSRectanglePackLayout on: alanTextGroup.
-	self add: alanTextGroup asShape.
-	"RSFlowLayout new
-		alignLabel;
-		on: alanText."
-	self shapes translateTo: -100 @ -220.
-	self signalUpdate
 ]

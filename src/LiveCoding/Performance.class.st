@@ -196,16 +196,20 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 
 	| step bpm beatInSeconds gateTime |
 	'x' asPacaAddress. "if PacaAddress is not stored yet"
-	self resetAllSequencers . "reset all the sequencers"
+	self resetAllSequencers. "reset all the sequencers"
 	"as in early hardware sequencers, default gatetime is 80% of the step duration"
+
 	bpm := 60 / (aRateInSeconds * 4).
+
 	gateTime := aRateInSeconds * 0.8.
 	beatInSeconds := aRateInSeconds * 4.
 	step := 0.
 
 
 	^ [ 
+	 
 	  bpm toKyma: 'BPM'.
+
 
 	  aNumberOfSteps timesRepeat: [ 
 		  (Delay forSeconds: aRateInSeconds) wait.

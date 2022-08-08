@@ -72,6 +72,16 @@ EsugVisual class >> for: anObservable [
 	^ canvas
 ]
 
+{ #category : #'as yet unclassified' }
+EsugVisual class >> neoSpeech [
+
+	"convenience method that returns a String containing the initial speech"
+
+	| speech |
+	speech := ' # I know you are out there # I can feel you now # I know that you are afraid # you are afraid of us # you are afraid of change # I dont know the future # I didnt come here to tell you # how it is going to end # I came here # to tell you # how it is going to begin # I am going to hang up this phne # and then I am going to show this people # which # you dont want them to see # I am going to show them a world # without you # a world without rules and control # without borders # or boundaries # a wrold where anything is possible ### '.
+	^ speech
+]
+
 { #category : #accessing }
 EsugVisual >> alanText [
 ^ alanText

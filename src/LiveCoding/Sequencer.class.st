@@ -398,12 +398,12 @@ Sequencer >> visualizeOn: aRSCanvas [
 	visualGroup := RSGroup new.
 	self gates do: [ :g | 
 		nIndex := nIndex + 1.
-		visualGroup
-			add: (RSCircle new
-					 size:
-						 3.1 * (80 - (self notes at: (nIndex modulo: self notesSize)));
-					 border: border;
-					 color: color * g) ].
+		visualGroup add: (RSCircle new
+				 size:
+					 3.1 * (80 - (self notes at: (nIndex modulo: self notesSize)));
+				 border: border;
+		
+				 color: color * g) ].
 	layout := RSCircleLayout new
 		          radius:
 			          (Random new
