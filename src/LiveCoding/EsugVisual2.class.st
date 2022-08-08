@@ -6,7 +6,8 @@ Class {
 	#superclass : #RSCanvas,
 	#instVars : [
 		'alanTextGroup',
-		'tickline'
+		'tickline',
+		'backgroundText'
 	],
 	#category : #'LiveCoding-Visuals'
 }
@@ -47,6 +48,18 @@ EsugVisual2 >> backcgroundColor: aFloat [
 		self signalUpdate
 ]
 
+{ #category : #accessing }
+EsugVisual2 >> backgroundText [
+
+	^ backgroundText
+]
+
+{ #category : #accessing }
+EsugVisual2 >> backgroundText: anObject [
+
+	backgroundText := anObject
+]
+
 { #category : #'sub item creating' }
 EsugVisual2 >> cornholio [
 
@@ -69,12 +82,13 @@ EsugVisual2 >> cornholio [
 		alanTextGroup add: label ].
 
 	RSRectanglePackLayout on: alanTextGroup.
+	backgroundText := alanTextGroup asShape.
 	self add: alanTextGroup asShape.
 	"RSFlowLayout new
 		alignLabel;
 		on: alanText."
-	self shapes translateTo: -100 @ -220.
-	tickline translateTo: 0@0.
+	self shapes translateTo: -100 @ -120.
+	tickline translateTo: 0 @ 0.
 	self signalUpdate
 ]
 
@@ -108,7 +122,7 @@ EsugVisual2 >> moveTick: aFloat [
 EsugVisual2 >> neoPhoneCall [
 
 	| r r2 r3 red blue words label |
-	self removeShape: (self shapes at: 1) children asShape.
+	self removeShape: self backgroundText children asShape.
 	alanTextGroup := RSGroup new.
 
 	words := EsugVisual neoSpeech substrings.

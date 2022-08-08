@@ -35,13 +35,18 @@ Number >> toKyma: aString [
 
 { #category : #'*LiveCoding' }
 Number >> toLocal: aString [
-	"comment stating purpose of instance-side message"
-	"scope: class-variables  &  instance-variables"	
-	|  localAddress |
-	localAddress := '127.0.0.1'. 
 
-	
-	(OSCMessage for: { ('/', aString)  . (self asFloat)  }) sendToAddressString: localAddress  port: 8000.
+	"comment stating purpose of instance-side message"
+
+	"scope: class-variables  &  instance-variables"
+
+	| localAddress |
+	localAddress := '127.0.0.1'.
+
+
+	(OSCMessage for: { 
+			 ('/' , aString).
+			 self asFloat }) sendToAddressString: localAddress port: 8000
 ]
 
 { #category : #'*LiveCoding' }

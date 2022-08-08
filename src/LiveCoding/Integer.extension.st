@@ -293,6 +293,57 @@ pattern := #(1 0 0 1 0 0 1 0 0 0 1 1 0 0 0 0 ).
 ]
 
 { #category : #'*LiveCoding' }
+Integer >> toSCAsGate [
+
+	" send an OSC message to superCollider that mimics the behaviour oa MIDI note on message, note is held for a default duration of 2 seconds"
+
+	| localAddress |
+	localAddress := '127.0.0.1'.
+
+
+	(OSCMessage for: { 
+			 15.
+			 self.
+			 'gate'.
+			 1 }) sendToAddressString: '127.0.0.1' port: 57110.
+	(Delay forSeconds: 1) wait.
+	
+"note-Off"
+	(OSCMessage for: { 
+			 15.
+			 self.
+			 'gate'.
+			 0 }) sendToAddressString: '127.0.0.1' port: 57110
+]
+
+{ #category : #'*LiveCoding' }
+Integer >> toSCAsGate: aDurationInSeconds note: aNoteNumber [
+
+	"send a note-on MIDI-like message to supercollider via OSC"
+
+[  	(OSCMessage for: { 
+			 15.
+			 self.
+			 'note'.
+			 aNoteNumber }) sendToAddressString: '127.0.0.1' port: 57110.
+	(OSCMessage for: { 
+			 15.
+			 self.
+			 'gate'.
+			 1 }) sendToAddressString: '127.0.0.1' port: 57110.
+
+	(Delay forSeconds: aDurationInSeconds) wait.
+
+	"note-Off"
+	(OSCMessage for: { 
+			 15.
+			 self.
+			 'gate'.
+			 0 }) sendToAddressString: '127.0.0.1' port: 57110.
+			] fork
+]
+
+{ #category : #'*LiveCoding' }
 Integer >> tresillo [
 " create an array of self size of  tresillo rhytm pulses. Better if used with self = 8 x anInteger "
 | pattern newArray rhythm |
