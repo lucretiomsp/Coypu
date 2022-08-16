@@ -26,7 +26,10 @@ Performance class >> basic [
 { #category : #'as yet unclassified' }
 Performance class >> withCanvas: aRSCanvas [
 
-	^ self new canvas: aRSCanvas; rsGroupDictionary: Dictionary new.
+	^ self new
+		  canvas: aRSCanvas;
+		  freq: 120 bpm;
+		  rsGroupDictionary: Dictionary new
 ]
 
 { #category : #'as yet unclassified' }
@@ -83,7 +86,7 @@ Performance >> freq: aDurationInSeconds [
 Performance >> initialize [
 
 	super initialize.
-	freq := 120 bpm.
+	self freq: 120 bpm.
 ]
 
 { #category : #accessing }

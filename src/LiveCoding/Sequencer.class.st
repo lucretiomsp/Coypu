@@ -335,7 +335,7 @@ Sequencer >> times: anInteger [
 		  noteIndex: 0
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #addToPerformance }
 Sequencer >> to: aPerformance at: aKey [
 
 aPerformance add: aKey -> self

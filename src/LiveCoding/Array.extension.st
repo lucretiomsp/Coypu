@@ -184,13 +184,3 @@ Array >> trigs [
 			ifFalse: [ nil ] ].
 	^ result
 ]
-
-{ #category : #'*LiveCoding' }
-Array >> withIts: anArray [ 
-"convenience method to create a Sequence"
-| numberOfGates result |
-
-numberOfGates := anArray  size.
-result := (1 to: numberOfGates) collect: [ :i | anArray   at: (i modulo: numberOfGates) ].
-^ Sequencer with: self with: result
-]
