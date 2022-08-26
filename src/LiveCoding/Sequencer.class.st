@@ -206,6 +206,21 @@ Sequencer >> isSequencer [
 ^ true
 ]
 
+{ #category : #modifying }
+Sequencer >> melodyFrom: aScale [
+
+	| array |
+	array := self numberOfGates  randomNotesFrom: aScale.
+	array at: 1 put: (aScale at: 1).
+	2 to: array size do: [ :i | 
+		((array at: i) rem: 12) = 0 ifTrue: [ 
+			array at: i - 1 put: (aScale at: 6) ].
+		((array at: i) rem: 12) = 2 ifTrue: [ 
+			array at: i - 1 put: (aScale at: 5) ] ].
+	"last note is mediante or dominante"
+	^ array
+]
+
 { #category : #accessing }
 Sequencer >> note [
 
@@ -266,6 +281,17 @@ size := result size.
 ^ size
 ]
 
+{ #category : #counting }
+Sequencer >> numberOfTrigs [
+
+	"return number of elements in the Sequencer gates array that are greater than 0"
+
+	| result size |
+	result := self gates select: [ :i | i > 0 ].
+	size := result size.
+	^ size
+]
+
 { #category : #accessing }
 Sequencer >> offset: aNumber [
 
@@ -308,6 +334,17 @@ Sequencer >> randomCounterPoint [
 { #category : #accessing }
 Sequencer >> seqKey [
 ^seqKey
+]
+
+{ #category : #counting }
+Sequencer >> size [
+
+	"polysemic version of numberOfTrigs method!!!!. return the number of elements in the Sequencer gates array that are greater than 0"
+
+	| result size |
+	result := self gates select: [ :i | i > 0 ].
+	size := result size.
+	^ size
 ]
 
 { #category : #accessing }

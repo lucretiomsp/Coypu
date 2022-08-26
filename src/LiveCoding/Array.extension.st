@@ -32,6 +32,18 @@ Transcript show: aString; open.
 ]
 
 { #category : #'*LiveCoding' }
+Array >> @ anArrayWithARootNoteAndAnOctave [
+
+	| x anIntegerRoot anIntegerOctave |
+	anIntegerRoot := anArrayWithARootNoteAndAnOctave at: 1.
+	anIntegerOctave := anArrayWithARootNoteAndAnOctave at: 2.
+	x := OrderedCollection new.
+	(0 to: anIntegerOctave) do: [ :i | 
+		x addAll: self + (anIntegerRoot + (i * 12)) ].
+	^ x
+]
+
+{ #category : #'*LiveCoding' }
 Array >> and: anArray [
 
 ^ Sequencer with: self with: anArray
