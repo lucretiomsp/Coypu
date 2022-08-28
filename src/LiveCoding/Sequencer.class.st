@@ -42,20 +42,22 @@ Sequencer >> , anotherSequencer [
 
 { #category : #comparing }
 Sequencer >> < anotherArray [
-"same as and: but binary!"
-" add array of  extravalues to the Sequencer
+
+	"same as extra1 but binary!"
+
+	" add array of  extravalues to the Sequencer
 the first element of the array should be a string - for example 'Index'' - the second element o the array should be an array of numbers - for xample #( 1 2 3)
 "
-^ Sequencer with: (self at: 1) with: (self at: 2) with: (self at: 3) with: (self at: 4) with: anotherArray .
 
+	^ self extra1: anotherArray 
 ]
 
 { #category : #'as yet unclassified' }
-Sequencer >> > anArray [
+Sequencer >> > anArrayOfNotesOrANote [
 
 	" change notes in the sequencer - polysemic binary version of notes:"
-
-	notes := anArray
+   anArrayOfNotesOrANote isArray ifTrue:
+	[notes := anArrayOfNotesOrANote] ifFalse: [ notes := Array new: self numberOfTrigs  withAll: anArrayOfNotesOrANote  ]
 ]
 
 { #category : #modifying }
@@ -127,6 +129,18 @@ Sequencer >> extra1: anArrayWithStringAndArray [
 
 "example #('cutoff' #(99 111 87 56))"
 extra1 := anArrayWithStringAndArray .
+]
+
+{ #category : #accessing }
+Sequencer >> extra1: aSymbol values: anArrayOfValues [
+
+	"example 
+	extra1: #cutoff values: #(300 600 800).
+	"
+
+   | x1 |
+   x1 := Array with: aSymbol with: anArrayOfValues .
+	extra1 := x1
 ]
 
 { #category : #accessing }
