@@ -1,6 +1,15 @@
+"
+SuperCollider SynthDef
+"
 Class {
 	#name : #SynthDef,
 	#superclass : #Object,
+	#instVars : [
+		'instanceID'
+	],
+	#classInstVars : [
+		'id'
+	],
 	#category : #PharoCollider
 }
 
@@ -50,4 +59,36 @@ sdf addAll: #(0 0 0 7) . "if for example we have 7 constants"
 
 
 ^ sdf
+]
+
+{ #category : #accessing }
+SynthDef class >> id [
+^ id
+]
+
+{ #category : #accessing }
+SynthDef class >> id: anInteger [
+"assign ID for the server"
+
+id := anInteger .
+]
+
+{ #category : #initialization }
+SynthDef >> initialize [ 
+super initialize.
+
+self class id ifNil: [ self class id: 0 ].
+self instanceID: (self class id) + 1.
+self class id: self instanceID .
+
+]
+
+{ #category : #initialization }
+SynthDef >> instanceID [
+^ instanceID
+]
+
+{ #category : #initialization }
+SynthDef >> instanceID: anInteger [
+instanceID := anInteger.
 ]

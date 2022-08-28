@@ -67,10 +67,13 @@ Integer >> bpm [
 
 { #category : #'*LiveCoding' }
 Integer >> breves [
-" returns self number of brevesin the first position of the bars"
-| result |
-result := (('80000000' pattern ) times: self) .
-^ result asSeq .
+
+	" returns self number of brevesin the first position of the bars"
+
+	| result |
+	result := '80000000' pattern times: self.
+	result durations: #(32).
+	^ result
 ]
 
 { #category : #'*LiveCoding' }
@@ -102,122 +105,13 @@ resultSize := result  size.
 ]
 
 { #category : #'*LiveCoding' }
-Integer >> debugSequenceFor: aDictionaryOfPatterns rate: aRateInSeconds [
-" DEBUG THE PROCESS THAT iterates over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
-an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
-| step noteIndex bpm beatInSeconds|
-bpm := 60 / (aRateInSeconds * 4).
-beatInSeconds := aRateInSeconds * 4.
-step := 0.
-noteIndex := 0. 
-"note index is inside the sequencer"
+Integer >> downbeats [
 
+	"create a sequence of self downbeats"
 
-[ 	
-	bpm toLocal: 'BPM'.
-	self timesRepeat: [ (Delay forSeconds: aRateInSeconds   ) wait.
-		" test if dictionary values is an Array od two arrays or as defined, a sequence"
-		 
-		aDictionaryOfPatterns keysAndValuesDo: [ :key : value |
-		(value isSequencer) ifTrue: [  	
-		"first of all, the noteIndex is equal to the 4th value of the Dictionary/Performance"
-		
-		Transcript show: 'Step is '; tab; show: step; cr.
-		
-		
-		(((value gates) at: (step modulo: (value gatesSize ))) = 1)
-		ifTrue:
-		[ 
-			"first of all check the noteIndex"
-			Transcript show: ((key asString),'Gate'); space; show: 'Note Index is '; tab; show: (value noteIndex); cr.
-			
-		
-			Transcript show: 0; tab; show: ((key asString),'Gate'); tab; show: 1; tab; show: (' / '); tab; 
-			show: ((value notes) at: ((value noteIndex) modulo: (value notesSize))); tab; tab;
-			show: ((key asString),'Note'); 
-			tab; show: ' / '.		
-		
-		((value durations) isArray) ifTrue:
-		[ Transcript  show: ((value durations ) at: (( value noteIndex) modulo: (value durationsSize))); show: ((key asString),'Duration'); tab; 		cr. ] ifFalse: [Transcript cr].
-		
-		value at: 4 put: ((value noteIndex) + 1).
-		"noteIndex := noteIndex + 1."
-		] 
-		ifFalse: [nil]]
-		ifFalse: [(value at: (step modulo: (value size))) toLocal: (key asString) ] 
-		].
 	
-		"step is incrementing in any case"
-		step := step + 1.
-		
-	]
-	
-	] forkAt: (Processor timingPriority )
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> downbeats [ 
-"create a sequence of self bars downbeats"
-| size |
-size := self bars.
- ^ (((1 to: size) collect: [ :i | (((i rem: 4) = 1)) asBit ]) asRhythm) asSeq . 
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> expSequenceFor: aDictionaryOfPatterns rate: aRateInSeconds [
-"test"
-" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
-an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
-| step  bpm beatInSeconds gateTime|
-"as in early hardware sequencers, default gatetime is 80% of the step duration"
-bpm := 60 / (aRateInSeconds * 4).
-beatInSeconds := aRateInSeconds * 4.
-gateTime := aRateInSeconds * 0.8.
-step := 0.
-
-
-^
-[ 	
-	bpm toKyma: 'BPM'.
-	self timesRepeat: [ (Delay forSeconds: aRateInSeconds   ) wait.
-		" test if dictionary values is an Array of two arrays or as defined, a sequence"
-		 
-		aDictionaryOfPatterns keysAndValuesDo: [ :key : value |
-		(value isSequencer) ifTrue: [  	
-		(((value gates) at: (step modulo: (value gatesSize ))) = 1)
-		ifTrue:
-		[ (key asString) toKymaAsGate: ( gateTime * ((value durations ) at: (value noteIndex modulo: (value durationsSize)))) note: ((value notes) at: ((value    noteIndex ) modulo: (value notesSize))).
-		
-		"maybe this part is not useful anymore"
-		((value durations) isArray) ifTrue:
-		[((value durations ) at: (value noteIndex modulo: (value durationsSize))) toKyma: ((key asString),'Duration')] ifFalse: [nil].
-
-     "new experimental for extra control"
-     ((value extra1) isArray) ifTrue:
-		[ ((value extra1 at: 2 ) at: (value noteIndex modulo: (value extra1Size))) toKyma: ((key asString),(value extra1 at: 1))] ifFalse: [nil].
-		
-		"new experimental for second extra control"
-     ((value extra2) isArray) ifTrue:
-		[ ((value extra2 at: 2 ) at: (value noteIndex modulo: (value extra2Size))) toKyma: ((key asString),(value extra2 at: 1))] ifFalse: [nil].
-		
-		
-		value at: 4 put: ((value noteIndex) + 1).
-		
-		"noteIndex := noteIndex + 1."
-		] 
-		ifFalse: [nil]]
-	"end of the isSequencer true condition"
-		ifFalse: [(value at: (step modulo: (value size))) toKyma: (key asString). (Delay forSeconds: aRateInSeconds   )wait. ] 
-		].
-	
-		"step is incrementing in any case"
-		step := step + 1.
-		
-	]
-	
-	] forkAt: (Processor timingPriority )
-
-
+	^ ((1 to: self) collect: [ :i | ((i rem: 4) = 1) asBit ]) asRhythm
+		  asSeq
 ]
 
 { #category : #'*LiveCoding' }
@@ -232,89 +126,22 @@ pattern := #(1 0 0 1 0 0 1 0 0 0 1 0 0 0 1 0 ).
 ]
 
 { #category : #'*LiveCoding' }
-Integer >> localSequenceFor: aDictionaryOfPatterns rate: aRateInSeconds [
-" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
-an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
-
-"if the value in the dictionay is a Sequencer, an OSC message is sent to the key as OSC address with two arguments, one for the gate, and one for the note. the gate stays at 1 for the duration selected."
-| step  bpm beatInSeconds gateTime|
-bpm := 60 / (aRateInSeconds * 4).
-gateTime := aRateInSeconds * 0.8.
-beatInSeconds := aRateInSeconds * 4.
-step := 0.
-
-
-
-[ 	
-	bpm toLocal: 'BPM'.
-	self timesRepeat: [ (Delay forSeconds: aRateInSeconds   )wait.
-		" test if dictionary values is an Array od two arrays or as defined, a sequence"
-		 
-		aDictionaryOfPatterns keysAndValuesDo: [ :key : value |
-		(value isSequencer) ifTrue: [
-	
-		(((value gates) at: (step modulo: (value gatesSize ))) = 1)
-		ifTrue:
-		[ (key asString) toLocalFor: ( gateTime * ((value durations ) at: (value noteIndex modulo: (value durationsSize)))) note: ((value notes) at: ((value       noteIndex ) modulo: (value notesSize))).
-		
-		
-		" experimental, for extra control parameter"
-		((value extra1) isArray) ifTrue:
-		[((value extra1 at: 2 ) at: ((value noteIndex) modulo: (value extra1Size))) toLocal: ((key asString), value extra1 at: 1 )] ifFalse: [nil].
-		value at: 4 put: ((value noteIndex) + 1).
-		
-		] 
-		ifFalse: [nil]]
-		ifFalse: [(value at: (step modulo: (value size))) toLocal: (key asString) ] 
-		].
-	
-		"step is incrementing in any case"
-		step := step + 1.
-		
-	]
-	
-	] forkAt: (Processor timingPriority )
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> localStepsProcessFor: aDictionaryOfPatterns rate: aRateInSeconds [
-
-	" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address withou slash that will be sent out.
-the OSC message with the address /bpm and the value of aRateInSeconds converte to BeatPerMinutes is also sent.
-"
-
-	| maxLength bpm |
-	self
-		deprecated: 'Use #localSequenceFor:rate: instead'
-		on: '26 July 2021'
-		in:
-		'Pharo-9.0.0+build.1539.sha.9b91f54a6e46f7518d14baf92fe0698c8a3260a3 (64 Bit)'.
-	bpm := 60 / (aRateInSeconds * 4).
-	maxLength := 256. "~ number ofsteps"
-	[ 
-	| index |
-	bpm toLocal: 'bpm'.
-	index := 0.
-	self timesRepeat: [ 
-		(Delay forSeconds: aRateInSeconds / 2) wait.
-		aDictionaryOfPatterns keysAndValuesDo: [ :key :value | 
-			(value at: (index rem: value size) + 1) toLocal: key asString ].
-		(Delay forSeconds: aRateInSeconds / 2) wait.
-
-
-		aDictionaryOfPatterns keysDo: [ :key | 
-			(key asString includesSubstring: 'Gate') ifTrue: [ 
-				0 toLocal: key asString ] ].
-
-		"increment of one but within the boundaries of the maxLength"
-		index := index + 1 rem: maxLength ] ] forkAt:
-		Processor timingPriority
-]
-
-{ #category : #'*LiveCoding' }
 Integer >> major [ 
 "returns an aray with the major third, fith seventh and ninth relative to the note number that is the receiver"
  ^ #(4 7 10 14) collect: [ :i | i + self ].
+]
+
+{ #category : #'*LiveCoding' }
+Integer >> melodyFrom: aScale [
+
+	| array |
+	array := self randomNotesFrom: aScale.
+	array at: 1 put: (aScale at: 1).
+	2 to: array size do: [ :i | 
+		((array at: i) rem: 12)= 0 ifTrue: [ array at: i - 1 put: (aScale at: 6) ].
+		((array at: i) rem: 12)= 2 ifTrue: [ array at: i - 1 put: (aScale at: 5) ] ].
+	"last note is mediante or dominante"
+	^ array
 ]
 
 { #category : #'*LiveCoding' }
@@ -352,119 +179,6 @@ Integer >> quavers [
 ]
 
 { #category : #'*LiveCoding' }
-Integer >> randomDiv: aDivision [
-"return an array of size=self random values in the range of 0,1 , with a subdivision of 1/aDivision steps with 2 decimal places"
-	| r array|
-	r := Random new.
-	array := ( 0 to: 1 by: (( 1/ aDivision) asFloat)  ) asArray.
-	^ (1 to: self) collect: [ :i | (array at: (r nextInt: (array size))) printShowingDecimalPlaces: 2 ].
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> randomFrom: anArray [
-
-	"return an array of self size of random notes from anArray"
-
-	^ (1 to: self) collect: [ :i | 
-		  anArray at: (Random new nextInteger: anArray size) ]
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> randomInts: aNumber [
-"return an array of self size with random integers with range [0, aNumber]"
-| floatsArray result |
-floatsArray := (self randoms) * aNumber.
-result := floatsArray collect: [ :i | i rounded ].
-^ result
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> randomNotes: anArray [
-
-	"answer an Array of size=self with random note numbers between "
-
-	| max min range |
-	min := anArray at: 1.
-	max := anArray at: 2.
-	range := 1 + max - min.
-	^ (1 to: self) collect: [ :i | 
-		  (Random new nextInteger: range) + min - 1 ]
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> randomNotesFrom: anArray [
-
-	"return an array of self size of random notes from anArray"
-
-	^ (1 to: self) collect: [ :i | 
-		  anArray at: (Random new nextInteger: anArray size) ]
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> randomNotesFrom: anArray octaves: aNumber [
-
-	"return an array of self size of a random note from anArray + a random octave between 0 and aNumber"
-
-	^ (1 to: self) collect: [ :i | 
-		  (anArray at: (Random new nextInteger: anArray size))
-		  + ((Random new nextInteger: aNumber + 1) - 1 * 12) ]
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> randomTrigs [ 
-
-"must be implemented"
-
-| randoms |
-randoms := ( 1 to: self) collect: [ :i | Random new next rounded].
-^ randoms asSeq.
-
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> randomTrigsWithProbability: anIntegerProbability [
-"generates an Array of random 0s and 1s of size: aNumber with a probability of having a trig of anIntegerProbability "
-	| r rytm|
-	rytm:= Array new: self.
-	r := Random new.
-	( 1 to: self) do: [ :i| (r next) < (anIntegerProbability / 100) 
-	ifTrue: [ rytm at: i put: 1 ]	ifFalse: [ rytm at: i put: 0 ]
-		 ].
-
-^ rytm asRhythm
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> randomWalksOn: anArrayOfNotes [
-
-	"random walk inside an array of notes"
-
-	| start nix randomWalker r |
-	start := anArrayOfNotes at:
-		         ((anArrayOfNotes size / 2) rounded).
-	nix := anArrayOfNotes indexOf: start.
-	randomWalker := (1 to: self) collect: [ :i | 
-		                r := Random new next.
-		                r > 0.5
-			                ifTrue: [ 
-				                nix := (nix + 1 ) min: (anArrayOfNotes size) ]
-			                ifFalse: [ 
-				                 nix := (nix -1) max: 1 ].
-
-
-		                anArrayOfNotes at: nix ].
-	^ randomWalker
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> randoms [
-"generates an Array of random values in the range (0,1) of size: aNumber, whith only 2 decimal places"
-	| r |
-	r := Random new.
-	^ (1 to: self) collect: [ :i | ((r next ) printShowingDecimalPlaces: 2) asNumber].
-]
-
-{ #category : #'*LiveCoding' }
 Integer >> rumba [
 " create an array of self size of Cuban rumba rhytm pulses. Better if used with self = 16 x anInteger "
 | pattern |
@@ -477,12 +191,13 @@ pattern := #(1 0 0 1 0 0 0 1 0 0 1 0 1 0 0 0 ).
 
 { #category : #'*LiveCoding' }
 Integer >> semibreves [
-" returns self number of semibrevesin the first position of the bars"
-| result |
 
-result := (('8000' pattern ) times: self) asRhythm .
-^ result asSeq.
+	" returns self number of semibrevesin the first position of the bars"
 
+	| result |
+	result := '8000' pattern times: self.
+	result durations: #(16).
+	^ result
 ]
 
 { #category : #'*LiveCoding' }
@@ -578,6 +293,57 @@ pattern := #(1 0 0 1 0 0 1 0 0 0 1 1 0 0 0 0 ).
 ]
 
 { #category : #'*LiveCoding' }
+Integer >> toSCAsGate [
+
+	" send an OSC message to superCollider that mimics the behaviour oa MIDI note on message, note is held for a default duration of 2 seconds"
+
+	| localAddress |
+	localAddress := '127.0.0.1'.
+
+
+	(OSCMessage for: { 
+			 15.
+			 self.
+			 'gate'.
+			 1 }) sendToAddressString: '127.0.0.1' port: 57110.
+	(Delay forSeconds: 1) wait.
+	
+"note-Off"
+	(OSCMessage for: { 
+			 15.
+			 self.
+			 'gate'.
+			 0 }) sendToAddressString: '127.0.0.1' port: 57110
+]
+
+{ #category : #'*LiveCoding' }
+Integer >> toSCAsGate: aDurationInSeconds note: aNoteNumber [
+
+	"send a note-on MIDI-like message to supercollider via OSC"
+
+[  	(OSCMessage for: { 
+			 15.
+			 self.
+			 'note'.
+			 aNoteNumber }) sendToAddressString: '127.0.0.1' port: 57110.
+	(OSCMessage for: { 
+			 15.
+			 self.
+			 'gate'.
+			 1 }) sendToAddressString: '127.0.0.1' port: 57110.
+
+	(Delay forSeconds: aDurationInSeconds) wait.
+
+	"note-Off"
+	(OSCMessage for: { 
+			 15.
+			 self.
+			 'gate'.
+			 0 }) sendToAddressString: '127.0.0.1' port: 57110.
+			] fork
+]
+
+{ #category : #'*LiveCoding' }
 Integer >> tresillo [
 " create an array of self size of  tresillo rhytm pulses. Better if used with self = 8 x anInteger "
 | pattern newArray rhythm |
@@ -639,18 +405,6 @@ pattern := #(1 0 0 1 1 0 1 0 ).
 rhythm := ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm .
 ^ rhythm asSeq.
 
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> tumbao: aNoteNumberOrArrayOfNoteNumbers [
-" Creates a Sequencer with an array of self size of  habanera/tumbao rhytm pulses. With all notes equals to aNoteNumber.
-
-Better if the receiever is a multiple of eight."
-| pattern rhythm notes|
-pattern := #(1 0 0 1 1 0 1 0 ).
-notes := Array with:aNoteNumberOrArrayOfNoteNumbers .
-rhythm := ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm .
-^ Sequencer with: rhythm with: notes with: #(0.125).
 ]
 
 { #category : #'*LiveCoding' }

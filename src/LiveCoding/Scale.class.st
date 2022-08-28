@@ -6,7 +6,7 @@ Class {
 	#name : #Scale,
 	#superclass : #Array,
 	#type : #variable,
-	#category : #LiveCoding
+	#category : #'LiveCoding-ScalesAndChords'
 }
 
 { #category : #'as yet unclassified' }

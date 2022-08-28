@@ -1,3 +1,7 @@
+"
+MIDIReceiver
+Use the MIDIReceiever to receive MIDI events.
+"
 Class {
 	#name : #MIDIReceiver,
 	#superclass : #Object,
@@ -5,7 +9,7 @@ Class {
 		'midiIn',
 		'defaultInput'
 	],
-	#category : #LiveCoding
+	#category : #'LiveCoding-MIDI'
 }
 
 { #category : #accessing }

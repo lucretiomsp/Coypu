@@ -32,6 +32,18 @@ Transcript show: aString; open.
 ]
 
 { #category : #'*LiveCoding' }
+Array >> @ anArrayWithARootNoteAndAnOctave [
+
+	| x anIntegerRoot anIntegerOctave |
+	anIntegerRoot := anArrayWithARootNoteAndAnOctave at: 1.
+	anIntegerOctave := anArrayWithARootNoteAndAnOctave at: 2.
+	x := OrderedCollection new.
+	(0 to: anIntegerOctave) do: [ :i | 
+		x addAll: self + (anIntegerRoot + (i * 12)) ].
+	^ x
+]
+
+{ #category : #'*LiveCoding' }
 Array >> and: anArray [
 
 ^ Sequencer with: self with: anArray
@@ -54,11 +66,20 @@ rhythm := Rhythm new: (self size).
 
 { #category : #'*LiveCoding' }
 Array >> asSeq [
-"returns Sequencer with default note 60nn and default durations 1/16th and noteIndex = 0"
-"duration now expressed in number of steps"
-^ (Sequencer with: self with: #(60) with: #(1) with: 0)
 
-" durations formerly in fraction of bar
+	"returns Sequencer with default note 60nn and default durations 1/16th and noteIndex = 0"
+
+	"duration now expressed in number of steps"
+
+	| numberOfNotes |
+	numberOfNotes := Array new: self trigs withAll: 60.
+	^ Sequencer new
+		  gates: self;
+		  notes: numberOfNotes;
+		  durations: #( 1 );
+		  noteIndex: 0
+
+	" durations formerly in fraction of bar
 (Sequencer with: self with: #(60) with: #(0.125) with: 0).
 "
 ]
@@ -80,8 +101,8 @@ Array >> into: anotherArray [
 
 { #category : #'*LiveCoding' }
 Array >> isSequencer [
-" answer true if the Collection is a Sequencer from the LIveCodingPackage"
-((self at: 2) isArray) ifTrue: [ ^true ] ifFalse: [ ^false ]
+
+	^ false
 ]
 
 { #category : #'*LiveCoding' }
@@ -109,6 +130,16 @@ newArray := self class new: (self size).
 0 to: ((self size) - 1) do: [ :i | newArray at: ((i + aNumber) modulo: (self size)) put: (self at: i + 1)].
 ^ newArray .
 
+]
+
+{ #category : #'*LiveCoding' }
+Array >> randomOctaves: anInteger [
+
+	| newArray |
+	newArray := (1 to: self size) collect: [ :i | 
+		            (self at: i)
+		            + (12 * (Random new nextInteger: anInteger - 1)) ].
+	^ newArray
 ]
 
 { #category : #'*LiveCoding' }
@@ -153,11 +184,15 @@ Array >> toKyma: aString [
 ]
 
 { #category : #'*LiveCoding' }
-Array >> withIts: anArray [ 
-"convenience method to create a Sequence"
-| numberOfGates result |
+Array >> trigs [
 
-numberOfGates := anArray  size.
-result := (1 to: numberOfGates) collect: [ :i | anArray   at: (i modulo: numberOfGates) ].
-^ Sequencer with: self with: result
+	"return the number of trigs (value  = 1),  of the array"
+
+	| result |
+	result := 0.
+	(1 to: self size) do: [ :i | 
+		(self  at: i) = 1
+			ifTrue: [ result := result + 1 ]
+			ifFalse: [ nil ] ].
+	^ result
 ]
