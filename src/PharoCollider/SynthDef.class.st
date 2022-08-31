@@ -1,94 +1,50 @@
-"
-SuperCollider SynthDef
-"
 Class {
 	#name : #SynthDef,
 	#superclass : #Object,
-	#instVars : [
-		'instanceID'
-	],
-	#classInstVars : [
-		'id'
-	],
-	#category : #PharoCollider
+	#category : #'PharoCollider-SynthDef'
 }
 
-{ #category : #examples }
-SynthDef class >> example1 [
-| sdf |
-sdf := OrderedCollection new. "sdf for SynthDefFile"
+{ #category : #converting }
+SynthDef >> asBytes [
+	| int8Array SCgf version def defname numberOfConstants numberOfParameters numberOfParameterNames numberOfVariants numberOfUGens|
+	int8Array := OrderedCollection new.
+	"int32 - four byte file type id containing the ASCII characters: 'SCgf' "
+	SCgf := 'SCgf' asByteArray.
+	(1 to:  SCgf size ) do: [ :i | int8Array add: (SCgf at: i) ] .
+	"int32 - file version, currently 2."
+	version := #( 0 0 0 2). 
+	( 1 to: version size) do: [ :i | int8Array add: (version at: i) ].
+	"int16 - number of synth definitions in this file (D)."
+	def := #(0 1 ). "for one definition"
+	( 1 to: def size) do: [ :i | int8Array add: (def  at: i) ].
+	"pstring - the name of the synth definition"
+	defname := 0.
+	int8Array addLast: defname .
+	"int32 - number of constants (K)"
+	numberOfConstants := #( 0 0 0 0).
+	( 1 to: numberOfConstants size) do: [ :i | int8Array add: (numberOfConstants at: i) ].
+	
+	"[float32] * K - constant values"
+	
+	"int32 - number of parameters (P)"
+    numberOfParameters := #( 0 0 0 0).
+	( 1 to: numberOfParameters size ) do: [ :i | int8Array add: (numberOfParameters  at: i) ].
+	
+	"[float32] * P - initial parameter values"
+	
+	"int32 - number of parameter names (N)"
+	 numberOfParameterNames := #( 0 0 0 0).
+	( 1 to: numberOfParameterNames size ) do: [ :i | int8Array add: (numberOfParameterNames   at: i) ].
+	
+		"int32 - number of unit generators (U)"
+	numberOfUGens  := #(0 0 0 0).
+	( 1 to: numberOfUGens size ) do: [ :i | int8Array add: (numberOfUGens   at: i) ].
+	
+	"int16 - number of variants (V)"
+	numberOfVariants := #(0 0 ).
+	( 1 to: numberOfVariants size ) do: [ :i | int8Array add: (numberOfVariants   at: i) ].
+	
 
-"int32 - four byte file type id containing the ASCII characters: SCgf"
-sdf addAll: #(83 67 103 102). 
-
-"int32  - file version  currently 2"
-"int16 - number of synth definitions in this file (D)."
-
-
-
-
-^ sdf
-]
-
-{ #category : #examples }
-SynthDef class >> exampleWithName: aString [
-| sdf |
-sdf := OrderedCollection new. "sdf for SynthDefFile"
-
-"int32 - four byte file type id containing the ASCII characters: SCgf"
-sdf addAll: #(83 67 103 102). 
-"int32  - file version  currently 2"
-sdf addAll: #(0 0 0 2).
-"int16 - number of synth definitions in this file (D)."
-sdf addAll: #(0 1). "if just one synth definition"
-
-"[ synth-definition ] * D / a synth-definition is :"
-
-"pstring - the name of the synth definition - first size and then the charachters"
-sdf add: aString size.
-aString do: [ :i | sdf addLast: i asciiValue ].
-
-"int32 - number of constants (K)"
-sdf addAll: #(0 0 0 7) . "if for example we have 7 constants"
-
-"[float32] * K - constant values"
-"int32 - number of parameters (P)"
-"[float32] * P - initial parameter values"
-"int32 - number of parameter names (N)"
-
-
-
-^ sdf
-]
-
-{ #category : #accessing }
-SynthDef class >> id [
-^ id
-]
-
-{ #category : #accessing }
-SynthDef class >> id: anInteger [
-"assign ID for the server"
-
-id := anInteger .
-]
-
-{ #category : #initialization }
-SynthDef >> initialize [ 
-super initialize.
-
-self class id ifNil: [ self class id: 0 ].
-self instanceID: (self class id) + 1.
-self class id: self instanceID .
-
-]
-
-{ #category : #initialization }
-SynthDef >> instanceID [
-^ instanceID
-]
-
-{ #category : #initialization }
-SynthDef >> instanceID: anInteger [
-instanceID := anInteger.
+	
+^ int8Array 
 ]
