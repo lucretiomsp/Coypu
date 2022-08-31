@@ -4,6 +4,12 @@ Class {
 	#category : #'PharoCollider-Tests'
 }
 
+{ #category : #'as yet unclassified' }
+PharoColliderTests >> tesSynthDefOutAndSinOscWithNoControl [
+
+
+]
+
 { #category : #tests }
 PharoColliderTests >> testDacExists [
 
@@ -27,10 +33,11 @@ PharoColliderTests >> testSinOscExists [
 { #category : #tests }
 PharoColliderTests >> testSynthDefNoNameNoUgensAsBytes [
 
-	"returns th Int8 array with the SuperCollider SynthDefinition Format of a Synthef named '' and with noUgens nor controls "
+	"returns th Int8 array with the SuperCollider SynthDefinition Format of a Synthef named 'a' and with noUgens nor controls "
 
 	self
 		assert: SynthDef new asBytes
 		equals:
-		#( 83 67 103 102 0 0 0 2 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ) asOrderedCollection 
+			#( 83 67 103 102 0 0 0 2 0 1 1 97 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 )
+				asOrderedCollection
 ]
