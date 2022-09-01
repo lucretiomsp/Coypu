@@ -6,7 +6,8 @@ Class {
 	#superclass : #UGen,
 	#instVars : [
 		'bus',
-		'input'
+		'input',
+		'numberOfContsants'
 	],
 	#category : #'PharoCollider-UGens'
 }
@@ -35,9 +36,11 @@ bus := anInteger
 ]
 
 { #category : #initialization }
-Dac >> initialize [ 
-bus := 0.
-input := UGen new
+Dac >> initialize [
+
+	bus := 0.
+	numberOfContsants := 1.
+	input := UGen new.
 ]
 
 { #category : #accessing }
@@ -50,4 +53,16 @@ Dac >> input: aUGen [
 input := aUGen
 
 	
+]
+
+{ #category : #accessing }
+Dac >> numberOfContsants [
+
+	^ numberOfContsants
+]
+
+{ #category : #accessing }
+Dac >> numberOfContsants: anInteger [
+
+	numberOfContsants := anInteger asByteArrayOfSize: 4
 ]

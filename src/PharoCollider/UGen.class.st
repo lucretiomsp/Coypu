@@ -5,8 +5,9 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-UGen >> => anUGen [ 
-	^ SynthDef new
+UGen >> => anUGen [
+
+	^ UGenGraph new numberOfUGens: 2
 ]
 
 { #category : #testing }
