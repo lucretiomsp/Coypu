@@ -29,6 +29,12 @@ PharoColliderTests >> testArrayWithBytesOfSize [
 ]
 
 { #category : #tests }
+PharoColliderTests >> testControlCreationWithName [
+
+	self assert: (Control newWithName: 'First') name equals: 'First'
+]
+
+{ #category : #tests }
 PharoColliderTests >> testDacExists [
 
 	self assert: Dac new bus equals: 0.

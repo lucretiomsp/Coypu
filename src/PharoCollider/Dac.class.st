@@ -6,8 +6,7 @@ Class {
 	#superclass : #UGen,
 	#instVars : [
 		'bus',
-		'input',
-		'numberOfContsants'
+		'input'
 	],
 	#category : #'PharoCollider-UGens'
 }
@@ -53,16 +52,4 @@ Dac >> input: aUGen [
 input := aUGen
 
 	
-]
-
-{ #category : #accessing }
-Dac >> numberOfContsants [
-
-	^ numberOfContsants
-]
-
-{ #category : #accessing }
-Dac >> numberOfContsants: anInteger [
-
-	numberOfContsants := anInteger asByteArrayOfSize: 4
 ]

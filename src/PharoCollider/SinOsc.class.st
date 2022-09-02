@@ -8,24 +8,10 @@ Class {
 	#instVars : [
 		'freq',
 		'phase',
-		'gain',
-		'numberOfConstants',
-		'constantValues'
+		'gain'
 	],
 	#category : #'PharoCollider-UGens'
 }
-
-{ #category : #accessing }
-SinOsc >> constantValues [
-
-	^ constantValues
-]
-
-{ #category : #accessing }
-SinOsc >> constantValues: anArray [
-
-	constantValues := anArray
-]
 
 { #category : #'accessing - structure variables' }
 SinOsc >> freq [
