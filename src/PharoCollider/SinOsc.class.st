@@ -1,6 +1,5 @@
 "
-SinOsc from SuperCollider with NamedControls for Freq and Gain.
-Initially phase is left as constant 
+1537+02:00 LiveCoding4Pharo10.0.image priorSource: 3085015
 "
 Class {
 	#name : #SinOsc,
@@ -42,20 +41,8 @@ SinOsc >> initialize [
 	freq := 440.
 	phase := 0.0.
 	gain := 0.5.
-	numberOfConstants := 1.
 	constantValues := 0.0.
-]
-
-{ #category : #accessing }
-SinOsc >> numberOfConstants [
-
-	^ numberOfConstants
-]
-
-{ #category : #accessing }
-SinOsc >> numberOfConstants: anInteger [
-
-	numberOfConstants := anInteger asByteArrayOfSize: 4
+	self numberOfConstants: 1.
 ]
 
 { #category : #accessing }

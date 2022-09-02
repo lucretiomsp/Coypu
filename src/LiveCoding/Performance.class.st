@@ -124,11 +124,10 @@ Performance >> muteAll [
 	" remove all keys from the Performance"
 
 	self keysDo: [ :i | self removeKey: i ifAbsent: [  ] ].
-	
-canvas isNotNil ifTrue: [ 
-		 
-				(1 to: rsGroupDictionary size) do: [ :i | 
-					canvas removeShape: (rsGroupDictionary at: i) asShape ] ]
+
+	canvas isNotNil ifTrue: [ 
+		self keys do: [ :i | 
+			canvas removeShape: (rsGroupDictionary at: i) asShape ] ]
 ]
 
 { #category : #accessing }
