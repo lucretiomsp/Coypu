@@ -71,27 +71,6 @@ Sequencer >> allNotes: anInteger [
 	self notes: newNotes.
 ]
 
-{ #category : #controlling }
-Sequencer >> and: anArray and: anotherArray and: aThirdArray [
-" add array of  extravalues to the Sequencer
-the first element of both arrays should be a string - for example 'Index'' if sending out OSC or an integer value corresponding to CC message if sending out MIDI
-- the second element o the array should be an array of numbers - for example #( 1 2 3)
-#('Cutoff' #(34 56 78)
-"
-| seq |
-seq := Sequencer new: 7.
-
-
-(1 to: 4) do:
-[:i | seq at: i put: (self at: i)].
-seq at: 5 put: anArray.
-seq at: 6 put: anotherArray .
-seq at: 7 put: aThirdArray.
-
-^ seq.
-
-]
-
 { #category : #accessing }
 Sequencer >> duration [
 
@@ -224,7 +203,7 @@ Sequencer >> isSequencer [
 Sequencer >> melodyFrom: aScale [
 
 	| array |
-	array := self numberOfGates  randomNotesFrom: aScale.
+	array := self numberOfGates randomNotesFrom: aScale.
 	array at: 1 put: (aScale at: 1).
 	2 to: array size do: [ :i | 
 		((array at: i) rem: 12) = 0 ifTrue: [ 
@@ -232,7 +211,7 @@ Sequencer >> melodyFrom: aScale [
 		((array at: i) rem: 12) = 2 ifTrue: [ 
 			array at: i - 1 put: (aScale at: 5) ] ].
 	"last note is mediante or dominante"
-	^ array
+	^ self notes: array
 ]
 
 { #category : #accessing }
@@ -392,13 +371,6 @@ Sequencer >> to: aPerformance at: aKey [
 aPerformance add: aKey -> self
 ]
 
-{ #category : #accessing }
-Sequencer >> to: aSymbol with: anArray [
-
-^ 'cicisbeo'
-
-]
-
 { #category : #modifying }
 Sequencer >> transpose: aNumberOfSemitones [
 
@@ -479,4 +451,16 @@ Sequencer >> withRandomNotesFrom: anArray root: aRootNote octaves: aNumber [
 	melody := intervals + aRootNote.
 	self notes: melody.
 	
+]
+
+{ #category : #random }
+Sequencer >> withRandomNotesMin: anInteger max: anotherInteger [
+
+	"return an array of self size of a random note from anArray of note numbers with root aRootNote, and aNumber octave range"
+
+	| newNotes |
+	newNotes := (1 to: self numberOfGates ) collect: [ :i | 
+		            (Random new nextInteger: anotherInteger - anInteger)
+		            + anInteger ].
+	^ self notes: newNotes
 ]

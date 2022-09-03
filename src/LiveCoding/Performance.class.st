@@ -122,12 +122,14 @@ Performance >> mute: aKeyOrAnArrayOfKeys [
 Performance >> muteAll [
 
 	" remove all keys from the Performance"
-  | anArrayOfKeys |
-anArrayOfKeys := self keys.
-	self keysDo: [ :i | self removeKey: i ifAbsent: [  ] ].
 
-	canvas isNotNil ifTrue: [ anArrayOfKeys do: [ :i | 
-					canvas removeShape: (rsGroupDictionary at: i) asShape ] ] 
+	| anArrayOfKeys |
+	anArrayOfKeys := self keys.
+	[ self keysDo: [ :i | self removeKey: i ifAbsent: [  ] ] ] fork.
+
+	[canvas isNotNil ifTrue: [ 
+		anArrayOfKeys do: [ :i | 
+			canvas removeShape: (rsGroupDictionary at: i) asShape ] ]] fork
 ]
 
 { #category : #accessing }
@@ -576,6 +578,23 @@ Performance >> rsGroupDictionary [
 Performance >> rsGroupDictionary: anRSGroupDictionary [
 
 	rsGroupDictionary := anRSGroupDictionary
+]
+
+{ #category : #'muting and soloing' }
+Performance >> solo: aKey [
+
+	" remove all keys from the Performance except aKey"
+
+	| anArrayOfKeys |
+	anArrayOfKeys := self keys.
+	self keysAndValuesRemove: [ :keys :values | keys ~= aKey ]
+	
+	"
+	[canvas isNotNil ifTrue: [ 
+		anArrayOfKeys do: [ :i | (i ~= aKey) ifTrue: [  
+			canvas removeShape: (rsGroupDictionary at: i) asShape ] ]] ] fork
+" 
+		 
 ]
 
 { #category : #accessing }
