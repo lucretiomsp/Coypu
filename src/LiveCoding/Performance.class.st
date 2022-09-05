@@ -597,6 +597,14 @@ Performance >> solo: aKey [
 		 
 ]
 
+{ #category : #modifying }
+Performance >> swap: firstKey with: secondKey [
+| tempValue |
+   tempValue := self at: firstKey.
+	self at: firstKey put: (self at: secondKey ).
+	self at: secondKey put: tempValue . 
+]
+
 { #category : #accessing }
 Performance >> visualization [
 

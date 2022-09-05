@@ -245,11 +245,16 @@ Sequencer >> notes [
 ]
 
 { #category : #modifying }
-Sequencer >> notes: anArray [
+Sequencer >> notes: anArrayOfNotesOrANote [
 
 	" change notes in the sequencer"
 
-	notes := anArray
+	anArrayOfNotesOrANote isArray
+		ifTrue: [ notes := anArrayOfNotesOrANote ]
+		ifFalse: [ 
+			notes := Array
+				         new: self numberOfTrigs
+				         withAll: anArrayOfNotesOrANote ]
 ]
 
 { #category : #'as yet unclassified' }
