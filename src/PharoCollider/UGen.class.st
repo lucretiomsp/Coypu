@@ -3,7 +3,7 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'inputs',
-		'numberOfContsants',
+		'numberOfConstants',
 		'constantValues'
 	],
 	#category : #'PharoCollider-UGens'
@@ -28,6 +28,12 @@ UGen >> constantValues: anArray [
 ]
 
 { #category : #accessing }
+UGen >> initialize [ 
+super initialize.
+inputs := OrderedCollection new.
+]
+
+{ #category : #accessing }
 UGen >> inputs [
 
 	^ inputs
@@ -40,18 +46,24 @@ UGen >> inputs: anObject [
 ]
 
 { #category : #testing }
-UGen >> isUGen [
+UGen >> isUGen [ 
 ^ true
 ]
 
 { #category : #accessing }
-UGen >> numberOfContsants [
+UGen >> numberOfConstsants [
 
-	^ numberOfContsants
+	^ numberOfConstants 
+]
+
+{ #category : #accessing }
+UGen >> numberOfConstsnts [
+
+	^ numberOfConstants
 ]
 
 { #category : #accessing }
 UGen >> numberOfContsants: anInteger [
 
-	numberOfContsants := anInteger asByteArrayOfSize: 4
+	numberOfConstants  := anInteger asByteArrayOfSize: 4
 ]

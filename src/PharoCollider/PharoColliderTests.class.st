@@ -47,22 +47,6 @@ self assert: 69 midiToFreq equals: 440
 ]
 
 { #category : #tests }
-PharoColliderTests >> testPerformanceKeysSwap [
-
-	| seq1 seq2 p |
-	p := Performance new.
-	seq1 := 4 downbeats.
-	seq2 :=  4 semiquavers.
-	p at: #a put: seq1.
-	p at: #b put: seq2.
-	
-	p swap: #a with: #b.
-	self assert: ( p at: #b) equals: seq1
-
-
-]
-
-{ #category : #tests }
 PharoColliderTests >> testSinOscExists [
 
 	self assert: SinOsc new freq equals: 440.
@@ -105,4 +89,14 @@ newSynthDef := (SynthDef withName: 'x' graph: UGenGraph new).
 PharoColliderTests >> testUGenGraphFrom2Ugens [
 
 self assert: (UGen new => UGen new ) equals: UGenGraph new.
+]
+
+{ #category : #tests }
+PharoColliderTests >> testUGenIsInput [
+
+| ugen1 ugen2 |
+ugen1 := UGen new.
+ugen2 := UGen new.
+
+self assert: (ugen1 isInputOf: ugen2) equals: true
 ]

@@ -25,7 +25,7 @@ Class {
 { #category : #combination }
 Sequencer >> , anotherSequencer [
 
-	"combine the gates of two sequencers, returns an array"
+	"combine the gates of two sequencers, returns a sequencer"
 
 	| newGates newNotes newDurations notes1 notes2 |
 	notes1 := self notes.
@@ -50,6 +50,12 @@ the first element of the array should be a string - for example 'Index'' - the s
 "
 
 	^ self extra1: anotherArray 
+]
+
+{ #category : #comparing }
+Sequencer >> = anotherSequencer [ 
+" equality between sequencers"
+((self notes = anotherSequencer notes) & (self gates = anotherSequencer gates) & (self durations = anotherSequencer durations) & (self extra1 = anotherSequencer extra1) & (self extra2 = anotherSequencer extra2)) ifTrue: [ ^ true ] ifFalse: [ ^ false ]
 ]
 
 { #category : #'as yet unclassified' }

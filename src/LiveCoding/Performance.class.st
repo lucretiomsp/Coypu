@@ -599,10 +599,11 @@ Performance >> solo: aKey [
 
 { #category : #modifying }
 Performance >> swap: firstKey with: secondKey [
-| tempValue |
-   tempValue := self at: firstKey.
-	self at: firstKey put: (self at: secondKey ).
-	self at: secondKey put: tempValue . 
+"swap the values of two perfromance keys"
+	| tempValue |
+	tempValue := self at: firstKey.
+	self at: firstKey put: (self at: secondKey).
+	self at: secondKey put: tempValue
 ]
 
 { #category : #accessing }

@@ -18,9 +18,12 @@ SinOsc >> freq [
 ]
 
 { #category : #accessing }
-SinOsc >> freq: anObject [
+SinOsc >> freq: aFloatOrAUGen [
 
-	freq := anObject
+	"frequency cann be a float or a UGen"
+
+	freq := aFloatOrAUGen.
+	aFloatOrAUGen isNumber ifFalse: [ inputs add: aFloatOrAUGen  ] ifTrue: [ ]  
 ]
 
 { #category : #accessing }
@@ -29,9 +32,9 @@ SinOsc >> gain [
 ]
 
 { #category : #accessing }
-SinOsc >> gain: anObject [
+SinOsc >> gain: aFloatOrAUGen [
 
-	gain := anObject
+	gain := aFloatOrAUGen
 ]
 
 { #category : #'accessing - structure variables' }
@@ -42,7 +45,7 @@ SinOsc >> initialize [
 	phase := 0.0.
 	gain := 0.5.
 	constantValues := 0.0.
-	self numberOfConstants: 1.
+	numberOfConstants :=  1.
 ]
 
 { #category : #accessing }
@@ -51,7 +54,7 @@ SinOsc >> phase [
 ]
 
 { #category : #accessing }
-SinOsc >> phase: anObject [
+SinOsc >> phase: aFloatOrAUGen [
 
-	phase := anObject
+	phase := aFloatOrAUGen
 ]

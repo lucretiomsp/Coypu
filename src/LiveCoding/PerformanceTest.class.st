@@ -30,6 +30,22 @@ PerformanceTest >> setUp [
 ]
 
 { #category : #tests }
+PerformanceTest >> testPerformanceKeysSwap [
+
+	| seq1 seq2 p |
+	p := Performance new.
+	seq1 := 4 downbeats.
+	seq2 :=  4 semiquavers.
+	p at: #a put: seq1.
+	p at: #b put: seq2.
+	
+	p swap: #a with: #b.
+	self assert: ( p at: #b) equals: seq1
+
+
+]
+
+{ #category : #tests }
 PerformanceTest >> testPerformanceSendBPMOnPlay [
 
 	self assert: performer bpm equals: 60
@@ -66,6 +82,19 @@ PerformanceTest >> testPerformanceSendGateWithSecondNote [
 	self waitASecond. "Wait another second"
 
 	self assert: (performer noteFor: 'gate') equals: 20
+]
+
+{ #category : #tests }
+PerformanceTest >> testPerformanceSolo [
+
+	| p |
+	p := Performance new.
+	p at: #kick put: 16 downbeats.
+	p at: #tom put: 32 shiko.
+	p at: #oh put: 16 upbeats.
+	p at: #snare put: '0240' pattern.
+
+	self assert: (p solo: #tom) keys equals: #tom
 ]
 
 { #category : #tests }
