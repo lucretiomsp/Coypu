@@ -62,6 +62,14 @@ PharoColliderTests >> testSinOscExists [
 ]
 
 { #category : #tests }
+PharoColliderTests >> testStringAsPString [
+
+	"SuperCollider pascal format string: a byte (an unsigned int8) giving the length followed by that many bytes"
+
+	self assert: 'io' asPString equals: #[2 105 111]
+]
+
+{ #category : #tests }
 PharoColliderTests >> testSynthDefCreateWith [
 
 	| synthDefCase |
