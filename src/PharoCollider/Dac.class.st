@@ -24,7 +24,9 @@ Dac class >> bus: anInteger input: aUGen [
 
 { #category : #accessing }
 Dac >> bus [
-^ bus
+"The index of the bus to write out to. The lowest numbers are written to the audio hardware"
+
+	^ bus
 ]
 
 { #category : #accessing }
@@ -49,7 +51,9 @@ Dac >> input [
 
 { #category : #accessing }
 Dac >> input: aUGen [
-input := aUGen
+"An Array of channels or single output to write out. You cannot change the size of this once a SynthDef has been built.
 
-	
+"
+	input := aUGen.
+	self inputs add: aUGen
 ]

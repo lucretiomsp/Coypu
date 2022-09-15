@@ -47,6 +47,19 @@ self assert: 69 midiToFreq equals: 440
 ]
 
 { #category : #tests }
+PharoColliderTests >> testNumberUGensBasic [
+
+	| s output oscillator fc |
+	fc := Control new.
+	oscillator := SinOsc new freq: fc.
+	output := Dac new input: oscillator.
+
+	s := SynthDef new: output.
+	
+self assert: s numberOfUGens   equals: 2
+]
+
+{ #category : #tests }
 PharoColliderTests >> testSinOscExists [
 
 	self assert: SinOsc new freq equals: 440.
@@ -94,9 +107,10 @@ self assert: (UGen new => UGen new ) equals: UGenGraph new.
 { #category : #tests }
 PharoColliderTests >> testUGenIsInput [
 
-| ugen1 ugen2 |
-ugen1 := UGen new.
-ugen2 := UGen new.
+| uGen1 uGen2 |
+uGen2 := Control new.
+uGen1 := SinOsc new freq: uGen2.
 
-self assert: (ugen1 isInputOf: ugen2) equals: true
+
+self assert: (uGen2 isInputOf: uGen1) equals: true
 ]

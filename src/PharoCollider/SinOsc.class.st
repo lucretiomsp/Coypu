@@ -34,7 +34,10 @@ SinOsc >> gain [
 { #category : #accessing }
 SinOsc >> gain: aFloatOrAUGen [
 
-	gain := aFloatOrAUGen
+	gain := aFloatOrAUGen.
+	aFloatOrAUGen isUGen
+		ifTrue: [ inputs add: aFloatOrAUGen ]
+		ifFalse: [  ]
 ]
 
 { #category : #'accessing - structure variables' }
@@ -56,5 +59,8 @@ SinOsc >> phase [
 { #category : #accessing }
 SinOsc >> phase: aFloatOrAUGen [
 
-	phase := aFloatOrAUGen
+	phase := aFloatOrAUGen.
+	aFloatOrAUGen isUGen
+		ifTrue: [ inputs add: aFloatOrAUGen ]
+		ifFalse: [  ]
 ]

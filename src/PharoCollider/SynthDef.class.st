@@ -1,3 +1,12 @@
+"
+Corresponds to SuperCollider client-side definition of a synth definition.
+The core of a synthdef is its unit generator graph function (, here represented by an instance variable called uGensGraphFunc that is a Sorted Collection.
+
+SynthDef tries to arrange the UGens in the uGensGraphFunc in  depth-first. It begins with the first UGen in the list of children that is taking no input from any other UGen. (If it isn’t taking input from another UGen, then there is no UGen that needs to be calculated before this one. Thus this UGen is eligible to go into the final ordering – “available,” in the code.).
+Then it follows the input-output chain as far down as it can, before moving on to any other “available” UGens that hadn’t been resolved yet.
+
+Usually we will find Control near the top because normally its outputs are feeding into other units, pushing those other units later in the order. (What’s the point of a Control that isn’t controlling anything?) But there is no rule that Controls must precede other units. The typical ordering is a consequence of normal usage, in which other units depend on data from Control, so those other units must follow after Control.
+"
 Class {
 	#name : #SynthDef,
 	#superclass : #Object,

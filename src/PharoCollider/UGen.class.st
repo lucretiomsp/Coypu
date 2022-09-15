@@ -3,6 +3,7 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'inputs',
+		'numberOfInputs',
 		'numberOfConstants',
 		'constantValues'
 	],
@@ -46,6 +47,12 @@ UGen >> inputs: anObject [
 ]
 
 { #category : #testing }
+UGen >> isInputOf: anUGen [
+
+	^ anUGen inputs includes: self
+]
+
+{ #category : #testing }
 UGen >> isUGen [ 
 ^ true
 ]
@@ -66,4 +73,9 @@ UGen >> numberOfConstsnts [
 UGen >> numberOfContsants: anInteger [
 
 	numberOfConstants  := anInteger asByteArrayOfSize: 4
+]
+
+{ #category : #accessing }
+UGen >> numberOfInputs [
+^ inputs size.
 ]
