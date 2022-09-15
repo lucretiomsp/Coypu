@@ -39,9 +39,10 @@ bus := anInteger
 { #category : #initialization }
 Dac >> initialize [
 
+ super initialize.
 	bus := 0.
-	numberOfContsants := 1.
-	input := UGen new.
+	numberOfConstants := 1.
+	input := UGen new
 ]
 
 { #category : #accessing }

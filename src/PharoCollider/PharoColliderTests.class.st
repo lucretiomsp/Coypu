@@ -4,12 +4,6 @@ Class {
 	#category : #'PharoCollider-Tests'
 }
 
-{ #category : #'as yet unclassified' }
-PharoColliderTests >> tesSynthDefOutAndSinOscWithNoControl [
-
-
-]
-
 { #category : #tests }
 PharoColliderTests >> testAddElementsOfArrayAsBytesToOrderedCollection [
 
@@ -76,6 +70,19 @@ PharoColliderTests >> testSynthDefCreateWith [
 ]
 
 { #category : #tests }
+PharoColliderTests >> testSynthDefCreationWithUGensGraphFunc [
+
+	| sDef uGen1 uGen2 |
+	uGen1 := SinOsc new.
+	uGen2 := Dac new.
+	sDef := SynthDef with: { 
+			        uGen1.
+			        uGen2 }.
+
+	self assert: sDef numberOfUGens equals: #[0 0 0 2 ]
+]
+
+{ #category : #tests }
 PharoColliderTests >> testSynthDefNoNameNoUgensAsBytes [
 
 	"returns th Int8 array with the SuperCollider SynthDefinition Format of a Synthef named 'a' and with noUgens nor controls "
@@ -85,6 +92,23 @@ PharoColliderTests >> testSynthDefNoNameNoUgensAsBytes [
 		equals:
 			#( 83 67 103 102 0 0 0 2 0 1 1 97 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 )
 				asOrderedCollection
+]
+
+{ #category : #'as yet unclassified' }
+PharoColliderTests >> testSynthDefuGensGraphFuncBasicSorting [
+
+	| sDef uGensGraphFuncIsSorted oscillator out freqControl pos1 pos2 pos3|
+	freqControl := Control new.
+	oscillator := SinOsc new freq: freqControl.
+	out := Dac new input: oscillator.
+	sDef := SynthDef with: { 
+			        oscillator.
+			        out }.
+pos1 := (sDef graph at: 1) = freqControl.
+pos2 := (sDef graph at: 2) = oscillator.
+pos3 := (sDef graph at: 3) = out.
+uGensGraphFuncIsSorted := pos1 & pos2 & pos3.
+	self assert: uGensGraphFuncIsSorted equals: true
 ]
 
 { #category : #tests }

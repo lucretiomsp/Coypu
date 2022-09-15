@@ -41,9 +41,9 @@ UGen >> inputs [
 ]
 
 { #category : #accessing }
-UGen >> inputs: anObject [
+UGen >> inputs: aConstantOrAUGen [
 
-	inputs := anObject
+	inputs := aConstantOrAUGen
 ]
 
 { #category : #testing }

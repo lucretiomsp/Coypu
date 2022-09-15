@@ -18,14 +18,24 @@ Class {
 		'numberOfVariants',
 		'constantValues',
 		'numberOfUGens',
-		'graph'
+		'uGensGraphFunc'
 	],
 	#category : #'PharoCollider-SynthDef'
 }
 
 { #category : #'instance creation' }
-SynthDef class >> with: aCollection [ 
-	^ self new numberOfUGens: aCollection size
+SynthDef class >> with: aCollectionOfUGens [
+
+	| uGensDumped uGensSet |
+	"first collect all the inputs of all the UGens in the collection as a Set to avoid duplicate"
+	uGensSet := Set new.
+	aCollectionOfUGens do: [ :i | uGensSet addAll: i inputs ].
+	uGensSet addAll: aCollectionOfUGens.
+	"sort UGens "
+	uGensDumped := SortedCollection new.
+	uGensDumped sortBlock: [ :a :b | a isInputOf: b ].
+	uGensSet do: [ :i | uGensDumped add: i ].
+	^ self new graph: uGensDumped 
 ]
 
 { #category : #'as yet unclassified' }
@@ -87,8 +97,15 @@ SynthDef >> asBytes [
 ]
 
 { #category : #accessing }
-SynthDef >> graph: anUGenGraph [ 
-	graph := anUGenGraph 
+SynthDef >> graph [
+
+^ uGensGraphFunc 
+]
+
+{ #category : #accessing }
+SynthDef >> graph: anUGenGraph [
+
+	uGensGraphFunc  := anUGenGraph
 ]
 
 { #category : #initialization }
@@ -96,6 +113,9 @@ SynthDef >> initialize [
 
 	super initialize.
 	defname := 'a'.
+	uGensGraphFunc := SortedCollection new.
+	"define the sortBlock for the UGensGraphFunc"
+	"uGensGraphFunc sortBlock: [ :a :b | a isInputOf: b ]."
 	numberOfConstants := 0 asByteArrayOfSize: 4.
 	numberOfParameters := 0 asByteArrayOfSize: 4.
 	numberOfParameterNames := 0 asByteArrayOfSize: 4.
@@ -110,7 +130,11 @@ SynthDef >> name: aString [
 
 { #category : #accessing }
 SynthDef >> numberOfUGens [
-^ numberOfUGens 
+
+	| integerNumberOfUGens |
+	
+	integerNumberOfUGens := uGensGraphFunc size.
+	^ integerNumberOfUGens  asByteArrayOfSize: 4 
 ]
 
 { #category : #accessing }
