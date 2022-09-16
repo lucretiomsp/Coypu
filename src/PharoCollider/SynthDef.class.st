@@ -32,7 +32,7 @@ SynthDef class >> with: aCollectionOfUGens [
 	aCollectionOfUGens do: [ :i | uGensSet addAll: i inputs ].
 	uGensSet addAll: aCollectionOfUGens.
 	"sort UGens "
-	uGensDumped := SortedCollection new.
+	uGensDumped := UGenGraphFunc .
 	uGensDumped sortBlock: [ :a :b | a isInputOf: b ].
 	uGensSet do: [ :i | uGensDumped add: i ].
 	^ self new graph: uGensDumped 
@@ -57,7 +57,29 @@ SynthDef class >> withName: aString graph: aCollectionOfUGens [
 ]
 
 { #category : #converting }
-SynthDef >> asBytes [
+SynthDef >> asBytes [ 
+
+
+	| int8Array SCgf version def |
+	int8Array := OrderedCollection new.
+	"int32 - four byte file type id containing the ASCII characters: 'SCgf' "
+	SCgf := 'SCgf' asByteArray.
+	int8Array addAll: SCgf.
+	"int32 - file version, currently 2."
+	version := #( 0 0 0 2 ).
+	int8Array addAll: version.
+	"int16 - number of synth definitions in this file (D)."
+	def := #( 0 1 ). "for one definition"
+	int8Array addAll: def.
+	"pstring - the name of the synth definition"
+	int8Array addAll: defname asPString.
+	"int32 - number of constants (K)"
+
+^ int8Array asArray 
+]
+
+{ #category : #converting }
+SynthDef >> asBytesDeprecated [
 
 	| int8Array SCgf version def |
 	int8Array := OrderedCollection new.
@@ -106,7 +128,7 @@ SynthDef >> asBytes [
 
 
 
-	^ int8Array
+	^ int8Array asArray
 ]
 
 { #category : #accessing }
@@ -139,6 +161,14 @@ SynthDef >> initialize [
 { #category : #accessing }
 SynthDef >> name: aString [ 
 	defname := aString
+]
+
+{ #category : #accessing }
+SynthDef >> numberOfConstants [
+
+| numOfConsts |
+
+^ numOfConsts 
 ]
 
 { #category : #accessing }
