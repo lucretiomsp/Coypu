@@ -32,7 +32,7 @@ SynthDef class >> with: aCollectionOfUGens [
 	aCollectionOfUGens do: [ :i | uGensSet addAll: i inputs ].
 	uGensSet addAll: aCollectionOfUGens.
 	"sort UGens "
-	uGensDumped := UGenGraphFunc .
+	uGensDumped := UGensGraphFunc new .
 	uGensDumped sortBlock: [ :a :b | a isInputOf: b ].
 	uGensSet do: [ :i | uGensDumped add: i ].
 	^ self new graph: uGensDumped 
@@ -156,6 +156,11 @@ SynthDef >> initialize [
 	numberOfParameterNames := 0 asByteArrayOfSize: 4.
 	numberOfUGens := 0 asByteArrayOfSize: 4.
 	numberOfVariants := 0 asByteArrayOfSize: 2
+]
+
+{ #category : #accessing }
+SynthDef >> name [
+^ defname
 ]
 
 { #category : #accessing }

@@ -13,7 +13,7 @@ Class {
 { #category : #'as yet unclassified' }
 UGen >> => anUGen [
 
-	^ UGenGraphFunc new numberOfUGens: 2
+	^ UGensGraphFunc new numberOfUGens: 2
 ]
 
 { #category : #accessing }

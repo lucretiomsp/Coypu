@@ -1,13 +1,6 @@
 Class {
 	#name : #PharoColliderTests,
 	#superclass : #TestCase,
-	#instVars : [
-		'sDef',
-		'ugGraphFunc',
-		'oscillator',
-		'out',
-		'freqControl'
-	],
 	#category : #'PharoCollider-Tests'
 }
 
@@ -18,11 +11,13 @@ PharoColliderTests >> setUp [
 	
 	
 	"Put here a common initialization logic for tests"
+	"
 	freqControl := Control new.
 	oscillator := SinOsc new freq: freqControl .
 	out := Dac new input: oscillator .
-	ugGraphFunc := { oscillator . out }.
+	ugGraphFunc := UGensGraphFunc with: { oscillator . out }.
 	sDef := SynthDef withName: 'io' graph: ugGraphFunc  .
+	"
 ]
 
 { #category : #tests }
@@ -203,7 +198,7 @@ uGensGraphFuncIsSorted := pos1 & pos2 & pos3.
 { #category : #tests }
 PharoColliderTests >> testSynthWithNameAndEmptyGraph [
 | newSynthDef|
-newSynthDef := (SynthDef withName: 'x' graph: UGenGraphFunc new).
+newSynthDef := (SynthDef withName: 'x' graph: UGensGraphFunc new).
 	self
 		assert: newSynthDef asBytesDeprecated 
 		equals:
@@ -220,4 +215,20 @@ uGen1 := SinOsc new freq: uGen2.
 
 
 self assert: (uGen2 isInputOf: uGen1) equals: true
+]
+
+{ #category : #ugGraphFuncTesting }
+PharoColliderTests >> testUGensGraphFuncSorting [
+
+| freqControl oscillator out ugGraphFunc pos1 pos2 pos3 |
+
+freqControl := Control new.
+oscillator := SinOsc new freq: freqControl .
+out := Dac new input: oscillator .
+ugGraphFunc := UGensGraphFunc with: { oscillator . out }.
+
+pos1 := (ugGraphFunc   at: 1) = freqControl.
+pos2 := (ugGraphFunc  at: 2) = oscillator.
+pos3 := (ugGraphFunc  at: 3) = out.
+^ self assert: (pos1 & pos2 & pos3)  equals: true
 ]

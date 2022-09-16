@@ -2,7 +2,7 @@
 UGenGraphFunc is a Sorted Collection of UGens used to send the bytes necessry to construct the SynthDefinitio on the server side of Super Collider
 "
 Class {
-	#name : #UGenGraphFunc,
+	#name : #UGensGraphFunc,
 	#superclass : #SortedCollection,
 	#instVars : [
 		'numberOfConstants',
@@ -15,89 +15,102 @@ Class {
 }
 
 { #category : #'instance creation' }
-UGenGraphFunc class >> with: aCollectionOfUGens [
+UGensGraphFunc class >> new [
 
- | uGensSet |
+^ super new
+sortBlock: [ :a :b | a isInputOf: b ];
+	numberOfConstants: ( 0 asByteArrayOfSize: 4);
+	numberOfParameters: (0 asByteArrayOfSize: 4);
+	numberOfParameterNames: (0 asByteArrayOfSize: 4);
+	numberOfUGens: (0 asByteArrayOfSize: 4);
+	numberOfVariants: (0 asByteArrayOfSize: 2).
+]
+
+{ #category : #'instance creation' }
+UGensGraphFunc class >> with: aCollectionOfUGens [
+
+ | uGensSet instance |
 	"first collect all the inputs of all the UGens in the collection as a Set to avoid duplicate"
+	instance := self new sortBlock: [ :a :b | a isInputOf: b ].
 	uGensSet := Set new.
 	aCollectionOfUGens do: [ :i | uGensSet addAll: i inputs ].
 	uGensSet addAll: aCollectionOfUGens.
 	"sort UGens "
 	
-	uGensSet do: [ :i | self add: i ].
-]
-
-{ #category : #initialization }
-UGenGraphFunc >> initialize [
-
-
-	super initialize.
+	uGensSet do: [ :i | instance add: i ].
+	^ instance
 	
-	
-	self sortBlock: [ :a :b | a isInputOf: b ].
-	numberOfConstants := 0 asByteArrayOfSize: 4.
-	numberOfParameters := 0 asByteArrayOfSize: 4.
-	numberOfParameterNames := 0 asByteArrayOfSize: 4.
-	numberOfUGens := 0 asByteArrayOfSize: 4.
-	numberOfVariants := 0 asByteArrayOfSize: 2
+
 ]
 
 { #category : #accessing }
-UGenGraphFunc >> numberOfConstants [
+UGensGraphFunc >> numberOfConstants [
 
 	^ numberOfConstants
 ]
 
 { #category : #accessing }
-UGenGraphFunc >> numberOfConstants: anInteger [
+UGensGraphFunc >> numberOfConstants: anInteger [
 
 	numberOfConstants := anInteger asByteArrayOfSize: 4
 ]
 
 { #category : #accessing }
-UGenGraphFunc >> numberOfParameterNames [
+UGensGraphFunc >> numberOfParameterNames [
 
 	^ numberOfParameterNames
 ]
 
 { #category : #accessing }
-UGenGraphFunc >> numberOfParameterNames: anObject [
+UGensGraphFunc >> numberOfParameterNames: anObject [
 
 	numberOfParameterNames := anObject
 ]
 
 { #category : #accessing }
-UGenGraphFunc >> numberOfParameters [
+UGensGraphFunc >> numberOfParameters [
 
 	^ numberOfParameters
 ]
 
 { #category : #accessing }
-UGenGraphFunc >> numberOfParameters: anInteger [
+UGensGraphFunc >> numberOfParameters: anInteger [
 
 	numberOfParameters := anInteger asByteArrayOfSize: 4
 ]
 
 { #category : #accessing }
-UGenGraphFunc >> numberOfUGens [
+UGensGraphFunc >> numberOfUGens [
 
 	^ numberOfUGens
 ]
 
 { #category : #accessing }
-UGenGraphFunc >> numberOfUGens: anInteger [
+UGensGraphFunc >> numberOfUGens: anInteger [
 
 	numberOfUGens := anInteger asByteArrayOfSize: 4
 ]
 
 { #category : #accessing }
-UGenGraphFunc >> numberOfVariants [
+UGensGraphFunc >> numberOfVariants [
 
 	^ numberOfVariants
 ]
 
 { #category : #accessing }
-UGenGraphFunc >> numberOfVariants: anInteger [
+UGensGraphFunc >> numberOfVariants: anInteger [
 
 	numberOfVariants := anInteger asByteArrayOfSize: 2
+]
+
+{ #category : #accessing }
+UGensGraphFunc >> sortedGraph [
+
+^ sortedGraph 
+]
+
+{ #category : #accessing }
+UGensGraphFunc >> sortedGraph: aSortedGraph [
+
+sortedGraph := aSortedGraph
 ]
