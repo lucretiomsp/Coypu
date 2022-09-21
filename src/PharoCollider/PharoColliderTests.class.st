@@ -30,6 +30,18 @@ PharoColliderTests >> testAddElementsOfArrayAsBytesToOrderedCollection [
 ]
 
 { #category : #tests }
+PharoColliderTests >> testArrayAsUGensGraphFunc [
+
+| arr oscillator out|
+
+oscillator := SinOsc new.
+out := Dac new.
+arr := Array  with: oscillator with: out.
+
+self assert: arr asUGensGraphFunc class equals: UGensGraphFunc 
+]
+
+{ #category : #tests }
 PharoColliderTests >> testArrayWithBytesOfSize [
 
 	self

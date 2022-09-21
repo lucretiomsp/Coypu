@@ -26,16 +26,8 @@ Class {
 { #category : #'instance creation' }
 SynthDef class >> with: aCollectionOfUGens [
 
-	| uGensDumped uGensSet |
-	"first collect all the inputs of all the UGens in the collection as a Set to avoid duplicate"
-	uGensSet := Set new.
-	aCollectionOfUGens do: [ :i | uGensSet addAll: i inputs ].
-	uGensSet addAll: aCollectionOfUGens.
-	"sort UGens "
-	uGensDumped := UGensGraphFunc new .
-	uGensDumped sortBlock: [ :a :b | a isInputOf: b ].
-	uGensSet do: [ :i | uGensDumped add: i ].
-	^ self new graph: uGensDumped 
+	
+	^ self new graph: aCollectionOfUGens asUGensGraphFunc 
 ]
 
 { #category : #'as yet unclassified' }
