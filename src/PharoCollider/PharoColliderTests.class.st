@@ -228,7 +228,7 @@ out := Dac new input: oscillator .
 ugGraphFunc := UGensGraphFunc with: { oscillator . out }.
 
 pos1 := (ugGraphFunc   at: 1) = freqControl.
-pos2 := (ugGraphFunc  at: 2) = oscillator.
+pos2 := (ugGraphFunc  at: 2) = oscillator  .
 pos3 := (ugGraphFunc  at: 3) = out.
 ^ self assert: (pos1 & pos2 & pos3)  equals: true
 ]

@@ -18,7 +18,7 @@ Class {
 UGensGraphFunc class >> new [
 
 ^ super new
-sortBlock: [ :a :b | a isInputOf: b ];
+
 	numberOfConstants: ( 0 asByteArrayOfSize: 4);
 	numberOfParameters: (0 asByteArrayOfSize: 4);
 	numberOfParameterNames: (0 asByteArrayOfSize: 4);
@@ -33,8 +33,9 @@ UGensGraphFunc class >> with: aCollectionOfUGens [
 	"first collect all the inputs of all the UGens in the collection as a Set to avoid duplicate"
 	instance := self new sortBlock: [ :a :b | a isInputOf: b ].
 	uGensSet := Set new.
-	aCollectionOfUGens do: [ :i | uGensSet addAll: i inputs ].
 	uGensSet addAll: aCollectionOfUGens.
+	aCollectionOfUGens do: [ :i | uGensSet addAll: i inputs ].
+	
 	"sort UGens "
 	
 	uGensSet do: [ :i | instance add: i ].
