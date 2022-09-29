@@ -77,6 +77,12 @@ PharoColliderTests >> testDacExists [
 ]
 
 { #category : #utilityTests }
+PharoColliderTests >> testFloatAsInt8Array [
+
+self assert: 440.0 asInt8ArrayOfSize4 equals: #(67 -36 0 0).
+]
+
+{ #category : #utilityTests }
 PharoColliderTests >> testInt8Conversions [
 
 self assert: 220 asInt8 equals: -36.
