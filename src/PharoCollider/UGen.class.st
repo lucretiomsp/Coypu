@@ -2,10 +2,14 @@ Class {
 	#name : #UGen,
 	#superclass : #Object,
 	#instVars : [
+		'uGenName',
+		'specialIndex',
+		'calculationRate',
 		'inputs',
 		'numberOfInputs',
 		'numberOfConstants',
-		'constantValues'
+		'constantValues',
+		'constants'
 	],
 	#category : #'PharoCollider-UGens'
 }
@@ -16,10 +20,28 @@ UGen >> => anUGen [
 	^ UGensGraphFunc new numberOfUGens: 2
 ]
 
+{ #category : #'as yet unclassified' }
+UGen >> ar [ 
+"set calculation rate to audio rate"
+calculationRate := 2.
+]
+
+{ #category : #accessing }
+UGen >> calculationRate [
+
+	^ calculationRate
+]
+
+{ #category : #accessing }
+UGen >> calculationRate: anObject [
+
+	calculationRate := anObject
+]
+
 { #category : #accessing }
 UGen >> constantValues [
 
-	^ constantValues
+	^ constants values collect: [ :i | i] 
 ]
 
 { #category : #accessing }
@@ -29,9 +51,23 @@ UGen >> constantValues: anArray [
 ]
 
 { #category : #accessing }
+UGen >> constants [
+
+	^ constants
+]
+
+{ #category : #accessing }
+UGen >> constants: aDictionary [
+
+	constants := aDictionary
+]
+
+{ #category : #initialization }
 UGen >> initialize [ 
-super initialize.
+super initialize .
 inputs := OrderedCollection new.
+constants := Dictionary new.
+specialIndex := 0.
 ]
 
 { #category : #accessing }
@@ -57,20 +93,20 @@ UGen >> isUGen [
 ^ true
 ]
 
-{ #category : #accessing }
-UGen >> numberOfConstsants [
-
-	^ numberOfConstants 
+{ #category : #'as yet unclassified' }
+UGen >> kr [ 
+"set calculation rate to control rate"
+calculationRate := 1.
 ]
 
 { #category : #accessing }
-UGen >> numberOfConstsnts [
+UGen >> numberOfConstants [
 
-	^ numberOfConstants
+	^ constants size
 ]
 
 { #category : #accessing }
-UGen >> numberOfContsants: anInteger [
+UGen >> numberOfConstants: anInteger [
 
 	numberOfConstants  := anInteger asByteArrayOfSize: 4
 ]
@@ -78,4 +114,22 @@ UGen >> numberOfContsants: anInteger [
 { #category : #accessing }
 UGen >> numberOfInputs [
 ^ inputs size.
+]
+
+{ #category : #accessing }
+UGen >> numberOfInputs: anObject [
+
+	numberOfInputs := anObject
+]
+
+{ #category : #accessing }
+UGen >> specialIndex [
+
+	^ specialIndex
+]
+
+{ #category : #accessing }
+UGen >> uGenName [
+
+	^ uGenName
 ]

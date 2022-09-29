@@ -50,6 +50,13 @@ PharoColliderTests >> testArrayWithBytesOfSize [
 		equals: (#( 0 0 0 1 0 0 0 2 0 0 0 3 ) asOrderedCollection )
 ]
 
+{ #category : #utilityTests }
+PharoColliderTests >> testAsBitArray [
+
+
+self assert: 8 asBitArray equals: #(1 0 0 0)
+]
+
 { #category : #tests }
 PharoColliderTests >> testControlCreationWithName [
 
@@ -61,6 +68,13 @@ PharoColliderTests >> testDacExists [
 
 	self assert: Dac new bus equals: 0.
 	self assert: Dac new input class equals: UGen
+]
+
+{ #category : #utilityTests }
+PharoColliderTests >> testInt8Conversions [
+
+self assert: 220 asInt8 equals: -36.
+self assert: 92 asInt8 equals: 92
 ]
 
 { #category : #tests }
@@ -101,9 +115,14 @@ PharoColliderTests >> testStringAsPString [
 PharoColliderTests >> testSynthDefAsBytes [
 
 
-	| bytes sDef |
+	| bytes sDef oscillator out freqControl|
 	
-	bytes := #( 83 67 103 102 "SCgf" 0 0 0 2 "version" 0 1 1 "number of synth defs" 0 0 0 1 "number of constants" 0 0 0 0 "only costant is 0" 0 0 0 1 "number of params" 0 0 0 0 "param initial value" 0 0 0 1 "number of param names" 
+	freqControl := Control new name: 'Control'.
+	oscillator := SinOsc new freq: freqControl .
+	out := Dac new input: oscillator.
+	sDef := SynthDef withName: 'io' graph: { oscillator . out }.
+	
+	bytes := #( 83 67 103 102 "SCgf" 0 0 0 2 "version" 0 1 "number of synth defs" 2 105 111 "io defname" 0 0 0 1 "number of constants" 0 0 0 0 "only costant is 0" 0 0 0 1 "number of params" 0 0 0 0 "param initial value" 0 0 0 1 "number of param names" 
 	4 102 114 101 113 "param name (1st only) = freq" 0 0 0 0 "param index"
 	0 0 0 3 "number of UGens"
 	7 67 111 110 116 114 111 108 "UGen name (Control)"
@@ -111,7 +130,7 @@ PharoColliderTests >> testSynthDefAsBytes [
 	0 0 0 0 "inputs"
 	0 0 0 1 "outputs"
 	0 0 "special index"
-	1 " OUTPUT US KontrolRate"
+	1 " OUTPUT is KontrolRate"
 	
 	6 83 105 110 79 115 99 "UGen name SinOsc"
 	2 "AudioRate"
@@ -140,7 +159,7 @@ PharoColliderTests >> testSynthDefAsBytes [
 	).
 
 	
-	self assert: sDef asBytesDeprecated equals: bytes 
+	self assert: sDef asBytes equals: bytes 
 	
 ]
 
@@ -227,6 +246,17 @@ uGen1 := SinOsc new freq: uGen2.
 
 
 self assert: (uGen2 isInputOf: uGen1) equals: true
+]
+
+{ #category : #synthDefTesting }
+PharoColliderTests >> testUGenSpec [
+
+| oscillator bytes|
+
+oscillator := SinOsc new.
+bytes := #( 6 83 105 11078 115 99 "UGen name SinOsc" 0 0 0 2 "inputs" 0 0 0 1 "output" 0 0 "special index" ).
+
+self assert: oscillator uGenSpec equals: bytes. 
 ]
 
 { #category : #ugGraphFuncTesting }

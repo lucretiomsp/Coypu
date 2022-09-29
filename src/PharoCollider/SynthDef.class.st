@@ -33,19 +33,10 @@ SynthDef class >> with: aCollectionOfUGens [
 { #category : #'as yet unclassified' }
 SynthDef class >> withName: aString graph: aCollectionOfUGens [
 
-| uGensDumped uGensSet |
-	"first collect all the inputs of all the UGens in the collection as a Set to avoid duplicate"
-	uGensSet := Set new.
-	aCollectionOfUGens do: [ :i | uGensSet addAll: i inputs ].
-	uGensSet addAll: aCollectionOfUGens.
-	"sort UGens "
-	uGensDumped := SortedCollection new.
-	uGensDumped sortBlock: [ :a :b | a isInputOf: b ].
-	uGensSet do: [ :i | uGensDumped add: i ].
 
 	^ self new
 		  name: aString;
-		  graph: uGensDumped 
+		  graph: aCollectionOfUGens asUGensGraphFunc 
 ]
 
 { #category : #converting }

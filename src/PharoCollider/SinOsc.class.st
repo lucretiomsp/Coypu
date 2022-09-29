@@ -20,10 +20,10 @@ SinOsc >> freq [
 { #category : #accessing }
 SinOsc >> freq: aFloatOrAUGen [
 
-	"frequency cann be a float or a UGen"
+	"frequency can be a float or a UGen, if it is a UGen, the constant is only phase"
 
 	freq := aFloatOrAUGen.
-	aFloatOrAUGen isNumber ifFalse: [ inputs add: aFloatOrAUGen  ] ifTrue: [ ]  
+	aFloatOrAUGen isNumber ifFalse: [ inputs add: aFloatOrAUGen. constants removeKey: 0  ] ifTrue: [ ]  
 ]
 
 { #category : #accessing }
@@ -43,12 +43,16 @@ SinOsc >> gain: aFloatOrAUGen [
 { #category : #'accessing - structure variables' }
 SinOsc >> initialize [
 
+"initialize ad Super Collider SinOSc at audiorate"
 	super initialize.
+	calculationRate := 2.
 	freq := 440.
 	phase := 0.0.
 	gain := 0.5.
-	constantValues := 0.0.
-	numberOfConstants :=  1.
+	uGenName := 'SinOSc'.
+	"constants are frequency and phase"
+	self constants at: 0 put: 440.0.
+	self constants at: 1 put: 0.0.
 ]
 
 { #category : #accessing }
