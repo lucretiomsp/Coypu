@@ -51,10 +51,16 @@ PharoColliderTests >> testArrayWithBytesOfSize [
 ]
 
 { #category : #utilityTests }
-PharoColliderTests >> testAsBitArray [
+PharoColliderTests >> testAsBitsArray [
 
 
-self assert: 8 asBitArray equals: #(1 0 0 0)
+self assert: 8 asBitsArray equals: #(1 0 0 0)
+]
+
+{ #category : #utilityTests }
+PharoColliderTests >> testAsBitsArrayOfSize [
+
+self assert: (8 asBitsArrayOfSize: 8 ) equals: #( 0 0 0 0 1 0 0 0)
 ]
 
 { #category : #tests }
