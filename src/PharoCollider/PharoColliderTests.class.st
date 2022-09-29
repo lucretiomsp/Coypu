@@ -266,7 +266,10 @@ PharoColliderTests >> testUGenSpec [
 | oscillator bytes|
 
 oscillator := SinOsc new.
-bytes := #( 6 83 105 11078 115 99 "UGen name SinOsc" 0 0 0 2 "inputs" 0 0 0 1 "output" 0 0 "special index" ).
+bytes := #( 6 83 105 110 79 115 99 "UGen name SinOsc" 2  "audio rate" 0 0 0 2 "inputs" 0 0 0 1 "output" 0 0 "special index"
+-1 -1 -1 -1 "1st input is constant"  0 0 0 0 "index of 1st input" -1 -1 -1 -1 "2nd input is constant" 0 0 0 1 "indexo f second constant"
+2 "audioRate"
+ ).
 
 self assert: oscillator uGenSpec equals: bytes. 
 ]

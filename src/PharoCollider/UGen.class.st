@@ -6,6 +6,7 @@ Class {
 		'specialIndex',
 		'calculationRate',
 		'inputs',
+		'outputs',
 		'numberOfInputs',
 		'numberOfConstants',
 		'constantValues',
@@ -65,7 +66,7 @@ UGen >> constants: aDictionary [
 { #category : #initialization }
 UGen >> initialize [ 
 super initialize .
-inputs := OrderedCollection new.
+inputs := Dictionary new.
 constants := Dictionary new.
 specialIndex := 0.
 ]
@@ -113,13 +114,19 @@ UGen >> numberOfConstants: anInteger [
 
 { #category : #accessing }
 UGen >> numberOfInputs [
-^ inputs size.
+^ numberOfInputs .
 ]
 
 { #category : #accessing }
 UGen >> numberOfInputs: anObject [
 
 	numberOfInputs := anObject
+]
+
+{ #category : #accessing }
+UGen >> outputs [
+
+	^ outputs
 ]
 
 { #category : #accessing }
@@ -132,4 +139,26 @@ UGen >> specialIndex [
 UGen >> uGenName [
 
 	^ uGenName
+]
+
+{ #category : #'as yet unclassified' }
+UGen >> uGenSpec [
+
+| result |
+	result := OrderedCollection new.
+	result addAll: self uGenName asPString .
+	result add: calculationRate .
+	result addAll: (self numberOfInputs  asByteArrayOfSize: 4).
+	result addAll: (self outputs asByteArrayOfSize: 4).
+	result addAll: (self specialIndex asByteArrayOfSize: 2) .
+	
+	self inputs keysAndValuesDo:  [ :k :v | v isNumber ifTrue: [   result addAll: #(-1 -1 -1 -1). result addAll: (k asByteArrayOfSize: 4)  ] ifFalse: [
+			"index of unit generator and index of unit generator output"
+			 ]   ].
+	
+	result add: self calculationRate .
+
+
+
+ ^ result asArray
 ]
