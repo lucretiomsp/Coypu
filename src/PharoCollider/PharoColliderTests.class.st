@@ -249,6 +249,16 @@ newSynthDef := (SynthDef withName: 'x' graph: UGensGraphFunc new).
 			   0 0 ) asOrderedCollection
 ]
 
+{ #category : #uGensTests }
+PharoColliderTests >> testUGenInputsUGen [
+
+| s fc |
+fc := Control newWithName: 'freq'.
+s := SinOsc new freq: fc.
+
+self assert: s inputsUGen equals: (Array with: fc)
+]
+
 { #category : #tests }
 PharoColliderTests >> testUGenIsInput [
 

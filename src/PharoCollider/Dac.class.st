@@ -56,5 +56,5 @@ Dac >> input: aUGen [
 
 "
 	input := aUGen.
-	self inputs add: aUGen
+	self inputs at: 2 put: aUGen
 ]

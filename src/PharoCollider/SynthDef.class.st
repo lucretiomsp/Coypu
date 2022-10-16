@@ -13,8 +13,7 @@ Class {
 	#instVars : [
 		'defname',
 		'numberOfConstants',
-		'numberOfParameters',
-		'numberOfParameterNames',
+		'parameters',
 		'numberOfVariants',
 		'constantValues',
 		'numberOfUGens',
@@ -135,8 +134,7 @@ SynthDef >> initialize [
 	"define the sortBlock for the UGensGraphFunc"
 	"uGensGraphFunc sortBlock: [ :a :b | a isInputOf: b ]."
 	numberOfConstants := 0 asByteArrayOfSize: 4.
-	numberOfParameters := 0 asByteArrayOfSize: 4.
-	numberOfParameterNames := 0 asByteArrayOfSize: 4.
+	parameters := OrderedCollection new.
 	numberOfUGens := 0 asByteArrayOfSize: 4.
 	numberOfVariants := 0 asByteArrayOfSize: 2
 ]

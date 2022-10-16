@@ -83,6 +83,14 @@ UGen >> inputs: aConstantOrAUGen [
 	inputs := aConstantOrAUGen
 ]
 
+{ #category : #accessing }
+UGen >> inputsUGen [
+	| result |
+	result := OrderedCollection new.
+	self inputs do: [ :i | i isNumber ifFalse: [ result add: i ]  ifTrue: [ ] ] .
+^ result asArray 
+]
+
 { #category : #testing }
 UGen >> isInputOf: anUGen [
 
