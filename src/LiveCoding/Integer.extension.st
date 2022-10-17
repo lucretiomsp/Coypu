@@ -365,24 +365,27 @@ pattern := #(1 0 0 1 0 0 1 0 ).
 ]
 
 { #category : #'*LiveCoding' }
-Integer >> tresillo: aNoteNumberOrAnArrayOfNN [ 
-" create an array of self size of  tresillo rhytm pulses. Better if used with self = 8 x anInteger "
-| pattern newArray rhythm notes |
-notes := Array with: aNoteNumberOrAnArrayOfNN .
-pattern := #(1 0 0 1 0 0 1 0 ).
+Integer >> tresillo: aNoteNumberOrAnArrayOfNN [
 
-newArray := (0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ].
-rhythm := Rhythm new: (newArray size).
-(1 to: (rhythm size)) do: [ :i | rhythm at: i put: (newArray  at: i) ].
-^ Sequencer with: rhythm with: notes.
+	" create an array of self size of  tresillo rhytm pulses. Better if used with self = 8 x anInteger "
 
-"
+	| pattern newArray rhythm notes |
+	notes := Array with: aNoteNumberOrAnArrayOfNN.
+	pattern := #( 1 0 0 1 0 0 1 0 ).
+
+	newArray := (0 to: self - 1) collect: [ :i | 
+		            pattern at: (i rem: pattern size) + 1 ].
+	rhythm := Rhythm new: newArray size.
+	(1 to: rhythm size) do: [ :i | rhythm at: i put: (newArray at: i) ].
+	^ Sequencer new gates: rhythm; notes: notes
+
+	"
 | pattern |
 pattern := #(1 0 0 1 0 0 1 0 ).
 
 ^ (0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ].
 "
-"implement shifting to the left"
+	"implement shifting to the left"
 ]
 
 { #category : #'*LiveCoding' }

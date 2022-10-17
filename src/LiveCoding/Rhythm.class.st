@@ -75,6 +75,12 @@ newRhythm := Rhythm new: (self size).
 
 ]
 
+{ #category : #printing }
+Rhythm >> printOn: aStream [
+
+	aStream print: self asArray 
+]
+
 { #category : #'as yet unclassified' }
 Rhythm >> randomInts: anArrayWithRangeAndMin [
 

@@ -3,9 +3,9 @@
 "
 Class {
 	#name : #Chord,
-	#superclass : #Scale,
+	#superclass : #Array,
 	#type : #variable,
-	#category : #LiveCoding
+	#category : #'LiveCoding-ScalesAndChords'
 }
 
 { #category : #creating }

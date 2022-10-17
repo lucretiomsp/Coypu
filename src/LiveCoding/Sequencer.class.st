@@ -58,7 +58,7 @@ Sequencer >> = anotherSequencer [
 ((self notes = anotherSequencer notes) & (self gates = anotherSequencer gates) & (self durations = anotherSequencer durations) & (self extra1 = anotherSequencer extra1) & (self extra2 = anotherSequencer extra2)) ifTrue: [ ^ true ] ifFalse: [ ^ false ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #addNotesToGates }
 Sequencer >> > anArrayOfNotesOrANote [
 
 	" change notes in the sequencer - polysemic binary version of notes:"
@@ -308,6 +308,16 @@ Sequencer >> offset: aNumber [
 	self notes: (melody offset: aNumber)
 ]
 
+{ #category : #printing }
+Sequencer >> printOn: aStream [
+
+	super printOn: aStream.
+	aStream nextPutAll: ' with gates: '.
+	aStream print: gates.
+	aStream nextPutAll: ' with notes: '.
+	aStream print: notes.
+]
+
 { #category : #progressions }
 Sequencer >> progression: anArrayOfIntervals [
 
@@ -380,6 +390,14 @@ Sequencer >> times: anInteger [
 Sequencer >> to: aPerformance at: aKey [
 
 aPerformance add: aKey -> self
+]
+
+{ #category : #printing }
+Sequencer >> trace [
+
+gates traceCr .
+notes traceCr.
+durations traceCr.
 ]
 
 { #category : #modifying }
