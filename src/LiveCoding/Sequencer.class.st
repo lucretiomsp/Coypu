@@ -112,8 +112,10 @@ Sequencer >> extra1 [
 { #category : #accessing }
 Sequencer >> extra1: anArrayWithStringAndArray [
 
-"example #('cutoff' #(99 111 87 56))"
-extra1 := anArrayWithStringAndArray .
+	"example #('cutoff' #(99 111 87 56))"
+
+	
+		  extra1 := anArrayWithStringAndArray
 ]
 
 { #category : #accessing }

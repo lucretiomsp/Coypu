@@ -76,17 +76,17 @@ MIDIReceiver >> readInBuffer: buffer withSize: bufferSize [
 ]
 
 { #category : #'as yet unclassified' }
-MIDIReceiver >> readIncomingMessageSize: aNumberOfEvents [ 
+MIDIReceiver >> readIncomingMessageSize: aNumberOfEvents [
 
-| instance buffer |
+	| instance buffer |
+	instance := PortMidiLibrary uniqueInstance.
+	buffer := PortMidiEvent new.
 
-instance := PortMidiLibrary uniqueInstance . 
-buffer := PortMidiEvent new.
-
-[aNumberOfEvents  timesRepeat: [ 
-		instance advancedReadOn: midiIn inBuffer: buffer withSize: 1.
+	[ 
+	aNumberOfEvents timesRepeat: [ 
+		instance advancedReadOn: self midiInput value inBuffer: buffer withSize: 1.
 		(instance portMidiGetStatusFromMessage: buffer message) traceCr.
 		(instance portMidiGetFirstDataFromMessage: buffer message) traceCr.
-		(instance portMidiGetSecondDataFromMessage: buffer message) traceCr.
-	 ]] fork.	
+		(instance portMidiGetSecondDataFromMessage: buffer message) traceCr ] ]
+		fork
 ]
