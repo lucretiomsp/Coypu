@@ -284,6 +284,12 @@ bytes := #( 6 83 105 110 79 115 99 "UGen name SinOsc" 2  "audio rate" 0 0 0 2 "i
 self assert: oscillator uGenSpec equals: bytes. 
 ]
 
+{ #category : #uGensTests }
+PharoColliderTests >> testUGenSuperClassIsAbstractFunction [
+
+self assert: (UGen superclass) equals: AbstractFunction
+]
+
 { #category : #ugGraphFuncTesting }
 PharoColliderTests >> testUGensGraphFuncSorting [
 

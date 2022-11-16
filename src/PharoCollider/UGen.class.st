@@ -1,9 +1,12 @@
 Class {
 	#name : #UGen,
-	#superclass : #Object,
+	#superclass : #AbstractFunction,
 	#instVars : [
+		'synthDef',
+		'rate',
 		'uGenName',
 		'specialIndex',
+		'synthIndex',
 		'calculationRate',
 		'inputs',
 		'outputs',
@@ -64,11 +67,13 @@ UGen >> constants: aDictionary [
 ]
 
 { #category : #initialization }
-UGen >> initialize [ 
-super initialize .
-inputs := Dictionary new.
-constants := Dictionary new.
-specialIndex := 0.
+UGen >> initialize [
+
+	super initialize.
+	inputs := Dictionary new.
+	constants := Dictionary new.
+	specialIndex := 0.
+	synthIndex = -1
 ]
 
 { #category : #accessing }
