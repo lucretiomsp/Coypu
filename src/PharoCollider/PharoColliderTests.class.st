@@ -35,7 +35,7 @@ PharoColliderTests >> testArrayAsUGensGraphFunc [
 | arr oscillator out|
 
 oscillator := SinOsc new.
-out := Dac new.
+out := Out new.
 arr := Array  with: oscillator with: out.
 
 self assert: arr asUGensGraphFunc class equals: UGensGraphFunc 
@@ -72,8 +72,8 @@ PharoColliderTests >> testControlCreationWithName [
 { #category : #tests }
 PharoColliderTests >> testDacExists [
 
-	self assert: Dac new bus equals: 0.
-	self assert: Dac new input class equals: UGen
+	self assert: Out new bus equals: 0.
+	self assert: Out new input class equals: UGen
 ]
 
 { #category : #utilityTests }
@@ -100,11 +100,17 @@ PharoColliderTests >> testNumberUGensBasic [
 	| s output oscillator fc |
 	fc := Control new.
 	oscillator := SinOsc new freq: fc.
-	output := Dac new input: oscillator.
+	output := Out new input: oscillator.
 
 	s := SynthDef new: output.
 	
 self assert: s numberOfUGens   equals: 2
+]
+
+{ #category : #uGensTests }
+PharoColliderTests >> testPureUGenIsUGenSubClass [
+
+self assert: (PureUGen superclass) equals: UGen.
 ]
 
 { #category : #tests }
@@ -113,6 +119,25 @@ PharoColliderTests >> testSinOscExists [
 	self assert: SinOsc new freq equals: 440.
 	self assert: SinOsc new phase equals: 0.0.
 	self assert: SinOsc new gain equals: 0.5
+]
+
+{ #category : #SinOscTests }
+PharoColliderTests >> testSinOscIsPureUGen [
+
+self assert: (SinOsc superclass ) equals: PureUGen 
+]
+
+{ #category : #SinOscTests }
+PharoColliderTests >> testSinOscWriteDef [
+
+	| int8Array expectedResult |
+	int8Array := OrderedCollection new.
+	expectedResult := #( 6 83 105 110 79 115 99 2 0 0 0 2 0 0 0 1 0 0 -1
+	                     -1 -1 -1 0 0 0 0 -1 -1 -1 -1 0 0 0 1 2 ).
+
+	self
+		assert: (SinOsc new writeDef: int8Array)
+		equals: expectedResult asArray
 ]
 
 { #category : #tests }
@@ -131,7 +156,7 @@ PharoColliderTests >> testSynthDefAsBytes [
 	
 	freqControl := Control new name: 'Control'.
 	oscillator := SinOsc new freq: freqControl .
-	out := Dac new input: oscillator.
+	out := Out new input: oscillator.
 	sDef := SynthDef withName: 'io' graph: { oscillator . out }.
 	
 	bytes := #( 83 67 103 102 "SCgf" 0 0 0 2 "version" 0 1 "number of synth defs" 2 105 111 "io defname" 0 0 0 1 "number of constants" 0 0 0 0 "only costant is 0" 0 0 0 1 "number of params" 0 0 0 0 "param initial value" 0 0 0 1 "number of param names" 
@@ -176,6 +201,28 @@ PharoColliderTests >> testSynthDefAsBytes [
 ]
 
 { #category : #synthDefTesting }
+PharoColliderTests >> testSynthDefAsBytesSCImplementation [
+
+	| bytes sDef oscillator out freqControl |
+	freqControl := Control new name: 'Control'.
+	oscillator := SinOsc new freq: freqControl.
+	out := Out new input: oscillator.
+	sDef := SynthDef withName: 'io' graph: { 
+			        oscillator.
+			        out }.
+
+	bytes := #( 83 67 103 102 0 0 0 2 0 1 2 105 111 0 0 0 1 0 0 0 0 0 0 0
+	            1 0 0 0 0 0 0 0 1 4 102 114 101 113 0 0 0 0 0 0 0 3 7 67
+	            111 110 116 114 111 108 1 0 0 0 0 0 0 0 1 0 0 1 6 83 105
+	            110 79 115 99 2 0 0 0 2 0 0 0 1 0 0 0 0 0 0 0 0 0 0 -1 -1
+	            -1 -1 0 0 0 0 2 3 79 117 116 2 0 0 0 2 0 0 0 0 0 0 -1 -1
+	            -1 -1 0 0 0 0 0 0 0 1 0 0 0 0 0 0 ). "SCgf" "version" "number of synth defs" "io defname" "number of constants" "only costant is 0" "number of params" "param initial value" "number of param names" "param name (1st only) = freq" "param index" "number of UGens" "UGen name (Control)" "kontrol Rate" "inputs" "outputs" "special index" " OUTPUT is KontrolRate" "UGen name SinOsc" "AudioRate" "inputs" "outputs" "special index" "1st input index of UGen --> Control" "1st input -- index of Control's output = 0 (1st, only Control output " "2nd input (SinOSc phase) = 0xFFFFFFFF = -1 --> constant" "use the first constant" "output = AudioRate" "UGen name Out" "AudioRate" "inputs" "ouputs" "special index" "value of 1st input = constant" "constant index 0 " "2nd input comes from UGen 1 = SinOsc" "1st output from SinOsc" "num variants = 0"
+
+
+	self assert: sDef asBytesSCImplementation  equals: bytes
+]
+
+{ #category : #synthDefTesting }
 PharoColliderTests >> testSynthDefCreateWith [
 
 	| synthDefCase |
@@ -188,7 +235,7 @@ PharoColliderTests >> testSynthDefCreationWithUGensGraphFunc [
 
 	| sDef uGen1 uGen2 |
 	uGen1 := SinOsc new.
-	uGen2 := Dac new.
+	uGen2 := Out new.
 	sDef := SynthDef with: { 
 			        uGen1.
 			        uGen2 }.
@@ -214,11 +261,26 @@ PharoColliderTests >> testSynthDefNumberOfConstants [
 | sDef freqControl oscillator out uFunc |
 	freqControl := Control new.
 	oscillator := SinOsc new freq: freqControl .
-	out := Dac new input: oscillator .
+	out := Out new input: oscillator .
 	uFunc := { oscillator . out }.
 	sDef := SynthDef withName: 'io' graph: uFunc .
 	
 self assert: sDef numberOfConstants equals: #[0 0 0 1]
+]
+
+{ #category : #synthDefTesting }
+PharoColliderTests >> testSynthDefTopoSortBasic [
+
+	| sDef oscillator out freqControl |
+	freqControl := Control new name: 'Control'.
+	oscillator := SinOsc new freq: freqControl.
+	out := Out new input: oscillator.
+	sDef := SynthDef withName: 'io' graph: { 
+			        oscillator.
+			        out }.
+	   self assert: (sDef uGenDictionary at: 'Control') equals: 0.
+		self assert: (sDef uGenDictionary at: 'SinOsc') equals: 1.
+		self assert: (sDef uGenDictionary at: 'SOut') equals: 2.
 ]
 
 { #category : #synthDefTesting }
@@ -227,7 +289,7 @@ PharoColliderTests >> testSynthDefuGensGraphFuncBasicSorting [
 	| sDef uGensGraphFuncIsSorted oscillator out freqControl pos1 pos2 pos3|
 	freqControl := Control new.
 	oscillator := SinOsc new freq: freqControl.
-	out := Dac new input: oscillator.
+	out := Out new input: oscillator.
 	sDef := SynthDef with: { 
 			        oscillator.
 			        out }.
@@ -270,6 +332,12 @@ uGen1 := SinOsc new freq: uGen2.
 self assert: (uGen2 isInputOf: uGen1) equals: true
 ]
 
+{ #category : #uGensTests }
+PharoColliderTests >> testUGenName [
+
+self assert: (SinOsc name) equals: 'SinOsc'.
+]
+
 { #category : #synthDefTesting }
 PharoColliderTests >> testUGenSpec [
 
@@ -297,7 +365,7 @@ PharoColliderTests >> testUGensGraphFuncSorting [
 
 freqControl := Control new.
 oscillator := SinOsc new freq: freqControl .
-out := Dac new input: oscillator .
+out := Out new input: oscillator .
 ugGraphFunc := UGensGraphFunc with: { oscillator . out }.
 
 pos1 := (ugGraphFunc   at: 1) = freqControl.

@@ -1,10 +1,13 @@
 "
-UGenGraphFunc is a Sorted Collection of UGens used to send the bytes necessry to construct the SynthDefinitio on the server side of Super Collider
+UGenGraphFunc is an object that contains information about the UGenGraphFunc which builds the SynthDef in SuperCollider.
+My implementation in Pharo is different.
+A memeber of the class is sortedUGens which is a SorteCollection of the UGens in the SynthDef
 "
 Class {
 	#name : #UGensGraphFunc,
-	#superclass : #SortedCollection,
+	#superclass : #Object,
 	#instVars : [
+		'sortedUGens',
 		'numberOfConstants',
 		'numberOfParameters',
 		'numberOfParameterNames',
@@ -42,6 +45,14 @@ UGensGraphFunc class >> with: aCollectionOfUGens [
 	^ instance
 	
 
+]
+
+{ #category : #initialization }
+UGensGraphFunc >> initialize [
+
+	super initialize.
+   sortedUGens := SortedCollection new.
+	sortedUGens sortBlock: [ :a :b | a isInputOf: b ]
 ]
 
 { #category : #accessing }
@@ -105,13 +116,6 @@ UGensGraphFunc >> numberOfVariants: anInteger [
 ]
 
 { #category : #accessing }
-UGensGraphFunc >> sortedGraph [
-
-^ sortedGraph 
-]
-
-{ #category : #accessing }
-UGensGraphFunc >> sortedGraph: aSortedGraph [
-
-sortedGraph := aSortedGraph
+UGensGraphFunc >> sortedUGens [
+^ sortedUGens 
 ]

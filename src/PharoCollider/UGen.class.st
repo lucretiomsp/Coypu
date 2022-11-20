@@ -13,10 +13,38 @@ Class {
 		'numberOfInputs',
 		'numberOfConstants',
 		'constantValues',
-		'constants'
+		'constants',
+		'antecedents',
+		'descendants',
+		'widthFirstAntecedents',
+		'outputIndex'
+	],
+	#classInstVars : [
+		'buildSynthDef',
+		'synthDef'
 	],
 	#category : #'PharoCollider-UGens'
 }
+
+{ #category : #'as yet unclassified' }
+UGen class >> multiNew: arguments [
+
+^ self multiNewList 
+]
+
+{ #category : #'instance creation' }
+UGen class >> multiNewList [
+]
+
+{ #category : #'instance creation' }
+UGen class >> multiNewList: arguments [
+
+	| size args newArgs results |
+	size := 0.
+	args := arguments asUGenInputFor: self.
+
+	^ results
+]
 
 { #category : #'as yet unclassified' }
 UGen >> => anUGen [
@@ -24,10 +52,22 @@ UGen >> => anUGen [
 	^ UGensGraphFunc new numberOfUGens: 2
 ]
 
+{ #category : #accessing }
+UGen >> antecedents [
+^ antecedents 
+]
+
 { #category : #'as yet unclassified' }
 UGen >> ar [ 
 "set calculation rate to audio rate"
 calculationRate := 2.
+]
+
+{ #category : #writeDefinition }
+UGen >> assignTo: aSynthDef [
+"my implementation to assign the UGen to a SynthDef"
+
+synthDef := aSynthDef .
 ]
 
 { #category : #accessing }
@@ -40,6 +80,11 @@ UGen >> calculationRate [
 UGen >> calculationRate: anObject [
 
 	calculationRate := anObject
+]
+
+{ #category : #writeDefinition }
+UGen >> collectConstants [ 
+inputs do: [ :input | input isNumber ifTrue: (synthDef addConstant: input asFloat) ]
 ]
 
 { #category : #accessing }
@@ -66,14 +111,42 @@ UGen >> constants: aDictionary [
 	constants := aDictionary
 ]
 
+{ #category : #accessing }
+UGen >> descendants [
+^ descendants 
+]
+
+{ #category : #writeDefinition }
+UGen >> initTopoSort [
+
+	"topological sort of UGens, taken from SUperCollider"
+
+	inputs do: [ :input | 
+		input isUGen ifTrue: [ 
+			antecedents add: input source.
+			input source descendants add: self ] ].
+
+  widthFirstAntecedents ifNotNil:
+	[widthFirstAntecedents do: [ :ugen | 
+		antecedents add: ugen.
+		ugen descendants add: self ]]
+]
+
 { #category : #initialization }
 UGen >> initialize [
 
 	super initialize.
 	inputs := Dictionary new.
+	outputs := Dictionary new.
 	constants := Dictionary new.
+	rate := #audio.
 	specialIndex := 0.
-	synthIndex = -1
+	synthIndex := -1.
+	outputIndex := 0.
+
+	"this may be temporary : source should be a member of Output Proxy"
+
+
 ]
 
 { #category : #accessing }
@@ -113,6 +186,26 @@ UGen >> kr [
 calculationRate := 1.
 ]
 
+{ #category : #writeDefinition }
+UGen >> makeAvailable [
+
+	antecedents size = 0 ifTrue: [ " synthDef.available = synthDef.available.add(this) "
+		synthDef available: synthDef available add: self
+		 ]
+]
+
+{ #category : #accessing }
+UGen >> numInputs [
+
+^ inputs size
+]
+
+{ #category : #accessing }
+UGen >> numOutputs [
+
+^ outputs  size
+]
+
 { #category : #accessing }
 UGen >> numberOfConstants [
 
@@ -137,15 +230,82 @@ UGen >> numberOfInputs: anObject [
 ]
 
 { #category : #accessing }
+UGen >> outputIndex [
+
+	^ 0
+]
+
+{ #category : #accessing }
 UGen >> outputs [
 
 	^ outputs
 ]
 
 { #category : #accessing }
+UGen >> rate [ 
+
+" rate can be:
+#audio #control #scalar #trigger
+"
+^ rate 
+]
+
+{ #category : #accessing }
+UGen >> rateNumber [
+
+	| arrayOfRates |
+	arrayOfRates := #( #control #audio #demand ).
+	^ arrayOfRates indexOf: self rate.
+]
+
+{ #category : #writeDefinition }
+UGen >> removeAntecedents: anUGen [
+
+antecedents remove: anUGen. 
+self makeAvailable 
+]
+
+{ #category : #writeDefinition }
+UGen >> schedule: anOutStack [
+
+	descendants reverseDo: [ :ugen | ugen removeAntecedents: self ].
+	
+   ^ anOutStack add: self
+]
+
+{ #category : #accessing }
+UGen >> setAntecedents [
+
+	antecedents := Set new
+]
+
+{ #category : #accessing }
+UGen >> setDescendants [
+
+descendants := Set new.
+]
+
+{ #category : #accessing }
+UGen >> source [
+"source is a member of the OutputProxy class in SuperCollider"
+	^ self
+]
+
+{ #category : #accessing }
 UGen >> specialIndex [
 
 	^ specialIndex
+]
+
+{ #category : #accessing }
+UGen >> synthIndex [
+^ synthIndex 
+]
+
+{ #category : #accessing }
+UGen >> synthIndex: anInteger [
+
+synthIndex := anInteger
 ]
 
 { #category : #accessing }
@@ -174,4 +334,62 @@ UGen >> uGenSpec [
 
 
  ^ result asArray
+]
+
+{ #category : #accessing }
+UGen >> widthFirstAntecedents [
+
+^ widthFirstAntecedents
+]
+
+{ #category : #accessing }
+UGen >> widthFirstAntecedents: aWidth [
+
+	widthFirstAntecedents := aWidth 
+]
+
+{ #category : #writeDefinition }
+UGen >> writeDef: int8Array [
+
+	int8Array
+		addAll: self class name asPString;
+		add: self rateNumber;
+		addAll: (self numInputs asByteArrayOfSize: 4);
+		addAll: (self numOutputs asByteArrayOfSize: 4);
+		addAll: (self specialIndex asByteArrayOfSize: 2).
+
+	inputs do: [ :input | 
+		int8Array addAll: (input writeInputSpec) ].
+	self writeOutputSpec: int8Array.
+
+
+	^ int8Array
+]
+
+{ #category : #writeDefinition }
+UGen >> writeInputSpec [
+
+	| int8Array |
+	int8Array := OrderedCollection new.
+	int8Array addAll: (self synthIndex asByteArrayOfSize: 4).
+	int8Array addAll: (self outputIndex asByteArrayOfSize: 4).
+	^ int8Array
+]
+
+{ #category : #writeDefinition }
+UGen >> writeInputSpec: aSynthDef [
+" should we use this?"
+	| int8Array |
+	int8Array := OrderedCollection new.
+	int8Array addAll: (self synthIndex asByteArrayOfSize: 4).
+	int8Array addAll: (self outputIndex asByteArrayOfSize: 4).
+	^ int8Array
+]
+
+{ #category : #writeDefinition }
+UGen >> writeOutputSpec: int8Array [
+
+	"original SuperCollider method write to a file, not to an OrderedCollection, which I called int8Array"
+
+	int8Array add: self rateNumber
 ]

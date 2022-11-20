@@ -3,7 +3,7 @@
 "
 Class {
 	#name : #SinOsc,
-	#superclass : #UGen,
+	#superclass : #PureUGen,
 	#instVars : [
 		'freq',
 		'phase',
@@ -43,11 +43,12 @@ SinOsc >> gain: aFloatOrAUGen [
 { #category : #'accessing - structure variables' }
 SinOsc >> initialize [
 
-"initialize ad Super Collider SinOSc at audiorate"
+	"initialize ad Super Collider SinOSc at audiorate"
+
 	super initialize.
 	calculationRate := 2.
-   numberOfInputs := 2.
-	outputs := 1.
+	numberOfInputs := 2.
+	outputs := #(#left). "does this make sense?"
 	freq := 440.
 	phase := 0.0.
 	gain := 0.5.
@@ -57,7 +58,7 @@ SinOsc >> initialize [
 	self constants at: 1 put: 0.0.
 	"inputs are frequency and phase"
 	self inputs at: 0 put: 440.0.
-	self inputs at: 1 put: 0.0.
+	self inputs at: 1 put: 0.0
 ]
 
 { #category : #accessing }

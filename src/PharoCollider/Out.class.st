@@ -2,7 +2,7 @@
 corresponding to SuperColllider ""Out"" UGen
 "
 Class {
-	#name : #Dac,
+	#name : #Out,
 	#superclass : #UGen,
 	#instVars : [
 		'bus',
@@ -12,7 +12,7 @@ Class {
 }
 
 { #category : #'instance creation' }
-Dac class >> bus: anInteger input: aUGen [
+Out class >> bus: anInteger input: aUGen [
 
 	| result |
 	result := self new
@@ -23,21 +23,21 @@ Dac class >> bus: anInteger input: aUGen [
 ]
 
 { #category : #accessing }
-Dac >> bus [
+Out >> bus [
 "The index of the bus to write out to. The lowest numbers are written to the audio hardware"
 
 	^ bus
 ]
 
 { #category : #accessing }
-Dac >> bus: anInteger [
+Out >> bus: anInteger [
 bus := anInteger 
 
 	
 ]
 
 { #category : #initialization }
-Dac >> initialize [
+Out >> initialize [
 
  super initialize.
 	bus := 0.
@@ -46,12 +46,12 @@ Dac >> initialize [
 ]
 
 { #category : #accessing }
-Dac >> input [ 
+Out >> input [ 
 ^ input
 ]
 
 { #category : #accessing }
-Dac >> input: aUGen [
+Out >> input: aUGen [
 "An Array of channels or single output to write out. You cannot change the size of this once a SynthDef has been built.
 
 "

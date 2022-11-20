@@ -12,12 +12,27 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'defname',
+		'func',
+		'children',
+		'controls',
+		'controlNames',
+		'allControlNames',
+		'controlIndex',
+		'constants',
+		'constantsSet',
+		'maxLocalBufs',
 		'numberOfConstants',
 		'parameters',
 		'numberOfVariants',
 		'constantValues',
 		'numberOfUGens',
-		'uGensGraphFunc'
+		'uGensGraphFunc',
+		'available',
+		'variants',
+		'widthFirstUGens',
+		'rewriteInProgress',
+		'desc',
+		'metadata'
 	],
 	#category : #'PharoCollider-SynthDef'
 }
@@ -25,8 +40,7 @@ Class {
 { #category : #'instance creation' }
 SynthDef class >> with: aCollectionOfUGens [
 
-	
-	^ self new graph: aCollectionOfUGens asUGensGraphFunc 
+	^ self new graph: aCollectionOfUGens 
 ]
 
 { #category : #'as yet unclassified' }
@@ -36,6 +50,22 @@ SynthDef class >> withName: aString graph: aCollectionOfUGens [
 	^ self new
 		  name: aString;
 		  graph: aCollectionOfUGens asUGensGraphFunc 
+]
+
+{ #category : #topoSorting }
+SynthDef >> addConstant: aValue [
+(constantsSet includes: aValue) not ifTrue: [ constantsSet add: aValue. (constants at: aValue ) put: constants size ]
+]
+
+{ #category : #topoSorting }
+SynthDef >> addUGen: anUGen [
+
+	" if (rewriteInProgress.isNil) "
+
+	" we forget about this for now"
+
+	anUGen synthIndex = children size.
+	anUGen widthFirstAntecedents: widthFirstUGens copy.
 ]
 
 { #category : #converting }
@@ -113,6 +143,59 @@ SynthDef >> asBytesDeprecated [
 	^ int8Array asArray
 ]
 
+{ #category : #converting }
+SynthDef >> asBytesSCImplementation [
+
+	"kind of like SC writeDef methods, using an ordered collection to store the result"
+
+	| int8Array allControlNamesTemp allControlNamesMap |
+	int8Array := OrderedCollection new. "??better to have fixed size array of 256?"
+	int8Array add: defname asPString.
+	int8Array add: (controls size asByteArrayOfSize: 4).
+	controls do: [ :item | int8Array add: item ].
+
+	allControlNamesTemp := allControlNames reject: [ :cn | 
+		                       cn rate = #control ]. "!!!! originally = #nonControl !!!!!!"
+
+	int8Array add: (allControlNamesTemp size asByteArrayOfSize: 4).
+	allControlNamesTemp do: [ :item | 
+		item name isNotNil ifTrue: [ 
+			int8Array add: item name asPString.
+			int8Array add: (item index asByteArrayOfSize: 4) ] ].
+
+	int8Array add: children size.
+	children do: [ :item | item writeDef: int8Array  ]
+]
+
+{ #category : #accessing }
+SynthDef >> available [
+^ available
+]
+
+{ #category : #accessing }
+SynthDef >> available: anUGen [
+
+	available := anUGen
+]
+
+{ #category : #accessing }
+SynthDef >> children [
+^ children
+]
+
+{ #category : #topoSorting }
+SynthDef >> collectConstants [
+children do: [ :ugen | ugen collectConstants ]
+]
+
+{ #category : #topoSorting }
+SynthDef >> dumpUGens [
+
+	self name traceCr.
+	children do: [ :ugen | 
+		(ugen synthIndex asString , '_' , ugen class name) traceCr ]
+]
+
 { #category : #accessing }
 SynthDef >> graph [
 
@@ -120,17 +203,67 @@ SynthDef >> graph [
 ]
 
 { #category : #accessing }
-SynthDef >> graph: anUGenGraph [
+SynthDef >> graph: aCollectionOfUGens [
 
-	uGensGraphFunc  := anUGenGraph
+	"This method actually creates the SynthDef from a collection of UGens"
+
+	| synthIndx |
+	synthIndx := 0.
+	aCollectionOfUGens do: [ :ugen | 
+		children add: ugen.
+		"we must check the following part"
+		uGensGraphFunc sortedUGens add: ugen.
+		ugen inputs do: [ :inp | 
+			inp isUGen & (uGensGraphFunc sortedUGens includes: inp) not 
+				ifTrue: [ 
+					uGensGraphFunc sortedUGens add: inp.
+					children add: inp ] ] ].
+	"corresponding to SuperCollider addUGens method of the SynthDef class
+		"
+	children do: [ :ugen | 
+		ugen synthIndex: synthIndx.
+		ugen widthFirstAntecedents: self widthFirstUGens.
+		synthIndx := synthIndx + 1 ]
+	
+]
+
+{ #category : #topoSorting }
+SynthDef >> indexUGens [
+children do: [ :ugen :i | ugen synthIndex: i ]
+]
+
+{ #category : #topoSorting }
+SynthDef >> initTopoSort [
+
+	"initially topological sort, based on SuperCollider implementation"
+
+	available := nil.
+	children do: [ :ugen | 
+		ugen setAntecedents.
+		ugen setDescendants ].
+	children do: [ :ugen | ugen initTopoSort ].
+	children asArray reverseDo: [ :ugen | 
+		ugen descendants asArray sort: [ :a :b | 
+			a synthIndex < b synthIndex ].
+		ugen makeAvailable "all ugens with no antecedents are made available" ]
 ]
 
 { #category : #initialization }
 SynthDef >> initialize [
 
 	super initialize.
+	"SuperCollider implementation"
+	children := Set new.
+	constants := Dictionary new.
+	constantsSet := Set new.
+	controls = nil.
+	controlIndex = 0.
+	maxLocalBufs = 0.
+
+	"my implementation"
 	defname := 'a'.
-	uGensGraphFunc := SortedCollection new.
+	controlIndex := 0.
+	uGensGraphFunc := UGensGraphFunc new.
 	"define the sortBlock for the UGensGraphFunc"
 	"uGensGraphFunc sortBlock: [ :a :b | a isInputOf: b ]."
 	numberOfConstants := 0 asByteArrayOfSize: 4.
@@ -169,4 +302,31 @@ SynthDef >> numberOfUGens [
 { #category : #accessing }
 SynthDef >> numberOfUGens: anInteger [
 numberOfUGens := anInteger asByteArrayOfSize: 4
+]
+
+{ #category : #topoSorting }
+SynthDef >> topologicalSort [
+
+	| outStack |
+	self initTopoSort
+
+	"
+while { available.size > 0 }
+		{
+			outStack = available.pop.schedule(outStack);
+		};
+		children = outStack;
+		this.cleanupTopoSort;
+		"
+]
+
+{ #category : #accessing }
+SynthDef >> widthFirstUGens [
+^ widthFirstUGens 
+]
+
+{ #category : #accessing }
+SynthDef >> widthFirstUGens: aWidthFirstUG [
+
+	widthFirstUGens := aWidthFirstUG 
 ]
