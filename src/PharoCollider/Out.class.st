@@ -3,7 +3,7 @@ corresponding to SuperColllider ""Out"" UGen
 "
 Class {
 	#name : #Out,
-	#superclass : #UGen,
+	#superclass : #AbstractOut,
 	#instVars : [
 		'bus',
 		'input'

@@ -37,24 +37,24 @@ Class {
 	#category : #'PharoCollider-SynthDef'
 }
 
-{ #category : #'instance creation' }
-SynthDef class >> with: aCollectionOfUGens [
-
-	^ self new graph: aCollectionOfUGens 
-]
-
 { #category : #'as yet unclassified' }
-SynthDef class >> withName: aString graph: aCollectionOfUGens [
-
+SynthDef class >> name: aString with: aCollectionOfUGens [
 
 	^ self new
 		  name: aString;
-		  graph: aCollectionOfUGens asUGensGraphFunc 
+		  graph: aCollectionOfUGens;
+		  finishBuild
+]
+
+{ #category : #'instance creation' }
+SynthDef class >> with: aCollectionOfUGens [
+
+	^ self new graph: aCollectionOfUGens; finishBuild .
 ]
 
 { #category : #topoSorting }
 SynthDef >> addConstant: aValue [
-(constantsSet includes: aValue) not ifTrue: [ constantsSet add: aValue. (constants at: aValue ) put: constants size ]
+(constantsSet includes: aValue) not ifTrue: [ constantsSet add: aValue. constants at: aValue  put: constants size ]
 ]
 
 { #category : #topoSorting }
@@ -64,8 +64,10 @@ SynthDef >> addUGen: anUGen [
 
 	" we forget about this for now"
 
-	anUGen synthIndex = children size.
+	anUGen synthIndex: children size.
 	anUGen widthFirstAntecedents: widthFirstUGens copy.
+	(' I AM ADDING UGEN' , anUGen class name asString) traceCr.
+	self children add: anUGen
 ]
 
 { #category : #converting }
@@ -173,9 +175,16 @@ SynthDef >> available [
 ]
 
 { #category : #accessing }
-SynthDef >> available: anUGen [
+SynthDef >> available: anOrderedCollection [
 
-	available := anUGen
+	available := anOrderedCollection 
+]
+
+{ #category : #topoSorting }
+SynthDef >> checkInputs [
+
+"should be implementedMethods: "
+	
 ]
 
 { #category : #accessing }
@@ -192,8 +201,25 @@ children do: [ :ugen | ugen collectConstants ]
 SynthDef >> dumpUGens [
 
 	self name traceCr.
+
 	children do: [ :ugen | 
-		(ugen synthIndex asString , '_' , ugen class name) traceCr ]
+		(ugen dumpName , ', ' , ugen rate , ', '
+		 , ', ' ,  ugen inputs asString) traceCr ]
+]
+
+{ #category : #topoSorting }
+SynthDef >> finishBuild [
+"taken from SuperCollider implementation - last method to be call to get the SynthDf asBytes"
+self optimizeGraph.
+self collectConstants .
+self checkInputs. "will die on error"
+
+"re-sort graph, topological REindex"
+self topologicalSort .
+self indexUGens.
+
+"UGen buildSynthDef: nil" 
+"my implementation "
 ]
 
 { #category : #accessing }
@@ -210,9 +236,12 @@ SynthDef >> graph: aCollectionOfUGens [
 	| synthIndx |
 	synthIndx := 0.
 	aCollectionOfUGens do: [ :ugen | 
-		children add: ugen.
+		(children includes: ugen) not ifTrue: [ 
+			self addUGen: ugen ].
+
 		"we must check the following part"
 		uGensGraphFunc sortedUGens add: ugen.
+
 		ugen inputs do: [ :inp | 
 			inp isUGen & (uGensGraphFunc sortedUGens includes: inp) not 
 				ifTrue: [ 
@@ -221,15 +250,21 @@ SynthDef >> graph: aCollectionOfUGens [
 	"corresponding to SuperCollider addUGens method of the SynthDef class
 		"
 	children do: [ :ugen | 
+		ugen assignTo: self.
 		ugen synthIndex: synthIndx.
 		ugen widthFirstAntecedents: self widthFirstUGens.
+		('I AM DOING MY GRAPH JOB' , ugen synthIndex asString) traceCr.
 		synthIndx := synthIndx + 1 ]
-	
 ]
 
 { #category : #topoSorting }
 SynthDef >> indexUGens [
-children do: [ :ugen :i | ugen synthIndex: i ]
+
+	" counting from 1 or from 0????"
+
+	| index |
+	index := 0.
+	children do: [ :ugen | ugen synthIndex: index . index := index + 1]
 ]
 
 { #category : #topoSorting }
@@ -242,7 +277,7 @@ SynthDef >> initTopoSort [
 		ugen setAntecedents.
 		ugen setDescendants ].
 	children do: [ :ugen | ugen initTopoSort ].
-	children asArray reverseDo: [ :ugen | 
+	children reverseDo: [ :ugen | 
 		ugen descendants asArray sort: [ :a :b | 
 			a synthIndex < b synthIndex ].
 		ugen makeAvailable "all ugens with no antecedents are made available" ]
@@ -253,9 +288,10 @@ SynthDef >> initialize [
 
 	super initialize.
 	"SuperCollider implementation"
-	children := Set new.
+	children := OrderedCollection new.
 	constants := Dictionary new.
 	constantsSet := Set new.
+	available := OrderedCollection new.
 	controls = nil.
 	controlIndex = 0.
 	maxLocalBufs = 0.
@@ -302,6 +338,27 @@ SynthDef >> numberOfUGens [
 { #category : #accessing }
 SynthDef >> numberOfUGens: anInteger [
 numberOfUGens := anInteger asByteArrayOfSize: 4
+]
+
+{ #category : #topoSorting }
+SynthDef >> optimizeGraph [
+
+	
+	self initTopoSort .
+	children copy do: [ :ugen | ugen optimizeGraph  ].
+	
+"fix up removed ugens"
+
+"
+var oldSize
+// fixup removed ugens
+		oldSize = children.size;
+		children.removeEvery(#[nil]);
+		if (oldSize != children.size) {
+			this.indexUGens
+		};
+"		
+
 ]
 
 { #category : #topoSorting }

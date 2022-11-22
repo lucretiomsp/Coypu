@@ -6,15 +6,15 @@ Class {
 	#superclass : #PureUGen,
 	#instVars : [
 		'freq',
-		'phase',
-		'gain'
+		'phase'
 	],
 	#category : #'PharoCollider-UGens'
 }
 
 { #category : #'accessing - structure variables' }
 SinOsc >> freq [
-	^ freq.
+
+	^ inputs at: 1
 ]
 
 { #category : #accessing }
@@ -22,22 +22,8 @@ SinOsc >> freq: aFloatOrAUGen [
 
 	"frequency can be a float or a UGen, if it is a UGen, the constant is only phase"
 
-	freq := aFloatOrAUGen.
-	aFloatOrAUGen isNumber ifFalse: [ inputs at: 0 put: aFloatOrAUGen. constants removeKey: 0  ] ifTrue: [ ]  
-]
-
-{ #category : #accessing }
-SinOsc >> gain [
-	^ gain
-]
-
-{ #category : #accessing }
-SinOsc >> gain: aFloatOrAUGen [
-
-	gain := aFloatOrAUGen.
-	aFloatOrAUGen isUGen
-		ifTrue: [ inputs add: aFloatOrAUGen ]
-		ifFalse: [  ]
+	freq := aFloatOrAUGen. " ? "
+	inputs at: 1 put: aFloatOrAUGen
 ]
 
 { #category : #'accessing - structure variables' }
@@ -47,30 +33,20 @@ SinOsc >> initialize [
 
 	super initialize.
 	calculationRate := 2.
-	numberOfInputs := 2.
-	outputs := #(#left). "does this make sense?"
-	freq := 440.
-	phase := 0.0.
-	gain := 0.5.
-	uGenName := 'SinOsc'.
-	"constants are frequency and phase"
-	self constants at: 0 put: 440.0.
-	self constants at: 1 put: 0.0.
-	"inputs are frequency and phase"
-	self inputs at: 0 put: 440.0.
-	self inputs at: 1 put: 0.0
+
+	outputs := #( #left ). "does this make sense?"
+	inputs := Array with: 440.0 with: 0.0 "the initialized SinOsc has a frequency of 440hz and a phase of 0.0"
 ]
 
 { #category : #accessing }
 SinOsc >> phase [
-	^ phase
+
+	^ inputs at: 2.
 ]
 
 { #category : #accessing }
 SinOsc >> phase: aFloatOrAUGen [
 
 	phase := aFloatOrAUGen.
-	aFloatOrAUGen isUGen
-		ifTrue: [ inputs add: aFloatOrAUGen ]
-		ifFalse: [  ]
+	inputs at: 2 put: aFloatOrAUGen 
 ]

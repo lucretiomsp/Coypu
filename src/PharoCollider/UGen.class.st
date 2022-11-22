@@ -17,7 +17,8 @@ Class {
 		'antecedents',
 		'descendants',
 		'widthFirstAntecedents',
-		'outputIndex'
+		'outputIndex',
+		'aggregatedInputs'
 	],
 	#classInstVars : [
 		'buildSynthDef',
@@ -53,6 +54,17 @@ UGen >> => anUGen [
 ]
 
 { #category : #accessing }
+UGen >> aggregatedInputs [
+^ aggregatedInputs 
+]
+
+{ #category : #accessing }
+UGen >> aggregatedInputs: anInteger [
+
+aggregatedInputs := anInteger.
+]
+
+{ #category : #accessing }
 UGen >> antecedents [
 ^ antecedents 
 ]
@@ -71,6 +83,11 @@ synthDef := aSynthDef .
 ]
 
 { #category : #accessing }
+UGen >> assignedSynthDef [
+^ synthDef 
+]
+
+{ #category : #accessing }
 UGen >> calculationRate [
 
 	^ calculationRate
@@ -84,7 +101,9 @@ UGen >> calculationRate: anObject [
 
 { #category : #writeDefinition }
 UGen >> collectConstants [ 
-inputs do: [ :input | input isNumber ifTrue: (synthDef addConstant: input asFloat) ]
+inputs do: [ :input | input isNumber ifTrue: [synthDef addConstant: input asFloat] ]
+
+
 ]
 
 { #category : #accessing }
@@ -117,36 +136,41 @@ UGen >> descendants [
 ]
 
 { #category : #writeDefinition }
+UGen >> dumpName [
+
+^ self synthIndex asString , '_' , self class name asString.
+]
+
+{ #category : #writeDefinition }
 UGen >> initTopoSort [
 
 	"topological sort of UGens, taken from SUperCollider"
 
 	inputs do: [ :input | 
 		input isUGen ifTrue: [ 
-			antecedents add: input source.
+			self antecedents add: input source.
 			input source descendants add: self ] ].
 
-  widthFirstAntecedents ifNotNil:
-	[widthFirstAntecedents do: [ :ugen | 
-		antecedents add: ugen.
-		ugen descendants add: self ]]
+	widthFirstAntecedents ifNotNil: [ 
+		widthFirstAntecedents do: [ :ugen | 
+			antecedents add: ugen.
+			ugen descendants add: self ] ]
 ]
 
 { #category : #initialization }
 UGen >> initialize [
 
 	super initialize.
-	inputs := Dictionary new.
+	inputs := Array new.
 	outputs := Dictionary new.
 	constants := Dictionary new.
 	rate := #audio.
 	specialIndex := 0.
 	synthIndex := -1.
 	outputIndex := 0.
-
+  antecedents := Set new.
+  descendants := Set new.
 	"this may be temporary : source should be a member of Output Proxy"
-
-
 ]
 
 { #category : #accessing }
@@ -190,7 +214,7 @@ calculationRate := 1.
 UGen >> makeAvailable [
 
 	antecedents size = 0 ifTrue: [ " synthDef.available = synthDef.available.add(this) "
-		synthDef available: synthDef available add: self
+		synthDef available: (synthDef available  traceCr "add: self")
 		 ]
 ]
 
@@ -227,6 +251,11 @@ UGen >> numberOfInputs [
 UGen >> numberOfInputs: anObject [
 
 	numberOfInputs := anObject
+]
+
+{ #category : #writeDefinition }
+UGen >> optimizeGraph [ 
+"empty method in SuperCollider !?!?!"
 ]
 
 { #category : #accessing }

@@ -275,12 +275,31 @@ PharoColliderTests >> testSynthDefTopoSortBasic [
 	freqControl := Control new name: 'Control'.
 	oscillator := SinOsc new freq: freqControl.
 	out := Out new input: oscillator.
-	sDef := SynthDef withName: 'io' graph: { 
+	sDef := SynthDef with: { 
 			        oscillator.
 			        out }.
-	   self assert: (sDef uGenDictionary at: 'Control') equals: 0.
-		self assert: (sDef uGenDictionary at: 'SinOsc') equals: 1.
-		self assert: (sDef uGenDictionary at: 'SOut') equals: 2.
+	self
+		assert: (sDef children asArray at: 1) class name
+		equals: #Control.
+	self assert: (sDef children asArray at: 1) class name equals: #SinOsc.
+	self assert: (sDef children asArray at: 2) class name equals: #Out
+]
+
+{ #category : #synthDefTesting }
+PharoColliderTests >> testSynthDefTopoSortBasicWithName [
+
+	| sDef oscillator out freqControl |
+	freqControl := Control new name: 'Control'.
+	oscillator := SinOsc new freq: freqControl.
+	out := Out new input: oscillator.
+	sDef := SynthDef name: 'io' with: { 
+			        oscillator.
+			        out }.
+	self
+		assert: (sDef children asArray at: 1) class name
+		equals: #Control.
+	self assert: (sDef children asArray at: 2) class name equals: #SinOsc.
+	self assert: (sDef children asArray at: 3) class name equals: #Out
 ]
 
 { #category : #synthDefTesting }
