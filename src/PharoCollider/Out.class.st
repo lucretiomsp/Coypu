@@ -39,10 +39,10 @@ bus := anInteger
 { #category : #initialization }
 Out >> initialize [
 
- super initialize.
+	super initialize.
 	bus := 0.
 	numberOfConstants := 1.
-	input := UGen new
+	inputs := { 0 . nil } 
 ]
 
 { #category : #accessing }

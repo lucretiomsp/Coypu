@@ -49,7 +49,10 @@ SynthDef class >> name: aString with: aCollectionOfUGens [
 { #category : #'instance creation' }
 SynthDef class >> with: aCollectionOfUGens [
 
-	^ self new graph: aCollectionOfUGens; finishBuild .
+	^ self new
+		
+		  graph: aCollectionOfUGens;
+		  finishBuild
 ]
 
 { #category : #topoSorting }
@@ -197,6 +200,18 @@ SynthDef >> collectConstants [
 children do: [ :ugen | ugen collectConstants ]
 ]
 
+{ #category : #accessing }
+SynthDef >> constants [
+
+	^ constants 
+]
+
+{ #category : #accessing }
+SynthDef >> costantsSet [
+
+^ constantsSet 
+]
+
 { #category : #topoSorting }
 SynthDef >> dumpUGens [
 
@@ -210,11 +225,13 @@ SynthDef >> dumpUGens [
 { #category : #topoSorting }
 SynthDef >> finishBuild [
 "taken from SuperCollider implementation - last method to be call to get the SynthDf asBytes"
+self available: OrderedCollection new.
 self optimizeGraph.
 self collectConstants .
 self checkInputs. "will die on error"
 
 "re-sort graph, topological REindex"
+self available: OrderedCollection new. 
 self topologicalSort .
 self indexUGens.
 
@@ -231,13 +248,16 @@ SynthDef >> graph [
 { #category : #accessing }
 SynthDef >> graph: aCollectionOfUGens [
 
-	"This method actually creates the SynthDef from a collection of UGens"
+	"what?"
+]
+
+{ #category : #'as yet unclassified' }
+SynthDef >> graphNotWorking: aCollectionOfUGens [
 
 	| synthIndx |
 	synthIndx := 0.
 	aCollectionOfUGens do: [ :ugen | 
-		(children includes: ugen) not ifTrue: [ 
-			self addUGen: ugen ].
+		(children includes: ugen) not ifTrue: [ self addUGen: ugen ].
 
 		"we must check the following part"
 		uGensGraphFunc sortedUGens add: ugen.
@@ -272,7 +292,7 @@ SynthDef >> initTopoSort [
 
 	"initially topological sort, based on SuperCollider implementation"
 
-	available := nil.
+	"available := nil."
 	children do: [ :ugen | 
 		ugen setAntecedents.
 		ugen setDescendants ].
@@ -365,16 +385,11 @@ var oldSize
 SynthDef >> topologicalSort [
 
 	| outStack |
-	self initTopoSort
-
-	"
-while { available.size > 0 }
-		{
-			outStack = available.pop.schedule(outStack);
-		};
-		children = outStack;
-		this.cleanupTopoSort;
-		"
+	self initTopoSort.
+	[available isEmpty] whileTrue: [ 
+		outStack := available removeLast schedule: outStack  ].
+	children := outStack 
+	" this cleanUpTopoSOrt"
 ]
 
 { #category : #accessing }

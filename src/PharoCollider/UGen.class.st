@@ -99,6 +99,12 @@ UGen >> calculationRate: anObject [
 	calculationRate := anObject
 ]
 
+{ #category : #testing }
+UGen >> checkValidInputs [
+
+^ 'Shoudl this be implemented as in Super Collider?'
+]
+
 { #category : #writeDefinition }
 UGen >> collectConstants [ 
 inputs do: [ :input | input isNumber ifTrue: [synthDef addConstant: input asFloat] ]
@@ -213,9 +219,8 @@ calculationRate := 1.
 { #category : #writeDefinition }
 UGen >> makeAvailable [
 
-	antecedents size = 0 ifTrue: [ " synthDef.available = synthDef.available.add(this) "
-		synthDef available: (synthDef available  traceCr "add: self")
-		 ]
+	antecedents isEmpty ifTrue: [ " synthDef.available = synthDef.available.add(this) " 
+		synthDef available: synthDef available traceCr "add: self" ]
 ]
 
 { #category : #accessing }
