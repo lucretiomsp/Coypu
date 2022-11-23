@@ -196,8 +196,17 @@ SynthDef >> children [
 ]
 
 { #category : #topoSorting }
+SynthDef >> cleanupTopoSort [
+
+	children isNotNil ifTrue: [ 
+		children do: [ :ugen | 
+			ugen setAntecedents.
+			ugen setDescendants] ]
+]
+
+{ #category : #topoSorting }
 SynthDef >> collectConstants [
-children do: [ :ugen | ugen collectConstants ]
+children isNotNil ifTrue: [  children do: [ :ugen | ugen collectConstants ]]
 ]
 
 { #category : #accessing }
@@ -224,19 +233,24 @@ SynthDef >> dumpUGens [
 
 { #category : #topoSorting }
 SynthDef >> finishBuild [
-"taken from SuperCollider implementation - last method to be call to get the SynthDf asBytes"
-self available: OrderedCollection new.
-self optimizeGraph.
-self collectConstants .
-self checkInputs. "will die on error"
 
-"re-sort graph, topological REindex"
-self available: OrderedCollection new. 
-self topologicalSort .
-self indexUGens.
+	"taken from SuperCollider implementation - last method to be call to get the SynthDf asBytes"
 
-"UGen buildSynthDef: nil" 
-"my implementation "
+	
+
+	self available: OrderedCollection new.
+
+	self optimizeGraph.
+	self collectConstants.
+	self checkInputs. "will die on error"
+
+	"re-sort graph, topological REindex"
+	self available: OrderedCollection new.
+	self topologicalSort.
+	self indexUGens
+
+	"UGen buildSynthDef: nil"
+	"my implementation "
 ]
 
 { #category : #accessing }
@@ -248,7 +262,30 @@ SynthDef >> graph [
 { #category : #accessing }
 SynthDef >> graph: aCollectionOfUGens [
 
-	"what?"
+	
+	| synthIndx |
+	synthIndx := 0.
+	aCollectionOfUGens do: [ :ugen | 
+		(children includes: ugen) not ifTrue: [ self addUGen: ugen ].
+
+		"we must check the following part"
+		uGensGraphFunc sortedUGens add: ugen.
+
+		ugen inputs do: [ :inp | 
+			inp isUGen & (uGensGraphFunc sortedUGens includes: inp) not 
+				ifTrue: [ 
+					uGensGraphFunc sortedUGens add: inp.
+					children add: inp ] ] ].
+	"corresponding to SuperCollider addUGens method of the SynthDef class
+		"
+	children do: [ :ugen | 
+		ugen assignTo: self.
+		ugen synthIndex: synthIndx.
+		ugen widthFirstAntecedents: self widthFirstUGens.
+		('I AM DOING MY GRAPH JOB' , ugen synthIndex asString) traceCr.
+		synthIndx := synthIndx + 1 ]
+
+	
 ]
 
 { #category : #'as yet unclassified' }
@@ -284,7 +321,8 @@ SynthDef >> indexUGens [
 
 	| index |
 	index := 0.
-	children do: [ :ugen | ugen synthIndex: index . index := index + 1]
+	children traceCr.
+	children ifNotNil: [children do: [ :ugen | ugen synthIndex: index . index := index + 1]]
 ]
 
 { #category : #topoSorting }
@@ -293,14 +331,17 @@ SynthDef >> initTopoSort [
 	"initially topological sort, based on SuperCollider implementation"
 
 	"available := nil."
-	children do: [ :ugen | 
-		ugen setAntecedents.
-		ugen setDescendants ].
-	children do: [ :ugen | ugen initTopoSort ].
-	children reverseDo: [ :ugen | 
-		ugen descendants asArray sort: [ :a :b | 
-			a synthIndex < b synthIndex ].
-		ugen makeAvailable "all ugens with no antecedents are made available" ]
+	children isNotNil ifTrue: [ 
+		children do: [ :ugen | 
+			ugen setAntecedents.
+			ugen setDescendants ] ].
+	children isNotNil ifTrue: [ 
+		children do: [ :ugen | ugen initTopoSort ] ].
+	children isNotNil ifTrue: [ 
+		children reverseDo: [ :ugen | 
+			ugen descendants asArray sort: [ :a :b | 
+				a synthIndex < b synthIndex ].
+			ugen makeAvailable "all ugens with no antecedents are made available" ] ]
 ]
 
 { #category : #initialization }
@@ -365,7 +406,7 @@ SynthDef >> optimizeGraph [
 
 	
 	self initTopoSort .
-	children copy do: [ :ugen | ugen optimizeGraph  ].
+	children copy isNotNil ifTrue: [ children copy do: [ :ugen | ugen optimizeGraph  ]].
 	
 "fix up removed ugens"
 
@@ -385,11 +426,17 @@ var oldSize
 SynthDef >> topologicalSort [
 
 	| outStack |
+	
+	outStack := OrderedCollection new.
 	self initTopoSort.
-	[available isEmpty] whileTrue: [ 
-		outStack := available removeLast schedule: outStack  ].
-	children := outStack 
-	" this cleanUpTopoSOrt"
+
+	[ available isNotEmpty ] whileTrue: [ 
+		outStack := available removeLast schedule: outStack ].
+
+	children := outStack.
+	'in topological sort' traceCr.
+	children traceCr.
+	self cleanupTopoSort
 ]
 
 { #category : #accessing }

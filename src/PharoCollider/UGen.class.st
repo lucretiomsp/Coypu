@@ -220,7 +220,7 @@ calculationRate := 1.
 UGen >> makeAvailable [
 
 	antecedents isEmpty ifTrue: [ " synthDef.available = synthDef.available.add(this) " 
-		synthDef available: synthDef available traceCr "add: self" ]
+		synthDef available add: self]
 ]
 
 { #category : #accessing }
@@ -275,6 +275,18 @@ UGen >> outputs [
 	^ outputs
 ]
 
+{ #category : #writeDefinition }
+UGen >> performDeadCodeElimination [
+
+	descendants isEmptyOrNil ifTrue: [ 
+		self inputs do: [ :a | 
+			(a isKindOf: UGen) ifTrue: [ 
+				a descendants remove: self.
+				a optimizeGraph ] ].
+		"buildSynthDef.removeUGen(this)" 
+		^ false]
+]
+
 { #category : #accessing }
 UGen >> rate [ 
 
@@ -302,7 +314,7 @@ self makeAvailable
 { #category : #writeDefinition }
 UGen >> schedule: anOutStack [
 
-	descendants reverseDo: [ :ugen | ugen removeAntecedents: self ].
+	descendants asArray reverseDo: [ :ugen | ugen removeAntecedents: self ].
 	
    ^ anOutStack add: self
 ]
