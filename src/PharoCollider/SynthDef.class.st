@@ -73,8 +73,7 @@ SynthDef >> addUGen: anUGen [
 ]
 
 { #category : #converting }
-SynthDef >> asBytes [ 
-
+SynthDef >> asBytes [
 
 	| int8Array SCgf version def |
 	int8Array := OrderedCollection new.
@@ -90,8 +89,13 @@ SynthDef >> asBytes [
 	"pstring - the name of the synth definition"
 	int8Array addAll: defname asPString.
 	"int32 - number of constants (K)"
+	int8Array addAll: (constants size asByteArrayOfSize: 4).
+	"constant values"
+	constants keys do: [ :item | 
+		int8Array addAll: item asInt8ArrayOfSize4 ].
+	int8Array addAll: (controls size asByteArrayOfSize: 4).
 
-^ int8Array asArray 
+	^ int8Array asArray
 ]
 
 { #category : #converting }
@@ -215,6 +219,11 @@ SynthDef >> constants [
 ]
 
 { #category : #accessing }
+SynthDef >> controls [
+^ controls 
+]
+
+{ #category : #accessing }
 SynthDef >> costantsSet [
 
 ^ constantsSet 
@@ -263,16 +272,20 @@ SynthDef >> graph [
 SynthDef >> graph: aCollectionOfUGens [
 
 	| tempCollection |
+	controls := OrderedCollection new.
 	tempCollection := Set new.
 	aCollectionOfUGens do: [ :ug | 
 		tempCollection add: ug.
 		tempCollection addAll: (ug inputs reject: [ :inp | inp isUGen not ]) ].
+
 	children := Array new: tempCollection size.
-	tempCollection size traceCr.
+	tempCollection do: [ :ugen | 
+		ugen isControl ifTrue: [ controls add: ugen ] ].
 	tempCollection do: [ :ugen | 
 		children at: ugen aggregatedInputs size + 1 put: ugen ].
-	children do: [ :ugen | ugen assignTo: self  ].
-	^ children
+	children do: [ :ugen | ugen assignTo: self ].
+
+	^ controls
 ]
 
 { #category : #accessing }
@@ -373,9 +386,9 @@ SynthDef >> initialize [
 	constants := Dictionary new.
 	constantsSet := Set new.
 	available := OrderedCollection new.
-	controls = nil.
-	controlIndex = 0.
-	maxLocalBufs = 0.
+	controls := OrderedCollection new.
+	controlIndex := 0.
+	maxLocalBufs := 0.
 
 	"my implementation"
 	defname := 'a'.

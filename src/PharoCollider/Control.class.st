@@ -34,6 +34,13 @@ super initialize .
 self fixedLag: false
 ]
 
+{ #category : #testing }
+Control >> isControl [
+
+"my implementation to count controls in SynthDef"
+^ true
+]
+
 { #category : #accessing }
 Control >> lags [
 

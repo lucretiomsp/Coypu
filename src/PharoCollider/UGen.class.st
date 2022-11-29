@@ -222,6 +222,12 @@ UGen >> inputsUGen [
 ]
 
 { #category : #testing }
+UGen >> isControl [
+
+^ false
+]
+
+{ #category : #testing }
 UGen >> isInputOf: anUGen [
 
 	^ (anUGen inputs includes: self) or: (anUGen plugs includes: self)
