@@ -10,7 +10,7 @@ Class {
 
 { #category : #'code-critics' }
 ManifestPharoCollider class >> ruleCollectionMessagesToExternalObjectRuleV1FalsePositive [
-	^ #(#(#(#RGMethodDefinition #(#SynthDef #graph: #false)) #'2022-11-20T12:34:17.692187+01:00') )
+	^ #(#(#(#RGMethodDefinition #(#SynthDef #graphDeprecated: #false)) #'2022-11-20T12:34:17.692187+01:00') )
 ]
 
 { #category : #'code-critics' }

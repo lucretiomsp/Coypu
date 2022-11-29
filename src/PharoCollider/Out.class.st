@@ -52,9 +52,10 @@ Out >> input [
 
 { #category : #accessing }
 Out >> input: aUGen [
-"An Array of channels or single output to write out. You cannot change the size of this once a SynthDef has been built.
+
+	"An Array of channels or single output to write out. You cannot change the size of this once a SynthDef has been built.
 
 "
-	input := aUGen.
-	self inputs at: 2 put: aUGen
+
+	self addInput: aUGen At: 2 
 ]

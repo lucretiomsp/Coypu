@@ -151,53 +151,23 @@ PharoColliderTests >> testStringAsPString [
 { #category : #synthDefTesting }
 PharoColliderTests >> testSynthDefAsBytes [
 
-
-	| bytes sDef oscillator out freqControl|
-	
+	| bytes sDef oscillator out freqControl |
 	freqControl := Control new name: 'Control'.
-	oscillator := SinOsc new freq: freqControl .
+	oscillator := SinOsc new freq: freqControl.
 	out := Out new input: oscillator.
-	sDef := SynthDef withName: 'io' graph: { oscillator . out }.
-	
-	bytes := #( 83 67 103 102 "SCgf" 0 0 0 2 "version" 0 1 "number of synth defs" 2 105 111 "io defname" 0 0 0 1 "number of constants" 0 0 0 0 "only costant is 0" 0 0 0 1 "number of params" 0 0 0 0 "param initial value" 0 0 0 1 "number of param names" 
-	4 102 114 101 113 "param name (1st only) = freq" 0 0 0 0 "param index"
-	0 0 0 3 "number of UGens"
-	7 67 111 110 116 114 111 108 "UGen name (Control)"
-	1 "kontrol Rate"
-	0 0 0 0 "inputs"
-	0 0 0 1 "outputs"
-	0 0 "special index"
-	1 " OUTPUT is KontrolRate"
-	
-	6 83 105 110 79 115 99 "UGen name SinOsc"
-	2 "AudioRate"
-	0 0 0 2 "inputs"
-	0 0 0 1 "outputs"
-	0 0 "special index"
-	0 0 0 0 "1st input index of UGen --> Control"
-	0 0 0 0 "1st input -- index of Control's output = 0 (1st, only Control output "
-	-1 -1 -1 -1 "2nd input (SinOSc phase) = 0xFFFFFFFF = -1 --> constant"
-	0 0 0 0 "use the first constant"
-	2 "output = AudioRate"
-	
-	3 79 117 116 "UGen name Out"
-	2 "AudioRate"
-	0 0 0 2 "inputs"
-	0 0 0 0 "ouputs"
-	0 0 "special index"
-	-1 -1 -1 -1 "value of 1st input = constant"
-	0 0 0 0 "constant index 0 "
-	0 0 0 1 "2nd input comes from UGen 1 = SinOsc"
-	0 0 0 0 "1st output from SinOsc"
-	
-	0 0 "num variants = 0"
-	
-	
-	).
+	sDef := SynthDef name: 'io' with: { 
+			        oscillator.
+			        out }.
 
-	
-	self assert: sDef asBytes equals: bytes 
-	
+	bytes := #( 83 67 103 102 0 0 0 2 0 1 2 105 111 0 0 0 1 0 0 0 0 0 0 0
+	            1 0 0 0 0 0 0 0 1 4 102 114 101 113 0 0 0 0 0 0 0 3 7 67
+	            111 110 116 114 111 108 1 0 0 0 0 0 0 0 1 0 0 1 6 83 105
+	            110 79 115 99 2 0 0 0 2 0 0 0 1 0 0 0 0 0 0 0 0 0 0 -1 -1
+	            -1 -1 0 0 0 0 2 3 79 117 116 2 0 0 0 2 0 0 0 0 0 0 -1 -1
+	            -1 -1 0 0 0 0 0 0 0 1 0 0 0 0 0 0 ). "SCgf" "version" "number of synth defs" "io defname" "number of constants" "only costant is 0" "number of params" "param initial value" "number of param names" "param name (1st only) = freq" "param index" "number of UGens" "UGen name (Control)" "kontrol Rate" "inputs" "outputs" "special index" " OUTPUT is KontrolRate" "UGen name SinOsc" "AudioRate" "inputs" "outputs" "special index" "1st input index of UGen --> Control" "1st input -- index of Control's output = 0 (1st, only Control output " "2nd input (SinOSc phase) = 0xFFFFFFFF = -1 --> constant" "use the first constant" "output = AudioRate" "UGen name Out" "AudioRate" "inputs" "ouputs" "special index" "value of 1st input = constant" "constant index 0 " "2nd input comes from UGen 1 = SinOsc" "1st output from SinOsc" "num variants = 0"
+
+
+	self assert: sDef asBytes equals: bytes
 ]
 
 { #category : #synthDefTesting }
@@ -281,8 +251,8 @@ PharoColliderTests >> testSynthDefTopoSortBasic [
 	self
 		assert: (sDef children asArray at: 1) class name
 		equals: #Control.
-	self assert: (sDef children asArray at: 1) class name equals: #SinOsc.
-	self assert: (sDef children asArray at: 2) class name equals: #Out
+	self assert: (sDef children asArray at: 2) class name equals: #SinOsc.
+	self assert: (sDef children asArray at: 3) class name equals: #Out
 ]
 
 { #category : #synthDefTesting }

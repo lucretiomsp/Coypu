@@ -23,7 +23,8 @@ SinOsc >> freq: aFloatOrAUGen [
 	"frequency can be a float or a UGen, if it is a UGen, the constant is only phase"
 
 	freq := aFloatOrAUGen. " ? "
-	inputs at: 1 put: aFloatOrAUGen
+	self addInput: aFloatOrAUGen  At: 1 
+	
 ]
 
 { #category : #'accessing - structure variables' }
@@ -48,5 +49,5 @@ SinOsc >> phase [
 SinOsc >> phase: aFloatOrAUGen [
 
 	phase := aFloatOrAUGen.
-	inputs at: 2 put: aFloatOrAUGen 
+	self addInput: aFloatOrAUGen At: 2
 ]

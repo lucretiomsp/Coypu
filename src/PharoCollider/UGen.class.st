@@ -18,7 +18,8 @@ Class {
 		'descendants',
 		'widthFirstAntecedents',
 		'outputIndex',
-		'aggregatedInputs'
+		'aggregatedInputs',
+		'plugs'
 	],
 	#classInstVars : [
 		'buildSynthDef',
@@ -51,6 +52,17 @@ UGen class >> multiNewList: arguments [
 UGen >> => anUGen [
 
 	^ UGensGraphFunc new numberOfUGens: 2
+]
+
+{ #category : #accessing }
+UGen >> addInput: aFloatOrAUGen At: anInteger [
+
+	"generic method to add input to UGen"
+ 
+	inputs at: anInteger put: aFloatOrAUGen.
+	aFloatOrAUGen isUGen ifTrue: [self aggregatedInputs add: aFloatOrAUGen .
+	self aggregatedInputs addAll:
+		(aFloatOrAUGen  inputs reject: [ :ug | ug isUGen not ])]
 ]
 
 { #category : #accessing }
@@ -167,6 +179,8 @@ UGen >> initTopoSort [
 UGen >> initialize [
 
 	super initialize.
+	plugs := OrderedCollection new.
+	aggregatedInputs := OrderedCollection new.
 	inputs := Array new.
 	outputs := Dictionary new.
 	constants := Dictionary new.
@@ -174,8 +188,8 @@ UGen >> initialize [
 	specialIndex := 0.
 	synthIndex := -1.
 	outputIndex := 0.
-  antecedents := Set new.
-  descendants := Set new.
+	antecedents := Set new.
+	descendants := Set new
 	"this may be temporary : source should be a member of Output Proxy"
 ]
 
@@ -191,6 +205,14 @@ UGen >> inputs: aConstantOrAUGen [
 	inputs := aConstantOrAUGen
 ]
 
+{ #category : #testing }
+UGen >> inputsHaveUGen [
+
+| ug |
+ug := inputs collect: [ :input | input isUGen ].
+ug isNotEmpty ifTrue: [ ^ true ] ifFalse: [ ^ false ]
+]
+
 { #category : #accessing }
 UGen >> inputsUGen [
 	| result |
@@ -202,7 +224,7 @@ UGen >> inputsUGen [
 { #category : #testing }
 UGen >> isInputOf: anUGen [
 
-	^ anUGen inputs includes: self
+	^ (anUGen inputs includes: self) or: (anUGen plugs includes: self)
 ]
 
 { #category : #testing }
@@ -285,6 +307,11 @@ UGen >> performDeadCodeElimination [
 				a optimizeGraph ] ].
 		"buildSynthDef.removeUGen(this)" 
 		^ false]
+]
+
+{ #category : #accessing }
+UGen >> plugs [ 
+^ plugs
 ]
 
 { #category : #accessing }
