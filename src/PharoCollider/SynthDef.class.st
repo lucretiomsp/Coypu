@@ -93,8 +93,23 @@ SynthDef >> asBytes [
 	"constant values"
 	constants keys do: [ :item | 
 		int8Array addAll: item asInt8ArrayOfSize4 ].
+	"number of controls"
 	int8Array addAll: (controls size asByteArrayOfSize: 4).
+	"control values"
+	controls do: [ :c | 
+		int8Array addAll: (c values asByteArrayOfSize: 4) ].
 
+	"param name and paramIndex"
+	controls do: [ :c | 
+		int8Array
+			addAll: c paramName asPString;
+			addAll: ((controls indexOf: c) - 1 asByteArrayOfSize: 4) ].
+	" number of UGens"
+	int8Array addAll: (self children size asByteArrayOfSize: 4).
+	"UGens description"
+	children do: [ :c | int8Array addAll: c asBytes ]. "must be implemented for UGens"
+
+	"end"
 	^ int8Array asArray
 ]
 

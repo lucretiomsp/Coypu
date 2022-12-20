@@ -63,6 +63,18 @@ PharoColliderTests >> testAsBitsArrayOfSize [
 self assert: (8 asBitsArrayOfSize: 8 ) equals: #( 0 0 0 0 1 0 0 0)
 ]
 
+{ #category : #uGensTests }
+PharoColliderTests >> testControlAsBytes [
+
+	"at a first moment all Controls are at Conttrol rate, kr"
+
+	| control result |
+	result := #( 7 67 111 110 116 114 111 108 1 0 0 0 0 0 0 0 0 1 0 0 1 ). "UGen name" "kr" "0 inputs" "1 output" "special index" "output is kr" 
+	control := Control new.
+
+	self assert: control asBytes equals: result
+]
+
 { #category : #tests }
 PharoColliderTests >> testControlCreationWithName [
 
@@ -152,7 +164,7 @@ PharoColliderTests >> testStringAsPString [
 PharoColliderTests >> testSynthDefAsBytes [
 
 	| bytes sDef oscillator out freqControl |
-	freqControl := Control new name: 'Control'.
+	freqControl := Control newWithName: 'freq'.
 	oscillator := SinOsc new freq: freqControl.
 	out := Out new input: oscillator.
 	sDef := SynthDef name: 'io' with: { 

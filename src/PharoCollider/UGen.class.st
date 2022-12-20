@@ -88,6 +88,16 @@ calculationRate := 2.
 ]
 
 { #category : #writeDefinition }
+UGen >> asBytes [
+
+	| int8Array |
+	int8Array := OrderedCollection new.
+	
+
+^ int8Array asArray 
+]
+
+{ #category : #writeDefinition }
 UGen >> assignTo: aSynthDef [
 "my implementation to assign the UGen to a SynthDef"
 
