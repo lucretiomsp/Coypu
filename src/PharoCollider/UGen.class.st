@@ -7,7 +7,7 @@ Class {
 		'uGenName',
 		'specialIndex',
 		'synthIndex',
-		'calculationRate',
+		'rateNumber',
 		'inputs',
 		'outputs',
 		'numberOfInputs',
@@ -82,9 +82,11 @@ UGen >> antecedents [
 ]
 
 { #category : #'as yet unclassified' }
-UGen >> ar [ 
-"set calculation rate to audio rate"
-calculationRate := 2.
+UGen >> ar [
+
+	"set calculation rate to audio rate"
+
+	rateNumber := 2
 ]
 
 { #category : #writeDefinition }
@@ -92,9 +94,18 @@ UGen >> asBytes [
 
 	| int8Array |
 	int8Array := OrderedCollection new.
-	
+	int8Array
+		addAll: self className asPString;
+		addAll: (self rateNumber asByteArrayOfSize: 1);
+		addAll: (self inputs size asByteArrayOfSize: 4);
+		addAll: (self outputs size asByteArrayOfSize: 4);
+		addAll: (self specialIndex asByteArrayOfSize: 2).
+	" !!!!!! IMPLEMENT INPUT SPECS"
+	self inputs do: [ :inp | inp writeInputSpec ]. 
+	"output rate"
+	int8Array addAll: (self rateNumber asByteArrayOfSize: 1).
 
-^ int8Array asArray 
+	^ int8Array asArray
 ]
 
 { #category : #writeDefinition }
@@ -107,18 +118,6 @@ synthDef := aSynthDef .
 { #category : #accessing }
 UGen >> assignedSynthDef [
 ^ synthDef 
-]
-
-{ #category : #accessing }
-UGen >> calculationRate [
-
-	^ calculationRate
-]
-
-{ #category : #accessing }
-UGen >> calculationRate: anObject [
-
-	calculationRate := anObject
 ]
 
 { #category : #testing }
@@ -195,6 +194,7 @@ UGen >> initialize [
 	outputs := Dictionary new.
 	constants := Dictionary new.
 	rate := #audio.
+	rateNumber := 2. "at the moment by defaut all UGen are created at audio rate - change to COntrol rate must be specified "
 	specialIndex := 0.
 	synthIndex := -1.
 	outputIndex := 0.
@@ -342,9 +342,13 @@ UGen >> rate [
 { #category : #accessing }
 UGen >> rateNumber [
 
-	| arrayOfRates |
-	arrayOfRates := #( #control #audio #demand ).
-	^ arrayOfRates indexOf: self rate.
+^ rateNumber 
+]
+
+{ #category : #accessing }
+UGen >> rateNumber: anInteger [
+
+rateNumber := anInteger 
 ]
 
 { #category : #writeDefinition }
@@ -460,7 +464,7 @@ UGen >> writeInputSpec [
 
 	| int8Array |
 	int8Array := OrderedCollection new.
-	int8Array addAll: (self synthIndex asByteArrayOfSize: 4).
+	int8Array addAll: (self synthIndex - 1 asByteArrayOfSize: 4).
 	int8Array addAll: (self outputIndex asByteArrayOfSize: 4).
 	^ int8Array
 ]

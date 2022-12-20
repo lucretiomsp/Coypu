@@ -69,7 +69,7 @@ PharoColliderTests >> testControlAsBytes [
 	"at a first moment all Controls are at Conttrol rate, kr"
 
 	| control result |
-	result := #( 7 67 111 110 116 114 111 108 1 0 0 0 0 0 0 0 0 1 0 0 1 ). "UGen name" "kr" "0 inputs" "1 output" "special index" "output is kr" 
+	result := #( 7 67 111 110 116 114 111 108 1 0 0 0 0 0 0 0  1 0 0 1 ). "UGen name" "kr" "0 inputs" "1 output" "special index" "output is kr"
 	control := Control new.
 
 	self assert: control asBytes equals: result
@@ -123,6 +123,28 @@ self assert: s numberOfUGens   equals: 2
 PharoColliderTests >> testPureUGenIsUGenSubClass [
 
 self assert: (PureUGen superclass) equals: UGen.
+]
+
+{ #category : #uGensTests }
+PharoColliderTests >> testSinOscAsBytes [
+
+	"at a first moment all Controls are at Conttrol rate, kr"
+
+	| freqControl oscillator result |
+	result := #( 6 83 105 110 79 115 99
+	2
+	0 0 0 2
+	0 0 0 1
+	0 0
+	0 0 0 0
+	0 0 0 0
+	-1 -1 -1 -1
+	0 0 0 0
+	2).
+	freqControl := Control newWithName: 'freq'.
+	oscillator := SinOsc new freq: freqControl .
+
+	self assert: oscillator  asBytes equals: result
 ]
 
 { #category : #tests }

@@ -35,7 +35,9 @@ Control >> initialize [
 
 	super initialize.
 	self fixedLag: false.
-	self values: 0
+	self values: 0.
+	self rateNumber: 1. "at the moment all controls have kr control rate"
+	self outputs at: #nulla put: 0 "at the moment we just have 1 dummy output, THEN IT MUST CONNECT FOR WHAT IS PLUGGED"
 ]
 
 { #category : #testing }
