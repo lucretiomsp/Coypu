@@ -120,6 +120,25 @@ self assert: s numberOfUGens   equals: 2
 ]
 
 { #category : #uGensTests }
+PharoColliderTests >> testOutAsBytes [
+
+	"at a first moment all Controls are at Conttrol rate, kr"
+
+	| freqControl oscillator out sd result |
+	result := #( 3 79 117 116 2 0 0 0 2 0 0 0 0 0 0 -1 -1 -1 -1 0 0 0 0 0
+	             0 0 1 0 0 0 0 ).
+	freqControl := Control newWithName: 'freq'.
+	oscillator := SinOsc new freq: freqControl.
+	out := Out new input: oscillator.
+	sd := SynthDef new.
+	sd graph: { 
+			oscillator.
+			out }.
+
+	self assert: out asBytes equals: result
+]
+
+{ #category : #uGensTests }
 PharoColliderTests >> testPureUGenIsUGenSubClass [
 
 self assert: (PureUGen superclass) equals: UGen.

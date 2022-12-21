@@ -98,6 +98,8 @@ SynthDef >> asBytes [
 	"control values"
 	controls do: [ :c | 
 		int8Array addAll: (c values asByteArrayOfSize: 4) ].
+	"control param names - maybe must be changed!"
+	int8Array addAll: (controls size asByteArrayOfSize: 4).
 
 	"param name and paramIndex"
 	controls do: [ :c | 
@@ -108,7 +110,8 @@ SynthDef >> asBytes [
 	int8Array addAll: (self children size asByteArrayOfSize: 4).
 	"UGens description"
 	children do: [ :c | int8Array addAll: c asBytes ]. "must be implemented for UGens"
-
+	" variants ?? for the moment we leave it to 0"
+	int8Array addAll: (self variants asByteArrayOfSize: 2).
 	"end"
 	^ int8Array asArray
 ]
@@ -415,7 +418,8 @@ SynthDef >> initialize [
 	numberOfConstants := 0 asByteArrayOfSize: 4.
 	parameters := OrderedCollection new.
 	numberOfUGens := 0 asByteArrayOfSize: 4.
-	numberOfVariants := 0 asByteArrayOfSize: 2
+	numberOfVariants := 0 asByteArrayOfSize: 2.
+	variants := 0.
 ]
 
 { #category : #accessing }
@@ -476,6 +480,17 @@ SynthDef >> topologicalSort [
 	'in topological sort' traceCr.
 	children traceCr.
 	self cleanupTopoSort
+]
+
+{ #category : #accessing }
+SynthDef >> variants [
+^ variants
+]
+
+{ #category : #accessing }
+SynthDef >> variants: anInteger [
+
+	^ anInteger
 ]
 
 { #category : #accessing }

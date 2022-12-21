@@ -103,7 +103,7 @@ UGen >> asBytes [
 	" !!!!!! IMPLEMENT INPUT SPECS"
 	self inputs do: [ :inp | int8Array addAll: inp writeInputSpec ].
 	"output rate"
-	int8Array addAll: (self rateNumber asByteArrayOfSize: 1).
+	(self outputs size > 0) ifTrue: [int8Array addAll: (self rateNumber asByteArrayOfSize: 1)].
 
 	^ int8Array asArray
 ]
