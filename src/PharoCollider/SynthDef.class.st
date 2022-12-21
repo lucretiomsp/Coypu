@@ -286,7 +286,8 @@ SynthDef >> graph [
 { #category : #accessing }
 SynthDef >> graph: aCollectionOfUGens [
 
-	| tempCollection |
+	| tempCollection synthIndx |
+	synthIndx := 0.
 	controls := OrderedCollection new.
 	tempCollection := Set new.
 	aCollectionOfUGens do: [ :ug | 
@@ -298,7 +299,7 @@ SynthDef >> graph: aCollectionOfUGens [
 		ugen isControl ifTrue: [ controls add: ugen ] ].
 	tempCollection do: [ :ugen | 
 		children at: ugen aggregatedInputs size + 1 put: ugen ].
-	children do: [ :ugen | ugen assignTo: self ].
+	children do: [ :ugen | ugen assignTo: self . ugen synthIndex: synthIndx . synthIndx := synthIndx + 1].
 
 	^ controls
 ]

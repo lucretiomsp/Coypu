@@ -101,7 +101,7 @@ UGen >> asBytes [
 		addAll: (self outputs size asByteArrayOfSize: 4);
 		addAll: (self specialIndex asByteArrayOfSize: 2).
 	" !!!!!! IMPLEMENT INPUT SPECS"
-	self inputs do: [ :inp | inp writeInputSpec ]. 
+	self inputs do: [ :inp | int8Array addAll: inp writeInputSpec ].
 	"output rate"
 	int8Array addAll: (self rateNumber asByteArrayOfSize: 1).
 
@@ -464,9 +464,9 @@ UGen >> writeInputSpec [
 
 	| int8Array |
 	int8Array := OrderedCollection new.
-	int8Array addAll: (self synthIndex - 1 asByteArrayOfSize: 4).
+	int8Array addAll: (self synthIndex  asByteArrayOfSize: 4).
 	int8Array addAll: (self outputIndex asByteArrayOfSize: 4).
-	^ int8Array
+	^ int8Array asArray
 ]
 
 { #category : #writeDefinition }

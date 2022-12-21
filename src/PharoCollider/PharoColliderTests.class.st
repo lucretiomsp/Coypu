@@ -130,21 +130,16 @@ PharoColliderTests >> testSinOscAsBytes [
 
 	"at a first moment all Controls are at Conttrol rate, kr"
 
-	| freqControl oscillator result |
-	result := #( 6 83 105 110 79 115 99
-	2
-	0 0 0 2
-	0 0 0 1
-	0 0
-	0 0 0 0
-	0 0 0 0
-	-1 -1 -1 -1
-	0 0 0 0
-	2).
+	| freqControl oscillator out sd result |
+	result := #( 6 83 105 110 79 115 99 2 0 0 0 2 0 0 0 1 0 0 0 0 0 0 0 0
+	             0 0 -1 -1 -1 -1 0 0 0 0 2 ).
 	freqControl := Control newWithName: 'freq'.
-	oscillator := SinOsc new freq: freqControl .
+oscillator := SinOsc new freq: freqControl .
+out := Out new input: oscillator.
+sd := SynthDef new.
+sd graph: { oscillator .out   }.
 
-	self assert: oscillator  asBytes equals: result
+	self assert: oscillator asBytes equals: result
 ]
 
 { #category : #tests }
