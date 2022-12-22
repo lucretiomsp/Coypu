@@ -24,3 +24,12 @@ bitsArraySized addAll: bitsArray .
 
 ^ bitsArraySized asArray
 ]
+
+{ #category : #'*PharoCollider' }
+Integer >> asSignedInt8 [
+
+	| mask result |
+	mask := (2 raisedTo: 8) - 1.
+	result :=mask bitAnd: (self abs bitXor: mask) + 1.
+	^ result
+]
