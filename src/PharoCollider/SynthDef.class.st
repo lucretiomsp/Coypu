@@ -247,6 +247,11 @@ SynthDef >> costantsSet [
 ^ constantsSet 
 ]
 
+{ #category : #accessing }
+SynthDef >> defname [
+^ defname 
+]
+
 { #category : #topoSorting }
 SynthDef >> dumpUGens [
 
@@ -410,7 +415,7 @@ SynthDef >> initialize [
 	maxLocalBufs := 0.
 
 	"my implementation"
-	defname := 'a'.
+	defname := 'io'.
 	controlIndex := 0.
 	uGensGraphFunc := UGensGraphFunc new.
 	"define the sortBlock for the UGensGraphFunc"
@@ -419,7 +424,7 @@ SynthDef >> initialize [
 	parameters := OrderedCollection new.
 	numberOfUGens := 0 asByteArrayOfSize: 4.
 	numberOfVariants := 0 asByteArrayOfSize: 2.
-	variants := 0.
+	variants := 0
 ]
 
 { #category : #accessing }
