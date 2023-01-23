@@ -294,6 +294,26 @@ PharoColliderTests >> testSynthDefCreationWithUGensGraphFunc [
 ]
 
 { #category : #synthDefTesting }
+PharoColliderTests >> testSynthDefFixedSinOSc [
+
+	| bytes sDef oscillator out |
+	oscillator := SinOsc new freq: 220.
+	out := Out new input: oscillator.
+	sDef := SynthDef name: 'io' with: { 
+			        oscillator.
+			        out }.
+
+	bytes := #( 83 67 103 102 0 0 0 2 0 1 2 105 111 0 0 0 2 67 92 0 0 0 0
+	            0 0 0 0 0 0 0 0 0 0 0 0 0 2 6 83 105 110 79 115 99 2 0 0
+	            0 2 0 0 0 1 0 0 -1 -1 -1 -1 0 0 0 0 -1 -1 -1 -1 0 0 0 1 2
+	            3 79 117 116 2 0 0 0 2 0 0 0  0 0 0 -1 -1 -1 -1 0 0 0 1
+	            0 0 0 0 0 0 0 0 0 0 ). "SCgf" "version" "number of synth defs" "io defname" "number of constants" "only costant is 0" "number of params" "param initial value" "number of param names" "param name (1st only) = freq" "param index" "number of UGens" "UGen name (Control)" "kontrol Rate" "inputs" "outputs" "special index" " OUTPUT is KontrolRate" "UGen name SinOsc" "AudioRate" "inputs" "outputs" "special index" "1st input index of UGen --> Control" "1st input -- index of Control's output = 0 (1st, only Control output " "2nd input (SinOSc phase) = 0xFFFFFFFF = -1 --> constant" "use the first constant" "output = AudioRate" "UGen name Out" "AudioRate" "inputs" "ouputs" "special index" "value of 1st input = constant" "constant index 0 " "2nd input comes from UGen 1 = SinOsc" "1st output from SinOsc" "num variants = 0"
+
+
+	self assert: sDef asBytes equals: bytes
+]
+
+{ #category : #synthDefTesting }
 PharoColliderTests >> testSynthDefNoNameNoUgensAsBytes [
 
 	"returns th Int8 array with the SuperCollider SynthDefinition Format of a Synthef named 'a' and with noUgens nor controls "
