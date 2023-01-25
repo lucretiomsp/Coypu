@@ -11,7 +11,8 @@ Class {
 
 { #category : #'creating - withoutRoot' }
 Scale class >> augmented [
-^ (Scale with: #(0 3 4  7 8 11))
+
+	^  #( 0 3 4 7 8 11 )
 ]
 
 { #category : #'creating - withRoot' }

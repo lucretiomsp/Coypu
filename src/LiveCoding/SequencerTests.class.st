@@ -5,6 +5,20 @@ Class {
 }
 
 { #category : #tests }
+SequencerTests >> testArrayAsSequencer [
+
+	| notes seq |
+	
+	notes := #(60 0 65 0 ).
+	
+	seq := notes asSequencer.
+	
+	
+	self assert: seq gates equals: #( 1 0 1 0 ).
+	self assert: seq notes equals: notes
+]
+
+{ #category : #tests }
 SequencerTests >> testBinaryOperatorForExtra1 [
 
 | seq |
