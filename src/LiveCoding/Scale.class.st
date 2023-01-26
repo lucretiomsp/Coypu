@@ -142,9 +142,9 @@ Scale class >> major: aMidiNoteNumber [
 ]
 
 { #category : #'creating - withoutRoot' }
-Scale class >> minor [ 
+Scale class >> minor [
 
-^ #(0 2 3 5 7 8 10 12 13 17 20)
+	^ #( 0 2 3 5 7 8 10 12  )
 ]
 
 { #category : #'accessing - structure variables' }
