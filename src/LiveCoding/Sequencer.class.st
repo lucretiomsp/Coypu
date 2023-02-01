@@ -17,6 +17,7 @@ Class {
 		'durations',
 		'noteIndex',
 		'gates',
+		'midiChannel',
 		'visualGroup'
 	],
 	#category : #'LiveCoding-Sequencers'
@@ -220,6 +221,18 @@ Sequencer >> melodyFrom: aScale [
 			array at: i - 1 put: (aScale at: 5) ] ].
 	"last note is mediante or dominante"
 	^ self notes: array
+]
+
+{ #category : #accessing }
+Sequencer >> midiChannel [ 
+
+^ midiChannel 
+]
+
+{ #category : #accessing }
+Sequencer >> midiChannel: anIntegerBetween1And16 [
+
+	midiChannel := anIntegerBetween1And16 
 ]
 
 { #category : #accessing }

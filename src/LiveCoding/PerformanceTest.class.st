@@ -26,7 +26,21 @@ PerformanceTest >> setUp [
 	performance := Performance basic.
 	performer := PerformerMock new.
 	performance performer: performer.
-	self playPerformance
+	
+	
+	"self playPerformance"
+]
+
+{ #category : #tests }
+PerformanceTest >> testAssignMIDIChannelToSequencerAutomatically [
+
+	| perf seq |
+	perf := Performance new.
+	seq := Sequencer new.
+	
+	perf at: #midi7 put: seq.
+
+	self assert: seq midiChannel equals: 7
 ]
 
 { #category : #tests }

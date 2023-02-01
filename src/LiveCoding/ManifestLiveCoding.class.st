@@ -1,5 +1,12 @@
 "
-Please describe the package using the class comment of the included manifest class. The manifest class also includes other additional metadata for the package. These meta data are used by other tools such as the SmalllintManifestChecker and the critics Browser
+Performances are dictionaries contains Sequencers and are intended to be the complete ""live-score"" for the LiveCoding execution, and with the ""play"" methodss
+they become Processes with the highest priority that send out OSC or MIDI messages.
+
+
+Performances can be changed in real time.
+
+If a Key of a Performance contains 'midi' + anIntegerBetween1And16 (for example #midi7), the corresponding sequencer will be assigned to the midiChannel of anIntegerBetween1And16 .
+
 "
 Class {
 	#name : #ManifestLiveCoding,

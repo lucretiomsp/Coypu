@@ -1,5 +1,7 @@
 "
-""A performance is a Dictionary subclass used for live coding package""
+A performance is a Dictionary subclass used for live coding package.
+
+
 "
 Class {
 	#name : #Performance,
@@ -47,9 +49,13 @@ Performance >> at: key put: anObject [
 	new entry for key and set is value to anObject. Answer anObject.
 	If a RsCanvas have been associated to the Performance add the visualisation of the sequencer to the RSCanvas"
 
+	"if the key contains the midi string, it assign the Sequencer isnide anObject to the midi channel indicated by the number after midi 
+	(example p at: #midi7 put: aSequencer)"
+
 	super at: key put: anObject.
+	(key asString first: 4) = 'midi' ifTrue: [ anObject midiChannel: (key asString allButFirst: 4) asNumber  ].
 	canvas isNotNil & anObject isSequencer ifTrue: [ 
-		(self rsGroupDictionary  includesKey: key)
+		(self rsGroupDictionary includesKey: key)
 			ifTrue: [ 
 				canvas removeShape: (rsGroupDictionary at: key) asShape.
 				anObject visualizeOn: canvas.

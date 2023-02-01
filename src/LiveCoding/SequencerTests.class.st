@@ -57,3 +57,9 @@ SequencerTests >> testSequencerEquality [
 
 self assert: 16 tumbao equals: 16 tumbao 
 ]
+
+{ #category : #tests }
+SequencerTests >> testSequencerFromScale [
+
+self shouldBeImplemented 
+]
