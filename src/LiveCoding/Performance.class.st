@@ -5,7 +5,7 @@ A performance is a Dictionary subclass used for live coding package.
 "
 Class {
 	#name : #Performance,
-	#superclass : #OrderedCollection,
+	#superclass : #Dictionary,
 	#type : #variable,
 	#instVars : [
 		'visualization',
@@ -42,7 +42,7 @@ Performance class >> withCircles [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : #'performance  - adding' }
 Performance >> add: aSequencer channel: anIntegerBetween1And16 [
 
 aSequencer midiChannel: anIntegerBetween1And16. 
@@ -460,7 +460,7 @@ if you want to send out ccs
 		  (Delay forSeconds: aRateInSeconds) wait.
 		  " test if dictionary values is an Array of two arrays or as defined, a sequence"
 
-		  self do: [ :value | 
+		  self values do: [ :value | 
 			  value isSequencer
 				  ifTrue: [ "end of the isSequencer true condition"
 					  (value gates at: (step modulo: value gatesSize)) = 1

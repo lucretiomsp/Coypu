@@ -32,6 +32,19 @@ PerformanceTest >> setUp [
 ]
 
 { #category : #tests }
+PerformanceTest >> testAddSequencerAndReplace [
+
+	| p seq1 seq2 |
+	p := Performance new.
+	seq1 := 16 downbeats.
+	seq2 := 16 tumbao.
+	p add: seq1.
+	p add: seq2.
+
+	self assert: (p includes: seq2) & (p includes: seq1) not equals: true
+]
+
+{ #category : #tests }
 PerformanceTest >> testAssignMIDIChannelToSequencerAutomatically [
 
 	| perf seq |
