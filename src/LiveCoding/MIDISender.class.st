@@ -158,20 +158,19 @@ MIDISender >> playNote: aNoteNumber onChannel: aMIDIChannel duration: aDurationI
 
 	" play aNoteNumber on channel aChannel for aDurationInSeconds"
 
-	| noteOn noteOff channel  |
-	
+	| noteOn noteOff channel |
 	channel := aMIDIChannel - 1.
 	noteOn := PortMidi
-		          message: 144 + aMIDIChannel
+		          message: 144 + channel
 		          and: aNoteNumber
 		          and: 100.
 	noteOff := PortMidi
-		           message: 128 + aMIDIChannel
+		           message: 128 + channel
 		           and: aNoteNumber
 		           and: 100.
 	[ 
 	instance writeShortOn: self midiOut value when: 0 theMessage: noteOn.
-	(Delay forSeconds: aDurationInSeconds ) wait.
+	(Delay forSeconds: aDurationInSeconds) wait.
 	instance writeShortOn: self midiOut value when: 0 theMessage: noteOff ]
 		fork
 ]
@@ -194,12 +193,20 @@ instance writeShortOn: self midiOut value when: 0 theMessage: cChange.
 { #category : #'as yet unclassified' }
 MIDISender >> sendStart [
 
-" send Transport start message to exteral MIDI device"
+	" send Transport start message to exteral MIDI device"
 
-	| msg |
+	| startMsg clockMsg |
+	startMsg := PortMidi message: 250 and: 0 and: 0.
+	clockMsg := PortMidi message: 248 and: 0 and: 0.
+
+	instance
+		writeShortOn: self midiOut value
+		when: 0
+		theMessage: startMsg.
+		
+		instance
+		writeShortOn: self midiOut value
+		when: 0
+		theMessage: clockMsg.
 	
-
-	msg := PortMidi message: 250 and: 0 and: 0.
-
-	instance writeShortOn: self midiOut value when: 0 theMessage: msg
 ]

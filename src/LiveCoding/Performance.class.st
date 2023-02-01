@@ -433,7 +433,7 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 Performance >> playMIDISequenceAt: aRateInSeconds steps: aNumberOfSteps on: aMIDISender [
 
 	"test"
- 
+
 	" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through athe Performance containing arrays of numbers as values
 keys in the Performance represents MIDI channels and must be written as #ch1 #ch2 #ch3 and so on if you want to send noteOn/off or
 
@@ -461,7 +461,7 @@ if you want to send out ccs
 							  aMIDISender
 								  playDrum:
 								  (value notes at: (value noteIndex modulo: value notesSize))
-								  onChannel: (key asString at: 3) digitValue.
+								  onChannel: value midiChannel.
 
 							  "visualization showSound: key withNote: 60."
 

@@ -1,5 +1,6 @@
 "
 A Sequencer contains gates, notes, duration and a noteIndex. extra1 and extra2 controls can be added.
+A Sequencer can contain a MIDI channel, as intended to play it on A performance to a MIDI sender
 The Sequencer is the basi unit to play a Performance.
 It is conceived as a Digital Audio Workstation track.
 "
