@@ -19,7 +19,8 @@ Class {
 		'noteIndex',
 		'gates',
 		'midiChannel',
-		'visualGroup'
+		'visualGroup',
+		'cycleDurations'
 	],
 	#category : #'LiveCoding-Sequencers'
 }
@@ -77,6 +78,18 @@ Sequencer >> allNotes: anInteger [
 	newNotes := Array new: self numberOfGates.
 	1 to: newNotes size do: [ :i | newNotes at: i put: anInteger ].
 	self notes: newNotes.
+]
+
+{ #category : #'sequencer - cycles' }
+Sequencer >> cycleDurations [
+" return the duration of each event in the cycle"
+	^ cycleDurations
+]
+
+{ #category : #'sequencer - cycles' }
+Sequencer >> cycleDurations: anArrayOfFractions [
+
+cycleDurations := anArrayOfFractions 
 ]
 
 { #category : #accessing }
