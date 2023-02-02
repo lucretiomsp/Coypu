@@ -337,6 +337,51 @@ Sequencer >> offset: aNumber [
 	self notes: (melody offset: aNumber)
 ]
 
+{ #category : #'sequencer - cycles' }
+Sequencer >> playAsCycle [
+
+]
+
+{ #category : #'sequencer - cycles' }
+Sequencer >> playAsCycle: aNumberOfCycles on: aMIDISender [
+
+	"playMIDISequenceAt: aRateInSeconds steps: aNumberOfSteps on: aMIDISender"
+
+	"test"
+
+	" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through athe Performance containing arrays of numbers as values
+keys in the Performance represents MIDI channels and must be written as #ch1 #ch2 #ch3 and so on if you want to send noteOn/off or
+
+if you want to send out ccs
+"
+
+	| step gateTime |
+	"as in early hardware sequencers, default gatetime is 80% of the step duration"
+	gateTime := 0. "we dont use it for now"
+	step := 0.
+
+
+	^ [ 
+	  aNumberOfCycles timesRepeat: [ 
+		  (Delay forSeconds: (Cycle duration)
+			   * (self cycleDurations at: (step modulo: self cycleDurations size)))
+			  wait.
+
+		  " test if dictionary values is an Array of two arrays or as defined, a sequence"
+
+
+		  (self gates at: (step modulo: self gatesSize)) = 1 ifTrue: [ 
+			  aMIDISender
+				  playDrum:
+				  (self notes at: (self noteIndex modulo: self notesSize))
+				  onChannel: self midiChannel.
+			  "advance"
+			  self noteIndex: self noteIndex + 1 ].
+
+
+		  step := step + 1 ] ] forkAt: Processor timingPriority
+]
+
 { #category : #printing }
 Sequencer >> printOn: aStream [
 
