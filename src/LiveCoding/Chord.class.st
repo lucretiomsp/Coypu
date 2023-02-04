@@ -8,6 +8,23 @@ Class {
 	#category : #'LiveCoding-ScalesAndChords'
 }
 
+{ #category : #'as yet unclassified' }
+Chord class >> chordLists [
+
+	"retrurn the list of all Chords"
+
+	"ChordLists ifNil: [ "
+
+	ChordLists := Dictionary new.
+	ChordLists
+		at: #maj put: #( 0 4 7 );
+		at: #maj7 put: #( 0 4 7 11 );
+		at: #min put: #( 0 3 7 );
+		at: #min7 put: #( 0 3 7 10 ).
+
+	^ ChordLists
+]
+
 { #category : #creating }
 Chord class >> major [ 
 	| notes |

@@ -462,49 +462,47 @@ if you want to send out ccs
 
 		  self values do: [ :value | 
 			  value isSequencer
-				  ifTrue: [ "end of the isSequencer true condition"
-					  (value gates at: (step modulo: value gatesSize)) = 1
-						  ifTrue: [ 
-							  aMIDISender
-								  playDrum:
-								  (value notes at: (value noteIndex modulo: value notesSize))
-								  onChannel: value midiChannel.
+				  ifTrue: [ 
+					  (value gates at: (step modulo: value gatesSize)) = 1 ifTrue: [ "noteIndex := noteIndex + 1."
+						  value hasChords
+							  ifFalse: [ 
+								  aMIDISender
+									  playDrum:
+									  (value notes at: (value noteIndex modulo: value notesSize))
+									  onChannel: value midiChannel ]
+							  ifTrue: [ 
+								  aMIDISender
+									  playChord: 60
+									  type: (Chord chordLists at:
+											   (value chords at:
+												    (value noteIndex modulo: value chords size)))
+									  onChannel: value midiChannel
+									  duration: 0.2 ].
+						  "sends a ControlChange message on the same channel, if provided"
+						  value extra1 notNil
+							  ifTrue: [ 
+								  aMIDISender
+									  sendCC: (value extra1 at: 1)
+									  withValue:
+									  ((value extra1 at: 2) at:
+										   (value noteIndex modulo: value extra1Size))
+									  onChannel: value midiChannel ]
+							  ifFalse: [ nil ].
 
-							  "visualization showSound: key withNote: 60."
+						  "sends another ControlChange message on the same channel, if provided"
+						  value extra2 notNil
+							  ifTrue: [ 
+								  aMIDISender
+									  sendCC: (value extra2 at: 1)
+									  withValue:
+									  ((value extra2 at: 2) at:
+										   (value noteIndex modulo: value extra2Size))
+									  onChannel: value midiChannel ]
+							  ifFalse: [ nil ].
 
-
-							  "sends a ControlChange message on the same channel, if provided"
-							  value extra1 notNil
-								  ifTrue: [ 
-									  aMIDISender
-										  sendCC: (value extra1 at: 1)
-										  withValue:
-										  ((value extra1 at: 2) at:
-											   (value noteIndex modulo: value extra1Size))
-										  onChannel: value midiChannel ]
-								  ifFalse: [ nil ].
-
-							  "sends another ControlChange message on the same channel, if provided"
-							  value extra2 notNil
-								  ifTrue: [ 
-									  aMIDISender
-										  sendCC: (value extra2 at: 1)
-										  withValue:
-										  ((value extra2 at: 2) at:
-											   (value noteIndex modulo: value extra2Size))
-										  onChannel: value midiChannel ]
-								  ifFalse: [ nil ].
-
-							  "advance"
-							  value noteIndex: value noteIndex + 1
-
-							  "noteIndex := noteIndex + 1." ]
-						  ifFalse: [ nil ] ]
-				  ifFalse: [ 
-					  aMIDISender
-						  sendCC: 74
-						  withValue: (value at: (step modulo: value size))
-						  onChannel: value midiChannel ] ].
+						  "advance"
+						  value noteIndex: value noteIndex + 1 ] ]
+				  ifFalse: [ nil ] ].
 
 		  "step is incrementing in any case"
 		  step := step + 1 ] ] forkAt: Processor timingPriority
@@ -523,11 +521,6 @@ if you want to send out ccs
 
 	| step bpm beatInSeconds gateTime |
 	"as in early hardware sequencers, default gatetime is 80% of the step duration"
-	self
-		deprecated: 'Use #playMIDISequenceAt:steps:on: instead'
-		on: '1 February 2023'
-		in:
-		'Pharo-10.0.0+build.521.sha.14f541319d443f4261f84f4fa19fbb34460a5edb (64 Bit)'.
 	bpm := 60 / (aRateInSeconds * 4).
 	beatInSeconds := aRateInSeconds * 4.
 	gateTime := aRateInSeconds * 0.8.

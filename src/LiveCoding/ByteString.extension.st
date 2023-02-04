@@ -1,6 +1,16 @@
 Extension { #name : #ByteString }
 
 { #category : #'*LiveCoding' }
+ByteString >> asChord [
+
+	"return an Array with the Intervals of the Chord in semitones"
+	
+	
+
+	
+]
+
+{ #category : #'*LiveCoding' }
 ByteString >> asLocalGate: gateTimeInSeconds note: aNoteNumber [
 " gate-like OSC messsage with multiple arguments"
 	" send an OSC message that mimics the behaviour oa MIDI note on message.

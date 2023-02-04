@@ -20,7 +20,8 @@ Class {
 		'gates',
 		'midiChannel',
 		'visualGroup',
-		'cycleDurations'
+		'cycleDurations',
+		'chords'
 	],
 	#category : #'LiveCoding-Sequencers'
 }
@@ -78,6 +79,19 @@ Sequencer >> allNotes: anInteger [
 	newNotes := Array new: self numberOfGates.
 	1 to: newNotes size do: [ :i | newNotes at: i put: anInteger ].
 	self notes: newNotes.
+]
+
+{ #category : #accessing }
+Sequencer >> chords [
+
+	^ chords
+]
+
+{ #category : #accessing }
+Sequencer >> chords: anArrayOfChords [
+" for example #('maj' 'min' 'sus4' 'min7')"
+
+	chords := anArrayOfChords 
 ]
 
 { #category : #'sequencer - cycles' }
@@ -214,6 +228,17 @@ Sequencer >> gates: aRhythm [
 Sequencer >> gatesSize [
 
 	^ gates size
+]
+
+{ #category : #accessing }
+Sequencer >> hasChords [
+
+| result |
+result := false.
+	self chords isNil
+		ifTrue: [ ^ false ]
+		ifFalse: [ ^ true ].
+		^ result
 ]
 
 { #category : #testing }
