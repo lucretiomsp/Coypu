@@ -23,3 +23,18 @@ LiveCodingTests >> testFullScale [
 	result := (Scale chromatic: 60) fullScale.
 	self assert: result equals: (0 to: 127) asArray
 ]
+
+{ #category : #tests }
+LiveCodingTests >> testStringForDirt [
+
+	| string gates seq soundsPattern samplesIndex |
+	string := 'bd:1 sd cp:2 ~'.
+	gates := #(1 1 1 0).
+	soundsPattern := #( 'bd' 'sd' 'cp' ).
+	samplesIndex := #( 1 0 2 ).
+	seq := string forDirt.
+
+self assert: seq gates equals: gates.
+	self assert: seq soundPattern equals: soundsPattern.
+	self assert: seq samplesIndex equals: samplesIndex
+]

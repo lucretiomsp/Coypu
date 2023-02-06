@@ -21,7 +21,9 @@ Class {
 		'midiChannel',
 		'visualGroup',
 		'cycleDurations',
-		'chords'
+		'chords',
+		'soundPattern',
+		'samplesIndex'
 	],
 	#category : #'LiveCoding-Sequencers'
 }
@@ -445,6 +447,18 @@ Sequencer >> randomCounterPoint [
 ]
 
 { #category : #accessing }
+Sequencer >> samplesIndex [
+
+	^ samplesIndex
+]
+
+{ #category : #accessing }
+Sequencer >> samplesIndex: anArrayOfIntegers [
+
+	samplesIndex := anArrayOfIntegers 
+]
+
+{ #category : #accessing }
 Sequencer >> seqKey [
 ^seqKey
 ]
@@ -458,6 +472,18 @@ Sequencer >> size [
 	result := self gates select: [ :i | i > 0 ].
 	size := result size.
 	^ size
+]
+
+{ #category : #accessing }
+Sequencer >> soundPattern [
+
+	^ soundPattern
+]
+
+{ #category : #accessing }
+Sequencer >> soundPattern: anArrayOfStrings [
+
+	soundPattern := anArrayOfStrings 
 ]
 
 { #category : #accessing }
