@@ -184,31 +184,6 @@ Array >> toKyma: aString [
 ]
 
 { #category : #'*LiveCoding' }
-Array >> toSuperDirt [
-
-	| note sound |
-	sound := self at: 1.
-	note := (self at: 2) asFloat.
-
-	(OSCMessage for: { 
-			 '/dirt/play'.
-			 '_id '.
-			 '4'.
-			 'cps'.
-			 0.56.
-			 'cycle'.
-			 71.00.
-			 'delta'.
-			 0.89.
-			 'n'.
-			 note.
-			 'orbit'.
-			 5.0.
-			 's'.
-			 sound }) sendToAddressString: '127.0.0.1' port: 57120
-]
-
-{ #category : #'*LiveCoding' }
 Array >> trigs [
 
 	"return the number of trigs (value  = 1),  of the array"

@@ -409,6 +409,60 @@ if you want to send out ccs
 		  step := step + 1 ] ] forkAt: Processor timingPriority
 ]
 
+{ #category : #'sequencer - playing' }
+Sequencer >> playBasicDirtEventAt: anIndex [
+
+	"convenience method to play single events inside a Sequencer / it is possible to select only sound and index"
+
+	| index sound |
+	index := (self samplesIndex wrap: anIndex) asFloat.
+	sound := self soundPattern wrap: anIndex.
+
+
+	(OSCMessage for: { 
+			 '/dirt/play'.
+			 '_id '.
+			 '4'.
+			 'cps'.
+			 0.56.
+			 'cycle'.
+			 71.00.
+			 'delta'.
+			 0.89.
+			 'n'.
+			 index.
+			 'orbit'.
+			 5.0.
+			 's'.
+			 sound }) sendToAddressString: '127.0.0.1' port: 57120.
+	^ true
+]
+
+{ #category : #'sequencer - playing' }
+Sequencer >> playToDirt: aNumberOfSteps rate: aRateInSeconds [
+
+	"play the sequencer to the SuperDirt/SuperCollider synth engine"
+
+	| process step |
+	step := 0.
+
+	process := [ 
+	           aNumberOfSteps timesRepeat: [ 
+		           (self gates wrap: step) = 1
+			           ifTrue: [ 
+				           self playBasicDirtEventAt: self noteIndex.
+				           "increment note Index"
+				           self noteIndex: self noteIndex + 1 ]
+			           ifFalse: [ nil ].
+
+		           "step is incremented anyway"
+		           step := step + 1. (Delay forSeconds: aRateInSeconds) wait ].
+	           ] forkAt:
+		           Processor timingPriority.
+
+	^ process
+]
+
 { #category : #printing }
 Sequencer >> printOn: aStream [
 
