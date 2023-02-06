@@ -17,6 +17,14 @@ LiveCodingTests >> testArrayIntoScale [
 ]
 
 { #category : #tests }
+LiveCodingTests >> testArrayWrap [
+
+	| array |
+	array := (1 to: 10) asArray.
+	self assert: (array wrap: 11) equals: 1
+]
+
+{ #category : #tests }
 LiveCodingTests >> testFullScale [
 
 	| result |
