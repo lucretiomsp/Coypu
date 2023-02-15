@@ -414,27 +414,31 @@ Sequencer >> playBasicDirtEventAt: anIndex [
 
 	"convenience method to play single events inside a Sequencer / it is possible to select only sound and index"
 
-	| index sound |
+	| index sound message |
 	index := (self samplesIndex wrap: anIndex) asFloat.
 	sound := self soundPattern wrap: anIndex.
 
 
 	(OSCMessage for: { 
-			 '/dirt/play'.
-			 '_id '.
-			 '4'.
-			 'cps'.
-			 0.56.
-			 'cycle'.
-			 71.00.
-			 'delta'.
-			 0.89.
-			 'n'.
-			 index.
-			 'orbit'.
-			 5.0.
-			 's'.
-			 sound }) sendToAddressString: '127.0.0.1' port: 57120.
+			           '/dirt/play'.
+			           '_id '.
+			           '4'.
+			           'cps'.
+			           0.56.
+			           'cycle'.
+			           71.00.
+			           'delta'.
+			           0.89.
+			           'n'.
+			           index.
+			           'orbit'.
+			           5.0.
+			           's'.
+			           sound })
+
+
+		sendToAddressString: '127.0.0.1'
+		port: 57120.
 	^ true
 ]
 
@@ -444,10 +448,11 @@ Sequencer >> playToDirt: aNumberOfSteps rate: aRateInSeconds [
 	"play the sequencer to the SuperDirt/SuperCollider synth engine"
 
 	| process step |
-	step := 0.
+	step := 1.
 
 	process := [ 
 	           aNumberOfSteps timesRepeat: [ 
+		           (Delay forSeconds: aRateInSeconds) wait.
 		           (self gates wrap: step) = 1
 			           ifTrue: [ 
 				           self playBasicDirtEventAt: self noteIndex.
@@ -456,9 +461,7 @@ Sequencer >> playToDirt: aNumberOfSteps rate: aRateInSeconds [
 			           ifFalse: [ nil ].
 
 		           "step is incremented anyway"
-		           step := step + 1. (Delay forSeconds: aRateInSeconds) wait ].
-	           ] forkAt:
-		           Processor timingPriority.
+		           step := step + 1 ] ] forkAt: Processor timingPriority.
 
 	^ process
 ]
@@ -538,6 +541,29 @@ Sequencer >> soundPattern [
 Sequencer >> soundPattern: anArrayOfStrings [
 
 	soundPattern := anArrayOfStrings 
+]
+
+{ #category : #accessing }
+Sequencer >> sounds: aStringForDirt [
+
+	| soundsAndIndexs sounds indexes |
+	soundsAndIndexs := aStringForDirt findBetweenSubstrings: ' '.
+	sounds := OrderedCollection new.
+	(1 to: soundsAndIndexs size) do: [ :i | 
+		sounds add:
+			(((soundsAndIndexs at: i) findBetweenSubstrings: ':') at: 1) ].
+	indexes := OrderedCollection new.
+	(1 to: soundsAndIndexs size) do: [ :i | 
+		((soundsAndIndexs at: i) findBetweenSubstrings: ':') size > 1
+			ifTrue: [ 
+				indexes add:
+					(((soundsAndIndexs at: i) findBetweenSubstrings: ':') at: 2)
+						asInteger ]
+			ifFalse: [ indexes add: 0 ] ].
+
+	self
+		soundPattern: sounds asArray ;
+		samplesIndex: indexes asArray .
 ]
 
 { #category : #accessing }

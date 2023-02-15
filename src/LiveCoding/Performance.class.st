@@ -213,6 +213,32 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 		  step := step + 1 ] ] forkAt: Processor timingPriority
 ]
 
+{ #category : #playing }
+Performance >> playDirtAt: aRateInSeconds for: aNumberOfSteps [
+
+	"play the performance to SuperDIrt/SuperCollider audio engine"
+
+	| process step |
+	step := 1.
+	process := [ 
+	           aNumberOfSteps timesRepeat: [ 
+		(Delay forSeconds: aRateInSeconds) wait.
+		           self values do: [ :seq | 
+			           
+			           (seq gates wrap: step) = 1
+				           ifTrue: [ 
+					           seq playBasicDirtEventAt: seq noteIndex.
+					           "increment note Index"
+					           seq noteIndex: seq noteIndex + 1 ]
+				           ifFalse: [ nil ] ].
+
+		           "step is incremented anyway"
+		           step := step + 1 ] ] forkAt: Processor timingPriority.
+
+
+	^ process
+]
+
 { #category : #'as yet unclassified' }
 Performance >> playExtra: anExtraCollection of: baseGate at: index [
 
