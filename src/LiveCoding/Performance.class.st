@@ -56,11 +56,9 @@ Performance >> at: key put: anObject [
 	new entry for key and set is value to anObject. Answer anObject.
 	If a RsCanvas have been associated to the Performance add the visualisation of the sequencer to the RSCanvas"
 
-	"if the key contains the midi string, it assign the Sequencer isnide anObject to the midi channel indicated by the number after midi 
-	(example p at: #midi7 put: aSequencer)"
 
 	super at: key put: anObject.
-	(key asString first: 4) = 'midi' ifTrue: [ anObject midiChannel: (key asString allButFirst: 4) asNumber  ].
+
 	canvas isNotNil & anObject isSequencer ifTrue: [ 
 		(self rsGroupDictionary includesKey: key)
 			ifTrue: [ 
@@ -222,15 +220,16 @@ Performance >> playDirtAt: aRateInSeconds for: aNumberOfSteps [
 	step := 1.
 	process := [ 
 	           aNumberOfSteps timesRepeat: [ 
-		(Delay forSeconds: aRateInSeconds) wait.
-		           self values do: [ :seq | 
-			           
+		           (Delay forSeconds: aRateInSeconds) wait.
+		           "sequencers scan"
+		           [ 
+		           self valuesDo: [ :seq | 
 			           (seq gates wrap: step) = 1
 				           ifTrue: [ 
 					           seq playBasicDirtEventAt: seq noteIndex.
 					           "increment note Index"
 					           seq noteIndex: seq noteIndex + 1 ]
-				           ifFalse: [ nil ] ].
+				           ifFalse: [ nil ] ] ] forkAt: Processor timingPriority.
 
 		           "step is incremented anyway"
 		           step := step + 1 ] ] forkAt: Processor timingPriority.

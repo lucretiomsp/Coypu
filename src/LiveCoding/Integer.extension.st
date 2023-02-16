@@ -145,6 +145,12 @@ Integer >> melodyFrom: aScale [
 ]
 
 { #category : #'*LiveCoding' }
+Integer >> microsecondsAsSecondsAndNanos [
+
+self shouldNotImplement 
+]
+
+{ #category : #'*LiveCoding' }
 Integer >> minor [
 "returns an aray with the major third, fith seventh and ninth relative to the note number that is the receiver"
  ^ #(3 7 10 14) collect: [ :i | i + self ].
