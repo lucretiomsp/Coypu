@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #tests }
+SequencerTests >> testArrayAsIndexSequencer [
+
+	| notes seq |
+	notes := #( 1 0 3 0).
+
+	seq := notes asIndexSequencer.
+
+
+	self assert: seq gates equals: #( 1 0 1 0 ).
+	self assert: seq extra1 equals: #(#Index #(1 3)).
+]
+
+{ #category : #tests }
 SequencerTests >> testArrayAsSequencer [
 
 	| notes seq |

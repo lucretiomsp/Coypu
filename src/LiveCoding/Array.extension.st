@@ -85,6 +85,28 @@ Array >> asSeq [
 ]
 
 { #category : #'*LiveCoding' }
+Array >> asSequencer [
+
+	"convert an array of MIDI note numbers into a Sequencer where 0 corresponds to rests"
+
+	| seq allTrigs validTrigs validNotes allValues |
+	allTrigs := OrderedCollection new.
+	
+
+	allValues := OrderedCollection new.
+	self do: [ :i | 
+		i isArray
+			ifTrue: [allTrigs addAll: i . allValues addAll: i ]
+			ifFalse: [ allTrigs add: i. allValues add: i ] ].
+	validTrigs := allTrigs collect: [ :i | i isZero not asInteger ].
+
+	validNotes := allValues reject: [ :i | i = 0 ].
+	seq := validTrigs asArray asSeq notes: validNotes asArray.
+	seq cycleDurations: self asCycleDurations.
+	^ seq
+]
+
+{ #category : #'*LiveCoding' }
 Array >> innestedWithTrigs: anotherArray [
 " add trigs in self if anotherArray has trigs at indexes where self have not"
 (1 to: (self size)) do: [ :i  |  self at: i put: (1 min: ((self at: i) + (anotherArray at: i)))].

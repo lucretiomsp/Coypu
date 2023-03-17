@@ -29,11 +29,15 @@ ByteString >> asLocalGate: gateTimeInSeconds note: aNoteNumber [
 
 { #category : #'*LiveCoding' }
 ByteString >> asPacaAddress [
-"set the pacaAddress globally from the corresponding Paca(rana) serial number"
 
-Smalltalk at: #pacaAddress put: (NetNameResolver stringFromAddress: (NetNameResolver 	addressForName:'beslime-691.local')).
-^ (NetNameResolver stringFromAddress: (NetNameResolver 	addressForName:'beslime-691.local')).
-	
+
+	"set the pacaAddress globally from the corresponding Paca(rana) serial number"
+| serialNumber |
+serialNumber := 'beslime-51.local'.
+	Smalltalk at: #pacaAddress put: (NetNameResolver stringFromAddress:
+			 (NetNameResolver addressForName: serialNumber )).
+	^ NetNameResolver stringFromAddress:
+		  (NetNameResolver addressForName: serialNumber )
 ]
 
 { #category : #'*LiveCoding' }
