@@ -32,6 +32,16 @@ SequencerTests >> testArrayAsSequencer [
 ]
 
 { #category : #tests }
+SequencerTests >> testArrayAsWholes [
+
+| result |
+
+result := #(1 0 0 0 2 0 0 0 3 0 0 0 4 0 0 0).
+
+self assert: #(1 2 3 4) asWholes equals: result
+]
+
+{ #category : #tests }
 SequencerTests >> testBinaryOperatorForExtra1 [
 
 | seq |
