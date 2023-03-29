@@ -33,6 +33,12 @@ LiveCodingTests >> testFullScale [
 ]
 
 { #category : #tests }
+LiveCodingTests >> testIntegerAsArray [
+
+	self assert: 16 asArrayOfInts equals: (0 to: 15) asArray
+]
+
+{ #category : #tests }
 LiveCodingTests >> testStringForDirt [
 
 	| string gates seq soundsPattern samplesIndex |

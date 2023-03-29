@@ -101,18 +101,57 @@ ByteString >> toKymaAsGate: gateTimeInSeconds [
 
 { #category : #'*LiveCoding' }
 ByteString >> toKymaAsGate: gateTimeInSeconds note: aNoteNumber [
+
 	" send an OSC message that mimics the behaviour oa MIDI note on message.
 	gateTime is expressed in seconds"
-	| vcsGatelabel  vcsNoteLabel|
-"	pacaAddress := NetNameResolver stringFromAddress: (NetNameResolver 	addressForName:'beslime-691.local'). "
 
-	vcsGatelabel := '/vcs/', self , 'Gate', '/1'.
-	vcsNoteLabel := '/vcs/', self , 'Note', '/1'.
-	
-^ [(OSCMessage for: { vcsNoteLabel  . aNoteNumber asFloat }) sendToAddressString: pacaAddress  port: 8000.
-	(OSCMessage for: { vcsGatelabel  . 1.0  }) sendToAddressString: pacaAddress  port: 8000.
-	(Delay forSeconds: gateTimeInSeconds ) wait.
-	(OSCMessage for: { vcsGatelabel  . 0.0  }) sendToAddressString: pacaAddress  port: 8000.] fork
+	| vcsGatelabel vcsNoteLabel sendNoteNumber sendNoteOn sendNoteOff |
+	"	pacaAddress := NetNameResolver stringFromAddress: (NetNameResolver 	addressForName:'beslime-691.local'). "
+	vcsGatelabel := '/vcs/' , self , 'Gate' , '/1'.
+	vcsNoteLabel := '/vcs/' , self , 'Note' , '/1'.
+	sendNoteNumber := (OSCMessage for: { 
+			                   vcsNoteLabel.
+			                   aNoteNumber asFloat })
+		                  sendToAddressString: pacaAddress
+		                  port: 8000.
+	[ "first NoteOff for VoiceStealing"
+	(OSCMessage for: { 
+			 vcsGatelabel.
+			 0.0 }) sendToAddressString: pacaAddress port: 8000."then note On"
+	(OSCMessage for: { 
+			 vcsGatelabel.
+			 1.0 }) sendToAddressString: pacaAddress port: 8000.
+	(Delay forSeconds: gateTimeInSeconds) wait.
+	"then note Off"
+	(OSCMessage for: { 
+			 vcsGatelabel.
+			 0.0 }) sendToAddressString: pacaAddress port: 8000 ] fork
+]
+
+{ #category : #'*LiveCoding' }
+ByteString >> toKymaAsGateOld: gateTimeInSeconds note: aNoteNumber [
+
+	" send an OSC message that mimics the behaviour oa MIDI note on message.
+	gateTime is expressed in seconds"
+
+	| vcsGatelabel vcsNoteLabel |
+	"	pacaAddress := NetNameResolver stringFromAddress: (NetNameResolver 	addressForName:'beslime-691.local'). "
+	vcsGatelabel := '/vcs/' , self , 'Gate' , '/1'.
+	vcsNoteLabel := '/vcs/' , self , 'Note' , '/1'.
+
+	^ [ 
+	  (OSCMessage for: { 
+			   vcsNoteLabel.
+			   aNoteNumber asFloat })
+		  sendToAddressString: pacaAddress
+		  port: 8000.
+	  (OSCMessage for: { 
+			   vcsGatelabel.
+			   1.0 }) sendToAddressString: pacaAddress port: 8000.
+	  (Delay forSeconds: gateTimeInSeconds) wait.
+	  (OSCMessage for: { 
+			   vcsGatelabel.
+			   0.0 }) sendToAddressString: pacaAddress port: 8000 ] fork
 ]
 
 { #category : #'*LiveCoding' }
