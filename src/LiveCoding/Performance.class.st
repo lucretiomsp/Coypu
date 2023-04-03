@@ -15,7 +15,8 @@ Class {
 		'freq'
 	],
 	#classInstVars : [
-		'UniqueInstance'
+		'UniqueInstance',
+		'uniqueInstance'
 	],
 	#category : #'LiveCoding-Performance'
 }
@@ -29,13 +30,15 @@ Performance class >> basic [
 ]
 
 { #category : #'instance creation' }
-Performance class >> current [
+Performance class >> new [ 
 
-	^ UniqueInstance ifNil: [ 
-		  UniqueInstance := self
-			                    basicNew;
-			                    initialize;
-			                    yourself ]
+^ Error new signal: 'Performance is a singleton -- Use unique instance instead'
+]
+
+{ #category : #'instance creation' }
+Performance class >> uniqueInstance [
+
+	^ uniqueInstance ifNil: [ uniqueInstance := super new ]
 ]
 
 { #category : #'as yet unclassified' }
