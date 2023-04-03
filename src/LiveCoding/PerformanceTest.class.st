@@ -125,6 +125,17 @@ PerformanceTest >> testPerformanceSolo [
 ]
 
 { #category : #tests }
+PerformanceTest >> testSequencerPlaysImmediately [
+
+	| perf |
+	perf := Performance new.
+	16 downbeats to: #kick.
+	
+	self assert: (perf at: #kick) equals: 16 downbeats
+	
+]
+
+{ #category : #tests }
 PerformanceTest >> waitASecond [
 
 	self flag: #TODO. "Change time management"

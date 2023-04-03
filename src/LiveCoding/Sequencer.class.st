@@ -602,6 +602,14 @@ Sequencer >> times: anInteger [
 		  noteIndex: 0
 ]
 
+{ #category : #'sequencer creation' }
+Sequencer >> to: aSymbol [
+
+	"put the sequencer into the active Performance at Symbol as key"
+
+	Performance uniqueInstance at: aSymbol put: self
+]
+
 { #category : #addToPerformance }
 Sequencer >> to: aPerformance at: aKey [
 

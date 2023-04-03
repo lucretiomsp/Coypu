@@ -1,6 +1,6 @@
 "
 A performance is a Dictionary subclass used for live coding package.
----- Changed to Ordered Collection !!!!! Refactoring 022023
+
 
 "
 Class {
@@ -14,6 +14,9 @@ Class {
 		'rsGroupDictionary',
 		'freq'
 	],
+	#classInstVars : [
+		'UniqueInstance'
+	],
 	#category : #'LiveCoding-Performance'
 }
 
@@ -23,6 +26,16 @@ Performance class >> basic [
 	^ self new
 		  visualization: NoneVisualization new;
 		  yourself
+]
+
+{ #category : #'instance creation' }
+Performance class >> current [
+
+	^ UniqueInstance ifNil: [ 
+		  UniqueInstance := self
+			                    basicNew;
+			                    initialize;
+			                    yourself ]
 ]
 
 { #category : #'as yet unclassified' }
@@ -93,11 +106,10 @@ Performance >> freq: aDurationInSeconds [
 	freq := aDurationInSeconds asFloat
 ]
 
-{ #category : #initialization }
-Performance >> initialize [
+{ #category : #testing }
+Performance >> isPerformance [
 
-	super initialize.
-	self freq: 120 bpm.
+^ true
 ]
 
 { #category : #accessing }
