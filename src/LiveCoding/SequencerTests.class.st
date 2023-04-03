@@ -86,3 +86,11 @@ SequencerTests >> testSequencerFromScale [
 
 self shouldBeImplemented 
 ]
+
+{ #category : #tests }
+SequencerTests >> testSequencerSetIndexes [
+
+| seq |
+seq := (4 downbeats index: #(1 2 3 4)).
+self assert: seq index equals: #(1 2 3 4)
+]

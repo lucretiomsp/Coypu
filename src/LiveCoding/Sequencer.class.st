@@ -243,6 +243,17 @@ result := false.
 		^ result
 ]
 
+{ #category : #'accessing - sequencer' }
+Sequencer >> index [
+
+	^ (self extra1 at: 2)
+]
+
+{ #category : #'LiveCoding - sequencer' }
+Sequencer >> index: anArrayOfIndexes [ 
+	self extra1: #Index values: anArrayOfIndexes 
+]
+
 { #category : #testing }
 Sequencer >> isSequencer [
 
