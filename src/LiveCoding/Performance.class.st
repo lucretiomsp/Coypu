@@ -150,12 +150,12 @@ Performance >> muteAll [
 	" remove all keys from the Performance"
 
 	| anArrayOfKeys |
-	anArrayOfKeys := self keys.
-	[ self keysDo: [ :i | self removeKey: i ifAbsent: [  ] ] ] fork.
+	self keysDo: [ :i | self removeKey: i ifAbsent: [ nil ] .].
 
-	[canvas isNotNil ifTrue: [ 
+	[ 
+	canvas isNotNil ifTrue: [ 
 		anArrayOfKeys do: [ :i | 
-			canvas removeShape: (rsGroupDictionary at: i) asShape ] ]] fork
+			canvas removeShape: (rsGroupDictionary at: i) asShape ] ] ] fork
 ]
 
 { #category : #accessing }

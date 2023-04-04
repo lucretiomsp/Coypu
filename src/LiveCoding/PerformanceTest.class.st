@@ -23,11 +23,11 @@ PerformanceTest >> playPerformance [
 { #category : #tests }
 PerformanceTest >> setUp [
 
-	performance := Performance basic.
+	performance := Performance uniqueInstance .
 	performer := PerformerMock new.
-	performance performer: performer.
-	
-	
+	performance performer: performer
+
+
 	"self playPerformance"
 ]
 
@@ -54,6 +54,27 @@ PerformanceTest >> testAssignMIDIChannelToSequencerAutomatically [
 	perf at: #midi7 put: seq.
 
 	self assert: seq midiChannel equals: 7
+]
+
+{ #category : #tests }
+PerformanceTest >> testMuteAll [
+| p |
+p := Performance uniqueInstance .
+p at: #kick put: 16 downbeats .
+p at: #snare put: 16 upbeats.
+p at: #ch put: 16 quavers.
+p at: #oh put: 16 semiquavers.
+
+p muteAll.
+self assert: p isEmpty equals: true
+]
+
+{ #category : #tests }
+PerformanceTest >> testMuteKey [
+
+	performance at: #kick put: 16 downbeats.
+	#kick mute.
+	self assert: performance isEmpty equals: true
 ]
 
 { #category : #tests }
