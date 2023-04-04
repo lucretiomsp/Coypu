@@ -19,11 +19,19 @@ SequencerTests >> setUp [
 { #category : #tests }
 SequencerTests >> testEuclideanRhythmFromArray [
 
-	| tresillo |
+	| tresillo seq |
 	tresillo := #( 3 8) euclidean.
-	sequencer gates: #( 1 0 0 1 0 0 1 0 ); notes: #(60 60 60).
+	seq := #( 1 0 0 1 0 0 1 0) asRhythm asSeq.
+	self assert: tresillo equals: seq
+]
 
-	self assert: tresillo equals: sequencer
+{ #category : #tests }
+SequencerTests >> testFlipSequencer [
+
+	| tresillo seq |
+	tresillo := #( 3 8 ) euclidean flip.
+	seq := #( 0 1 1 0 1 1 0 1 ) asRhythm asSeq .
+	self assert: tresillo equals: seq
 ]
 
 { #category : #tests }

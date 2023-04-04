@@ -212,6 +212,17 @@ Sequencer >> extra2String: aString [
 extra2String := aString.
 ]
 
+{ #category : #'Sequencer - transformation' }
+Sequencer >> flip [
+
+	" flip the gates in a Sequener: rests become gates, gates become rests"
+
+	| result |
+	result := self gates collect: [ :i | (i ~= 1) asInteger ] .
+
+	^ result asRhythm asSeq.
+]
+
 { #category : #accessing }
 Sequencer >> gates [
 
