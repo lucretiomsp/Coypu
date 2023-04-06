@@ -78,6 +78,16 @@ PerformanceTest >> testMuteKey [
 ]
 
 { #category : #tests }
+PerformanceTest >> testNotesToKey [
+
+	| p |
+	p := Performance uniqueInstance.
+	16 downbeats to: #synth.
+	#synth notes: #( 48 48 48 48 ).
+	self assert: ((p at: #synth) notes) equals: #( 48 48 48 48 )
+]
+
+{ #category : #tests }
 PerformanceTest >> testPerformanceKeysSwap [
 
 	| seq1 seq2 p |
