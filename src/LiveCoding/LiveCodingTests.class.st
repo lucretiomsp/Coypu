@@ -17,6 +17,16 @@ LiveCodingTests >> testArrayIntoScale [
 ]
 
 { #category : #tests }
+LiveCodingTests >> testArrayWithSawtoothWave [
+
+| array result |
+array := ( 0 to: 1 by: 1/64) asArray.
+result := 4 bars saw.
+self assert: array equals: result.
+
+]
+
+{ #category : #tests }
 LiveCodingTests >> testArrayWrap [
 
 	| array |
