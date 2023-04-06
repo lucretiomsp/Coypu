@@ -63,3 +63,15 @@ self assert: seq gates equals: gates.
 	self assert: seq soundPattern equals: soundsPattern.
 	self assert: seq samplesIndex equals: samplesIndex
 ]
+
+{ #category : #tests }
+LiveCodingTests >> testTriangleTable [
+
+	| array up down result |
+	up := 0 to: 1 by: 1 / 31.
+	down := up reverse.
+	array := up , down.
+	result := 4 bars triangle.
+
+	self assert: array equals: result
+]
