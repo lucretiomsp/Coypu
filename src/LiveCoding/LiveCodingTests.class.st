@@ -17,16 +17,6 @@ LiveCodingTests >> testArrayIntoScale [
 ]
 
 { #category : #tests }
-LiveCodingTests >> testArrayWithSawtoothWave [
-
-| array result |
-array := ( 0 to: 1 by: 1/64) asArray.
-result := 4 bars saw.
-self assert: array equals: result.
-
-]
-
-{ #category : #tests }
 LiveCodingTests >> testArrayWrap [
 
 	| array |
@@ -46,6 +36,17 @@ LiveCodingTests >> testFullScale [
 LiveCodingTests >> testIntegerAsArray [
 
 	self assert: 16 asArrayOfInts equals: (0 to: 15) asArray
+]
+
+{ #category : #tests }
+LiveCodingTests >> testSawtoothTable [
+
+| array result increment|.
+
+array := (0 to: 1 by: 1/63).
+result := 4 bars saw.
+
+self assert: array equals: result.
 ]
 
 { #category : #tests }
