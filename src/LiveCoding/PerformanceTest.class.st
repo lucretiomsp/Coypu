@@ -57,6 +57,16 @@ PerformanceTest >> testAssignMIDIChannelToSequencerAutomatically [
 ]
 
 { #category : #tests }
+PerformanceTest >> testExtra1ToKey [
+
+	| p |
+	p := Performance uniqueInstance.
+	16 downbeats to: #synth.
+	#synth extra1: #(#Duty #(0.1 0.3)).
+	self assert: (p at: #synth) extra1 equals: #(#Duty #(0.1 0.3))
+]
+
+{ #category : #tests }
 PerformanceTest >> testMuteAll [
 | p |
 p := Performance uniqueInstance .
