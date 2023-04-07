@@ -85,7 +85,30 @@ Array >> asSeq [
 ]
 
 { #category : #'*LiveCoding' }
-Array >> asSequencer [
+Array >> innestedWithTrigs: anotherArray [
+" add trigs in self if anotherArray has trigs at indexes where self have not"
+(1 to: (self size)) do: [ :i  |  self at: i put: (1 min: ((self at: i) + (anotherArray at: i)))].
+
+^ self
+]
+
+{ #category : #'*LiveCoding' }
+Array >> into: anotherArray [
+
+	"return a new array with anotherArray at the desired indexes; if the index is out of bound, the last element of another array is collected.
+	if the index is 0 a 0 is collected indicating a rest"
+
+	^ self collect: [ :i | i~= 0 ifTrue: [   anotherArray at: (i min: anotherArray size) ] ifFalse: [0]]
+]
+
+{ #category : #'*LiveCoding' }
+Array >> isSequencer [
+
+	^ false
+]
+
+{ #category : #'*LiveCoding' }
+Array >> notes [
 
 	"convert an array of MIDI note numbers into a Sequencer where 0 corresponds to rests"
 
@@ -104,27 +127,6 @@ Array >> asSequencer [
 	seq := validTrigs asArray asSeq notes: validNotes asArray.
 	seq cycleDurations: self asCycleDurations.
 	^ seq
-]
-
-{ #category : #'*LiveCoding' }
-Array >> innestedWithTrigs: anotherArray [
-" add trigs in self if anotherArray has trigs at indexes where self have not"
-(1 to: (self size)) do: [ :i  |  self at: i put: (1 min: ((self at: i) + (anotherArray at: i)))].
-
-^ self
-]
-
-{ #category : #'*LiveCoding' }
-Array >> into: anotherArray [
-"return a new array with anotherArray at the desired indexes; if the index is out of bound, the last element of another array is collected"
-^ self collect: [ :i | anotherArray  at: (i min: anotherArray size)]
-	
-]
-
-{ #category : #'*LiveCoding' }
-Array >> isSequencer [
-
-	^ false
 ]
 
 { #category : #'*LiveCoding' }

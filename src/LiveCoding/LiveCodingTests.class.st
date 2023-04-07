@@ -8,12 +8,12 @@ Class {
 LiveCodingTests >> testArrayIntoScale [
 
 	| indexes newNotes |
-	indexes := #( 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14  ).
+	indexes := #( -1 0 1 2 3 4 5 6 7 8 9 10  20 ).
 
-	newNotes := indexes inScale: (Scale minor: 60).
+	newNotes := indexes inScale: (Scale chromatic: 60).
 	self
 		assert: newNotes
-		equals: #( 60 62 63 65 67 68 70 72 74 75 77 79 80 82 84 )
+		equals: #( 59 0 60 61 62 63 64 65 66 67 68 69 79)
 ]
 
 { #category : #tests }
