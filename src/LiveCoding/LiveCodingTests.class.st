@@ -4,6 +4,13 @@ Class {
 	#category : #'LiveCoding-Tests'
 }
 
+{ #category : #'as yet unclassified' }
+LiveCodingTests >> arrayOfAScale [
+
+| scale |
+scale := Scale minor "#(0 2 3 5 7 8 10 12)".
+]
+
 { #category : #tests }
 LiveCodingTests >> testArrayIntoScale [
 

@@ -67,6 +67,16 @@ PerformanceTest >> testExtra1ToKey [
 ]
 
 { #category : #tests }
+PerformanceTest >> testExtra2ToKey [
+
+	| p |
+	p := Performance uniqueInstance.
+	16 downbeats to: #synth.
+	#synth extra2: #( #Duty #( 0.1 0.3 ) ).
+	self assert: (p at: #synth) extra1 equals: #( #Duty #( 0.1 0.3 ) )
+]
+
+{ #category : #tests }
 PerformanceTest >> testMuteAll [
 | p |
 p := Performance uniqueInstance .

@@ -197,10 +197,10 @@ Sequencer >> extra2: anArrayWithStringAndArray [
 { #category : #accessing }
 Sequencer >> extra2Size [
 
-		"return the size of the array of values for extra2"
+	"return the size of the array of values for extra2"
 
 	| values |
-	values := extra1 at: 2.
+	values := extra2 at: 2.
 	^ extra1 notNil
 		  ifTrue: [ ^ values size ]
 		  ifFalse: [ ^ 1 ]
