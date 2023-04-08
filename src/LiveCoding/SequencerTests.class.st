@@ -17,6 +17,16 @@ SequencerTests >> setUp [
 ]
 
 { #category : #tests }
+SequencerTests >> testArpeggiateArray [
+
+| initial  result|
+initial := #(60 61 62 63).
+result := #(60 51 62 63 70 71 72 73 80 81 82 83).
+
+self assert: (initial arp: #(0 1 2 3)) equals: result
+]
+
+{ #category : #tests }
 SequencerTests >> testEuclideanRhythmFromArray [
 
 	| tresillo seq |

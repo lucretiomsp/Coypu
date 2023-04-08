@@ -41,6 +41,17 @@ serialNumber := 'beslime-51.local'.
 ]
 
 { #category : #'*LiveCoding' }
+ByteString >> asVerticalFaderLocal: aRange [
+
+	| fader |
+		" the fader label is also the OSC address"
+
+	fader := VerticalFaderForOSC newWithAddress: self range: aRange .
+	fader openInWindow  
+		 
+]
+
+{ #category : #'*LiveCoding' }
 ByteString >> pattern [ 
 " convert a string with an Hexadecimal number to the Kyma array correspondong to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex)"
 |   strings flat |

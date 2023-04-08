@@ -27,23 +27,20 @@ destination  := aDestination
 { #category : #'event handling' }
 VerticalFaderForOSC >> mouseMove: anEvent [
 
-| newLocation receiver keyword argument|
+	| newLocation mappedY cursorY faderBottom range |
+	range := maxValue - minValue.
 
-receiver := destination.
-keyword := parameter asSymbol.
-
-
-faderCanMove ifTrue:
-[newLocation := Point x: (self center x) y: anEvent position y.
-"change the argument"
-argument := anEvent position y.
-
-"move the cursor"
-cursor center: newLocation .
-receiver perform: keyword withArguments: (Array with: argument )
-] ifFalse: [ nil] .
-
-"for debug"
+	faderCanMove
+		ifTrue: [ 
+			faderBottom := self extent y + self position y.
+			cursorY := anEvent position y.
+			newLocation := Point x: self center x y: cursorY.
+			cursor center: newLocation.
+			"map cursorY to value from 0 to 1"
+			mappedY := (((cursorY min: faderBottom) - faderBottom) abs min:
+				            self extent y) / self extent y * range + minValue.
+			mappedY toLocal: faderAddress ]
+		ifFalse: [ "for debug" nil ]
 ]
 
 { #category : #accessing }
