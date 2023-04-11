@@ -77,6 +77,16 @@ PerformanceTest >> testExtra2ToKey [
 ]
 
 { #category : #tests }
+PerformanceTest >> testIndexesToKey [
+
+	| p |
+	p := Performance uniqueInstance.
+	16 downbeats to: #synth.
+	#synth indexes: #( 1 2 3 4 ).
+	self assert: (p at: #synth) extra1 equals: #(#Index #(1 2 3 4)).
+]
+
+{ #category : #tests }
 PerformanceTest >> testMuteAll [
 | p |
 p := Performance uniqueInstance .
