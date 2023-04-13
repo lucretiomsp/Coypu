@@ -138,6 +138,17 @@ PerformanceTest >> testNumberToKey [
 ]
 
 { #category : #tests }
+PerformanceTest >> testPerformanceBackup [
+
+| p |
+p := Performance uniqueInstance .
+16 downbeats to: #kick.
+16 upbeats to: #ch.
+
+self assert: p backup equals: p asDictionary 
+]
+
+{ #category : #tests }
 PerformanceTest >> testPerformanceKeysSwap [
 
 	| seq1 seq2 p |
@@ -206,6 +217,19 @@ PerformanceTest >> testPerformanceSolo [
 ]
 
 { #category : #tests }
+PerformanceTest >> testRestorePerformance [
+
+| p | 
+p := Performance uniqueInstance .
+16 downbeats to: #kick.
+16 upbeats to: #ch.
+p muteAll.
+p restore.
+self assert: (p at: #kick) equals: 16 downbeats.
+ self assert: (p at: #ch) equals: 16 upbeats.
+]
+
+{ #category : #tests }
 PerformanceTest >> testRhythmAndIndexesToKey [
 
 	| p |
@@ -255,6 +279,19 @@ PerformanceTest >> testSequencerPlaysImmediately [
 	
 	self assert: (perf at: #kick) equals: 16 downbeats
 	
+]
+
+{ #category : #tests }
+PerformanceTest >> testUnsoloPerformance [
+
+	| p |
+	p := Performance uniqueInstance.
+	16 downbeats to: #kick.
+	16 upbeats to: #ch.
+	p solo: #ch.
+	p unsolo: #ch.
+	self assert: (p at: #kick) equals: 16 downbeats.
+	self assert: (p at: #ch) equals: 16 upbeats
 ]
 
 { #category : #tests }

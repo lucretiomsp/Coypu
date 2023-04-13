@@ -12,7 +12,8 @@ Class {
 		'performer',
 		'canvas',
 		'rsGroupDictionary',
-		'freq'
+		'freq',
+		'backup'
 	],
 	#classInstVars : [
 		'UniqueInstance',
@@ -86,6 +87,13 @@ Performance >> at: key put: anObject [
 				rsGroupDictionary at: key put: anObject visualGroup ] ]
 ]
 
+{ #category : #'LiveCoding - performance' }
+Performance >> backup [
+
+	
+	^ backup
+]
+
 { #category : #accessing }
 Performance >> canvas [ 
 ^ canvas 
@@ -124,7 +132,7 @@ maxLength := valuesSizes inject: 0 into: [ :a :c | (a > c) ifTrue: [ a ] ifFalse
 ^ maxLength 
 ]
 
-{ #category : #playing }
+{ #category : #'muting and soloing' }
 Performance >> mute: aKeyOrAnArrayOfKeys [
 
 	"remove all the keys in the arrayOfKeys from the Performance or remove just a single key"
@@ -144,13 +152,14 @@ Performance >> mute: aKeyOrAnArrayOfKeys [
 					(rsGroupDictionary at: aKeyOrAnArrayOfKeys) asShape ]. canvas signalUpdate  ]
 ]
 
-{ #category : #playing }
+{ #category : #'muting and soloing' }
 Performance >> muteAll [
 
 	" remove all keys from the Performance"
 
 	| anArrayOfKeys |
-	self keysDo: [ :i | self removeKey: i ifAbsent: [ nil ] .].
+	backup := self asDictionary .
+	self keysDo: [ :i | self removeKey: i ifAbsent: [ nil ] ].
 
 	[ 
 	canvas isNotNil ifTrue: [ 
@@ -692,6 +701,14 @@ Performance >> resetAllSequencers [
 			ifFalse: [ nil ] ]
 ]
 
+{ #category : #'LiveCoding - performance' }
+Performance >> restore [
+	"restore what the performance was before receiveing messages muteAll or solo"
+	| p |
+	p := Performance uniqueInstance .
+	self backup keysAndValuesDo: [ :k : v | p at: k put: v ].
+]
+
 { #category : #accessing }
 Performance >> rsGroupDictionary [
 
@@ -710,15 +727,14 @@ Performance >> solo: aKey [
 	" remove all keys from the Performance except aKey"
 
 	| anArrayOfKeys |
+	backup := self asDictionary. "do the backup"
 	anArrayOfKeys := self keys.
-	self keysAndValuesRemove: [ :keys :values | keys ~= aKey ]
-	
-	"
+	self keysAndValuesRemove: [ :keys :values | "
 	[canvas isNotNil ifTrue: [ 
 		anArrayOfKeys do: [ :i | (i ~= aKey) ifTrue: [  
 			canvas removeShape: (rsGroupDictionary at: i) asShape ] ]] ] fork
 " 
-		 
+		keys ~= aKey ]
 ]
 
 { #category : #modifying }
@@ -728,6 +744,13 @@ Performance >> swap: firstKey with: secondKey [
 	tempValue := self at: firstKey.
 	self at: firstKey put: (self at: secondKey).
 	self at: secondKey put: tempValue
+]
+
+{ #category : #'LiveCoding - performance' }
+Performance >> unsolo: aKeyInPerformance [
+	"convenience method to unsolo a key in the performance"
+	
+self restore
 ]
 
 { #category : #accessing }
