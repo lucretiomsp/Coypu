@@ -118,6 +118,16 @@ PerformanceTest >> testNotesToKey [
 ]
 
 { #category : #tests }
+PerformanceTest >> testNumberToKey [
+
+	| p |
+	p := Performance uniqueInstance.
+	16 downbeats to: #synth.
+	#synth number: #( 1 2 3 4 ).
+	self assert: (p at: #synth) extra2 equals: #( #Number #( 1 2 3 4 ) )
+]
+
+{ #category : #tests }
 PerformanceTest >> testPerformanceKeysSwap [
 
 	| seq1 seq2 p |
