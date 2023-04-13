@@ -21,6 +21,20 @@ Class {
 	#category : #'LiveCoding-Sequencers'
 }
 
+{ #category : #accessing }
+Rhythm class >> list [
+
+	"return all the possible Rhythms obtainable sending messages to integers"
+
+	| rhythmList |
+	rhythmList := #( 'adowa' 'aksak' 'banda' 'bomba' 'bossa' 'breves'
+	                 'semibreves' 'claveSon' 'downbeats' 'gahu' 'ones'
+	                 'quavers' 'semiquavers' 'rumba' 'shiko' 'sikyi'
+	                 'soukous' 'tresillo' 'trueAksak' 'tumbao' 'upbeats' ).
+	
+Transcript clear. rhythmList do: [ :i | i traceCr  ]. Transcript open.
+]
+
 { #category : #responses }
 Rhythm class >> random: aNumber [
 "generates an Array of random values in the range (0,1) of size: aNumber, whith only 2 decimal places"

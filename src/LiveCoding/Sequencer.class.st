@@ -265,6 +265,15 @@ Sequencer >> index: anArrayOfIndexes [
 	self extra1: #Index values: anArrayOfIndexes 
 ]
 
+{ #category : #'LiveCoding - performance' }
+Sequencer >> index: anArrayOfIndexes to: aKeyInPerformance [
+	"convenience method to avoid extra parenthesis to put a sequencer of gates with sample indexes into a performance"
+	| p |
+	p := Performance uniqueInstance .
+	self to: aKeyInPerformance .
+	aKeyInPerformance indexes: anArrayOfIndexes 
+]
+
 { #category : #testing }
 Sequencer >> isSequencer [
 
@@ -345,6 +354,25 @@ Sequencer >> notes: anArrayOfNotesOrANote [
 Sequencer >> notes: anArrayOfNotes durs: anArrayOfDurations [
 " change notes in the sequencer"
 ^ (Sequencer with: (self at: 1) with: anArrayOfNotes with: anArrayOfDurations  with: 0).
+]
+
+{ #category : #'LiveCoding - performance' }
+Sequencer >> notes: anArrayOfNotes index: anArrayOfIndexes to: aKeyInPerformance [
+	"convenience method to avoid extra parenthesis while declaring a sequencer of gates with its notes and its sample indexes"
+	| p |
+	p := Performance uniqueInstance .
+	self to: aKeyInPerformance .
+	aKeyInPerformance notes: anArrayOfNotes .
+	aKeyInPerformance indexes: anArrayOfIndexes 
+]
+
+{ #category : #'LiveCoding - sequencer' }
+Sequencer >> notes: anArrayOfNotes to: aKeyInThePerformance [
+	" convenience method to fill keys in performance without using too many parenthesis"
+	| p |
+	p := Performance uniqueInstance .
+	self to: aKeyInThePerformance .
+	aKeyInThePerformance notes: anArrayOfNotes  
 ]
 
 { #category : #accessing }

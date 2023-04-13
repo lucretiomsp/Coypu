@@ -206,6 +206,47 @@ PerformanceTest >> testPerformanceSolo [
 ]
 
 { #category : #tests }
+PerformanceTest >> testRhythmAndIndexesToKey [
+
+	| p |
+	p := Performance uniqueInstance.
+	16 downbeats index: #( 1 2 3 4 ) to: #synth.
+
+	self
+		assert: (p at: #synth) gates
+		equals: #( 1 0 0 0 1 0 0 0 1 0 0 0 1 0 0 0 ) asRhythm.
+	self assert: (p at: #synth) extra1 equals: #( #Index #( 1 2 3 4 ) )
+]
+
+{ #category : #tests }
+PerformanceTest >> testRhythmAndNotesAbdIndexesToKey [
+
+	| p |
+	p := Performance uniqueInstance.
+	16 downbeats notes: #(48 48 48 48) index: #( 1 2 3 4 ) to: #synth.
+
+	self
+		assert: (p at: #synth) gates
+		equals: #( 1 0 0 0 1 0 0 0 1 0 0 0 1 0 0 0 ) asRhythm.
+	self assert: (p at: #synth) extra1 equals: #( #Index #( 1 2 3 4 ) ).
+	self assert: (p at: #synth) notes equals: #(48 48 48 48).
+
+]
+
+{ #category : #tests }
+PerformanceTest >> testRhythmAndNotesToKey [
+
+	| p |
+	p := Performance uniqueInstance.
+	16 downbeats notes: #( 48 48 48 48 ) to: #synth.
+	#synth notes: #( 48 48 48 48 ).
+	self
+		assert: (p at: #synth) gates
+		equals: #( 1 0 0 0 1 0 0 0 1 0 0 0 1 0 0 0 ) asRhythm .
+	self assert: (p at: #synth) notes equals: #( 48 48 48 48 )
+]
+
+{ #category : #tests }
 PerformanceTest >> testSequencerPlaysImmediately [
 
 	| perf |
