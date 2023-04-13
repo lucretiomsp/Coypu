@@ -57,6 +57,16 @@ PerformanceTest >> testAssignMIDIChannelToSequencerAutomatically [
 ]
 
 { #category : #tests }
+PerformanceTest >> testBwToKey [
+
+	| p |
+	p := Performance uniqueInstance.
+	16 downbeats to: #synth.
+	#synth bw: #( 1 2 3 4 ).
+	self assert: (p at: #synth) extra1 equals: #( #Bw #( 1 2 3 4 ) )
+]
+
+{ #category : #tests }
 PerformanceTest >> testExtra1ToKey [
 
 	| p |
@@ -204,6 +214,16 @@ PerformanceTest >> testSequencerPlaysImmediately [
 	
 	self assert: (perf at: #kick) equals: 16 downbeats
 	
+]
+
+{ #category : #tests }
+PerformanceTest >> testXToKey [
+
+	| p |
+	p := Performance uniqueInstance.
+	16 downbeats to: #synth.
+	#synth x: #( 1 2 3 4 ).
+	self assert: (p at: #synth) extra1 equals: #( #x #( 1 2 3 4 ) )
 ]
 
 { #category : #tests }
