@@ -282,6 +282,15 @@ PerformanceTest >> testSequencerPlaysImmediately [
 ]
 
 { #category : #tests }
+PerformanceTest >> testStringOfHexToPerformance [
+
+| p |
+p := Performance uniqueInstance .
+'8888' to: #kick.
+self assert: (p at: #kick) equals: '8888' pattern
+]
+
+{ #category : #tests }
 PerformanceTest >> testUnsoloPerformance [
 
 	| p |
