@@ -83,7 +83,49 @@ PerformanceTest >> testExtra2ToKey [
 	p := Performance uniqueInstance.
 	16 downbeats to: #synth.
 	#synth extra2: #( #Duty #( 0.1 0.3 ) ).
-	self assert: (p at: #synth) extra1 equals: #( #Duty #( 0.1 0.3 ) )
+	self assert: (p at: #synth) extra2 equals: #( #Duty #( 0.1 0.3 ) )
+]
+
+{ #category : #tests }
+PerformanceTest >> testHexPatternAndIndexesToKey [
+
+	| p |
+	p := Performance uniqueInstance.
+	'8888' index: #( 1 2 3 4 ) to: #synth.
+
+	self
+		assert: (p at: #synth) gates
+		equals: #( 1 0 0 0 1 0 0 0 1 0 0 0 1 0 0 0 ) asRhythm.
+	self assert: (p at: #synth) extra1 equals: #( #Index #( 1 2 3 4 ) ).
+
+]
+
+{ #category : #tests }
+PerformanceTest >> testHexPatternAndNotesAbdIndexesToKey [
+
+	| p |
+	p := Performance uniqueInstance.
+	'8888' notes: #( 48 48 48 48 ) index: #( 1 2 3 4 ) to: #synth.
+
+	self
+		assert: (p at: #synth) gates
+		equals: #(1 0 0 0 1 0 0 0 1 0 0 0 1 0 0 0) asRhythm .
+	self assert: (p at: #synth) extra1 equals: #( #Index #( 1 2 3 4 ) ).
+	self assert: (p at: #synth) notes equals: #( 48 48 48 48 )
+]
+
+{ #category : #tests }
+PerformanceTest >> testHexPatternAndNotesToKey [
+
+	| p |
+	p := Performance uniqueInstance.
+	'8888' notes: #( 48 48 48 48 )  to: #synth.
+
+	self
+		assert: (p at: #synth) gates
+		equals: #( 1 0 0 0 1 0 0 0 1 0 0 0 1 0 0 0 ) asRhythm.
+
+	self assert: (p at: #synth) notes equals: #( 48 48 48 48 )
 ]
 
 { #category : #tests }

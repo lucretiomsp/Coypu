@@ -722,19 +722,24 @@ Performance >> rsGroupDictionary: anRSGroupDictionary [
 ]
 
 { #category : #'muting and soloing' }
-Performance >> solo: aKey [
+Performance >> solo: aKeyOrAnArrayOfKeys [
 
-	" remove all keys from the Performance except aKey"
+	" remove all keys from the Performance except aKey or anArrayOfKeys"
 
 	| anArrayOfKeys |
 	backup := self asDictionary. "do the backup"
 	anArrayOfKeys := self keys.
-	self keysAndValuesRemove: [ :keys :values | "
+	aKeyOrAnArrayOfKeys isArray
+		ifTrue: [ 
+			self keysAndValuesRemove: [ :keys :values | 
+				(aKeyOrAnArrayOfKeys  includes: keys) not ] ]
+		ifFalse: [ 
+			self keysAndValuesRemove: [ :keys :values | "
 	[canvas isNotNil ifTrue: [ 
 		anArrayOfKeys do: [ :i | (i ~= aKey) ifTrue: [  
 			canvas removeShape: (rsGroupDictionary at: i) asShape ] ]] ] fork
 " 
-		keys ~= aKey ]
+				keys ~= aKeyOrAnArrayOfKeys ] ]
 ]
 
 { #category : #modifying }

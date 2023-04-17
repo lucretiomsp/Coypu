@@ -243,6 +243,11 @@ Sequencer >> gatesSize [
 	^ gates size
 ]
 
+{ #category : #'LiveCoding - sequencer' }
+Sequencer >> gatesSize: anInteger [ 
+	self shouldBeImplemented.
+]
+
 { #category : #accessing }
 Sequencer >> hasChords [
 

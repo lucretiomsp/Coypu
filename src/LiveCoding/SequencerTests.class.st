@@ -27,6 +27,15 @@ self assert: (initial arp: #(0 1 2 3)) equals: result
 ]
 
 { #category : #tests }
+SequencerTests >> testChangeSequencerGatesSize [
+
+	| seq |
+	seq := 16 downbeats.
+	seq gatesSize: 1.
+	self assert: (seq gatesSize) equals: 1
+]
+
+{ #category : #tests }
 SequencerTests >> testEuclideanRhythmFromArray [
 
 	| tresillo seq |
