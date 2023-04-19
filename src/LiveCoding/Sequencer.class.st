@@ -300,6 +300,13 @@ Sequencer >> melodyFrom: aScale [
 	^ self notes: array
 ]
 
+{ #category : #'LiveCoding - Performance' }
+Sequencer >> midiCh: anInteger to: aKeyInPerformance [
+
+" convenience method to avoid extra parenthesis when assigning a midiChannel to  akey in a performance"
+	(self midiChannel: anInteger) to: aKeyInPerformance 
+]
+
 { #category : #accessing }
 Sequencer >> midiChannel [ 
 

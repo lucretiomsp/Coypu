@@ -139,6 +139,16 @@ PerformanceTest >> testIndexesToKey [
 ]
 
 { #category : #tests }
+PerformanceTest >> testMidiChToKey [
+
+	| p |
+	p := Performance uniqueInstance.
+	16 downbeats midiCh: 2 to: #synth.
+	.
+	self assert: (p at: #synth) midiChannel  equals: 2
+]
+
+{ #category : #tests }
 PerformanceTest >> testMuteAll [
 | p |
 p := Performance uniqueInstance .
