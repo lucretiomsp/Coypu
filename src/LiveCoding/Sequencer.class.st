@@ -303,8 +303,10 @@ Sequencer >> melodyFrom: aScale [
 { #category : #'LiveCoding - Performance' }
 Sequencer >> midiCh: anInteger to: aKeyInPerformance [
 
-" convenience method to avoid extra parenthesis when assigning a midiChannel to  akey in a performance"
-	(self midiChannel: anInteger) to: aKeyInPerformance 
+	" convenience method to avoid extra parenthesis when assigning a midiChannel to  akey in a performance"
+   | p |
+p := Performance uniqueInstance .
+	p at: aKeyInPerformance put: (self midiChannel: anInteger) .
 ]
 
 { #category : #accessing }
@@ -376,6 +378,13 @@ Sequencer >> notes: anArrayOfNotes index: anArrayOfIndexes to: aKeyInPerformance
 	self to: aKeyInPerformance .
 	aKeyInPerformance notes: anArrayOfNotes .
 	aKeyInPerformance indexes: anArrayOfIndexes 
+]
+
+{ #category : #'LiveCodin - performance' }
+Sequencer >> notes: anArrayOfNotes midiCh: anInteger to: aKeyInPerformance [
+	"convenience method to avoid extra parenthesis"
+	
+((self notes: anArrayOfNotes ) midiChannel:  anInteger) to: aKeyInPerformance .
 ]
 
 { #category : #'LiveCoding - sequencer' }

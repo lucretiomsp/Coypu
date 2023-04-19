@@ -115,6 +115,16 @@ PerformanceTest >> testHexPatternAndNotesAbdIndexesToKey [
 ]
 
 { #category : #tests }
+PerformanceTest >> testHexPatternAndNotesAndMidiChToKey [
+
+	| p |
+	p := Performance uniqueInstance.
+	'000F' notes: #( 48 48 48 48 ) midiCh: 2 to: #synth.
+	self assert: (p at: #synth) notes equals: #( 48 48 48 48 ).
+	self assert: (p at: #synth) midiChannel equals: 2
+]
+
+{ #category : #tests }
 PerformanceTest >> testHexPatternAndNotesToKey [
 
 	| p |
@@ -126,6 +136,15 @@ PerformanceTest >> testHexPatternAndNotesToKey [
 		equals: #( 1 0 0 0 1 0 0 0 1 0 0 0 1 0 0 0 ) asRhythm.
 
 	self assert: (p at: #synth) notes equals: #( 48 48 48 48 )
+]
+
+{ #category : #tests }
+PerformanceTest >> testHexPatternMidiChToKey [
+
+	| p |
+	p := Performance uniqueInstance.
+	'0808' midiCh: 2 to: #synth.
+	self assert: (p at: #synth) midiChannel equals: 2
 ]
 
 { #category : #tests }
@@ -167,6 +186,16 @@ PerformanceTest >> testMuteKey [
 	performance at: #kick put: 16 downbeats.
 	#kick mute.
 	self assert: performance isEmpty equals: true
+]
+
+{ #category : #tests }
+PerformanceTest >> testNotesAndMidiChToKey [
+
+	| p |
+	p := Performance uniqueInstance.
+	16 downbeats notes: #(48 48 48 48) midiCh: 2 to: #synth.
+	self assert: (p at: #synth) notes  equals: #(48 48 48 48 ).
+	self assert: (p at: #synth) midiChannel equals: 2
 ]
 
 { #category : #tests }

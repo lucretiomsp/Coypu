@@ -87,6 +87,36 @@ ByteString >> forDirt [
 ]
 
 { #category : #'*LiveCoding' }
+ByteString >> index: anArrayOfIndexes to: aKeyInAPerformance [
+	
+"convenience method to avoid extra parenthesis when sending an HEX rhythm pattern to aKeyInPerformance"
+
+self pattern index: anArrayOfIndexes to: aKeyInAPerformance 
+]
+
+{ #category : #'*LiveCoding' }
+ByteString >> midiCh: anInteger to: aKeyInPerformance [
+	"conveneience method to avoid extra parenthesis"
+(self pattern  midiChannel: anInteger) to: aKeyInPerformance 
+]
+
+{ #category : #'*LiveCoding' }
+ByteString >> notes: anArrayOfNotes index: anArrayOfIndexes to: aKeyInAPerformance [
+	
+"convenience method to avoid extra parenthesis when sending an HEX rhythm pattern to aKeyInPerformance"
+
+self pattern notes: anArrayOfNotes index: anArrayOfIndexes to: aKeyInAPerformance
+]
+
+{ #category : #'*LiveCoding' }
+ByteString >> notes: anArrayOfNotes  to: aKeyInAPerformance [
+	
+"convenience method to avoid extra parenthesis when sending an HEX rhythm pattern to aKeyInPerformance"
+
+self pattern notes: anArrayOfNotes to: aKeyInAPerformance .
+]
+
+{ #category : #'*LiveCoding' }
 ByteString >> pattern [ 
 " convert a string with an Hexadecimal number to the Kyma array correspondong to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex)"
 |   strings flat |
@@ -117,6 +147,16 @@ strings := (1 to: (self size)) collect: [ :i |
 ((self at: i) digitValue printStringBase: 2 length: 4 padded: true ) ].
 flat := strings flatCollect: [ :each | each ].
 ^ ((( 1 to: (flat size)) collect: [ :i | (flat at: i ) digitValue ]) asRhythm ) and: anArrayOfNoteNumbers and: anArrayOfDurations .
+]
+
+{ #category : #'*LiveCoding' }
+ByteString >> to: aKeyInPerformance [ 
+	"convenience method to insert at aKeyInPerformance a pattern from the hex string"
+	
+| p |
+
+p := Performance uniqueInstance .
+self pattern to: aKeyInPerformance 
 ]
 
 { #category : #'*LiveCoding' }

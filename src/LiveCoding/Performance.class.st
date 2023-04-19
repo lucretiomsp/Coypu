@@ -39,6 +39,7 @@ Performance class >> new [
 { #category : #'instance creation' }
 Performance class >> uniqueInstance [
 
+	
 	^ uniqueInstance ifNil: [ uniqueInstance := super new ]
 ]
 
@@ -486,7 +487,7 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 ]
 
 { #category : #playing }
-Performance >> playMIDISequenceAt: aRateInSeconds steps: aNumberOfSteps on: aMIDISender [
+Performance >> playMIDISequenceAt: aRateInSeconds for: aNumberOfSteps on: aMIDISender [
 
 	"test"
 
