@@ -97,25 +97,24 @@ midiSender  := aMIDISender .
 { #category : #'event handling' }
 VerticalFaderForMIDI >> mouseMove: anEvent [
 
-	| newLocation mappedY cursorY faderBottom |
+	| newLocation mappedY cursorY faderBottom faderTop |
 	faderCanMove
 		ifTrue: [ 
 			faderBottom := self extent y + self position y.
-			cursorY := anEvent position y.
+			faderTop := self position y.
+			cursorY := (anEvent position y min: faderBottom) max: faderTop.
 			newLocation := Point x: self center x y: cursorY.
 			cursor center: newLocation.
 			"map cursorY to value from 0 to 1"
 			mappedY := (((cursorY min: faderBottom) - faderBottom) abs min:
 				            self extent y) / self extent y * 127.
-			
-		
+
+
 			midiSender
 				sendCC: ccNumber
 				withValue: mappedY asInteger
 				onChannel: midiChannel ]
-		ifFalse: [ nil ]
-
-	"for debug"
+		ifFalse: [ "for debug" nil ]
 ]
 
 { #category : #'as yet unclassified' }

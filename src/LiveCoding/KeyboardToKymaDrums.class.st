@@ -6,7 +6,7 @@ Class {
 		'isHandlingKeyDown',
 		'keysDictionary'
 	],
-	#category : #LiveCoding
+	#category : #'LiveCoding-KeyboardControl'
 }
 
 { #category : #'instance creation' }
