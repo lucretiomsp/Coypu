@@ -13,14 +13,18 @@ Class {
 
 { #category : #'instance creation' }
 VerticalFaderForMIDI class >> new: anArray [
-"shortcut to create MIDI faderLabel #(aCCNumber aMIDISender a channel)"
 
-^ self new
+	"shortcut to create MIDI faderLabel #(aCCNumber aMIDISender a channel)"
+
+	^ self new
+		  color: Color random;
 		  ccNumber: (anArray at: 1);
 		  midiSender: (anArray at: 2);
 		  midiChannel: (anArray at: 3);
 		  minValue: 0;
 		  maxValue: 127;
+		  faderLabel: 'Control Change';
+		  openInWindow;
 		  yourself
 ]
 
@@ -116,8 +120,10 @@ VerticalFaderForMIDI >> mouseMove: anEvent [
 
 { #category : #'as yet unclassified' }
 VerticalFaderForMIDI >> openInWindow [
-   
-	^ (self openInWindowLabeled: faderLabel ) position: (800@200)
+
+	^ (self openInWindowLabeled: faderLabel)
+		  extent: 100 @ 400;
+		  position: 800 @ 200
 ]
 
 { #category : #accessing }
