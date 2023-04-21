@@ -230,6 +230,20 @@ self assert: p backup equals: p asDictionary
 ]
 
 { #category : #tests }
+PerformanceTest >> testPerformanceKeySolo [
+
+	| p |
+	p := Performance uniqueInstance.
+	p at: #kick put: 16 downbeats.
+	p at: #tom put: 32 shiko.
+	p at: #oh put: 16 upbeats.
+	p at: #snare put: '0240' pattern.
+   
+  #tom solo.
+	self assert:  p keys equals: #( #tom )
+]
+
+{ #category : #tests }
 PerformanceTest >> testPerformanceKeysSwap [
 
 	| seq1 seq2 p |
@@ -369,6 +383,19 @@ PerformanceTest >> testStringOfHexToPerformance [
 p := Performance uniqueInstance .
 '8888' to: #kick.
 self assert: (p at: #kick) equals: '8888' pattern
+]
+
+{ #category : #tests }
+PerformanceTest >> testUnsoloKeyInPerformance [
+
+	| p |
+	p := Performance uniqueInstance.
+	16 downbeats to: #kick.
+	16 upbeats to: #ch.
+	#ch solo.
+	#ch unsolo.
+	self assert: (p at: #kick) equals: 16 downbeats.
+	self assert: (p at: #ch) equals: 16 upbeats
 ]
 
 { #category : #tests }
