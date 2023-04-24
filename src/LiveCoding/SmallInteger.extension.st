@@ -9,6 +9,19 @@ SmallInteger >> saw [
 ]
 
 { #category : #'*LiveCoding' }
+SmallInteger >> sawCC: aRange [
+
+
+	"fill an array of self steps with values representing a sawtooth with aRange 1"
+
+   | min max range |
+min := aRange at: 1.
+max := aRange at: 2.
+range := max - min.
+	^ (min to: max by: range / (self - 1)) asArray
+]
+
+{ #category : #'*LiveCoding' }
 SmallInteger >> triangle [
 
 	"return an array of self size with a triangle wave with range 0 -1"
