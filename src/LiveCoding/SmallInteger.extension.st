@@ -11,14 +11,15 @@ SmallInteger >> saw [
 { #category : #'*LiveCoding' }
 SmallInteger >> sawCC: aRange [
 
-
 	"fill an array of self steps with values representing a sawtooth with aRange 1"
 
-   | min max range |
-min := aRange at: 1.
-max := aRange at: 2.
-range := max - min.
-	^ (min to: max by: range / (self - 1)) asArray
+	| min max range arrayOfFloats result |
+	min := aRange at: 1.
+	max := aRange at: 2.
+	range := max - min.
+	arrayOfFloats := (min to: max by: range / (self - 1)) asArray.
+	result := arrayOfFloats collect: [ :i | i rounded ].
+^ result
 ]
 
 { #category : #'*LiveCoding' }
