@@ -717,7 +717,7 @@ Sequencer >> visualGroup: aRSGroup [
 	visualGroup := aRSGroup
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'LiveCoding - visualization' }
 Sequencer >> visualizeGates [
 
 	"simple visualization of the gates of a Sequencer - triggers are yellow, rests are white"

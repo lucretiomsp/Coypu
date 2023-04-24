@@ -27,3 +27,26 @@ ByteSymbol >> indexes: anArrayOfIndexes [
 			#Index.
 			anArrayOfIndexes }
 ]
+
+{ #category : #'*LiveCoding' }
+ByteSymbol >> visualizeGates [
+
+	"simple visualization of the gates of a Sequencer - triggers are yellow, rests are white"
+
+	| colors canvas p seq |
+	p := Performance uniqueInstance.
+	seq := p at: self.
+	colors := #( #white #yellow ).
+	canvas := RSCanvas new.
+	seq gates do: [ :i | 
+		canvas add: (RSBox new
+				 size: 80;
+				 color: (colors at: i + 1);
+				 border: (RSBorder new
+						  color: #blue;
+						  width: 10)) ].
+
+	RSHorizontalLineLayout on: canvas shapes.
+	canvas zoomToFit.
+	canvas open
+]

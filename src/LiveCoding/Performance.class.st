@@ -704,10 +704,14 @@ Performance >> resetAllSequencers [
 
 { #category : #'LiveCoding - performance' }
 Performance >> restore [
+
 	"restore what the performance was before receiveing messages muteAll or solo"
+
 	| p |
-	p := Performance uniqueInstance .
-	self backup keysAndValuesDo: [ :k : v | p at: k put: v ].
+	p := Performance uniqueInstance.
+	self backup keysAndValuesDo: [ :k :v | 
+		p at: k put: v].
+	p keysAndValuesRemove: [ :kp :vp | (p backup includesKey: kp) not ] 
 ]
 
 { #category : #accessing }

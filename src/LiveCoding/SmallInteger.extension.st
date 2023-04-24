@@ -20,3 +20,20 @@ SmallInteger >> triangle [
 	result := up , down.
 	^ result
 ]
+
+{ #category : #'*LiveCoding' }
+SmallInteger >> triangleCC: aRange [
+
+	"return an array of self size with a triangle wave with aRange suited for MIDI ccs"
+
+	| increment range min max up down arrayOfFloats result |
+	min := aRange at: 1.
+	max := aRange at: 2.
+	range := (max - min).
+	increment := range / (self / 2 - 1).
+	up := (min to: max by: increment) asArray.
+	down := up reverse.
+	arrayOfFloats  := up , down.
+	result := arrayOfFloats collect: [ :i | i rounded ].
+	^ result
+]
