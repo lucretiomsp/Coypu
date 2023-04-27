@@ -12,6 +12,16 @@ scale := Scale minor "#(0 2 3 5 7 8 10 12)".
 ]
 
 { #category : #tests }
+LiveCodingTests >> testArrayFromIntegerInString [
+
+| case result |
+case := '38' * 4.
+result := #(38 38 38 38).
+
+self assert: case equals: result.
+]
+
+{ #category : #tests }
 LiveCodingTests >> testArrayIntoScale [
 
 	| indexes newNotes |
