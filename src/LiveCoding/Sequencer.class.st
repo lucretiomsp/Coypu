@@ -387,6 +387,13 @@ Sequencer >> notes: anArrayOfNotes midiCh: anInteger to: aKeyInPerformance [
 ((self notes: anArrayOfNotes ) midiChannel:  anInteger) to: aKeyInPerformance .
 ]
 
+{ #category : #'LiveCoding - performance' }
+Sequencer >> notes: anArrayOfNotes mode: anArrayOfModes to: aKeyInPerformance [ 
+	"convenience mode to avoid extra parenthesis to put chord modes into sequencer - designed for polyphonic synths"
+	
+(( self notes: anArrayOfNotes ) extra1: { #Mode . anArrayOfModes  } ) to: aKeyInPerformance 
+]
+
 { #category : #'LiveCoding - sequencer' }
 Sequencer >> notes: anArrayOfNotes to: aKeyInThePerformance [
 	" convenience method to fill keys in performance without using too many parenthesis"

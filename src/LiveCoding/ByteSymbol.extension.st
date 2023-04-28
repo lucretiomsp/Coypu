@@ -33,20 +33,33 @@ ByteSymbol >> visualizeGates [
 
 	"simple visualization of the gates of a Sequencer - triggers are yellow, rests are white"
 
-	| colors canvas p seq |
+	| colors canvas p seq window morph extent stepNumber borderWidth |
+	stepNumber := 1.
 	p := Performance uniqueInstance.
 	seq := p at: self.
+	extent := 800 @ 200.
+	borderWidth := #( 7 2 4 2 ).
 	colors := #( #white #yellow ).
-	canvas := RSCanvas new.
+	canvas := RSCanvas new
+		          extent: extent;
+		          color: #black.
 	seq gates do: [ :i | 
+	
 		canvas add: (RSBox new
-				 size: 80;
+				 size: 38;
 				 color: (colors at: i + 1);
 				 border: (RSBorder new
 						  color: #blue;
-						  width: 10)) ].
+						  width: (borderWidth at: (stepNumber - 1 rem: 4) + 1))).
+		stepNumber := stepNumber + 1 ].
 
-	RSHorizontalLineLayout on: canvas shapes.
+	"RSHorizontalLineLayout on: canvas shapes."
+	RSGridLayout new
+		lineItemsCount: 16;
+		on: canvas shapes.
 	canvas zoomToFit.
-	canvas open
+	morph := canvas createMorph.
+	window := morph openInWindowLabeled: self asString.
+	window extent: 900 @ 260.
+	morph privateOwner: window
 ]

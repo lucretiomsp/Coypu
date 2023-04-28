@@ -199,6 +199,16 @@ PerformanceTest >> testNotesAndMidiChToKey [
 ]
 
 { #category : #tests }
+PerformanceTest >> testNotesAndModeToKey [
+
+	| p |
+	p := Performance uniqueInstance.
+	4 breves notes: #( 48 48 48 48 ) mode: #(0 1 2 3) to: #synth.
+	self assert: (p at: #synth) notes equals: #( 48 48 48 48 ).
+	self assert: (p at: #synth) extra1 equals: #(#Mode #( 0 1 2 3)).
+]
+
+{ #category : #tests }
 PerformanceTest >> testNotesToKey [
 
 	| p |
