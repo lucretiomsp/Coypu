@@ -6,6 +6,9 @@ Class {
 	#name : #Scale,
 	#superclass : #Array,
 	#type : #variable,
+	#instVars : [
+		'root'
+	],
 	#category : #'LiveCoding-ScalesAndChords'
 }
 

@@ -21,7 +21,7 @@ SequencerTests >> testArpeggiateArray [
 
 | initial  result|
 initial := #(60 61 62 63).
-result := #(60 51 62 63 70 71 72 73 80 81 82 83).
+result := #(60 61 62 63 61 62 63 64 62 63 64 65 63 64 65 66).
 
 self assert: (initial arp: #(0 1 2 3)) equals: result
 ]

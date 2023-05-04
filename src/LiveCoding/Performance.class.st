@@ -168,6 +168,85 @@ Performance >> muteAll [
 			canvas removeShape: (rsGroupDictionary at: i) asShape ] ] ] fork
 ]
 
+{ #category : #'LiveCoding - satelliteEvent' }
+Performance >> pacaDance [
+
+	"convenience method created for the ICLC2023 performance - it just play the performance at 132 bpm for 4096 bars"
+
+	
+	| aRateInSeconds aNumberOfSteps step bpm beatInSeconds gateTime |
+	aRateInSeconds := 132 bpm.
+	aNumberOfSteps := 4096 bars.
+	'x' asPacaAddress. "if PacaAddress is not stored yet"
+	self resetAllSequencers. "reset all the sequencers"
+	"as in early hardware sequencers, default gatetime is 80% of the step duration"
+
+	bpm := 60 / (aRateInSeconds * 4).
+
+	gateTime := aRateInSeconds * 0.8.
+	beatInSeconds := aRateInSeconds * 4.
+	step := 0.
+
+
+	^ [ 
+	  bpm toKyma: 'BPM'.
+
+
+	  aNumberOfSteps timesRepeat: [ 
+		  (Delay forSeconds: aRateInSeconds) wait.
+		  " test if dictionary values is an Array of two arrays or as defined, a sequence"
+
+		  self keysAndValuesDo: [ :key :value | 
+			  value isSequencer
+				  ifTrue: [ 
+					  (value gates at: (step modulo: value gatesSize)) = 1
+						  ifTrue: [ 
+							  | note |
+							  note := value notes at:
+								          (value noteIndex modulo: value notesSize).
+							  key asString
+								  toKymaAsGate: gateTime
+									  *
+									  (value durations at:
+										   (value noteIndex modulo: value durationsSize))
+								  note: note.
+
+							  "maybe this part is not useful anymore"
+							  value durations isArray
+								  ifTrue: [ 
+									  (value durations at:
+										   (value noteIndex modulo: value durationsSize)) toKyma:
+										  key asString , 'Duration' ]
+								  ifFalse: [ nil ].
+
+							  "experimental, for extra control parameter"
+							  value extra1 notNil
+								  ifTrue: [ 
+									  ((value extra1 at: 2) at:
+										   (value noteIndex modulo: value extra1Size)) toKyma:
+										  key asString , (value extra1 at: 1) ]
+								  ifFalse: [ nil ].
+
+							  "new experimental, for second extra control"
+							  value extra2 notNil
+								  ifTrue: [ 
+									  ((value extra2 at: 2) at:
+										   (value noteIndex modulo: value extra2Size)) toKyma:
+										  key asString , (value extra2 at: 1) ]
+								  ifFalse: [ nil ].
+
+
+							  value noteIndex: value noteIndex + 1
+
+							  "noteIndex := noteIndex + 1." ]
+						  ifFalse: [ nil ] ]
+				  ifFalse: [ 
+				  (value at: (step modulo: value size)) toKyma: key asString ] ].
+
+		  "step is incrementing in any case"
+		  step := step + 1 ] ] forkAt: Processor timingPriority
+]
+
 { #category : #accessing }
 Performance >> performer [
 

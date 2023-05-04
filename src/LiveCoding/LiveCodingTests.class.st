@@ -4,13 +4,6 @@ Class {
 	#category : #'LiveCoding-Tests'
 }
 
-{ #category : #'as yet unclassified' }
-LiveCodingTests >> arrayOfAScale [
-
-| scale |
-scale := Scale minor "#(0 2 3 5 7 8 10 12)".
-]
-
 { #category : #tests }
 LiveCodingTests >> testArrayFromIntegerInString [
 
@@ -52,7 +45,7 @@ LiveCodingTests >> testFullScale [
 { #category : #tests }
 LiveCodingTests >> testIntegerAsArray [
 
-	self assert: 16 asArrayOfInts equals: (0 to: 15) asArray
+	self assert: 16 asArrayOfInts equals: (1 to: 16) asArray
 ]
 
 { #category : #tests }

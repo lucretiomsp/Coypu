@@ -56,6 +56,25 @@ Array >> and: anArray and: anotherArray [
 ]
 
 { #category : #'*LiveCoding' }
+Array >> arp: anArrayOfIntervals [
+
+	"STILL NOT AT ITS BEST"
+
+	"arpeggiate the notes inside the first array "
+
+	| midResult finalResult restsOrGates restsOrGatesArpSize |
+	restsOrGates := self collect: [ :i | (i ~= 0) asInteger ].
+	restsOrGatesArpSize := restsOrGates times: anArrayOfIntervals size.
+	midResult  := OrderedCollection new.
+	finalResult := OrderedCollection new.
+	anArrayOfIntervals do: [ :i | midResult addAll: self + i ].
+	1 to: (midResult  size) do: [ :i | finalResult add: (midResult at: i) * (restsOrGatesArpSize at: i) ].
+
+
+	^ finalResult asArray
+]
+
+{ #category : #'*LiveCoding' }
 Array >> asRhythm [
 " convert Array into a Rhythm"
 | rhythm |
