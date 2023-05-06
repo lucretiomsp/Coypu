@@ -1,6 +1,16 @@
 Extension { #name : #ByteString }
 
 { #category : #'*LiveCoding' }
+ByteString >> asChord [
+
+	"return an Array with the Intervals of the Chord in semitones"
+	
+	
+
+	
+]
+
+{ #category : #'*LiveCoding' }
 ByteString >> asLocalGate: gateTimeInSeconds note: aNoteNumber [
 " gate-like OSC messsage with multiple arguments"
 	" send an OSC message that mimics the behaviour oa MIDI note on message.
@@ -19,11 +29,91 @@ ByteString >> asLocalGate: gateTimeInSeconds note: aNoteNumber [
 
 { #category : #'*LiveCoding' }
 ByteString >> asPacaAddress [
-"set the pacaAddress globally from the corresponding Paca(rana) serial number"
 
-Smalltalk at: #pacaAddress put: (NetNameResolver stringFromAddress: (NetNameResolver 	addressForName:'beslime-691.local')).
-^ (NetNameResolver stringFromAddress: (NetNameResolver 	addressForName:'beslime-691.local')).
+
+	"set the pacaAddress globally from the corresponding Paca(rana) serial number"
+| serialNumber |
+serialNumber := 'beslime-51.local'.
+	Smalltalk at: #pacaAddress put: (NetNameResolver stringFromAddress:
+			 (NetNameResolver addressForName: serialNumber )).
+	^ NetNameResolver stringFromAddress:
+		  (NetNameResolver addressForName: serialNumber )
+]
+
+{ #category : #'*LiveCoding' }
+ByteString >> asVerticalFaderLocal: aRange [
+
+	| fader |
+		" the fader label is also the OSC address"
+
+	fader := VerticalFaderForOSC newWithAddress: self range: aRange .
+	fader openInWindow  
+		 
+]
+
+{ #category : #'*LiveCoding' }
+ByteString >> forDirt [
+
+	" parse a String into a Sequencer containing information to end to the SuperDirt synth for SuperCollider"
+
+	| seq gates soundsAndIndexs soundsAndIndexsAndGates indexes sounds |
+	soundsAndIndexsAndGates := self findBetweenSubstrings: ' '.
+	gates := OrderedCollection new.
+	soundsAndIndexsAndGates do: [ :i | 
+		i ~= '~'
+			ifTrue: [ gates add: 1 ]
+			ifFalse: [ gates add: 0 ] ].
+	soundsAndIndexs := soundsAndIndexsAndGates reject: [ :i | i = '~' ].
+	sounds := OrderedCollection new.
+	(1 to: soundsAndIndexs size) do: [ :i | 
+		sounds add:
+			(((soundsAndIndexs at: i) findBetweenSubstrings: ':') at: 1) ].
+	indexes := OrderedCollection new.
+	(1 to: soundsAndIndexs size) do: [ :i | 
+		((soundsAndIndexs at: i) findBetweenSubstrings: ':') size > 1
+			ifTrue: [ 
+				indexes add:
+					(((soundsAndIndexs at: i) findBetweenSubstrings: ':') at: 2)
+						asInteger ]
+			ifFalse: [ indexes add: 0 ] ].
+
+	seq := Sequencer new
+		       gates: gates asArray;
+		       soundPattern: sounds asArray;
+		       samplesIndex: indexes asArray;
+		       noteIndex: 1.
+
+	^ seq
+]
+
+{ #category : #'*LiveCoding' }
+ByteString >> index: anArrayOfIndexes to: aKeyInAPerformance [
 	
+"convenience method to avoid extra parenthesis when sending an HEX rhythm pattern to aKeyInPerformance"
+
+self pattern index: anArrayOfIndexes to: aKeyInAPerformance 
+]
+
+{ #category : #'*LiveCoding' }
+ByteString >> midiCh: anInteger to: aKeyInPerformance [
+	"conveneience method to avoid extra parenthesis"
+(self pattern  midiChannel: anInteger) to: aKeyInPerformance 
+]
+
+{ #category : #'*LiveCoding' }
+ByteString >> notes: anArrayOfNotes index: anArrayOfIndexes to: aKeyInAPerformance [
+	
+"convenience method to avoid extra parenthesis when sending an HEX rhythm pattern to aKeyInPerformance"
+
+self pattern notes: anArrayOfNotes index: anArrayOfIndexes to: aKeyInAPerformance
+]
+
+{ #category : #'*LiveCoding' }
+ByteString >> notes: anArrayOfNotes  to: aKeyInAPerformance [
+	
+"convenience method to avoid extra parenthesis when sending an HEX rhythm pattern to aKeyInPerformance"
+
+self pattern notes: anArrayOfNotes to: aKeyInAPerformance .
 ]
 
 { #category : #'*LiveCoding' }
@@ -60,6 +150,16 @@ flat := strings flatCollect: [ :each | each ].
 ]
 
 { #category : #'*LiveCoding' }
+ByteString >> to: aKeyInPerformance [ 
+	"convenience method to insert at aKeyInPerformance a pattern from the hex string"
+	
+| p |
+
+p := Performance uniqueInstance .
+self pattern to: aKeyInPerformance 
+]
+
+{ #category : #'*LiveCoding' }
 ByteString >> toKymaAsGate [
 	" send an OSC message that mimics the behaviour oa MIDI note on message, note is held for a default duration of 2 seconds"
 	| vcslabel  |
@@ -87,18 +187,57 @@ ByteString >> toKymaAsGate: gateTimeInSeconds [
 
 { #category : #'*LiveCoding' }
 ByteString >> toKymaAsGate: gateTimeInSeconds note: aNoteNumber [
+
 	" send an OSC message that mimics the behaviour oa MIDI note on message.
 	gateTime is expressed in seconds"
-	| vcsGatelabel  vcsNoteLabel|
-"	pacaAddress := NetNameResolver stringFromAddress: (NetNameResolver 	addressForName:'beslime-691.local'). "
 
-	vcsGatelabel := '/vcs/', self , 'Gate', '/1'.
-	vcsNoteLabel := '/vcs/', self , 'Note', '/1'.
-	
-^ [(OSCMessage for: { vcsNoteLabel  . aNoteNumber asFloat }) sendToAddressString: pacaAddress  port: 8000.
-	(OSCMessage for: { vcsGatelabel  . 1.0  }) sendToAddressString: pacaAddress  port: 8000.
-	(Delay forSeconds: gateTimeInSeconds ) wait.
-	(OSCMessage for: { vcsGatelabel  . 0.0  }) sendToAddressString: pacaAddress  port: 8000.] fork
+	| vcsGatelabel vcsNoteLabel sendNoteNumber sendNoteOn sendNoteOff |
+	"	pacaAddress := NetNameResolver stringFromAddress: (NetNameResolver 	addressForName:'beslime-691.local'). "
+	vcsGatelabel := '/vcs/' , self , 'Gate' , '/1'.
+	vcsNoteLabel := '/vcs/' , self , 'Note' , '/1'.
+	sendNoteNumber := (OSCMessage for: { 
+			                   vcsNoteLabel.
+			                   aNoteNumber asFloat })
+		                  sendToAddressString: pacaAddress
+		                  port: 8000.
+	[ "first NoteOff for VoiceStealing"
+	(OSCMessage for: { 
+			 vcsGatelabel.
+			 0.0 }) sendToAddressString: pacaAddress port: 8000."then note On"
+	(OSCMessage for: { 
+			 vcsGatelabel.
+			 1.0 }) sendToAddressString: pacaAddress port: 8000.
+	(Delay forSeconds: gateTimeInSeconds) wait.
+	"then note Off"
+	(OSCMessage for: { 
+			 vcsGatelabel.
+			 0.0 }) sendToAddressString: pacaAddress port: 8000 ] fork
+]
+
+{ #category : #'*LiveCoding' }
+ByteString >> toKymaAsGateOld: gateTimeInSeconds note: aNoteNumber [
+
+	" send an OSC message that mimics the behaviour oa MIDI note on message.
+	gateTime is expressed in seconds"
+
+	| vcsGatelabel vcsNoteLabel |
+	"	pacaAddress := NetNameResolver stringFromAddress: (NetNameResolver 	addressForName:'beslime-691.local'). "
+	vcsGatelabel := '/vcs/' , self , 'Gate' , '/1'.
+	vcsNoteLabel := '/vcs/' , self , 'Note' , '/1'.
+
+	^ [ 
+	  (OSCMessage for: { 
+			   vcsNoteLabel.
+			   aNoteNumber asFloat })
+		  sendToAddressString: pacaAddress
+		  port: 8000.
+	  (OSCMessage for: { 
+			   vcsGatelabel.
+			   1.0 }) sendToAddressString: pacaAddress port: 8000.
+	  (Delay forSeconds: gateTimeInSeconds) wait.
+	  (OSCMessage for: { 
+			   vcsGatelabel.
+			   0.0 }) sendToAddressString: pacaAddress port: 8000 ] fork
 ]
 
 { #category : #'*LiveCoding' }

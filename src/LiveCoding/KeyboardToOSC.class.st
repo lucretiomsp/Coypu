@@ -13,7 +13,7 @@ Class {
 		'key',
 		'mouseWheelValue'
 	],
-	#category : #LiveCoding
+	#category : #'LiveCoding-KeyboardControl'
 }
 
 { #category : #'instance creation' }

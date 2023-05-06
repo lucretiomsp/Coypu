@@ -17,14 +17,17 @@ Class {
 
 { #category : #'instance creation' }
 VerticalFader class >> newWithAddress: anAddress [
-" the fader label is also the OSC address"
-^ (self new) 
-		address: anAddress ;
-		extent: 200@600;
-		cursorColor: Color red;
-		minValue: 0;
-		maxValue: 1;
-		yourself
+
+	" the fader label is also the OSC address"
+
+	^ self new
+		  address: anAddress;
+		  extent: 200 @ 600;
+		  color: Color random;
+		  cursorColor: Color black;
+		  minValue: 0;
+		  maxValue: 1;
+		  yourself
 ]
 
 { #category : #'instance creation' }
@@ -88,14 +91,15 @@ VerticalFader >> handlesMouseUp: anEvent [
 ]
 
 { #category : #initialization }
-VerticalFader >> initialize [ 
-super initialize. 
-faderCanMove := false.
+VerticalFader >> initialize [
 
-"self extent: 400@500".
-cursor := Morph new.
-cursor color: Color black.
-self drawCursor .
+	super initialize.
+	faderCanMove := false.
+
+	"self extent: 400@500"
+	cursor := Morph new extent: 400 @ 300.
+	cursor color: Color red.
+	self drawCursor
 ]
 
 { #category : #accessing }

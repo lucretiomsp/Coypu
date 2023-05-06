@@ -18,8 +18,22 @@ Class {
 	#name : #Rhythm,
 	#superclass : #Array,
 	#type : #variable,
-	#category : #LiveCoding
+	#category : #'LiveCoding-Sequencers'
 }
+
+{ #category : #accessing }
+Rhythm class >> list [
+
+	"return all the possible Rhythms obtainable sending messages to integers"
+
+	| rhythmList |
+	rhythmList := #( 'adowa' 'aksak' 'banda' 'bomba' 'bossa' 'breves'
+	                 'semibreves' 'claveSon' 'downbeats' 'gahu' 'ones'
+	                 'quavers' 'semiquavers' 'rumba' 'shiko' 'sikyi'
+	                 'soukous' 'tresillo' 'trueAksak' 'tumbao' 'upbeats' ).
+	
+Transcript clear. rhythmList do: [ :i | i traceCr  ]. Transcript open.
+]
 
 { #category : #responses }
 Rhythm class >> random: aNumber [
@@ -44,8 +58,10 @@ Rhythm >> and: anArray [
 
 { #category : #'as yet unclassified' }
 Rhythm >> and: anArrayOfNotes and: anArrayOfDurations [
-"returns Sequencer with default note 60nn and default durations 1/16th"
-^ (Sequencer with: self with: anArrayOfNotes with: anArrayOfDurations )
+
+	"returns Sequencer with default note 60nn and default durations 1/16th"
+
+	^ Sequencer new gates: self ; notes: anArrayOfNotes; durations: anArrayOfDurations
 ]
 
 { #category : #converting }
@@ -55,6 +71,12 @@ Rhythm >> asArray [
 array := Array new: (self size).
 ( 1 to: (self size)) do:[:i | array at: i put: (self at: i)].
 ^ array
+]
+
+{ #category : #'sequencer creation' }
+Rhythm >> notes: anArray [
+
+	^ Sequencer new gates: self; notes: anArray
 ]
 
 { #category : #accessing }
@@ -67,44 +89,49 @@ newRhythm := Rhythm new: (self size).
 
 ]
 
+{ #category : #printing }
+Rhythm >> printOn: aStream [
+
+	aStream print: self asArray 
+]
+
 { #category : #'as yet unclassified' }
 Rhythm >> randomInts: anArrayWithRangeAndMin [
-"return an array of self size with random integers with range [anArrayWithRangeAndMin at: 1 +  anArrayWithRangeAndMin at: 2]"
-| floatsArray result numberOfGates range min|
-range := anArrayWithRangeAndMin at: 1.
-min := anArrayWithRangeAndMin at: 2.
-numberOfGates  := self gates.
-floatsArray := ((numberOfGates  randoms) * range) + min.
-result := floatsArray collect: [ :i | i rounded ].
-^ Sequencer with: self with: result
+
+	"return an array of self size with random integers with range [anArrayWithRangeAndMin at: 1 +  anArrayWithRangeAndMin at: 2]"
+
+	| floatsArray result numberOfGates range min |
+	range := anArrayWithRangeAndMin at: 1.
+	min := anArrayWithRangeAndMin at: 2.
+	numberOfGates := self gates.
+	floatsArray := numberOfGates randoms * range + min.
+	result := floatsArray collect: [ :i | i rounded ].
+	^ Sequencer new gates: self; notes: result
 ]
 
 { #category : #'as yet unclassified' }
 Rhythm >> randomNotesFrom: anArray [
-"return an array of self size of random notes from anArray"
-| numberOfGates result |
-numberOfGates := self gates.
-result := (1 to: numberOfGates ) collect: [ :i | anArray at: (Random new nextInt: (anArray size)) ].
-^ Sequencer with: self with: result
+
+	"return an array of self size of random notes from anArray"
+
+	| numberOfGates result |
+	numberOfGates := self gates.
+	result := (1 to: numberOfGates) collect: [ :i | 
+		          anArray at: (Random new nextInt: anArray size) ].
+	^ Sequencer new notes: self; gates: result
 ]
 
 { #category : #'as yet unclassified' }
 Rhythm >> randomNotesFrom: anArray octaves: aNumber [
-"return an array of self size of a random note from anArray + a random octave between 0 and aNumber"
-| numberOfGates result |
-numberOfGates := self gates.
-result := (1 to: numberOfGates) collect: [ :i | (anArray at: (Random new nextInt: (anArray size))) + (((Random new nextInt: (aNumber + 1)) -1) * 12).].
-^ Sequencer with: self with: result
-]
 
-{ #category : #'as yet unclassified' }
-Rhythm >> randoms [
-"generates an Array of random values in the range (0,1) of size: aNumber, whith only 2 decimal places"
-	| r numberOfGates values |
+	"return an array of self size of a random note from anArray + a random octave between 0 and aNumber"
+
+	| numberOfGates result |
 	numberOfGates := self gates.
-	r := Random new.
-	values := (1 to: numberOfGates) collect: [ :i | ((r next ) printShowingDecimalPlaces: 2) asNumber].
-	^ Sequencer  with: self with: values.
-	
-	
+	result := (1 to: numberOfGates) collect: [ :i | 
+		          (anArray at: (Random new nextInteger: anArray size))
+		          + ((Random new nextInteger: aNumber + 1) - 1 * 12) ].
+	^ Sequencer new
+		  notes: self;
+		  gates: result
 ]

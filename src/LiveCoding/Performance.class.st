@@ -1,5 +1,7 @@
 "
-""A performance is a Dictionary subclass used for live coding package""
+A performance is a Dictionary subclass used for live coding package.
+
+
 "
 Class {
 	#name : #Performance,
@@ -10,7 +12,12 @@ Class {
 		'performer',
 		'canvas',
 		'rsGroupDictionary',
-		'freq'
+		'freq',
+		'backup'
+	],
+	#classInstVars : [
+		'UniqueInstance',
+		'uniqueInstance'
 	],
 	#category : #'LiveCoding-Performance'
 }
@@ -21,6 +28,19 @@ Performance class >> basic [
 	^ self new
 		  visualization: NoneVisualization new;
 		  yourself
+]
+
+{ #category : #'instance creation' }
+Performance class >> new [ 
+
+^ Error new signal: 'Performance is a singleton -- Use unique instance instead'
+]
+
+{ #category : #'instance creation' }
+Performance class >> uniqueInstance [
+
+	
+	^ uniqueInstance ifNil: [ uniqueInstance := super new ]
 ]
 
 { #category : #'as yet unclassified' }
@@ -40,6 +60,13 @@ Performance class >> withCircles [
 		  yourself
 ]
 
+{ #category : #'performance  - adding' }
+Performance >> add: aSequencer channel: anIntegerBetween1And16 [
+
+aSequencer midiChannel: anIntegerBetween1And16. 
+super add: aSequencer.
+]
+
 { #category : #accessing }
 Performance >> at: key put: anObject [
 
@@ -47,9 +74,11 @@ Performance >> at: key put: anObject [
 	new entry for key and set is value to anObject. Answer anObject.
 	If a RsCanvas have been associated to the Performance add the visualisation of the sequencer to the RSCanvas"
 
+
 	super at: key put: anObject.
+
 	canvas isNotNil & anObject isSequencer ifTrue: [ 
-		(self rsGroupDictionary  includesKey: key)
+		(self rsGroupDictionary includesKey: key)
 			ifTrue: [ 
 				canvas removeShape: (rsGroupDictionary at: key) asShape.
 				anObject visualizeOn: canvas.
@@ -57,6 +86,13 @@ Performance >> at: key put: anObject [
 			ifFalse: [ 
 				anObject visualizeOn: canvas.
 				rsGroupDictionary at: key put: anObject visualGroup ] ]
+]
+
+{ #category : #'LiveCoding - performance' }
+Performance >> backup [
+
+	
+	^ backup
 ]
 
 { #category : #accessing }
@@ -82,11 +118,10 @@ Performance >> freq: aDurationInSeconds [
 	freq := aDurationInSeconds asFloat
 ]
 
-{ #category : #initialization }
-Performance >> initialize [
+{ #category : #testing }
+Performance >> isPerformance [
 
-	super initialize.
-	self freq: 120 bpm.
+^ true
 ]
 
 { #category : #accessing }
@@ -98,7 +133,7 @@ maxLength := valuesSizes inject: 0 into: [ :a :c | (a > c) ifTrue: [ a ] ifFalse
 ^ maxLength 
 ]
 
-{ #category : #playing }
+{ #category : #'muting and soloing' }
 Performance >> mute: aKeyOrAnArrayOfKeys [
 
 	"remove all the keys in the arrayOfKeys from the Performance or remove just a single key"
@@ -118,17 +153,98 @@ Performance >> mute: aKeyOrAnArrayOfKeys [
 					(rsGroupDictionary at: aKeyOrAnArrayOfKeys) asShape ]. canvas signalUpdate  ]
 ]
 
-{ #category : #playing }
+{ #category : #'muting and soloing' }
 Performance >> muteAll [
 
 	" remove all keys from the Performance"
 
-	self keysDo: [ :i | self removeKey: i ifAbsent: [  ] ].
+	| anArrayOfKeys |
+	backup := self asDictionary .
+	self keysDo: [ :i | self removeKey: i ifAbsent: [ nil ] ].
+
+	[ 
+	canvas isNotNil ifTrue: [ 
+		anArrayOfKeys do: [ :i | 
+			canvas removeShape: (rsGroupDictionary at: i) asShape ] ] ] fork
+]
+
+{ #category : #'LiveCoding - satelliteEvent' }
+Performance >> pacaDance [
+
+	"convenience method created for the ICLC2023 performance - it just play the performance at 132 bpm for 4096 bars"
+
 	
-canvas isNotNil ifTrue: [ 
-		 
-				(1 to: rsGroupDictionary size) do: [ :i | 
-					canvas removeShape: (rsGroupDictionary at: i) asShape ] ]
+	| aRateInSeconds aNumberOfSteps step bpm beatInSeconds gateTime |
+	aRateInSeconds := 132 bpm.
+	aNumberOfSteps := 4096 bars.
+	'x' asPacaAddress. "if PacaAddress is not stored yet"
+	self resetAllSequencers. "reset all the sequencers"
+	"as in early hardware sequencers, default gatetime is 80% of the step duration"
+
+	bpm := 60 / (aRateInSeconds * 4).
+
+	gateTime := aRateInSeconds * 0.8.
+	beatInSeconds := aRateInSeconds * 4.
+	step := 0.
+
+
+	^ [ 
+	  bpm toKyma: 'BPM'.
+
+
+	  aNumberOfSteps timesRepeat: [ 
+		  (Delay forSeconds: aRateInSeconds) wait.
+		  " test if dictionary values is an Array of two arrays or as defined, a sequence"
+
+		  self keysAndValuesDo: [ :key :value | 
+			  value isSequencer
+				  ifTrue: [ 
+					  (value gates at: (step modulo: value gatesSize)) = 1
+						  ifTrue: [ 
+							  | note |
+							  note := value notes at:
+								          (value noteIndex modulo: value notesSize).
+							  key asString
+								  toKymaAsGate: gateTime
+									  *
+									  (value durations at:
+										   (value noteIndex modulo: value durationsSize))
+								  note: note.
+
+							  "maybe this part is not useful anymore"
+							  value durations isArray
+								  ifTrue: [ 
+									  (value durations at:
+										   (value noteIndex modulo: value durationsSize)) toKyma:
+										  key asString , 'Duration' ]
+								  ifFalse: [ nil ].
+
+							  "experimental, for extra control parameter"
+							  value extra1 notNil
+								  ifTrue: [ 
+									  ((value extra1 at: 2) at:
+										   (value noteIndex modulo: value extra1Size)) toKyma:
+										  key asString , (value extra1 at: 1) ]
+								  ifFalse: [ nil ].
+
+							  "new experimental, for second extra control"
+							  value extra2 notNil
+								  ifTrue: [ 
+									  ((value extra2 at: 2) at:
+										   (value noteIndex modulo: value extra2Size)) toKyma:
+										  key asString , (value extra2 at: 1) ]
+								  ifFalse: [ nil ].
+
+
+							  value noteIndex: value noteIndex + 1
+
+							  "noteIndex := noteIndex + 1." ]
+						  ifFalse: [ nil ] ]
+				  ifFalse: [ 
+				  (value at: (step modulo: value size)) toKyma: key asString ] ].
+
+		  "step is incrementing in any case"
+		  step := step + 1 ] ] forkAt: Processor timingPriority
 ]
 
 { #category : #accessing }
@@ -197,6 +313,33 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 
 		  "step is incrementing in any case"
 		  step := step + 1 ] ] forkAt: Processor timingPriority
+]
+
+{ #category : #playing }
+Performance >> playDirtAt: aRateInSeconds for: aNumberOfSteps [
+
+	"play the performance to SuperDIrt/SuperCollider audio engine"
+
+	| process step |
+	step := 1.
+	process := [ 
+	           aNumberOfSteps timesRepeat: [ 
+		           (Delay forSeconds: aRateInSeconds) wait.
+		           "sequencers scan"
+		           [ 
+		           self valuesDo: [ :seq | 
+			           (seq gates wrap: step) = 1
+				           ifTrue: [ 
+					           seq playBasicDirtEventAt: seq noteIndex.
+					           "increment note Index"
+					           seq noteIndex: seq noteIndex + 1 ]
+				           ifFalse: [ nil ] ] ] forkAt: Processor timingPriority.
+
+		           "step is incremented anyway"
+		           step := step + 1 ] ] forkAt: Processor timingPriority.
+
+
+	^ process
 ]
 
 { #category : #'as yet unclassified' }
@@ -411,9 +554,9 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 								  ifTrue: [ 
 									  ((value extra1 at: 2) at:
 										   (value noteIndex modulo: value extra1Size)) toLocal:
-										  (key asString , value extra1 at: 1) ]
+										  (key asString , (value extra1 at: 1)) ]
 								  ifFalse: [ nil ].
-							  value noteIndex:  value noteIndex + 1 ]
+							  value noteIndex: value noteIndex + 1 ]
 						  ifFalse: [ nil ] ]
 				  ifFalse: [ 
 				  (value at: (step modulo: value size)) toLocal: key asString ] ].
@@ -423,7 +566,7 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 ]
 
 { #category : #playing }
-Performance >> playMIDISequenceAt: aRateInSeconds steps: aNumberOfSteps on: aMIDISender [
+Performance >> playMIDISequenceAt: aRateInSeconds for: aNumberOfSteps on: aMIDISender [
 
 	"test"
 
@@ -441,8 +584,79 @@ if you want to send out ccs
 	step := 0.
 
 
-	^ [ "bpm toKyma: 'BPM'."
-	  visualization startWith: bpm.
+	^ [ "bpm toKyma: 'BPM'."" we dont do a visualization at the momentn""visualization startWith: bpm."
+	  aNumberOfSteps timesRepeat: [ 
+		  (Delay forSeconds: aRateInSeconds) wait.
+		  " test if dictionary values is an Array of two arrays or as defined, a sequence"
+
+		  self values do: [ :value | 
+			  value isSequencer
+				  ifTrue: [ 
+					  (value gates at: (step modulo: value gatesSize)) = 1 ifTrue: [ "noteIndex := noteIndex + 1."
+						  value hasChords
+							  ifFalse: [ 
+								  aMIDISender
+									  playDrum:
+									  (value notes at: (value noteIndex modulo: value notesSize))
+									  onChannel: value midiChannel ]
+							  ifTrue: [ 
+								  aMIDISender
+									  playChord: 60
+									  type: (Chord chordLists at:
+											   (value chords at:
+												    (value noteIndex modulo: value chords size)))
+									  onChannel: value midiChannel
+									  duration: 0.2 ].
+						  "sends a ControlChange message on the same channel, if provided"
+						  value extra1 notNil
+							  ifTrue: [ 
+								  aMIDISender
+									  sendCC: (value extra1 at: 1)
+									  withValue:
+									  ((value extra1 at: 2) at:
+										   (value noteIndex modulo: value extra1Size))
+									  onChannel: value midiChannel ]
+							  ifFalse: [ nil ].
+
+						  "sends another ControlChange message on the same channel, if provided"
+						  value extra2 notNil
+							  ifTrue: [ 
+								  aMIDISender
+									  sendCC: (value extra2 at: 1)
+									  withValue:
+									  ((value extra2 at: 2) at:
+										   (value noteIndex modulo: value extra2Size))
+									  onChannel: value midiChannel ]
+							  ifFalse: [ nil ].
+
+						  "advance"
+						  value noteIndex: value noteIndex + 1 ] ]
+				  ifFalse: [ nil ] ].
+
+		  "step is incrementing in any case"
+		  step := step + 1 ] ] forkAt: Processor timingPriority
+]
+
+{ #category : #playing }
+Performance >> playOldMIDISequenceAt: aRateInSeconds steps: aNumberOfSteps on: aMIDISender [
+
+	"test"
+
+	" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through athe Performance containing arrays of numbers as values
+keys in the Performance represents MIDI channels and must be written as #ch1 #ch2 #ch3 and so on if you want to send noteOn/off or
+
+if you want to send out ccs
+"
+
+	| step bpm beatInSeconds gateTime |
+	"as in early hardware sequencers, default gatetime is 80% of the step duration"
+	bpm := 60 / (aRateInSeconds * 4).
+	beatInSeconds := aRateInSeconds * 4.
+	gateTime := aRateInSeconds * 0.8.
+	step := 0.
+
+
+	^ [ "bpm toKyma: 'BPM'."" we dont do a visualization at the momentn""visualization startWith: bpm."
 	  aNumberOfSteps timesRepeat: [ 
 		  (Delay forSeconds: aRateInSeconds) wait.
 		  " test if dictionary values is an Array of two arrays or as defined, a sequence"
@@ -455,9 +669,9 @@ if you want to send out ccs
 							  aMIDISender
 								  playDrum:
 								  (value notes at: (value noteIndex modulo: value notesSize))
-								  onChannel: (key asString at: 3) digitValue.
+								  onChannel: value midiChannel.
 
-							  visualization showSound: key withNote: 60.
+							  "visualization showSound: key withNote: 60."
 
 
 							  "sends a ControlChange message on the same channel, if provided"
@@ -567,6 +781,18 @@ Performance >> resetAllSequencers [
 			ifFalse: [ nil ] ]
 ]
 
+{ #category : #'LiveCoding - performance' }
+Performance >> restore [
+
+	"restore what the performance was before receiveing messages muteAll or solo"
+
+	| p |
+	p := Performance uniqueInstance.
+	self backup keysAndValuesDo: [ :k :v | 
+		p at: k put: v].
+	p keysAndValuesRemove: [ :kp :vp | (p backup includesKey: kp) not ] 
+]
+
 { #category : #accessing }
 Performance >> rsGroupDictionary [
 
@@ -577,6 +803,43 @@ Performance >> rsGroupDictionary [
 Performance >> rsGroupDictionary: anRSGroupDictionary [
 
 	rsGroupDictionary := anRSGroupDictionary
+]
+
+{ #category : #'muting and soloing' }
+Performance >> solo: aKeyOrAnArrayOfKeys [
+
+	" remove all keys from the Performance except aKey or anArrayOfKeys"
+
+	| anArrayOfKeys |
+	backup := self asDictionary. "do the backup"
+	anArrayOfKeys := self keys.
+	aKeyOrAnArrayOfKeys isArray
+		ifTrue: [ 
+			self keysAndValuesRemove: [ :keys :values | 
+				(aKeyOrAnArrayOfKeys  includes: keys) not ] ]
+		ifFalse: [ 
+			self keysAndValuesRemove: [ :keys :values | "
+	[canvas isNotNil ifTrue: [ 
+		anArrayOfKeys do: [ :i | (i ~= aKey) ifTrue: [  
+			canvas removeShape: (rsGroupDictionary at: i) asShape ] ]] ] fork
+" 
+				keys ~= aKeyOrAnArrayOfKeys ] ]
+]
+
+{ #category : #modifying }
+Performance >> swap: firstKey with: secondKey [
+"swap the values of two perfromance keys"
+	| tempValue |
+	tempValue := self at: firstKey.
+	self at: firstKey put: (self at: secondKey).
+	self at: secondKey put: tempValue
+]
+
+{ #category : #'LiveCoding - performance' }
+Performance >> unsolo: aKeyInPerformance [
+	"convenience method to unsolo a key in the performance"
+	
+self restore
 ]
 
 { #category : #accessing }

@@ -1,7 +1,7 @@
 Class {
 	#name : #KeyboardToKyma,
 	#superclass : #KeyboardToOSC,
-	#category : #LiveCoding
+	#category : #'LiveCoding-KeyboardControl'
 }
 
 { #category : #initialization }

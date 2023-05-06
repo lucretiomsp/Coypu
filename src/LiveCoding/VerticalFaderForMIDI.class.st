@@ -12,6 +12,23 @@ Class {
 }
 
 { #category : #'instance creation' }
+VerticalFaderForMIDI class >> new: anArray [
+
+	"shortcut to create MIDI faderLabel #(aCCNumber aMIDISender a channel)"
+
+	^ self new
+		  color: Color random;
+		  ccNumber: (anArray at: 1);
+		  midiSender: (anArray at: 2);
+		  midiChannel: (anArray at: 3);
+		  minValue: 0;
+		  maxValue: 127;
+		  faderLabel: 'Control Change';
+		  openInWindow;
+		  yourself
+]
+
+{ #category : #'instance creation' }
 VerticalFaderForMIDI class >> newWithCC: aCCNumber forSender: aMIDISender [
 " the fader label is also the OSC address"
 ^ (self new) 
@@ -25,14 +42,15 @@ VerticalFaderForMIDI class >> newWithCC: aCCNumber forSender: aMIDISender [
 
 { #category : #'instance creation' }
 VerticalFaderForMIDI class >> newWithCC: aCCNumber forSender: aMIDISender channel: aMIDIChannel [
-" the fader label is also the OSC address"
-^ (self new) 
-		ccNumber: aCCNumber ;
-		midiSender: aMIDISender;
-		midiChannel:  aMIDIChannel ;
-		minValue: 0;
-		maxValue: 127;
-		yourself
+
+
+	^ self new
+		  ccNumber: aCCNumber;
+		  midiSender: aMIDISender;
+		  midiChannel: aMIDIChannel;
+		  minValue: 0;
+		  maxValue: 127;
+		  yourself
 ]
 
 { #category : #accessing }
@@ -79,28 +97,32 @@ midiSender  := aMIDISender .
 { #category : #'event handling' }
 VerticalFaderForMIDI >> mouseMove: anEvent [
 
-| newLocation mappedY cursorY faderBottom  |
+	| newLocation mappedY cursorY faderBottom faderTop |
+	faderCanMove
+		ifTrue: [ 
+			faderBottom := self extent y + self position y.
+			faderTop := self position y.
+			cursorY := (anEvent position y min: faderBottom) max: faderTop.
+			newLocation := Point x: self center x y: cursorY.
+			cursor center: newLocation.
+			"map cursorY to value from 0 to 1"
+			mappedY := (((cursorY min: faderBottom) - faderBottom) abs min:
+				            self extent y) / self extent y * 127.
 
-faderCanMove ifTrue:
-[
-faderBottom := self extent y + self position y.
-cursorY := anEvent position y.
-newLocation := Point x: (self center x) y: cursorY.
-cursor center: newLocation .
-"map cursorY to value from 0 to 1"
-mappedY := (((((cursorY min: faderBottom )- faderBottom ) abs) min: self extent y) / self extent y) * 127.
-Transcript show: newLocation ; cr.
-visualization clock radius: (mappedY asInteger / 2); update.
-midiSender sendCC: ccNumber withValue: (mappedY asInteger ) onChannel: midiChannel 
-] ifFalse: [ nil] .
 
-"for debug"
+			midiSender
+				sendCC: ccNumber
+				withValue: mappedY asInteger
+				onChannel: midiChannel ]
+		ifFalse: [ "for debug" nil ]
 ]
 
 { #category : #'as yet unclassified' }
 VerticalFaderForMIDI >> openInWindow [
-   
-	^ (self openInWindowLabeled: faderLabel ) position: (800@200)
+
+	^ (self openInWindowLabeled: faderLabel)
+		  extent: 100 @ 400;
+		  position: 800 @ 200
 ]
 
 { #category : #accessing }

@@ -56,6 +56,25 @@ Array >> and: anArray and: anotherArray [
 ]
 
 { #category : #'*LiveCoding' }
+Array >> arp: anArrayOfIntervals [
+
+	"STILL NOT AT ITS BEST"
+
+	"arpeggiate the notes inside the first array "
+
+	| midResult finalResult restsOrGates restsOrGatesArpSize |
+	restsOrGates := self collect: [ :i | (i ~= 0) asInteger ].
+	restsOrGatesArpSize := restsOrGates times: anArrayOfIntervals size.
+	midResult  := OrderedCollection new.
+	finalResult := OrderedCollection new.
+	anArrayOfIntervals do: [ :i | midResult addAll: self + i ].
+	1 to: (midResult  size) do: [ :i | finalResult add: (midResult at: i) * (restsOrGatesArpSize at: i) ].
+
+
+	^ finalResult asArray
+]
+
+{ #category : #'*LiveCoding' }
 Array >> asRhythm [
 " convert Array into a Rhythm"
 | rhythm |
@@ -94,15 +113,39 @@ Array >> innestedWithTrigs: anotherArray [
 
 { #category : #'*LiveCoding' }
 Array >> into: anotherArray [
-"return a new array with anotherArray at the desired indexes; if the index is out of bound, the last element of another array is collected"
-^ self collect: [ :i | anotherArray  at: (i min: anotherArray size)]
-	
+
+	"return a new array with anotherArray at the desired indexes; if the index is out of bound, the last element of another array is collected.
+	if the index is 0 a 0 is collected indicating a rest"
+
+	^ self collect: [ :i | i~= 0 ifTrue: [   anotherArray at: (i min: anotherArray size) ] ifFalse: [0]]
 ]
 
 { #category : #'*LiveCoding' }
 Array >> isSequencer [
 
 	^ false
+]
+
+{ #category : #'*LiveCoding' }
+Array >> notes [
+
+	"convert an array of MIDI note numbers into a Sequencer where 0 corresponds to rests"
+
+	| seq allTrigs validTrigs validNotes allValues |
+	allTrigs := OrderedCollection new.
+	
+
+	allValues := OrderedCollection new.
+	self do: [ :i | 
+		i isArray
+			ifTrue: [allTrigs addAll: i . allValues addAll: i ]
+			ifFalse: [ allTrigs add: i. allValues add: i ] ].
+	validTrigs := allTrigs collect: [ :i | i isZero not asInteger ].
+
+	validNotes := allValues reject: [ :i | i = 0 ].
+	seq := validTrigs asArray asSeq notes: validNotes asArray.
+	seq cycleDurations: self asCycleDurations.
+	^ seq
 ]
 
 { #category : #'*LiveCoding' }

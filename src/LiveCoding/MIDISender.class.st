@@ -92,34 +92,46 @@ MIDISender >> openMidiOutWithDevice: aDeviceID [
 
 { #category : #initialization }
 MIDISender >> playChord: aNoteNumber type: aChordType onChannel: aMIDIChannel duration: aDurationInSeconds [
-" play aChord of aChordType with root aNoteNumber on the selected channel with a fixed velocity of 100"
+
+	" play aChord of aChordType with root aNoteNumber on the selected channel with a fixed velocity of 100"
+
+	| noteOn noteOff chordOn chordOff mout |
+	instance := self instance.
+
+	noteOn := 144 + (aMIDIChannel - 1).
+	noteOff := 128 + (aMIDIChannel - 1).
+	chordOn := Array new: aChordType size.
+	chordOff := Array new: aChordType size.
+
+	mout := self.
+	" create the chord"
 
 
-|  noteOn noteOff chordOn chordOff mout|
+	(1 to: aChordType size) do: [ :i | 
+		chordOn at: i put: (PortMidi
+				 message: noteOn
+				 and: aNoteNumber + (aChordType at: i)
+				 and: 100).
+		chordOff at: i put: (PortMidi
+				 message: noteOff
+				 and: aNoteNumber + (aChordType at: i)
+				 and: 100) ].
 
-instance := self instance . 
+	[ 
+	(1 to: aChordType size) do: [ :i | 
+		(aNoteNumber + (aChordType at: i)) traceCr.
+		instance
+			writeShortOn: mout midiOut value
+			when: 0
+			theMessage: (chordOn at: i) ].
 
-noteOn := 144 + (aMIDIChannel - 1).
-noteOff := 128 + (aMIDIChannel - 1) .
-chordOn := Array new: aChordType size.
-chordOff :=  Array new: aChordType size.
+	(Delay forSeconds: aDurationInSeconds) wait.
 
-mout := self .
-" create the chord"
-
-
-(1 to: aChordType size) do:  [:i | chordOn at: i put: (PortMidi message: noteOn  and: aNoteNumber + (aChordType at: i)  and: 100).
-	chordOff at: i put: (PortMidi message: noteOff  and: aNoteNumber + (aChordType at: i)  and: 100).
-	].
-
-[(1 to: aChordType size) do: [:i |instance writeShortOn: mout midiOut value when: 0 theMessage: (chordOn at: i)]. 
-(Delay forSeconds: aDurationInSeconds ) wait  . 
-
-(1 to: aChordType size) do: [:i |instance writeShortOn: mout  midiOut value when: 0 theMessage: (chordOff at: i)]] fork.
-
-
-
-
+	(1 to: aChordType size) do: [ :i | 
+		instance
+			writeShortOn: mout midiOut value
+			when: 0
+			theMessage: (chordOff at: i) ] ] fork
 ]
 
 { #category : #'as yet unclassified' }
@@ -158,20 +170,19 @@ MIDISender >> playNote: aNoteNumber onChannel: aMIDIChannel duration: aDurationI
 
 	" play aNoteNumber on channel aChannel for aDurationInSeconds"
 
-	| noteOn noteOff channel  |
-	
+	| noteOn noteOff channel |
 	channel := aMIDIChannel - 1.
 	noteOn := PortMidi
-		          message: 144 + aMIDIChannel
+		          message: 144 + channel
 		          and: aNoteNumber
 		          and: 100.
 	noteOff := PortMidi
-		           message: 128 + aMIDIChannel
+		           message: 128 + channel
 		           and: aNoteNumber
 		           and: 100.
 	[ 
 	instance writeShortOn: self midiOut value when: 0 theMessage: noteOn.
-	(Delay forSeconds: aDurationInSeconds ) wait.
+	(Delay forSeconds: aDurationInSeconds) wait.
 	instance writeShortOn: self midiOut value when: 0 theMessage: noteOff ]
 		fork
 ]
@@ -194,12 +205,20 @@ instance writeShortOn: self midiOut value when: 0 theMessage: cChange.
 { #category : #'as yet unclassified' }
 MIDISender >> sendStart [
 
-" send Transport start message to exteral MIDI device"
+	" send Transport start message to exteral MIDI device"
 
-	| msg |
+	| startMsg clockMsg |
+	startMsg := PortMidi message: 250 and: 0 and: 0.
+	clockMsg := PortMidi message: 248 and: 0 and: 0.
+
+	instance
+		writeShortOn: self midiOut value
+		when: 0
+		theMessage: startMsg.
+		
+		instance
+		writeShortOn: self midiOut value
+		when: 0
+		theMessage: clockMsg.
 	
-
-	msg := PortMidi message: 250 and: 0 and: 0.
-
-	instance writeShortOn: self midiOut value when: 0 theMessage: msg
 ]

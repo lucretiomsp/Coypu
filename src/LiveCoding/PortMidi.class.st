@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'outStream'
 	],
-	#category : #LiveCoding
+	#category : #'LiveCoding-MIDI'
 }
 
 { #category : #'as yet unclassified' }
@@ -66,6 +66,18 @@ PortMidi class >> terminate [
 ^ self ffiCall: #(PmError Pm_Terminate()) library: '/Users/domenicocipriani/MyStuff/portmidi-master/Release/libportmidi.2.0.3.dylib'
 ]
 
+{ #category : #'as yet unclassified' }
+PortMidi class >> traceAllDevices [
+
+	"Show on Transcript all the available MIDI Device"
+Transcript
+		clear.
+	 0 to: self countDevices - 1 do: [ :i | 
+	(self uniqueInstance getDeviceNameid: i) traceCr ].
+	
+	Transcript	open
+]
+
 { #category : #writing }
 PortMidi class >> writeShortOn: aPointerToAStream for: aPmMessage [
 "messages is sent out immediately, so timestamp is 0"
@@ -78,7 +90,7 @@ PortMidi >> close: aMIDIStream [
 ^ self ffiCall: #(PmError Pm_Close(void* aMIDIStream))
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'accessing - devices' }
 PortMidi >> countDevices [
 ^ self ffiCall: #(int Pm_CountDevices()) 
 ]
@@ -99,17 +111,20 @@ outStream  := self class createNewPointerForStreamWithType: 'void**'.
 ^ outStream 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'accessing - devices' }
 PortMidi >> getDeviceInfo: aDeviceID [
 ^ self ffiCall: #(PmDeviceInfo * Pm_GetDeviceInfo (int aDeviceID)) 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'accessing - devices' }
 PortMidi >> getDeviceNameid: aDeviceID [
-| name type |
-name := (self getDeviceInfo: aDeviceID ) name fromCString .
-(((self getDeviceInfo: aDeviceID ) input) = 1) ifTrue:  [ type := ' is input' ] ifFalse: [ type := 'is output' ].
-^ name , type.
+
+	| name type |
+	name := (self getDeviceInfo: aDeviceID) name fromCString.
+	(self getDeviceInfo: aDeviceID) input = 0
+		ifTrue: [ type := ' is input' ]
+		ifFalse: [ type := 'is output' ].
+	^ name , type
 ]
 
 { #category : #initialization }
