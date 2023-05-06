@@ -14,7 +14,7 @@ when arrays are sent, each index of the array will be sent to the corresponding 
 
 ### Requirements ###
 
-OSC package versions stable 1.0 must be available in your Pharo image.\
+<span style="color:blue"> OSC package versions stable 1.0 must be available in your Pharo image. </span> \
 You can get it with this Metacello script (just copy and paste it into your Playground)\
 
 Metacello new baseline: 'OSC'; repository: 'github://Ducasse/OSC/src'; load.\
