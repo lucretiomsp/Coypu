@@ -54,6 +54,19 @@ SequencerTests >> testFlipSequencer [
 ]
 
 { #category : #tests }
+SequencerTests >> testSequencerOffset [
+
+| seq result1 result2 |
+seq := 16 downbeats.
+
+result1 := '2222' pattern.
+result2 := '1111' pattern.
+
+self assert: (seq offset: 2) equals: result1.
+self assert: (seq offset: -1) equals: result2.
+]
+
+{ #category : #tests }
 SequencerTests >> testSequencerToPerformance [
 
 sequencer to: #track.

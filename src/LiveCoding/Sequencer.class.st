@@ -430,16 +430,15 @@ Sequencer >> numberOfTrigs [
 	^ size
 ]
 
-{ #category : #accessing }
+{ #category : #'Sequencer - transformation' }
 Sequencer >> offset: aNumber [
 
-	"offset the rhythm inside the sequencerby aNumber of 'steps' wrapping it around its size"
+	"offset the rhythm by aNumber of 'steps' wrapping it around its size"
 
-	| rhythm melody |
-	rhythm := self gates.
-	melody := self notes.
-	self gates: (rhythm offset: aNumber).
-	self notes: (melody offset: aNumber)
+	| newArray |
+	newArray := Array new: self gates size.
+	(1 to: self gates size) do: [ :i | newArray at: ((i + aNumber ) modulo: self gates size) put: (self gates at: i) ].
+	self gates: newArray
 ]
 
 { #category : #'sequencer - cycles' }

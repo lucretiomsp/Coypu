@@ -158,8 +158,10 @@ Integer >> minor [
 
 { #category : #'*LiveCoding' }
 Integer >> modulo: anInteger [
-"convenience method to index arrays after incrementing"
-^ (self rem: anInteger) + 1
+
+	"convenience method to index arrays after incrementing"
+
+	^ self - 1 % anInteger  + 1
 ]
 
 { #category : #'*LiveCoding' }
