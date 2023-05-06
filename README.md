@@ -7,7 +7,7 @@ It has been originally designed to work with SymbolicSound Kyma but can be used 
 ## Basic usage ##
 
 Integers and arrays implements the messages\
-``` 
+```Pharo 
 9 toKyma: 'anOSCaddressWithoutTheFirstSlash'
 ```
 and\
