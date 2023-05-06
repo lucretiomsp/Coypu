@@ -7,7 +7,8 @@ It has been originally designed to work with SymbolicSound Kyma but can be used 
 ## Basic usage ##
 
 Integers and arrays implements the messages\
-``` 9 toKyma: 'anOSCaddressWithoutTheFirstSlash' \
+``` Smalltalk
+9 toKyma: 'anOSCaddressWithoutTheFirstSlash'
 ```
 and\
 toLocal: 'anOSCaddressWithoutTheFirstSlash'\
