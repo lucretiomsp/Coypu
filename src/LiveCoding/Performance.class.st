@@ -542,7 +542,7 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 							  note := value notes at:
 								          (value noteIndex modulo: value notesSize).
 							  key asString
-								  toLocalFor: gateTime
+								  toLocalAsGate: gateTime
 									  *
 									  (value durations at:
 										   (value noteIndex modulo: value durationsSize))
@@ -554,7 +554,7 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 								  ifTrue: [ 
 									  ((value extra1 at: 2) at:
 										   (value noteIndex modulo: value extra1Size)) toLocal:
-										  (key asString , (value extra1 at: 1)) ]
+										  key asString , '/' , (value extra1 at: 1) ]
 								  ifFalse: [ nil ].
 							  value noteIndex: value noteIndex + 1 ]
 						  ifFalse: [ nil ] ]

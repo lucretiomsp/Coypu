@@ -308,18 +308,21 @@ ByteString >> toLocalAsGate: gateTimeInSeconds note: aNoteNumber [
 
 	" send an OSC message that mimics the behaviour oa MIDI note on message.
 	gateTime is expressed in seconds"
-| oscGate oscNote localAddress |
+
+	| oscGate oscNote localAddress |
 	localAddress := '127.0.0.1'.
 
-	oscGate := '/' , self , 'Gate'.
-	oscNote := '/' , self , 'Note'.
+	oscGate := '/' , self , '/Gate'.
+	oscNote := '/' , self , '/Note'.
 	(OSCMessage for: { 
 			 oscNote.
-			 aNoteNumber  }) sendToAddressString: localAddress port: 8000.
+			 aNoteNumber asFloat })
+		sendToAddressString: localAddress
+		port: 8000.
 	(OSCMessage for: { 
 			 oscGate.
 			 1.0 }) sendToAddressString: localAddress port: 8000.
-	(Delay forSeconds: gateTimeInSeconds ) wait.
+	(Delay forSeconds: gateTimeInSeconds) wait.
 	(OSCMessage for: { 
 			 oscGate.
 			 0.0 }) sendToAddressString: localAddress port: 8000
