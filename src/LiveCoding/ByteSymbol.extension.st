@@ -1,6 +1,40 @@
 Extension { #name : #ByteSymbol }
 
 { #category : #'*LiveCoding' }
+ByteSymbol >> bw: anArrayOfBw [
+
+	"set anArrayOfBw as extra1 of the sequencer in the performance at self"
+
+	| p |
+	p := Performance uniqueInstance.
+	(p at: self) extra1: { 
+			#Bw.
+			anArrayOfBw }
+]
+
+{ #category : #'*LiveCoding' }
+ByteSymbol >> extra1: anArrayWithASymbolAndAnArray [
+
+	" change the value of extra1 in the Performance at self key"
+
+	| p |
+	p := Performance uniqueInstance.
+
+	(p at: self) extra1: anArrayWithASymbolAndAnArray
+]
+
+{ #category : #'*LiveCoding' }
+ByteSymbol >> extra2: anArrayWithASymbolAndAnArray [
+
+	" change the value of extra1 in the Performance at self key"
+
+	| p |
+	p := Performance uniqueInstance.
+
+	(p at: self) extra2: anArrayWithASymbolAndAnArray
+]
+
+{ #category : #'*LiveCoding' }
 ByteSymbol >> for: anArray [
 
 "creates a Dictionary with the symbol as key and the array as value"
@@ -26,6 +60,58 @@ ByteSymbol >> indexes: anArrayOfIndexes [
 	(p at: self) extra1: { 
 			#Index.
 			anArrayOfIndexes }
+]
+
+{ #category : #'*LiveCoding' }
+ByteSymbol >> mute [
+
+	" remove the key from the Performance, if any active key in the Performance correspond to the symbol"
+
+	| perf |
+	perf := Performance uniqueInstance.
+	perf removeKey: self ifAbsent: [ nil ]
+]
+
+{ #category : #'*LiveCoding' }
+ByteSymbol >> notes: anArrayOfNotes [
+
+	" change the notes of a Sequencer at self key in a Performance"
+
+	| p |
+	p := Performance uniqueInstance.
+	(p at: self) notes: anArrayOfNotes
+]
+
+{ #category : #'*LiveCoding' }
+ByteSymbol >> number: anArrayOfNumbers [
+
+	" set the extra2 slot of the sequencer in the performance at self key with the values of anArrayOfNumbers and the string #Number - to be used with muultikits"
+
+	| p |
+	p := Performance uniqueInstance.
+	(p at: self) extra2: { 
+			#Number.
+			anArrayOfNumbers }
+]
+
+{ #category : #'*LiveCoding' }
+ByteSymbol >> solo [
+
+	"shorthand for p solo: aKeyInperformance"
+
+	| p |
+	p := Performance uniqueInstance.
+	p solo: self
+]
+
+{ #category : #'*LiveCoding' }
+ByteSymbol >> unsolo [
+
+	"shorthand for p unsolo: aKeyInPerformance"
+
+	| p |
+	p := Performance uniqueInstance.
+	p unsolo: self
 ]
 
 { #category : #'*LiveCoding' }
@@ -62,4 +148,17 @@ ByteSymbol >> visualizeGates [
 	window := morph openInWindowLabeled: self asString.
 	window extent: 900 @ 260.
 	morph privateOwner: window
+]
+
+{ #category : #'*LiveCoding' }
+ByteSymbol >> x: anArrayOfXs [
+
+	"set anArrayOfX as extra1 of the sequencer in the performance at self
+	intended to use for a Modal Bar strike position"
+
+	| p |
+	p := Performance uniqueInstance.
+	(p at: self) extra1: { 
+			#x.
+			anArrayOfXs }
 ]
