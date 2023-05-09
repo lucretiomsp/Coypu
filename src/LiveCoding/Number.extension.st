@@ -46,7 +46,7 @@ Number >> toLocal: aString [
 
 	(OSCMessage for: { 
 			 ('/' , aString).
-			 self asFloat }) sendToAddressString: localAddress port: 8000
+			 self asFloat }) sendToAddressString: localAddress port: 57120
 ]
 
 { #category : #'*LiveCoding' }

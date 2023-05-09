@@ -318,14 +318,14 @@ ByteString >> toLocalAsGate: gateTimeInSeconds note: aNoteNumber [
 			 oscNote.
 			 aNoteNumber asFloat })
 		sendToAddressString: localAddress
-		port: 8000.
+		port: 57120.
 	(OSCMessage for: { 
 			 oscGate.
-			 1.0 }) sendToAddressString: localAddress port: 8000.
+			 1.0 }) sendToAddressString: localAddress port: 57120.
 	(Delay forSeconds: gateTimeInSeconds) wait.
 	(OSCMessage for: { 
 			 oscGate.
-			 0.0 }) sendToAddressString: localAddress port: 8000
+			 0.0 }) sendToAddressString: localAddress port: 57120
 ]
 
 { #category : #'*LiveCoding' }
