@@ -312,8 +312,8 @@ ByteString >> toLocalAsGate: gateTimeInSeconds note: aNoteNumber [
 	| oscGate oscNote localAddress |
 	localAddress := '127.0.0.1'.
 
-	oscGate := '/' , self , '/Gate'.
-	oscNote := '/' , self , '/Note'.
+	oscGate := '/' , self , 'Gate'.
+	oscNote := '/' , self , 'Note'.
 	(OSCMessage for: { 
 			 oscNote.
 			 aNoteNumber asFloat })

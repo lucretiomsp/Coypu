@@ -527,7 +527,7 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 	step := 0.
 
 	^ [ 
-	  bpm toLocal: 'BPM'.
+	  bpm toLocal: 'BPM/'.
 
 	  aNumberOfSteps timesRepeat: [ 
 		  (Delay forSeconds: aRateInSeconds) wait.
@@ -554,7 +554,7 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 								  ifTrue: [ 
 									  ((value extra1 at: 2) at:
 										   (value noteIndex modulo: value extra1Size)) toLocal:
-										  key asString , '/' , (value extra1 at: 1) ]
+										  key asString , (value extra1 at: 1) ]
 								  ifFalse: [ nil ].
 							  value noteIndex: value noteIndex + 1 ]
 						  ifFalse: [ nil ] ]

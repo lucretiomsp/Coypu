@@ -239,3 +239,13 @@ Array >> trigs [
 			ifFalse: [ nil ] ].
 	^ result
 ]
+
+{ #category : #'*LiveCoding' }
+Array >> wrap: anInteger [
+
+	"inspire by Cmajor language wrap<int> always wrap the index of the array to the array size"
+
+	| result |
+	result := self at: anInteger - 1 % self size + 1.
+	^ result
+]
