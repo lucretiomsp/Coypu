@@ -104,6 +104,28 @@ Array >> asSeq [
 ]
 
 { #category : #'*LiveCoding' }
+Array >> euclidean [
+
+	"generates an euclidean rhythm with (self at: 1) onsets and (self at: 2) pulses. 
+algorithm based on the Bresenham approach"
+
+	| onsets pulses slope result previous current |
+	current := 0.
+	onsets := self at: 1.
+	pulses := self at: 2.
+	slope := onsets / pulses.
+	result := OrderedCollection new.
+	(0 to: pulses - 1) do: [ :i | 
+		current := (i * slope) asInteger.
+		current ~= previous
+			ifTrue: [ result add: 1 ]
+			ifFalse: [ result add: 0 ].
+		previous := current ].
+
+	^ result asArray asRhythm asSeq
+]
+
+{ #category : #'*LiveCoding' }
 Array >> innestedWithTrigs: anotherArray [
 " add trigs in self if anotherArray has trigs at indexes where self have not"
 (1 to: (self size)) do: [ :i  |  self at: i put: (1 min: ((self at: i) + (anotherArray at: i)))].

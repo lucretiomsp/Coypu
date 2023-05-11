@@ -67,6 +67,16 @@ self assert: (seq offset: -1) equals: result2.
 ]
 
 { #category : #tests }
+SequencerTests >> testSequencerSound [
+
+| seq |
+seq := 16 downbeats sound: #('bd' 'cp:2').
+
+self assert: seq soundPattern  equals: #('bd' 'cp').
+self assert: seq samplesIndex equals: #(0 2).
+]
+
+{ #category : #tests }
 SequencerTests >> testSequencerToPerformance [
 
 sequencer to: #track.

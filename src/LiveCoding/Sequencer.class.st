@@ -2,6 +2,8 @@
 A Sequencer contains gates, notes, duration and a noteIndex. extra1 and extra2 controls can be added.
 A Sequencer can contain a MIDI channel, as intended to play it on A performance to a MIDI sender
 The Sequencer is the basi unit to play a Performance.
+
+
 It is conceived as a Digital Audio Workstation track.
 "
 Class {
@@ -520,6 +522,39 @@ Sequencer >> playBasicDirtEventAt: anIndex [
 ]
 
 { #category : #'sequencer - playing' }
+Sequencer >> playBasicDirtEventAt: anIndex id: aString [
+
+	"convenience method to play single events inside a Sequencer / it is possible to select only sound and index"
+
+	| index sound  |
+	index := (self samplesIndex wrap: anIndex) asFloat.
+	sound := self soundPattern wrap: anIndex.
+
+
+	(OSCMessage for: { 
+			           '/dirt/play'.
+			           '_id '.
+			           aString .
+			           'cps'.
+			           0.56.
+			           'cycle'.
+			           71.00.
+			           'delta'.
+			           0.89.
+			           'n'.
+			           index.
+			           'orbit'.
+			           5.0.
+			           's'.
+			           sound })
+
+
+		sendToAddressString: '127.0.0.1'
+		port: 57120.
+	^ true
+]
+
+{ #category : #'sequencer - playing' }
 Sequencer >> playToDirt: aNumberOfSteps rate: aRateInSeconds [
 
 	"play the sequencer to the SuperDirt/SuperCollider synth engine"
@@ -606,6 +641,34 @@ Sequencer >> size [
 	result := self gates select: [ :i | i > 0 ].
 	size := result size.
 	^ size
+]
+
+{ #category : #'LiveCodin - Performance' }
+Sequencer >> sound: soundsAndIndexs [
+	"assign to a Sequencer an array with samples as string and one with samples index - intended to be used with the SuperDirt audioengine for SuperCollider for example: 
+	16 downbeats sound: #('cp' 'bd:3' 'tom:4')
+	
+	//// what if using symbools insteda of strings?
+	 
+	"
+	
+	|  sounds indexes |
+sounds := OrderedCollection new.
+	(1 to: soundsAndIndexs size) do: [ :i | 
+		sounds add:
+			(((soundsAndIndexs at: i) findBetweenSubstrings: ':') at: 1) ].
+	indexes := OrderedCollection new.
+	(1 to: soundsAndIndexs size) do: [ :i | 
+		((soundsAndIndexs at: i) findBetweenSubstrings: ':') size > 1
+			ifTrue: [ 
+				indexes add:
+					(((soundsAndIndexs at: i) findBetweenSubstrings: ':') at: 2)
+						asInteger ]
+			ifFalse: [ indexes add: 0 ] ].
+
+self soundPattern: sounds asArray;
+		       samplesIndex: indexes asArray.
+		  
 ]
 
 { #category : #accessing }
