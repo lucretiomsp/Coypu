@@ -671,6 +671,13 @@ self soundPattern: sounds asArray;
 		  
 ]
 
+{ #category : #'LiveCodin - Performance' }
+Sequencer >> sound: soundsAndIndexs to: aKeyInPerformance [
+"convenience method to avoid extra parenthesis"
+
+(self sound: soundsAndIndexs ) to: aKeyInPerformance 
+]
+
 { #category : #accessing }
 Sequencer >> soundPattern [
 
@@ -687,23 +694,28 @@ Sequencer >> soundPattern: anArrayOfStrings [
 Sequencer >> sounds: aStringForDirt [
 
 	| soundsAndIndexs sounds indexes |
+	self
+		deprecated: 'Use #sound: instead'
+		on: '11 May 2023'
+		in:
+		'Pharo-11.0.0+build.688.sha.cf3d3fd1805673a058ddf99229edb72ef062c890 (64 Bit)'.
 	soundsAndIndexs := aStringForDirt findBetweenSubstrings: ' '.
 	sounds := OrderedCollection new.
-	(1 to: soundsAndIndexs size) do: [ :i | 
+	(1 to: soundsAndIndexs size) do: [ :i |
 		sounds add:
 			(((soundsAndIndexs at: i) findBetweenSubstrings: ':') at: 1) ].
 	indexes := OrderedCollection new.
-	(1 to: soundsAndIndexs size) do: [ :i | 
+	(1 to: soundsAndIndexs size) do: [ :i |
 		((soundsAndIndexs at: i) findBetweenSubstrings: ':') size > 1
-			ifTrue: [ 
+			ifTrue: [
 				indexes add:
 					(((soundsAndIndexs at: i) findBetweenSubstrings: ':') at: 2)
 						asInteger ]
 			ifFalse: [ indexes add: 0 ] ].
 
 	self
-		soundPattern: sounds asArray ;
-		samplesIndex: indexes asArray .
+		soundPattern: sounds asArray;
+		samplesIndex: indexes asArray
 ]
 
 { #category : #accessing }
