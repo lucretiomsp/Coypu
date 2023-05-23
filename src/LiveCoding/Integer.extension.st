@@ -246,6 +246,27 @@ Integer >> randomSequencerIn: anArray withProbability: anInteger [
 ]
 
 { #category : #'*LiveCoding' }
+Integer >> randomTrigs [
+
+| result |
+result := Array new: self.
+
+1 to: self do: [ :i | result at: i put: Random new next rounded ].
+^ result asSeq.
+]
+
+{ #category : #'*LiveCoding' }
+Integer >> randomTrigsWithProbability: anInteger [
+
+
+| result |
+result := Array new: self.
+
+1 to: self do: [ :i | result at: i put: ((Random new nextIntegerBetween: 0 and: 100) < anInteger ) asInteger ].
+^ result asSeq.
+]
+
+{ #category : #'*LiveCoding' }
 Integer >> rumba [
 " create an array of self size of Cuban rumba rhytm pulses. Better if used with self = 16 x anInteger "
 | pattern |
