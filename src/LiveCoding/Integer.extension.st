@@ -187,6 +187,65 @@ Integer >> quavers [
 ]
 
 { #category : #'*LiveCoding' }
+Integer >> randomInside: anArray [
+
+	"return an array of self size choosing from the values inside anArray"
+
+	| result |
+	result := (1 to: self) collect: [ :i | 
+		          anArray at:
+			          (Random new nextIntegerBetween: 1 and: anArray size) ].
+
+	^ result
+]
+
+{ #category : #'*LiveCoding' }
+Integer >> randomNotesFrom: anArray root: aRootNote octaves: aNumber [
+
+	"return an array of self size of a random note from anArray of note numbers with root aRootNote, and aNumber octave range"
+
+	| intervals melody |
+	intervals := (1 to: self) collect: [ :i | 
+		             (anArray at: (Random new nextInteger: anArray size))
+		             + ((Random new nextInteger: aNumber + 1) - 1 * 12) ].
+	melody := intervals + aRootNote.
+	^ melody
+]
+
+{ #category : #'*LiveCoding' }
+Integer >> randomSequencer [
+
+	"return a Sequencer with self random trigs and random notes  "
+
+	| triggers randNotes |
+	triggers := self randomTrigs.
+	randNotes := triggers trigs randomFrom: #( 24 88 ).
+	^ triggers notes: randNotes
+]
+
+{ #category : #'*LiveCoding' }
+Integer >> randomSequencerIn: anArray [
+
+	"return a Sequencer with self random trigs and random notes in the array "
+
+	| triggers randNotes |
+	triggers := self randomTrigs.
+	randNotes := triggers trigs randomInside: anArray.
+	^ triggers notes: randNotes
+]
+
+{ #category : #'*LiveCoding' }
+Integer >> randomSequencerIn: anArray withProbability: anInteger [
+
+	"return a Sequencer with self random trigs withProbability and random notes in the array "
+
+	| triggers randNotes |
+	triggers := self randomTrigsWithProbability: anInteger.
+	randNotes := triggers trigs randomInside: anArray.
+	^ triggers notes: randNotes
+]
+
+{ #category : #'*LiveCoding' }
 Integer >> rumba [
 " create an array of self size of Cuban rumba rhytm pulses. Better if used with self = 16 x anInteger "
 | pattern |

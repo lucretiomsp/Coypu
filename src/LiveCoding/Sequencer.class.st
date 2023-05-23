@@ -496,29 +496,11 @@ Sequencer >> playBasicDirtEventAt: anIndex [
 	| index sound message |
 	index := (self samplesIndex wrap: anIndex) asFloat.
 	sound := self soundPattern wrap: anIndex.
+   message := OrderedCollection new.
+message addAll: { '_id' . '1' . 'cps' . 0.56 . 'delta' . 0.125 . 'orbit' . 0 . 's' . sound . 'n' . index}. 
 
-
-	(OSCMessage for: { 
-			           '/dirt/play'.
-			           '_id '.
-			           '4'.
-			           'cps'.
-			           0.56.
-			           'cycle'.
-			           71.00.
-			           'delta'.
-			           0.89.
-			           'n'.
-			           index.
-			           'orbit'.
-			           5.0.
-			           's'.
-			           sound })
-
-
-		sendToAddressString: '127.0.0.1'
-		port: 57120.
-	^ true
+	message asOSCMessageForSuperDirt .
+	^ true 
 ]
 
 { #category : #'sequencer - playing' }
@@ -526,32 +508,16 @@ Sequencer >> playBasicDirtEventAt: anIndex id: aString [
 
 	"convenience method to play single events inside a Sequencer / it is possible to select only sound and index"
 
-	| index sound  |
+
+	| index sound message |
 	index := (self samplesIndex wrap: anIndex) asFloat.
 	sound := self soundPattern wrap: anIndex.
+   message := OrderedCollection new.
+"which value for CPS"
+message addAll: { '_id' . aString . 'cps' . 0.22 . 'delta' . 0.125 . 'orbit' . 0 . 's' . sound . 'n' . index}. 
 
-
-	(OSCMessage for: { 
-			           '/dirt/play'.
-			           '_id '.
-			           aString .
-			           'cps'.
-			           0.56.
-			           'cycle'.
-			           71.00.
-			           'delta'.
-			           0.89.
-			           'n'.
-			           index.
-			           'orbit'.
-			           5.0.
-			           's'.
-			           sound })
-
-
-		sendToAddressString: '127.0.0.1'
-		port: 57120.
-	^ true
+	message asOSCMessageForSuperDirt .
+	^ true 
 ]
 
 { #category : #'sequencer - playing' }
