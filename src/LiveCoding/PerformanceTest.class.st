@@ -87,6 +87,20 @@ PerformanceTest >> testExtra2ToKey [
 ]
 
 { #category : #tests }
+PerformanceTest >> testHexPatternAndDirtSoundsToKey [
+
+	| p |
+	p := Performance uniqueInstance.
+	'8888' sound: #( 'cp' ) to: #synth.
+
+	self
+		assert: (p at: #synth) gates
+		equals: #( 1 0 0 0 1 0 0 0 1 0 0 0 1 0 0 0 ) asRhythm.
+	self assert: (p at: #synth) soundPattern  equals: #('cp').
+
+]
+
+{ #category : #tests }
 PerformanceTest >> testHexPatternAndIndexesToKey [
 
 	| p |

@@ -272,7 +272,7 @@ Sequencer >> index: anArrayOfIndexes [
 	self extra1: #Index values: anArrayOfIndexes 
 ]
 
-{ #category : #'LiveCoding - performance' }
+{ #category : #'LiveCodin - Performance' }
 Sequencer >> index: anArrayOfIndexes to: aKeyInPerformance [
 	"convenience method to avoid extra parenthesis to put a sequencer of gates with sample indexes into a performance"
 	| p |
@@ -302,7 +302,7 @@ Sequencer >> melodyFrom: aScale [
 	^ self notes: array
 ]
 
-{ #category : #'LiveCoding - Performance' }
+{ #category : #'LiveCodin - Performance' }
 Sequencer >> midiCh: anInteger to: aKeyInPerformance [
 
 	" convenience method to avoid extra parenthesis when assigning a midiChannel to  akey in a performance"
@@ -372,7 +372,7 @@ Sequencer >> notes: anArrayOfNotes durs: anArrayOfDurations [
 ^ (Sequencer with: (self at: 1) with: anArrayOfNotes with: anArrayOfDurations  with: 0).
 ]
 
-{ #category : #'LiveCoding - performance' }
+{ #category : #'LiveCodin - Performance' }
 Sequencer >> notes: anArrayOfNotes index: anArrayOfIndexes to: aKeyInPerformance [
 	"convenience method to avoid extra parenthesis while declaring a sequencer of gates with its notes and its sample indexes"
 	| p |
@@ -382,14 +382,14 @@ Sequencer >> notes: anArrayOfNotes index: anArrayOfIndexes to: aKeyInPerformance
 	aKeyInPerformance indexes: anArrayOfIndexes 
 ]
 
-{ #category : #'LiveCodin - performance' }
+{ #category : #'LiveCodin - Performance' }
 Sequencer >> notes: anArrayOfNotes midiCh: anInteger to: aKeyInPerformance [
 	"convenience method to avoid extra parenthesis"
 	
 ((self notes: anArrayOfNotes ) midiChannel:  anInteger) to: aKeyInPerformance .
 ]
 
-{ #category : #'LiveCoding - performance' }
+{ #category : #'LiveCodin - Performance' }
 Sequencer >> notes: anArrayOfNotes mode: anArrayOfModes to: aKeyInPerformance [ 
 	"convenience mode to avoid extra parenthesis to put chord modes into sequencer - designed for polyphonic synths"
 	

@@ -1,6 +1,22 @@
 Extension { #name : #SmallInteger }
 
 { #category : #'*LiveCoding' }
+SmallInteger >> asInt8 [
+
+	| bitArray firsComplement binaryString secondComplementAsString secondComplement result |
+	bitArray := self asBitsArrayOfSize: 8.
+	firsComplement := (bitArray at: 1) * 128 negated.
+	binaryString := String new: 7.
+	2 to: 8 do: [ :i | 
+	binaryString at: i - 1 put: (bitArray at: i) asCharacterDigit ].
+	secondComplementAsString := '2r' , binaryString.
+	secondComplement := Smalltalk compiler evaluate:
+		                    secondComplementAsString.
+	result := firsComplement + secondComplement.
+	^ result
+]
+
+{ #category : #'*LiveCoding' }
 SmallInteger >> saw [
 
 	"fill an array of self steps with values representing a sawtooth with range 0 - 1"

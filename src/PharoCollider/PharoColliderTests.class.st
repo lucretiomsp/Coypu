@@ -147,7 +147,7 @@ self assert: (PureUGen superclass) equals: UGen.
 { #category : #uGensTests }
 PharoColliderTests >> testSinOscAsBytes [
 
-	"at a first moment all Controls are at Conttrol rate, kr"
+	"at a first moment all Controls are at Control rate, kr"
 
 	| freqControl oscillator out sd result |
 	result := #( 6 83 105 110 79 115 99 2 0 0 0 2 0 0 0 1 0 0 0 0 0 0 0 0
