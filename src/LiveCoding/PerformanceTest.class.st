@@ -67,6 +67,15 @@ PerformanceTest >> testBwToKey [
 ]
 
 { #category : #tests }
+PerformanceTest >> testDirtNotesToKey [
+
+| seq |
+seq := 16 downbeats sound: #('arpy') dirtNotes: #(60 61 62 63) to: #aKeyInPerf.
+
+self assert: seq samplesIndex equals: #(0 1 2 3)
+]
+
+{ #category : #tests }
 PerformanceTest >> testExtra1ToKey [
 
 	| p |

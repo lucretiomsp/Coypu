@@ -637,6 +637,19 @@ self soundPattern: sounds asArray;
 		  
 ]
 
+{ #category : #'LiveCoding - Performance' }
+Sequencer >> sound: anArrayOfStrings dirtNotes: anArrayOfMidiNN [
+"add into a Sequencer a soundPattern and notes suitable for SuperDirt"
+	self soundPattern: anArrayOfStrings .
+	self samplesIndex: anArrayOfMidiNN - 60.
+]
+
+{ #category : #'LiveCoding - Performance' }
+Sequencer >> sound: anArrayOfStrings dirtNotes: anArrayOfMidiNN to: aKeyInPerformance [
+"convenience method to avoid extra parenthesis" 
+	(self sound: anArrayOfStrings dirtNotes: anArrayOfMidiNN ) to: aKeyInPerformance
+]
+
 { #category : #'LiveCodin - Performance' }
 Sequencer >> sound: soundsAndIndexs to: aKeyInPerformance [
 "convenience method to avoid extra parenthesis"
