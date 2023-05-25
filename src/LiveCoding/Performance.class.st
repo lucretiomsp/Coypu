@@ -13,7 +13,8 @@ Class {
 		'canvas',
 		'rsGroupDictionary',
 		'freq',
-		'backup'
+		'backup',
+		'bpm'
 	],
 	#classInstVars : [
 		'UniqueInstance',
@@ -93,6 +94,18 @@ Performance >> backup [
 
 	
 	^ backup
+]
+
+{ #category : #accessing }
+Performance >> bpm [
+
+	^ bpm
+]
+
+{ #category : #accessing }
+Performance >> bpm: aRateInSeconds [
+
+	bpm := 60 / 4 / (aRateInSeconds ).
 ]
 
 { #category : #accessing }
