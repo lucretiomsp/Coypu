@@ -6,7 +6,7 @@ Integer >> adowa [
 | pattern |
 pattern := #(0 0 0 1 0 1 0 1).
 
-^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm .
+^ (((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm) asSeq.
 
 ]
 

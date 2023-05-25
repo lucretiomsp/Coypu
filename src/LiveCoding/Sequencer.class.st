@@ -281,6 +281,14 @@ Sequencer >> index: anArrayOfIndexes to: aKeyInPerformance [
 	aKeyInPerformance indexes: anArrayOfIndexes 
 ]
 
+{ #category : #'as yet unclassified' }
+Sequencer >> inspectSequencers [
+
+<inspectorPresentationOrder: 0 title: 'Sequencers'>
+
+^ SpRoassalPresenter new canvas: self visualizeGates; yourself.
+]
+
 { #category : #testing }
 Sequencer >> isSequencer [
 
@@ -504,6 +512,23 @@ message addAll: { '_id' . '1' . 'cps' . 0.56 . 'delta' . 0.125 . 'orbit' . 0 . '
 ]
 
 { #category : #'sequencer - playing' }
+Sequencer >> playBasicDirtEventAt: anIndex delta: aRateInSeconds [
+
+	"convenience method to play single events inside a Sequencer / it is possible to select only sound and index
+	for a Durtion of aRateinSeconds"
+
+	| index sound message dur |
+	index := (self samplesIndex wrap: anIndex) asFloat.
+	sound := self soundPattern wrap: anIndex.
+   dur := self durations wrap: anIndex .
+   message := OrderedCollection new.
+message addAll: { '_id' . '1' . 'cps' . 0.56 . 'delta' . (aRateInSeconds * dur) asFloat. 'orbit' . 0 . 's' . sound . 'n' . index}. 
+
+	message asOSCMessageForSuperDirt .
+	^ true 
+]
+
+{ #category : #'sequencer - playing' }
 Sequencer >> playBasicDirtEventAt: anIndex id: aString [
 
 	"convenience method to play single events inside a Sequencer / it is possible to select only sound and index"
@@ -515,6 +540,24 @@ Sequencer >> playBasicDirtEventAt: anIndex id: aString [
    message := OrderedCollection new.
 "which value for CPS"
 message addAll: { '_id' . aString . 'cps' . 0.22 . 'delta' . 0.125 . 'orbit' . 0 . 's' . sound . 'n' . index}. 
+
+	message asOSCMessageForSuperDirt .
+	^ true 
+]
+
+{ #category : #'sequencer - playing' }
+Sequencer >> playBasicDirtEventAt: anIndex id: aString delta: aDurationInSeconds [
+
+	"convenience method to play single events inside a Sequencer / it is possible to select only sound and index 
+	delta is the duration of the event"
+
+
+	| index sound message |
+	index := (self samplesIndex wrap: anIndex) asFloat.
+	sound := self soundPattern wrap: anIndex.
+   message := OrderedCollection new.
+"which value for CPS"
+message addAll: { '_id' . aString . 'cps' . 0.22 . 'delta' . aDurationInSeconds asFloat. 'orbit' . 0 . 's' . sound . 'n' . index}. 
 
 	message asOSCMessageForSuperDirt .
 	^ true 
@@ -618,19 +661,23 @@ Sequencer >> sound: soundsAndIndexs [
 	 
 	"
 	
-	|  sounds indexes |
-sounds := OrderedCollection new.
-	(1 to: soundsAndIndexs size) do: [ :i | 
+	| seq soundsAndIndexsSeparated  indexes sounds |
+	soundsAndIndexsSeparated:= soundsAndIndexs findBetweenSubstrings: ' '.
+	
+	
+	sounds := OrderedCollection new.
+	(1 to: soundsAndIndexsSeparated size) do: [ :i | 
 		sounds add:
-			(((soundsAndIndexs at: i) findBetweenSubstrings: ':') at: 1) ].
+			(((soundsAndIndexsSeparated at: i) findBetweenSubstrings: ':') at: 1) ].
 	indexes := OrderedCollection new.
-	(1 to: soundsAndIndexs size) do: [ :i | 
-		((soundsAndIndexs at: i) findBetweenSubstrings: ':') size > 1
+	(1 to: soundsAndIndexsSeparated size) do: [ :i | 
+		((soundsAndIndexsSeparated at: i) findBetweenSubstrings: ':') size > 1
 			ifTrue: [ 
 				indexes add:
-					(((soundsAndIndexs at: i) findBetweenSubstrings: ':') at: 2)
+					(((soundsAndIndexsSeparated at: i) findBetweenSubstrings: ':') at: 2)
 						asInteger ]
 			ifFalse: [ indexes add: 0 ] ].
+
 
 self soundPattern: sounds asArray;
 		       samplesIndex: indexes asArray.
@@ -795,7 +842,8 @@ Sequencer >> visualizeGates [
   
 	RSHorizontalLineLayout on: canvas shapes.
 	canvas zoomToFit.
-	canvas open
+	"canvas open"
+	^ canvas
 ]
 
 { #category : #visualization }

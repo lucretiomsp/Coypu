@@ -334,6 +334,7 @@ Performance >> playDirtAt: aRateInSeconds for: aNumberOfSteps [
 	"play the performance to SuperDIrt/SuperCollider audio engine"
 
 	| process step |
+	self bpm: aRateInSeconds. 
 	step := 1.
 	process := [ 
 	           aNumberOfSteps timesRepeat: [ 
@@ -343,7 +344,7 @@ Performance >> playDirtAt: aRateInSeconds for: aNumberOfSteps [
 		           self valuesDo: [ :seq | 
 			           (seq gates wrap: step) = 1
 				           ifTrue: [ 
-					           seq playBasicDirtEventAt: seq noteIndex.
+					           seq playBasicDirtEventAt: seq noteIndex delta: aRateInSeconds .
 					           "increment note Index"
 					           seq noteIndex: seq noteIndex + 1 ]
 				           ifFalse: [ nil ] ] ] forkAt: Processor timingPriority.
