@@ -14,7 +14,8 @@ Class {
 		'rsGroupDictionary',
 		'freq',
 		'backup',
-		'bpm'
+		'bpm',
+		'transportStep'
 	],
 	#classInstVars : [
 		'UniqueInstance',
@@ -129,6 +130,11 @@ Performance >> freq: aDurationInSeconds [
 	"use for playback speed"
 
 	freq := aDurationInSeconds asFloat
+]
+
+{ #category : #'LiveCoding - Performance' }
+Performance >> incrementTransportStep [
+	transportStep := transportStep + 1.
 ]
 
 { #category : #testing }
@@ -333,16 +339,16 @@ Performance >> playDirtAt: aRateInSeconds for: aNumberOfSteps [
 
 	"play the performance to SuperDIrt/SuperCollider audio engine"
 
-	| process step |
+	| process  |
 	self bpm: aRateInSeconds. 
-	step := 1.
+	transportStep := 1.
 	process := [ 
 	           aNumberOfSteps timesRepeat: [ 
 		           (Delay forSeconds: aRateInSeconds) wait.
 		           "sequencers scan"
 		           [ 
 		           self valuesDo: [ :seq | 
-			           (seq gates wrap: step) = 1
+			           (seq gates wrap: transportStep) = 1
 				           ifTrue: [ 
 					           seq playBasicDirtEventAt: seq noteIndex delta: aRateInSeconds .
 					           "increment note Index"
@@ -350,7 +356,7 @@ Performance >> playDirtAt: aRateInSeconds for: aNumberOfSteps [
 				           ifFalse: [ nil ] ] ] forkAt: Processor timingPriority.
 
 		           "step is incremented anyway"
-		           step := step + 1 ] ] forkAt: Processor timingPriority.
+		           self incrementTransportStep ] ] forkAt: Processor timingPriority.
 
 
 	^ process
@@ -847,6 +853,11 @@ Performance >> swap: firstKey with: secondKey [
 	tempValue := self at: firstKey.
 	self at: firstKey put: (self at: secondKey).
 	self at: secondKey put: tempValue
+]
+
+{ #category : #accessing }
+Performance >> transportStep [
+	^ transportStep
 ]
 
 { #category : #'LiveCoding - performance' }

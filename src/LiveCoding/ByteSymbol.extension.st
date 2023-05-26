@@ -119,8 +119,7 @@ ByteSymbol >> visualizeGates [
 
 	"simple visualization of the gates of a Sequencer - triggers are yellow, rests are white"
 
-	| colors canvas p seq window morph extent stepNumber borderWidth |
-	stepNumber := 1.
+	| colors canvas p seq window morph extent borderWidth markShape |
 	p := Performance uniqueInstance.
 	seq := p at: self.
 	extent := 800 @ 200.
@@ -129,25 +128,39 @@ ByteSymbol >> visualizeGates [
 	canvas := RSCanvas new
 		          extent: extent;
 		          color: #black.
-	seq gates do: [ :i | 
+	seq gates doWithIndex:  [ :gate :stepNumber | 
 	
 		canvas add: (RSBox new
 				 size: 38;
-				 color: (colors at: i + 1);
+				 color: (colors at: gate + 1);
 				 border: (RSBorder new
 						  color: #blue;
-						  width: (borderWidth at: (stepNumber - 1 rem: 4) + 1))).
-		stepNumber := stepNumber + 1 ].
+						  width: (borderWidth at: (stepNumber - 1 rem: 4) + 1))) ].
 
 	"RSHorizontalLineLayout on: canvas shapes."
 	RSGridLayout new
 		lineItemsCount: 16;
 		on: canvas shapes.
+	markShape := nil.
+	canvas newAnimation
+		repeat;
+		onStepDo: [ | shapeIndex currentShape |
+			"shapeIndex := seq gates wrap: seq noteIndex ."
+			shapeIndex := p transportStep  - 1 % seq gates size + 1.
+			shapeIndex traceCr.
+			currentShape := canvas nodes at: shapeIndex .
+			markShape ifNil: [ 
+				markShape := RSEllipse size: 20.
+				markShape color: Color red.
+				canvas add: markShape.
+				 ].
+			markShape position: currentShape position.
+			canvas signalUpdate
+			 ].
 	canvas zoomToFit.
-	morph := canvas createMorph.
-	window := morph openInWindowLabeled: self asString.
+	window := canvas open.
+	window setLabel: self asString.
 	window extent: 900 @ 260.
-	morph privateOwner: window
 ]
 
 { #category : #'*LiveCoding' }

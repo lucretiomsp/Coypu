@@ -1,7 +1,9 @@
 "
 A Sequencer contains gates, notes, duration and a noteIndex. extra1 and extra2 controls can be added.
-A Sequencer can contain a MIDI channel, as intended to play it on A performance to a MIDI sender
-The Sequencer is the basi unit to play a Performance.
+A Sequencer can contain a MIDI channel, as intended to play it on a Performance for a MIDI sender.
+A Sequencer contains a template for a message for the SuperDirt audio engine.
+
+The Sequencer is the basic unit in Performance.
 
 
 It is conceived as a Digital Audio Workstation track.
@@ -25,7 +27,8 @@ Class {
 		'cycleDurations',
 		'chords',
 		'soundPattern',
-		'samplesIndex'
+		'samplesIndex',
+		'dirtMessage'
 	],
 	#category : #'LiveCoding-Sequencers'
 }
@@ -111,6 +114,18 @@ cycleDurations := anArrayOfFractions
 ]
 
 { #category : #accessing }
+Sequencer >> dirtMessage [
+
+	^ dirtMessage
+]
+
+{ #category : #accessing }
+Sequencer >> dirtMessage: anObject [
+
+	dirtMessage := anObject
+]
+
+{ #category : #accessing }
 Sequencer >> duration [
 
 	^ self durations at: (self noteIndex modulo: self durationsSize)
@@ -175,6 +190,12 @@ values := extra1 at: 2.
 ]
 
 { #category : #accessing }
+Sequencer >> extra1String [
+
+	^ extra1String
+]
+
+{ #category : #accessing }
 Sequencer >> extra1String: aString [
 "allows the definition of extra1 sufffix"
 extra1String := aString.
@@ -206,6 +227,12 @@ Sequencer >> extra2Size [
 	^ extra1 notNil
 		  ifTrue: [ ^ values size ]
 		  ifFalse: [ ^ 1 ]
+]
+
+{ #category : #accessing }
+Sequencer >> extra2String [
+
+	^ extra2String
 ]
 
 { #category : #accessing }
@@ -279,6 +306,14 @@ Sequencer >> index: anArrayOfIndexes to: aKeyInPerformance [
 	p := Performance uniqueInstance .
 	self to: aKeyInPerformance .
 	aKeyInPerformance indexes: anArrayOfIndexes 
+]
+
+{ #category : #initialization }
+Sequencer >> initialize [ 
+
+super initialize .
+dirtMessage := OrderedCollection new.
+dirtMessage addAll: { '_id' . '1' . 'cps' . 0.56 .  'orbit' . 0 }
 ]
 
 { #category : #'as yet unclassified' }
@@ -359,6 +394,12 @@ noteIndex := anInteger
 Sequencer >> notes [
 
 	^ notes
+]
+
+{ #category : #accessing }
+Sequencer >> notes1: anObject [
+
+	notes := anObject
 ]
 
 { #category : #modifying }
@@ -564,6 +605,22 @@ message addAll: { '_id' . aString . 'cps' . 0.22 . 'delta' . aDurationInSeconds 
 ]
 
 { #category : #'sequencer - playing' }
+Sequencer >> playFullDirtEventAt: anIndex [
+
+	"sends a mesaage to SuperDirt with all the desired OSC arguments and values" 
+
+	| index sound message  delta|
+	index := 'n' -> (self samplesIndex wrap: anIndex) asFloat.
+	sound := 'sound' -> (self soundPattern wrap: anIndex).
+	delta := 'delta' -> 0.125. "change it to have changing delta values"
+   message := OrderedCollection new.
+message addAll: { '_id' . '1' . 'cps' . 0.56 . 'delta' . 0.125 . 'orbit' . 0 . 's' . sound . 'n' . index}. 
+
+	message asOSCMessageForSuperDirt .
+	^ true 
+]
+
+{ #category : #'sequencer - playing' }
 Sequencer >> playToDirt: aNumberOfSteps rate: aRateInSeconds [
 
 	"play the sequencer to the SuperDirt/SuperCollider synth engine"
@@ -641,6 +698,12 @@ Sequencer >> seqKey [
 ^seqKey
 ]
 
+{ #category : #accessing }
+Sequencer >> seqKey: anObject [
+
+	seqKey := anObject
+]
+
 { #category : #counting }
 Sequencer >> size [
 
@@ -685,9 +748,9 @@ self soundPattern: sounds asArray;
 ]
 
 { #category : #'LiveCoding - Performance' }
-Sequencer >> sound: anArrayOfStrings dirtNotes: anArrayOfMidiNN [
+Sequencer >> sound: aString dirtNotes: anArrayOfMidiNN [
 "add into a Sequencer a soundPattern and notes suitable for SuperDirt"
-	self soundPattern: anArrayOfStrings .
+	self sound: aString  .
 	self samplesIndex: anArrayOfMidiNN - 60.
 ]
 
