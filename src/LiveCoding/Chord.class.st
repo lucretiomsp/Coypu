@@ -5,6 +5,9 @@ Class {
 	#name : #Chord,
 	#superclass : #Array,
 	#type : #variable,
+	#instVars : [
+		'list'
+	],
 	#category : #'LiveCoding-ScalesAndChords'
 }
 
@@ -193,6 +196,18 @@ Chord class >> minor9 [
 ^ self with: (notes at: 1) with: (notes at: 3) with: (notes at: 5) with: (notes at: 7) with: (notes at: 9).
 
 
+]
+
+{ #category : #accessing }
+Chord >> list [
+
+	^ list
+]
+
+{ #category : #accessing }
+Chord >> list: anObject [
+
+	list := anObject
 ]
 
 { #category : #generating }

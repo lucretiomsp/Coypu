@@ -116,18 +116,51 @@ cycleDurations := anArrayOfFractions
 { #category : #'as yet unclassified' }
 Sequencer >> dirt: anArrayForSuperDirt [
 "fills the OSC dirtmessage for SuperDirt with suitable values"
-| keys values msgExtension msgExtensionSize |
+| keys values msgExtension msgExtensionSize  |
 keys := OrderedCollection new.
 values := OrderedCollection new.
 msgExtension := OrderedCollection new.
+
 msgExtensionSize := anArrayForSuperDirt size /2.
+
+
 anArrayForSuperDirt doWithIndex: [ :value :i| (i odd ) ifTrue: [keys add: value  ] ifFalse: 
 [  	value isNumber ifTrue: [ values add: value asFloat asDirtArray  ] ifFalse: [ values add: value asDirtArray ] ]
 ]. 
-1 to: msgExtensionSize do: [:i | msgExtension add: (keys at: i) -> (values at: i)] .
-dirtMessage addAll: msgExtension . 
+
+1 to: msgExtensionSize do: [:i | dirtMessage  at: (keys at: i) put: (values at: i)] .
 
 
+
+]
+
+{ #category : #'as yet unclassified' }
+Sequencer >> dirt: anArrayForSuperDirt chord: aChordorAnArrayOfChords to: aKeyInPerformance [
+
+"convenience method to avoid extra parenthesis"
+| dirtMessage2 seq2 dirtMessage3 seq3| 
+
+(self dirt: anArrayForSuperDirt ) to: aKeyInPerformance .
+
+dirtMessage2 := dirtMessage copy   .
+dirtMessage2 at: 'n' put: ((dirtMessage at: 'n' ) + 3).
+seq2 := self copy.
+seq2 dirtMessage: dirtMessage2 .
+seq2 to: (aKeyInPerformance asString , 'Note2') asSymbol.
+
+dirtMessage3 := dirtMessage copy .
+dirtMessage3 at: 'n' put: ((dirtMessage at: 'n' ) + 7).
+seq3 := self copy.
+seq3 dirtMessage: dirtMessage3 .
+seq3 to: (aKeyInPerformance asString , 'Note3') asSymbol.
+
+^ Array with: (self dirtMessage) with: (seq2 dirtMessage ) with: seq3 dirtMessage . 
+]
+
+{ #category : #'as yet unclassified' }
+Sequencer >> dirt: anArrayForSuperDirt to: aKeyInPerformance [
+"convenience method to avoid extra parenthesis"
+(self dirt: anArrayForSuperDirt ) to: aKeyInPerformance 
 ]
 
 { #category : #accessing }
@@ -330,8 +363,9 @@ Sequencer >> index: anArrayOfIndexes to: aKeyInPerformance [
 Sequencer >> initialize [ 
 
 super initialize .
-dirtMessage := OrderedCollection new.
-dirtMessage addAll: { '_id' -> 1 . 'cps' -> 0.56 .  'orbit' -> 0 }
+dirtMessage := Dictionary new.
+dirtMessage at: '_id' put: 1; at: 'cps' put: 0.56; at: 'orbit' put: 0.
+"dirtMessage addAll: { '_id' -> 1 . 'cps' -> 0.56 .  'orbit' -> 0 }"
 ]
 
 { #category : #testing }
@@ -621,7 +655,7 @@ Sequencer >> playFullDirtEventAt: anIndex [
 | message |
 message := OrderedCollection new.
 message add: 'delta'; add: 0.123. "delta should change"
-dirtMessage do: [ :ass | message add: ass key asString. message add: (ass value asDirtArray  wrap: anIndex ) ].
+dirtMessage keysAndValuesDo:  [ :key :value | message add: key; add: (value asDirtArray  wrap: anIndex ) ].
 
 	"| index sound message  delta|
 	index := 'n' -> (self samplesIndex wrap: anIndex) asFloat.
