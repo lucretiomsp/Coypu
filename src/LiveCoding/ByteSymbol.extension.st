@@ -1,6 +1,13 @@
 Extension { #name : #ByteSymbol }
 
 { #category : #'*LiveCoding' }
+ByteSymbol >> asDirtArray [ 
+" convenience method to send messages to SuperDirt"
+
+^ Array with: self.
+]
+
+{ #category : #'*LiveCoding' }
 ByteSymbol >> bw: anArrayOfBw [
 
 	"set anArrayOfBw as extra1 of the sequencer in the performance at self"

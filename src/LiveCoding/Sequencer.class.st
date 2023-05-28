@@ -135,21 +135,22 @@ anArrayForSuperDirt doWithIndex: [ :value :i| (i odd ) ifTrue: [keys add: value 
 ]
 
 { #category : #'as yet unclassified' }
-Sequencer >> dirt: anArrayForSuperDirt chord: aChordorAnArrayOfChords to: aKeyInPerformance [
+Sequencer >> dirt: anArrayForSuperDirt chord: someChords  to: aKeyInPerformance [
 
-"convenience method to avoid extra parenthesis"
-| dirtMessage2 seq2 dirtMessage3 seq3| 
+"convenience method to avoid extra parenthesis you can create here chords progressions"
+| dirtMessage2 seq2 dirtMessage3 seq3 |
+
 
 (self dirt: anArrayForSuperDirt ) to: aKeyInPerformance .
 
 dirtMessage2 := dirtMessage copy   .
-dirtMessage2 at: 'n' put: ((dirtMessage at: 'n' ) + 3).
+dirtMessage2 at: 'n' put: ((dirtMessage at: 'n' ) + (Chord chordLists  at: someChords  at: 2 )).
 seq2 := self copy.
 seq2 dirtMessage: dirtMessage2 .
 seq2 to: (aKeyInPerformance asString , 'Note2') asSymbol.
 
 dirtMessage3 := dirtMessage copy .
-dirtMessage3 at: 'n' put: ((dirtMessage at: 'n' ) + 7).
+dirtMessage3 at: 'n' put: ((dirtMessage at: 'n' ) + (Chord chordLists  at: someChords  at: 3)).
 seq3 := self copy.
 seq3 dirtMessage: dirtMessage3 .
 seq3 to: (aKeyInPerformance asString , 'Note3') asSymbol.
@@ -652,9 +653,31 @@ message addAll: { '_id' . aString . 'cps' . 0.22 . 'delta' . aDurationInSeconds 
 Sequencer >> playFullDirtEventAt: anIndex [
 
 	"sends a mesaage to SuperDirt with all the desired OSC arguments and values" 
-| message |
+| message dur |
 message := OrderedCollection new.
+dur := self durations asDirtArray  wrap: anIndex .
 message add: 'delta'; add: 0.123. "delta should change"
+dirtMessage keysAndValuesDo:  [ :key :value | message add: key; add: (value asDirtArray  wrap: anIndex ) ].
+
+	"| index sound message  delta|
+	index := 'n' -> (self samplesIndex wrap: anIndex) asFloat.
+	sound := 'sound' -> (self soundPattern wrap: anIndex).
+	delta := 'delta' -> 0.125. change it to have changing delta values
+   message := OrderedCollection new.
+message addAll: { '_id' . '1' . 'cps' . 0.56 . 'delta' . 0.125 . 'orbit' . 0 . 's' . sound . 'n' . index}. "
+
+	message asOSCMessageForSuperDirt .
+	^ true 
+]
+
+{ #category : #'sequencer - playing' }
+Sequencer >> playFullDirtEventAt: anIndex delta: aRateInSeconds [
+
+	"sends a mesaage to SuperDirt with all the desired OSC arguments and values" 
+| message dur |
+message := OrderedCollection new.
+dur := self durations asDirtArray  wrap: anIndex .
+message add: 'delta'; add: (aRateInSeconds * dur) asFloat. 
 dirtMessage keysAndValuesDo:  [ :key :value | message add: key; add: (value asDirtArray  wrap: anIndex ) ].
 
 	"| index sound message  delta|

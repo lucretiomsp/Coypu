@@ -350,7 +350,7 @@ Performance >> playDirt2At: aRateInSeconds for: aNumberOfSteps [
 		           self valuesDo: [ :seq | 
 			           (seq gates wrap: transportStep) = 1
 				           ifTrue: [ 
-					           seq playFullDirtEventAt: seq noteIndex "delta!!!!" .
+					           seq playFullDirtEventAt: seq noteIndex delta: aRateInSeconds "delta!!!!" .
 					           "increment note Index"
 					           seq noteIndex: seq noteIndex + 1 ]
 				           ifFalse: [ nil ] ] ] forkAt: Processor timingPriority.
