@@ -12,5 +12,5 @@ SequenceableCollection >> asOSCMessageForSuperDirt [
    self do: [:i | values add: i].
 	
 	
-	(OSCMessage for: values asArray ) sendToAddressString: localAddress port: scLangPort 
+	(OSCMessage for: values asDirtArray ) sendToAddressString: localAddress port: scLangPort 
 ]

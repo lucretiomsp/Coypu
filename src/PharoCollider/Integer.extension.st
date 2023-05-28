@@ -22,7 +22,7 @@ bitsArraySized := OrderedCollection new.
 bitsArraySized addAll: bitsArray .
 
 
-^ bitsArraySized asArray
+^ bitsArraySized asDirtArray
 ]
 
 { #category : #'*PharoCollider' }

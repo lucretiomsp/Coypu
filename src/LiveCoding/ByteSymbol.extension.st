@@ -115,55 +115,6 @@ ByteSymbol >> unsolo [
 ]
 
 { #category : #'*LiveCoding' }
-ByteSymbol >> visualizeGates [
-
-	"simple visualization of the gates of a Sequencer - triggers are yellow, rests are white"
-
-	| colors canvas p seq window morph extent borderWidth markShape |
-	p := Performance uniqueInstance.
-	seq := p at: self.
-	extent := 800 @ 200.
-	borderWidth := #( 7 2 4 2 ).
-	colors := #( #white #yellow ).
-	canvas := RSCanvas new
-		          extent: extent;
-		          color: #black.
-	seq gates doWithIndex:  [ :gate :stepNumber | 
-	
-		canvas add: (RSBox new
-				 size: 38;
-				 color: (colors at: gate + 1);
-				 border: (RSBorder new
-						  color: #blue;
-						  width: (borderWidth at: (stepNumber - 1 rem: 4) + 1))) ].
-
-	"RSHorizontalLineLayout on: canvas shapes."
-	RSGridLayout new
-		lineItemsCount: 16;
-		on: canvas shapes.
-	markShape := nil.
-	canvas newAnimation
-		repeat;
-		onStepDo: [ | shapeIndex currentShape |
-			"shapeIndex := seq gates wrap: seq noteIndex ."
-			shapeIndex := p transportStep  - 1 % seq gates size + 1.
-			shapeIndex traceCr.
-			currentShape := canvas nodes at: shapeIndex .
-			markShape ifNil: [ 
-				markShape := RSEllipse size: 20.
-				markShape color: Color red.
-				canvas add: markShape.
-				 ].
-			markShape position: currentShape position.
-			canvas signalUpdate
-			 ].
-	canvas zoomToFit.
-	window := canvas open.
-	window setLabel: self asString.
-	window extent: 900 @ 260.
-]
-
-{ #category : #'*LiveCoding' }
 ByteSymbol >> x: anArrayOfXs [
 
 	"set anArrayOfX as extra1 of the sequencer in the performance at self

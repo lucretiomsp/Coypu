@@ -173,7 +173,7 @@ Integer >> ones [
 { #category : #'*LiveCoding' }
 Integer >> pattern [ 
 	| arrayOfCharacters s result|
-	arrayOfCharacters := (self printStringBase: 2) asArray.
+	arrayOfCharacters := (self printStringBase: 2) asDirtArray.
 	s := arrayOfCharacters size.
 	result := (1 to: s) collect: [ :i | (arrayOfCharacters at: i) digitValue ].
 	^ result asSeq. 

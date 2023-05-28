@@ -185,7 +185,7 @@ PharoColliderTests >> testSinOscWriteDef [
 
 	self
 		assert: (SinOsc new writeDef: int8Array)
-		equals: expectedResult asArray
+		equals: expectedResult asDirtArray
 ]
 
 { #category : #tests }
@@ -349,10 +349,10 @@ PharoColliderTests >> testSynthDefTopoSortBasic [
 			        oscillator.
 			        out }.
 	self
-		assert: (sDef children asArray at: 1) class name
+		assert: (sDef children asDirtArray at: 1) class name
 		equals: #Control.
-	self assert: (sDef children asArray at: 2) class name equals: #SinOsc.
-	self assert: (sDef children asArray at: 3) class name equals: #Out
+	self assert: (sDef children asDirtArray at: 2) class name equals: #SinOsc.
+	self assert: (sDef children asDirtArray at: 3) class name equals: #Out
 ]
 
 { #category : #synthDefTesting }
@@ -366,10 +366,10 @@ PharoColliderTests >> testSynthDefTopoSortBasicWithName [
 			        oscillator.
 			        out }.
 	self
-		assert: (sDef children asArray at: 1) class name
+		assert: (sDef children asDirtArray at: 1) class name
 		equals: #Control.
-	self assert: (sDef children asArray at: 2) class name equals: #SinOsc.
-	self assert: (sDef children asArray at: 3) class name equals: #Out
+	self assert: (sDef children asDirtArray at: 2) class name equals: #SinOsc.
+	self assert: (sDef children asDirtArray at: 3) class name equals: #Out
 ]
 
 { #category : #synthDefTesting }

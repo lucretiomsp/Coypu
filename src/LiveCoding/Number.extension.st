@@ -1,6 +1,12 @@
 Extension { #name : #Number }
 
 { #category : #'*LiveCoding' }
+Number >> asDirtArray [
+	"convenience method to create an array from an interger. used to send osc messages to SuperDirt"
+	^ Array with: self
+]
+
+{ #category : #'*LiveCoding' }
 Number >> bars: aNumber [
 "use it with anInteger bpm to have a cycle of the Iteration of a duration of aNumber of bars(or a fraction)"
 ^ (Delay forSeconds: ((self * aNumber) /100)) wait.

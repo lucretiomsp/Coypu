@@ -113,6 +113,23 @@ Sequencer >> cycleDurations: anArrayOfFractions [
 cycleDurations := anArrayOfFractions 
 ]
 
+{ #category : #'as yet unclassified' }
+Sequencer >> dirt: anArrayForSuperDirt [
+"fills the OSC dirtmessage for SuperDirt with suitable values"
+| keys values msgExtension msgExtensionSize |
+keys := OrderedCollection new.
+values := OrderedCollection new.
+msgExtension := OrderedCollection new.
+msgExtensionSize := anArrayForSuperDirt size /2.
+anArrayForSuperDirt doWithIndex: [ :value :i| (i odd ) ifTrue: [keys add: value  ] ifFalse: 
+[  	value isNumber ifTrue: [ values add: value asFloat asDirtArray  ] ifFalse: [ values add: value asDirtArray ] ]
+]. 
+1 to: msgExtensionSize do: [:i | msgExtension add: (keys at: i) -> (values at: i)] .
+dirtMessage addAll: msgExtension . 
+
+
+]
+
 { #category : #accessing }
 Sequencer >> dirtMessage [
 
@@ -120,9 +137,10 @@ Sequencer >> dirtMessage [
 ]
 
 { #category : #accessing }
-Sequencer >> dirtMessage: anObject [
+Sequencer >> dirtMessage: anArrayOfAssociationForSuperDirt [
+" template for OSC messages for SuperDirt"
 
-	dirtMessage := anObject
+	dirtMessage := anArrayOfAssociationForSuperDirt
 ]
 
 { #category : #accessing }
@@ -313,15 +331,7 @@ Sequencer >> initialize [
 
 super initialize .
 dirtMessage := OrderedCollection new.
-dirtMessage addAll: { '_id' . '1' . 'cps' . 0.56 .  'orbit' . 0 }
-]
-
-{ #category : #'as yet unclassified' }
-Sequencer >> inspectSequencers [
-
-<inspectorPresentationOrder: 0 title: 'Sequencers'>
-
-^ SpRoassalPresenter new canvas: self visualizeGates; yourself.
+dirtMessage addAll: { '_id' -> 1 . 'cps' -> 0.56 .  'orbit' -> 0 }
 ]
 
 { #category : #testing }
@@ -608,13 +618,17 @@ message addAll: { '_id' . aString . 'cps' . 0.22 . 'delta' . aDurationInSeconds 
 Sequencer >> playFullDirtEventAt: anIndex [
 
 	"sends a mesaage to SuperDirt with all the desired OSC arguments and values" 
+| message |
+message := OrderedCollection new.
+message add: 'delta'; add: 0.123. "delta should change"
+dirtMessage do: [ :ass | message add: ass key asString. message add: (ass value asDirtArray  wrap: anIndex ) ].
 
-	| index sound message  delta|
+	"| index sound message  delta|
 	index := 'n' -> (self samplesIndex wrap: anIndex) asFloat.
 	sound := 'sound' -> (self soundPattern wrap: anIndex).
-	delta := 'delta' -> 0.125. "change it to have changing delta values"
+	delta := 'delta' -> 0.125. change it to have changing delta values
    message := OrderedCollection new.
-message addAll: { '_id' . '1' . 'cps' . 0.56 . 'delta' . 0.125 . 'orbit' . 0 . 's' . sound . 'n' . index}. 
+message addAll: { '_id' . '1' . 'cps' . 0.56 . 'delta' . 0.125 . 'orbit' . 0 . 's' . sound . 'n' . index}. "
 
 	message asOSCMessageForSuperDirt .
 	^ true 
@@ -742,8 +756,8 @@ Sequencer >> sound: soundsAndIndexs [
 			ifFalse: [ indexes add: 0 ] ].
 
 
-self soundPattern: sounds asArray;
-		       samplesIndex: indexes asArray.
+self soundPattern: sounds asDirtArray;
+		       samplesIndex: indexes asDirtArray.
 		  
 ]
 
@@ -803,8 +817,8 @@ Sequencer >> sounds: aStringForDirt [
 			ifFalse: [ indexes add: 0 ] ].
 
 	self
-		soundPattern: sounds asArray;
-		samplesIndex: indexes asArray
+		soundPattern: sounds asDirtArray;
+		samplesIndex: indexes asDirtArray
 ]
 
 { #category : #accessing }
@@ -837,7 +851,8 @@ Sequencer >> to: aSymbol [
 
 	"put the sequencer into the active Performance at Symbol as key"
 
-	Performance uniqueInstance at: aSymbol put: self
+	Performance uniqueInstance at: aSymbol put: self.
+	self seqKey: aSymbol asString .
 ]
 
 { #category : #addToPerformance }
@@ -885,28 +900,6 @@ Sequencer >> visualGroup [
 Sequencer >> visualGroup: aRSGroup [
 
 	visualGroup := aRSGroup
-]
-
-{ #category : #'LiveCoding - visualization' }
-Sequencer >> visualizeGates [
-
-	"simple visualization of the gates of a Sequencer - triggers are yellow, rests are white"
-
-	| colors canvas |
-	colors := #( #white #yellow ).
-	canvas := RSCanvas new.
-	self gates do: [ :i | 
-		canvas add: (RSBox new
-				 size: 80;
-				 color: (colors at: i + 1);
-				 border: (RSBorder new
-						  color: #blue;
-						  width: 10)) ].
-  
-	RSHorizontalLineLayout on: canvas shapes.
-	canvas zoomToFit.
-	"canvas open"
-	^ canvas
 ]
 
 { #category : #visualization }

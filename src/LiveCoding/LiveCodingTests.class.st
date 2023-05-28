@@ -30,7 +30,7 @@ LiveCodingTests >> testArrayIntoScale [
 LiveCodingTests >> testArrayWrap [
 
 	| array |
-	array := (1 to: 10) asArray.
+	array := (1 to: 10) asDirtArray.
 	self assert: (array wrap: 11) equals: 1
 ]
 
@@ -39,13 +39,13 @@ LiveCodingTests >> testFullScale [
 
 	| result |
 	result := (Scale chromatic: 60) fullScale.
-	self assert: result equals: (0 to: 127) asArray
+	self assert: result equals: (0 to: 127) asDirtArray
 ]
 
 { #category : #tests }
 LiveCodingTests >> testIntegerAsArray [
 
-	self assert: 16 asArrayOfInts equals: (1 to: 16) asArray
+	self assert: 16 asArrayOfInts equals: (1 to: 16) asDirtArray
 ]
 
 { #category : #tests }

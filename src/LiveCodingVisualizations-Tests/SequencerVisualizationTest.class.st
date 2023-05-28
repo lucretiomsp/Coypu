@@ -89,3 +89,13 @@ SequencerVisualizationTest >> testVisualisationGatesWith2Colors [
 	groups := visualisation shapes groupedBy: [ :each | each color ].
 	self assert: groups size equals: 2.
 ]
+
+{ #category : #tests }
+SequencerVisualizationTest >> testVisualizationContainsTitleLabel [
+	| seq label |
+	seq := 16 downbeats.
+	visualisation sequencer: seq.
+	visualisation build.
+	label := visualisation titleShape.
+	self assert: label text equals: seq seqKey.
+]

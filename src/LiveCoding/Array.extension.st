@@ -71,7 +71,7 @@ Array >> arp: anArrayOfIntervals [
 	1 to: (midResult  size) do: [ :i | finalResult add: (midResult at: i) * (restsOrGatesArpSize at: i) ].
 
 
-	^ finalResult asArray
+	^ finalResult asDirtArray
 ]
 
 { #category : #'*LiveCoding' }
@@ -122,7 +122,7 @@ algorithm based on the Bresenham approach"
 			ifFalse: [ result add: 0 ].
 		previous := current ].
 
-	^ result asArray asRhythm asSeq
+	^ result asDirtArray asRhythm asSeq
 ]
 
 { #category : #'*LiveCoding' }
@@ -165,7 +165,7 @@ Array >> notes [
 	validTrigs := allTrigs collect: [ :i | i isZero not asInteger ].
 
 	validNotes := allValues reject: [ :i | i = 0 ].
-	seq := validTrigs asArray asSeq notes: validNotes asArray.
+	seq := validTrigs asDirtArray asSeq notes: validNotes asDirtArray.
 	seq cycleDurations: self asCycleDurations.
 	^ seq
 ]

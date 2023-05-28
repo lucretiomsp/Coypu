@@ -11,6 +11,12 @@ ByteString >> asChord [
 ]
 
 { #category : #'*LiveCoding' }
+ByteString >> asDirtArray [
+"convenience method to send OSC messages to SuperDirt"
+^ Array with: self
+]
+
+{ #category : #'*LiveCoding' }
 ByteString >> asLocalGate: gateTimeInSeconds note: aNoteNumber [
 " gate-like OSC messsage with multiple arguments"
 	" send an OSC message that mimics the behaviour oa MIDI note on message.
@@ -78,9 +84,9 @@ ByteString >> forDirt [
 			ifFalse: [ indexes add: 0 ] ].
 
 	seq := Sequencer new
-		       gates: gates asArray;
-		       soundPattern: sounds asArray;
-		       samplesIndex: indexes asArray;
+		       gates: gates asDirtArray;
+		       soundPattern: sounds asDirtArray;
+		       samplesIndex: indexes asDirtArray;
 		       noteIndex: 1.
 
 	^ seq
