@@ -154,8 +154,7 @@ dirtMessage3 at: 'n' put: ((dirtMessage at: 'n' ) + (Chord chordLists  at: someC
 seq3 := self copy.
 seq3 dirtMessage: dirtMessage3 .
 seq3 to: (aKeyInPerformance asString , 'Note3') asSymbol.
-
-^ Array with: (self dirtMessage) with: (seq2 dirtMessage ) with: seq3 dirtMessage . 
+ 
 ]
 
 { #category : #'as yet unclassified' }
@@ -365,7 +364,7 @@ Sequencer >> initialize [
 
 super initialize .
 dirtMessage := Dictionary new.
-dirtMessage at: '_id' put: 1; at: 'cps' put: 0.56; at: 'orbit' put: 0.
+dirtMessage  at: 'cps' put: 0.56; at: 'orbit' put: 0.
 "dirtMessage addAll: { '_id' -> 1 . 'cps' -> 0.56 .  'orbit' -> 0 }"
 ]
 
@@ -677,7 +676,7 @@ Sequencer >> playFullDirtEventAt: anIndex delta: aRateInSeconds [
 | message dur |
 message := OrderedCollection new.
 dur := self durations asDirtArray  wrap: anIndex .
-message add: 'delta'; add: (aRateInSeconds * dur) asFloat. 
+message add: 'delta'; add: (aRateInSeconds * dur) asFloat asDirtArray . 
 dirtMessage keysAndValuesDo:  [ :key :value | message add: key; add: (value asDirtArray  wrap: anIndex ) ].
 
 	"| index sound message  delta|
@@ -813,8 +812,7 @@ Sequencer >> sound: soundsAndIndexs [
 			ifFalse: [ indexes add: 0 ] ].
 
 
-self soundPattern: sounds asDirtArray;
-		       samplesIndex: indexes asDirtArray.
+self dirtMessage at: 's' put: (sounds asDirtArray); at: 'n' put:  indexes asDirtArray.
 		  
 ]
 
@@ -910,6 +908,7 @@ Sequencer >> to: aSymbol [
 
 	Performance uniqueInstance at: aSymbol put: self.
 	self seqKey: aSymbol asString .
+	self dirtMessage  at: '_id' put: self seqKey.
 ]
 
 { #category : #addToPerformance }
