@@ -72,7 +72,7 @@ PortMidi class >> traceAllDevices [
 	"Show on Transcript all the available MIDI Device"
 Transcript
 		clear.
-	 0 to: self countDevices - 1 do: [ :i | 
+	 0 to: self countDevices - 1 do: [ :i | Transcript show: i; tab.
 	(self uniqueInstance getDeviceNameid: i) traceCr ].
 	
 	Transcript	open
@@ -120,10 +120,11 @@ PortMidi >> getDeviceInfo: aDeviceID [
 PortMidi >> getDeviceNameid: aDeviceID [
 
 	| name type |
-	name := (self getDeviceInfo: aDeviceID) name fromCString.
+	name := (self getDeviceInfo: aDeviceID) name bytesFromCString
+		        utf8Decoded.
 	(self getDeviceInfo: aDeviceID) input = 0
-		ifTrue: [ type := ' is input' ]
-		ifFalse: [ type := 'is output' ].
+		ifTrue: [ type := ' is output' ]
+		ifFalse: [ type := 'is input' ].
 	^ name , type
 ]
 
