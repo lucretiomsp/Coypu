@@ -200,6 +200,16 @@ Integer >> randomInside: anArray [
 ]
 
 { #category : #'*LiveCoding' }
+Integer >> randomIntegers: aMaximum [
+
+| result |
+result := Array new: self.
+
+1 to: self do: [ :i | result at: i put: (Random new next *  aMaximum) rounded ].
+^ result .
+]
+
+{ #category : #'*LiveCoding' }
 Integer >> randomNotesFrom: anArray root: aRootNote octaves: aNumber [
 
 	"return an array of self size of a random note from anArray of note numbers with root aRootNote, and aNumber octave range"
