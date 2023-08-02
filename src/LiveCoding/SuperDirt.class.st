@@ -75,3 +75,12 @@ SuperDirt class >> openListOfSynths [
 	(presenter open) title: 'ListOfSynths'; extent: 600@400.
 	^ presenter
 ]
+
+{ #category : #'as yet unclassified' }
+SuperDirt class >> samplesFolder [
+ "return the path to the folder where the superdirt samples are located"
+| home folder |
+home := FileLocator home.
+folder := (home / 'Library') / 'Application Support/SuperCollider/downloaded-quarks/Dirt-Samples/'.
+^ folder 
+]

@@ -222,15 +222,17 @@ Integer >> randomNotesFrom: anArray root: aRootNote octaves: aNumber [
 ]
 
 { #category : #'*LiveCoding' }
-Integer >> randomSamplesFromFolder: anArrayWithASampleStringAndAnIntgerMaximum [
+Integer >> randomSamplesFromFolder: aStringForASuperDirtSamplesFolder [
 
 	"return a Sequencer with self random trigs and random  samples from the folder named by the string
-	/ for example 16 randomSamplesFrom: #('cpu' 9)"
+	/ for example 16 randomSamplesFrom: 'cpu' "
 
-	| triggers randIndex |
+	| triggers randIndex folder folderSize|
 	triggers := self randomTrigs.
-	randIndex:= triggers trigs randomInts: (anArrayWithASampleStringAndAnIntgerMaximum at: 2).
-	^ triggers sound: (anArrayWithASampleStringAndAnIntgerMaximum at: 1) dirtNotes: randIndex .
+	folder := SuperDirt samplesFolder / aStringForASuperDirtSamplesFolder .
+	folderSize := folder asFileReference allChildren size. 
+	randIndex:= triggers trigs randomInts: folderSize .
+	^ triggers sound: aStringForASuperDirtSamplesFolder  dirtNotes: randIndex .
 ]
 
 { #category : #'*LiveCoding' }
