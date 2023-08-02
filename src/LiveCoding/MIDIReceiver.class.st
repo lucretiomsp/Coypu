@@ -58,7 +58,7 @@ MIDIReceiver >> openMidiInputWithDevice: aDeviceID [
 ]
 
 { #category : #outputManagement }
-MIDIReceiver >> openMidiOutWithDevice: aDeviceID [
+MIDIReceiver >> openWithDevice: aDeviceID [
 	"Opens a new MidiOUT Stream with output device id aDeviceID to play notes."
 	^ (aDeviceID = -1) ifFalse: 
 		[PortMidiLibrary uniqueInstance openOutputForStream: midiIn  
