@@ -200,13 +200,12 @@ Integer >> randomInside: anArray [
 ]
 
 { #category : #'*LiveCoding' }
-Integer >> randomIntegers: aMaximum [
+Integer >> randomInts: aMaximum [
 
-| result |
-result := Array new: self.
 
-1 to: self do: [ :i | result at: i put: (Random new next *  aMaximum) rounded ].
-^ result .
+
+^ (1 to: self) collect: [ :i | (Random new next *  aMaximum) rounded ].
+
 ]
 
 { #category : #'*LiveCoding' }
@@ -220,6 +219,18 @@ Integer >> randomNotesFrom: anArray root: aRootNote octaves: aNumber [
 		             + ((Random new nextInteger: aNumber + 1) - 1 * 12) ].
 	melody := intervals + aRootNote.
 	^ melody
+]
+
+{ #category : #'*LiveCoding' }
+Integer >> randomSamplesFromFolder: anArrayWithASampleStringAndAnIntgerMaximum [
+
+	"return a Sequencer with self random trigs and random  samples from the folder named by the string
+	/ for example 16 randomSamplesFrom: #('cpu' 9)"
+
+	| triggers randIndex |
+	triggers := self randomTrigs.
+	randIndex:= triggers trigs randomInts: (anArrayWithASampleStringAndAnIntgerMaximum at: 2).
+	^ triggers sound: (anArrayWithASampleStringAndAnIntgerMaximum at: 1) dirtNotes: randIndex .
 ]
 
 { #category : #'*LiveCoding' }

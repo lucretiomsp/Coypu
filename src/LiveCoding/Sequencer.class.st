@@ -786,7 +786,7 @@ Sequencer >> size [
 	^ size
 ]
 
-{ #category : #'LiveCoding - Performance' }
+{ #category : #'LiveCoding  - SuperDirt' }
 Sequencer >> sound: soundsAndIndexs [
 	"assign to a Sequencer an array with samples as string and one with samples index - intended to be used with the SuperDirt audioengine for SuperCollider for example: 
 	16 downbeats sound: #('cp' 'bd:3' 'tom:4')
@@ -817,20 +817,20 @@ self dirtMessage at: 's' put: (sounds asDirtArray); at: 'n' put:  indexes asDirt
 		  
 ]
 
-{ #category : #'LiveCoding - Performance' }
-Sequencer >> sound: aString dirtNotes: anArrayOfMidiNN [
+{ #category : #'LiveCoding  - SuperDirt' }
+Sequencer >> sound: aString dirtNotes: anArrayfIndexes [
 "add into a Sequencer a soundPattern and notes suitable for SuperDirt"
 	self sound: aString  .
-	self samplesIndex: anArrayOfMidiNN - 60.
+	self dirtMessage at: 'n' put:  anArrayfIndexes  asDirtArray
 ]
 
-{ #category : #'LiveCoding - Performance' }
+{ #category : #'LiveCoding  - SuperDirt' }
 Sequencer >> sound: anArrayOfStrings dirtNotes: anArrayOfMidiNN to: aKeyInPerformance [
 "convenience method to avoid extra parenthesis" 
 	(self sound: anArrayOfStrings dirtNotes: anArrayOfMidiNN ) to: aKeyInPerformance
 ]
 
-{ #category : #'LiveCoding - Performance' }
+{ #category : #'LiveCoding  - SuperDirt' }
 Sequencer >> sound: soundsAndIndexs to: aKeyInPerformance [
 "convenience method to avoid extra parenthesis"
 
