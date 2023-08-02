@@ -23,6 +23,7 @@ x terminate
 ```
 
 ### Basic usage ###
+The default OSC send port is 57120, the same of SuperCollider audio server.
 
 Integers and arrays implements the messages\
 ```Smalltalk
