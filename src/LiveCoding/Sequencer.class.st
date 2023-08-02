@@ -607,7 +607,7 @@ Sequencer >> playBasicDirtEventAt: anIndex delta: aRateInSeconds [
 	sound := self soundPattern wrap: anIndex.
    dur := self durations wrap: anIndex .
    message := OrderedCollection new.
-message addAll: { '_id' . '1' . 'cps' . 0.56 . 'delta' . (aRateInSeconds * dur) asFloat. 'orbit' . 0 . 's' . sound . 'n' . index}. 
+message addAll: { '_id' . '1' . 'cps' . 0.56 . 'delta' . (aRateInSeconds * dur) asFloat . 's' . sound . 'n' . index}. 
 
 	message asOSCMessageForSuperDirt .
 	^ true 
@@ -655,6 +655,7 @@ Sequencer >> playFullDirtEventAt: anIndex [
 | message dur |
 message := OrderedCollection new.
 dur := self durations asDirtArray  wrap: anIndex .
+message add: '/dirt/play'.
 message add: 'delta'; add: 0.123. "delta should change"
 dirtMessage keysAndValuesDo:  [ :key :value | message add: key; add: (value asDirtArray  wrap: anIndex ) ].
 
@@ -665,7 +666,7 @@ dirtMessage keysAndValuesDo:  [ :key :value | message add: key; add: (value asDi
    message := OrderedCollection new.
 message addAll: { '_id' . '1' . 'cps' . 0.56 . 'delta' . 0.125 . 'orbit' . 0 . 's' . sound . 'n' . index}. "
 
-	message asOSCMessageForSuperDirt .
+	(OSCBundle for: {  OSCMessage for: message  }  )  sendToAddressString: '127.0.0.1' port: 57120.
 	^ true 
 ]
 
