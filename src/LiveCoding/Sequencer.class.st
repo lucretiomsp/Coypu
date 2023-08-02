@@ -6,7 +6,7 @@ A Sequencer contains a template for a message for the SuperDirt audio engine.
 The Sequencer is the basic unit in Performance.
 
 
-It is conceived as a Digital Audio Workstation track.
+It is conceived as something in between a Digital Audio Workstation track and a ""clip"".
 "
 Class {
 	#name : #Sequencer,
@@ -350,7 +350,7 @@ Sequencer >> index: anArrayOfIndexes [
 	self extra1: #Index values: anArrayOfIndexes 
 ]
 
-{ #category : #'LiveCodin - Performance' }
+{ #category : #'LiveCoding - Performance' }
 Sequencer >> index: anArrayOfIndexes to: aKeyInPerformance [
 	"convenience method to avoid extra parenthesis to put a sequencer of gates with sample indexes into a performance"
 	| p |
@@ -389,7 +389,7 @@ Sequencer >> melodyFrom: aScale [
 	^ self notes: array
 ]
 
-{ #category : #'LiveCodin - Performance' }
+{ #category : #'LiveCoding - Performance' }
 Sequencer >> midiCh: anInteger to: aKeyInPerformance [
 
 	" convenience method to avoid extra parenthesis when assigning a midiChannel to  akey in a performance"
@@ -465,7 +465,7 @@ Sequencer >> notes: anArrayOfNotes durs: anArrayOfDurations [
 ^ (Sequencer with: (self at: 1) with: anArrayOfNotes with: anArrayOfDurations  with: 0).
 ]
 
-{ #category : #'LiveCodin - Performance' }
+{ #category : #'LiveCoding - Performance' }
 Sequencer >> notes: anArrayOfNotes index: anArrayOfIndexes to: aKeyInPerformance [
 	"convenience method to avoid extra parenthesis while declaring a sequencer of gates with its notes and its sample indexes"
 	| p |
@@ -475,14 +475,14 @@ Sequencer >> notes: anArrayOfNotes index: anArrayOfIndexes to: aKeyInPerformance
 	aKeyInPerformance indexes: anArrayOfIndexes 
 ]
 
-{ #category : #'LiveCodin - Performance' }
+{ #category : #'LiveCoding - Performance' }
 Sequencer >> notes: anArrayOfNotes midiCh: anInteger to: aKeyInPerformance [
 	"convenience method to avoid extra parenthesis"
 	
 ((self notes: anArrayOfNotes ) midiChannel:  anInteger) to: aKeyInPerformance .
 ]
 
-{ #category : #'LiveCodin - Performance' }
+{ #category : #'LiveCoding - Performance' }
 Sequencer >> notes: anArrayOfNotes mode: anArrayOfModes to: aKeyInPerformance [ 
 	"convenience mode to avoid extra parenthesis to put chord modes into sequencer - designed for polyphonic synths"
 	
@@ -785,7 +785,7 @@ Sequencer >> size [
 	^ size
 ]
 
-{ #category : #'LiveCodin - Performance' }
+{ #category : #'LiveCoding - Performance' }
 Sequencer >> sound: soundsAndIndexs [
 	"assign to a Sequencer an array with samples as string and one with samples index - intended to be used with the SuperDirt audioengine for SuperCollider for example: 
 	16 downbeats sound: #('cp' 'bd:3' 'tom:4')
@@ -829,7 +829,7 @@ Sequencer >> sound: anArrayOfStrings dirtNotes: anArrayOfMidiNN to: aKeyInPerfor
 	(self sound: anArrayOfStrings dirtNotes: anArrayOfMidiNN ) to: aKeyInPerformance
 ]
 
-{ #category : #'LiveCodin - Performance' }
+{ #category : #'LiveCoding - Performance' }
 Sequencer >> sound: soundsAndIndexs to: aKeyInPerformance [
 "convenience method to avoid extra parenthesis"
 
