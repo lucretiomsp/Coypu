@@ -28,10 +28,26 @@ Class {
 		'chords',
 		'soundPattern',
 		'samplesIndex',
-		'dirtMessage'
+		'dirtMessage',
+		'orbit'
+	],
+	#classInstVars : [
+		'orbit'
 	],
 	#category : #'LiveCoding-Sequencers'
 }
+
+{ #category : #accessing }
+Sequencer class >> orbit [
+   
+orbit isNil ifTrue: [ ^ 0 ] ifFalse: [^ orbit]
+]
+
+{ #category : #accessing }
+Sequencer class >> orbit: anInteger [
+
+	orbit := anInteger % 12 
+]
 
 { #category : #combination }
 Sequencer >> , anotherSequencer [
@@ -364,7 +380,11 @@ Sequencer >> initialize [
 
 super initialize .
 dirtMessage := Dictionary new.
-dirtMessage  at: 'cps' put: 0.56; at: 'orbit' put: 0.
+dirtMessage  at: 'cps' put: 0.56.
+"superdirt orbits are 12"
+self class orbit: self class orbit + 1.
+orbit := self class orbit.
+
 "dirtMessage addAll: { '_id' -> 1 . 'cps' -> 0.56 .  'orbit' -> 0 }"
 ]
 
@@ -534,6 +554,18 @@ Sequencer >> offset: aNumber [
 	newArray := Array new: self gates size.
 	(1 to: self gates size) do: [ :i | newArray at: ((i + aNumber ) modulo: self gates size) put: (self gates at: i) ].
 	self gates: newArray
+]
+
+{ #category : #accessing }
+Sequencer >> orbit [
+
+	^ orbit
+]
+
+{ #category : #accessing }
+Sequencer >> orbit: anObject [
+
+	orbit := anObject
 ]
 
 { #category : #'sequencer - cycles' }
@@ -752,6 +784,12 @@ Sequencer >> randomCounterPoint [
 	^ newArray asSeq
 ]
 
+{ #category : #'LiveCoding  - SuperDirt' }
+Sequencer >> room: aFloatOrAnArray [
+" add reverb to the Sequencer"
+	self dirtMessage at: 'room' put:  aFloatOrAnArray   asDirtArray
+]
+
 { #category : #accessing }
 Sequencer >> samplesIndex [
 
@@ -902,7 +940,7 @@ Sequencer >> times: anInteger [
 		  noteIndex: 0
 ]
 
-{ #category : #'sequencer creation' }
+{ #category : #'LiveCoding - Performance' }
 Sequencer >> to: aSymbol [
 
 	"put the sequencer into the active Performance at Symbol as key"
@@ -910,6 +948,7 @@ Sequencer >> to: aSymbol [
 	Performance uniqueInstance at: aSymbol put: self.
 	self seqKey: aSymbol asString .
 	self dirtMessage  at: '_id' put: self seqKey.
+	self dirtMessage  at: 'orbit' put: self orbit.
 ]
 
 { #category : #addToPerformance }

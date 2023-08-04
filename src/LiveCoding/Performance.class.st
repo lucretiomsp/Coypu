@@ -18,8 +18,8 @@ Class {
 		'transportStep'
 	],
 	#classInstVars : [
-		'UniqueInstance',
-		'uniqueInstance'
+		'uniqueInstance',
+		'orbit'
 	],
 	#category : #'LiveCoding-Performance'
 }
@@ -38,10 +38,22 @@ Performance class >> new [
 ^ Error new signal: 'Performance is a singleton -- Use unique instance instead'
 ]
 
+{ #category : #accessing }
+Performance class >> orbit [
+
+	^ orbit
+]
+
+{ #category : #accessing }
+Performance class >> orbit: anInteger [
+
+	orbit := anInteger % 12
+]
+
 { #category : #'instance creation' }
 Performance class >> uniqueInstance [
 
-	
+	self orbit: 0.
 	^ uniqueInstance ifNil: [ uniqueInstance := super new ]
 ]
 
