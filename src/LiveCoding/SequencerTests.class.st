@@ -17,6 +17,17 @@ SequencerTests >> setUp [
 ]
 
 { #category : #tests }
+SequencerTests >> testAddAssociationForDirtMesage [
+
+| seq |
+seq := 16 downbeats sound: 'cp'.
+seq add: 'squiz'->#(0 1 2). 
+
+self assert: (seq dirtMessage includesKey: #squiz) equals: true.
+self assert: (seq dirtMessage includes: #( 0 1  2) ) equals: true.
+]
+
+{ #category : #tests }
 SequencerTests >> testArpeggiateArray [
 
 | initial  result|
@@ -51,6 +62,11 @@ SequencerTests >> testFlipSequencer [
 	tresillo := #( 3 8 ) euclidean flip.
 	seq := #( 0 1 1 0 1 1 0 1 ) asRhythm asSeq .
 	self assert: tresillo equals: seq
+]
+
+{ #category : #tests }
+SequencerTests >> testInitialize [
+self assert: (Sequencer new orbit > 0) & (Sequencer new orbit < 12) equals: true
 ]
 
 { #category : #tests }

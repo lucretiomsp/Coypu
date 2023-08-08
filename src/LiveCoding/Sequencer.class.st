@@ -49,6 +49,11 @@ Sequencer class >> orbit: anInteger [
 	orbit := anInteger % 12 
 ]
 
+{ #category : #arithmetic }
+Sequencer >> + aString [ 
+	self shouldBeImplemented.
+]
+
 { #category : #combination }
 Sequencer >> , anotherSequencer [
 
@@ -91,6 +96,13 @@ Sequencer >> > anArrayOfNotesOrANote [
 	" change notes in the sequencer - polysemic binary version of notes:"
    anArrayOfNotesOrANote isArray ifTrue:
 	[notes := anArrayOfNotesOrANote] ifFalse: [ notes := Array new: self numberOfTrigs  withAll: anArrayOfNotesOrANote  ]
+]
+
+{ #category : #adding }
+Sequencer >> add: anAssociation [
+" add an associtation of a parameter and a value or an array of values to the dirtMessage"
+dirtMessage add: anAssociation 
+
 ]
 
 { #category : #modifying }
@@ -190,6 +202,13 @@ Sequencer >> dirtMessage: anArrayOfAssociationForSuperDirt [
 " template for OSC messages for SuperDirt"
 
 	dirtMessage := anArrayOfAssociationForSuperDirt
+]
+
+{ #category : #'LiveCoding  - SuperDirt' }
+Sequencer >> dirtNotes: anArrayfIndexes [
+"add into a Sequencer an index pattern suitable for SuperDirt"
+	
+	self dirtMessage at: 'n' put:  anArrayfIndexes  asDirtArray
 ]
 
 { #category : #accessing }
