@@ -5,6 +5,13 @@ Class {
 	#name : #Chord,
 	#superclass : #Array,
 	#type : #variable,
+	#instVars : [
+		'list',
+		'ChordLists'
+	],
+	#classInstVars : [
+		'ChordLists'
+	],
 	#category : #'LiveCoding-ScalesAndChords'
 }
 
@@ -193,6 +200,22 @@ Chord class >> minor9 [
 ^ self with: (notes at: 1) with: (notes at: 3) with: (notes at: 5) with: (notes at: 7) with: (notes at: 9).
 
 
+]
+
+{ #category : #initialization }
+Chord >> initialize [ 
+super initialize .
+
+list := Dictionary new.
+list at: #major put: #(0 4 7); at: #minor put: #(0 3 7).
+'merda' traceCr.
+
+]
+
+{ #category : #accessing }
+Chord >> list [
+
+	^ list
 ]
 
 { #category : #generating }

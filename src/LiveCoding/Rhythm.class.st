@@ -65,7 +65,7 @@ Rhythm >> and: anArrayOfNotes and: anArrayOfDurations [
 ]
 
 { #category : #converting }
-Rhythm >> asArray [ 
+Rhythm >> asDirtArray [ 
 "convert Rhythm into an Array"
 | array |
 array := Array new: (self size).
@@ -92,7 +92,7 @@ newRhythm := Rhythm new: (self size).
 { #category : #printing }
 Rhythm >> printOn: aStream [
 
-	aStream print: self asArray 
+	aStream print: self asDirtArray 
 ]
 
 { #category : #'as yet unclassified' }

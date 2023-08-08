@@ -17,6 +17,17 @@ SequencerTests >> setUp [
 ]
 
 { #category : #tests }
+SequencerTests >> testAddAssociationForDirtMesage [
+
+| seq |
+seq := 16 downbeats sound: 'cp'.
+seq add: 'squiz'->#(0 1 2). 
+
+self assert: (seq dirtMessage includesKey: #squiz) equals: true.
+self assert: (seq dirtMessage includes: #( 0 1  2) ) equals: true.
+]
+
+{ #category : #tests }
 SequencerTests >> testArpeggiateArray [
 
 | initial  result|
@@ -54,6 +65,11 @@ SequencerTests >> testFlipSequencer [
 ]
 
 { #category : #tests }
+SequencerTests >> testInitialize [
+self assert: (Sequencer new orbit > 0) & (Sequencer new orbit < 12) equals: true
+]
+
+{ #category : #tests }
 SequencerTests >> testSequencerOffset [
 
 | seq result1 result2 |
@@ -64,6 +80,16 @@ result2 := '1111' pattern.
 
 self assert: (seq offset: 2) equals: result1.
 self assert: (seq offset: -1) equals: result2.
+]
+
+{ #category : #tests }
+SequencerTests >> testSequencerSound [
+
+| seq |
+seq := 16 downbeats sound: #('bd' 'cp:2').
+
+self assert: seq soundPattern  equals: #('bd' 'cp').
+self assert: seq samplesIndex equals: #(0 2).
 ]
 
 { #category : #tests }

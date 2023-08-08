@@ -113,7 +113,7 @@ SynthDef >> asBytes [
 	" variants ?? for the moment we leave it to 0"
 	int8Array addAll: (self variants asByteArrayOfSize: 2).
 	"end"
-	^ int8Array asArray
+	^ int8Array asDirtArray
 ]
 
 { #category : #converting }
@@ -166,7 +166,7 @@ SynthDef >> asBytesDeprecated [
 
 
 
-	^ int8Array asArray
+	^ int8Array asDirtArray
 ]
 
 { #category : #converting }

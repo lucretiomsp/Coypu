@@ -105,7 +105,7 @@ UGen >> asBytes [
 	"output rate"
 	(self outputs size > 0) ifTrue: [int8Array addAll: (self rateNumber asByteArrayOfSize: 1)].
 
-	^ int8Array asArray
+	^ int8Array asDirtArray
 ]
 
 { #category : #writeDefinition }
@@ -228,7 +228,7 @@ UGen >> inputsUGen [
 	| result |
 	result := OrderedCollection new.
 	self inputs do: [ :i | i isNumber ifFalse: [ result add: i ]  ifTrue: [ ] ] .
-^ result asArray 
+^ result asDirtArray 
 ]
 
 { #category : #testing }
@@ -361,7 +361,7 @@ self makeAvailable
 { #category : #writeDefinition }
 UGen >> schedule: anOutStack [
 
-	descendants asArray reverseDo: [ :ugen | ugen removeAntecedents: self ].
+	descendants asDirtArray reverseDo: [ :ugen | ugen removeAntecedents: self ].
 	
    ^ anOutStack add: self
 ]
@@ -426,7 +426,7 @@ UGen >> uGenSpec [
 
 
 
- ^ result asArray
+ ^ result asDirtArray
 ]
 
 { #category : #accessing }
@@ -466,7 +466,7 @@ UGen >> writeInputSpec [
 	int8Array := OrderedCollection new.
 	int8Array addAll: (self synthIndex  asByteArrayOfSize: 4).
 	int8Array addAll: (self outputIndex asByteArrayOfSize: 4).
-	^ int8Array asArray
+	^ int8Array asDirtArray
 ]
 
 { #category : #writeDefinition }

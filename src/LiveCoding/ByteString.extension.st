@@ -11,6 +11,12 @@ ByteString >> asChord [
 ]
 
 { #category : #'*LiveCoding' }
+ByteString >> asDirtArray [
+"convenience method to send OSC messages to SuperDirt"
+^ Array with: self
+]
+
+{ #category : #'*LiveCoding' }
 ByteString >> asLocalGate: gateTimeInSeconds note: aNoteNumber [
 " gate-like OSC messsage with multiple arguments"
 	" send an OSC message that mimics the behaviour oa MIDI note on message.
@@ -78,9 +84,9 @@ ByteString >> forDirt [
 			ifFalse: [ indexes add: 0 ] ].
 
 	seq := Sequencer new
-		       gates: gates asArray;
-		       soundPattern: sounds asArray;
-		       samplesIndex: indexes asArray;
+		       gates: gates asDirtArray;
+		       soundPattern: sounds asDirtArray;
+		       samplesIndex: indexes asDirtArray;
 		       noteIndex: 1.
 
 	^ seq
@@ -290,38 +296,17 @@ ByteString >> toKymaAsTrig [
 { #category : #'*LiveCoding' }
 ByteString >> toLocalAsGate [
 
-	" send an OSC message that mimics the behaviour oa MIDI note on message, note is held for a default duration of 2 seconds"
-
-	| vcslabel localAddress |
-	localAddress := '127.0.0.1'.
-
-	vcslabel := '/' , self , 'Gate'.
-	(OSCMessage for: { 
-			 vcslabel.
-			 1.0 }) sendToAddressString: localAddress port: 8000.
-	(Delay forSeconds: 2) wait.
-	(OSCMessage for: { 
-			 vcslabel.
-			 0.0 }) sendToAddressString: localAddress port: 8000
+	" send an OSC message that mimics the behaviour of MIDI note on message, note is held for a default duration of 0.25 second and midi NN is 60"
+self toLocalAsGate: 0.25 note: 60 
 ]
 
 { #category : #'*LiveCoding' }
 ByteString >> toLocalAsGate: gateTimeInSeconds [
 
 	" send an OSC message that mimics the behaviour oa MIDI note on message.
-	gateTime is expressed in seconds"
+	gateTime is expressed in seconds, MIDI noteNumber is 60"
 
-	| vcslabel localAddress |
-	localAddress := '127.0.0.1'.
-	vcslabel := '/' , self , 'Gate'.
-	^ [ 
-	  (OSCMessage for: { 
-			   vcslabel.
-			   1.0 }) sendToAddressString: localAddress port: 8000.
-	  (Delay forSeconds: gateTimeInSeconds) wait.
-	  (OSCMessage for: { 
-			   vcslabel.
-			   0.0 }) sendToAddressString: localAddress port: 8000] fork
+self toLocalAsGate: gateTimeInSeconds note: 60.
 ]
 
 { #category : #'*LiveCoding' }
@@ -330,25 +315,23 @@ ByteString >> toLocalAsGate: gateTimeInSeconds note: aNoteNumber [
 	" send an OSC message that mimics the behaviour oa MIDI note on message.
 	gateTime is expressed in seconds"
 
-	| vcsGatelabel vcsNoteLabel localAddress |
+	| oscGate oscNote localAddress |
 	localAddress := '127.0.0.1'.
 
-	vcsGatelabel := '/' , self , 'Gate'.
-	vcsNoteLabel := '/' , self , 'Note'.
-
-	^ [ 
-	  (OSCMessage for: { 
-			   vcsNoteLabel.
-			   aNoteNumber asFloat })
-		  sendToAddressString: localAddress
-		  port: 8000.
-	  (OSCMessage for: { 
-			   vcsGatelabel.
-			   1.0 }) sendToAddressString: localAddress port: 57110.
-	  (Delay forSeconds: gateTimeInSeconds) wait.
-	  (OSCMessage for: { 
-			   vcsGatelabel.
-			   0.0 }) sendToAddressString: localAddress port: 57110 ] fork
+	oscGate := '/' , self , 'Gate'.
+	oscNote := '/' , self , 'Note'.
+	(OSCMessage for: { 
+			 oscNote.
+			 aNoteNumber asFloat })
+		sendToAddressString: localAddress
+		port: 57120.
+	(OSCMessage for: { 
+			 oscGate.
+			 1.0 }) sendToAddressString: localAddress port: 57120.
+	(Delay forSeconds: gateTimeInSeconds) wait.
+	(OSCMessage for: { 
+			 oscGate.
+			 0.0 }) sendToAddressString: localAddress port: 57120
 ]
 
 { #category : #'*LiveCoding' }

@@ -71,7 +71,7 @@ Array >> arp: anArrayOfIntervals [
 	1 to: (midResult  size) do: [ :i | finalResult add: (midResult at: i) * (restsOrGatesArpSize at: i) ].
 
 
-	^ finalResult asArray
+	^ finalResult asDirtArray
 ]
 
 { #category : #'*LiveCoding' }
@@ -101,6 +101,28 @@ Array >> asSeq [
 	" durations formerly in fraction of bar
 (Sequencer with: self with: #(60) with: #(0.125) with: 0).
 "
+]
+
+{ #category : #'*LiveCoding' }
+Array >> euclidean [
+
+	"generates an euclidean rhythm with (self at: 1) onsets and (self at: 2) pulses. 
+algorithm based on the Bresenham approach"
+
+	| onsets pulses slope result previous current |
+	current := 0.
+	onsets := self at: 1.
+	pulses := self at: 2.
+	slope := onsets / pulses.
+	result := OrderedCollection new.
+	(0 to: pulses - 1) do: [ :i | 
+		current := (i * slope) asInteger.
+		current ~= previous
+			ifTrue: [ result add: 1 ]
+			ifFalse: [ result add: 0 ].
+		previous := current ].
+
+	^ result asDirtArray asRhythm asSeq
 ]
 
 { #category : #'*LiveCoding' }
@@ -143,7 +165,7 @@ Array >> notes [
 	validTrigs := allTrigs collect: [ :i | i isZero not asInteger ].
 
 	validNotes := allValues reject: [ :i | i = 0 ].
-	seq := validTrigs asArray asSeq notes: validNotes asArray.
+	seq := validTrigs asDirtArray asSeq notes: validNotes asDirtArray.
 	seq cycleDurations: self asCycleDurations.
 	^ seq
 ]
@@ -237,5 +259,15 @@ Array >> trigs [
 		(self  at: i) = 1
 			ifTrue: [ result := result + 1 ]
 			ifFalse: [ nil ] ].
+	^ result
+]
+
+{ #category : #'*LiveCoding' }
+Array >> wrap: anInteger [
+
+	"inspire by Cmajor language wrap<int> always wrap the index of the array to the array size"
+
+	| result |
+	result := self at: anInteger - 1 % self size + 1.
 	^ result
 ]

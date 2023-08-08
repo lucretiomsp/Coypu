@@ -74,8 +74,10 @@ MIDISender >> midiOut: anOutputStream [
 ]
 
 { #category : #initialization }
-MIDISender >> openMidiOutWithDevice: aDeviceID [
-	"Opens a new MidiOUT Stream with output device id aDeviceID to play notes."
+MIDISender >> openWithDevice: aDeviceID [
+	"Opens a new MidiOUT Stream with output device id aDeviceID to play notes.
+	aDeviceID is an integer. PortMidi traceAllDevices / displays all available devices
+	"
 	
 	self instance: PortMidiLibrary uniqueInstance.
 	

@@ -13,11 +13,13 @@ Class {
 		'canvas',
 		'rsGroupDictionary',
 		'freq',
-		'backup'
+		'backup',
+		'bpm',
+		'transportStep'
 	],
 	#classInstVars : [
-		'UniqueInstance',
-		'uniqueInstance'
+		'uniqueInstance',
+		'orbit'
 	],
 	#category : #'LiveCoding-Performance'
 }
@@ -36,10 +38,22 @@ Performance class >> new [
 ^ Error new signal: 'Performance is a singleton -- Use unique instance instead'
 ]
 
+{ #category : #accessing }
+Performance class >> orbit [
+
+	^ orbit
+]
+
+{ #category : #accessing }
+Performance class >> orbit: anInteger [
+
+	orbit := anInteger % 12
+]
+
 { #category : #'instance creation' }
 Performance class >> uniqueInstance [
 
-	
+	self orbit: 0.
 	^ uniqueInstance ifNil: [ uniqueInstance := super new ]
 ]
 
@@ -96,6 +110,18 @@ Performance >> backup [
 ]
 
 { #category : #accessing }
+Performance >> bpm [
+
+	^ bpm
+]
+
+{ #category : #accessing }
+Performance >> bpm: aRateInSeconds [
+
+	bpm := 60 / 4 / (aRateInSeconds ).
+]
+
+{ #category : #accessing }
 Performance >> canvas [ 
 ^ canvas 
 ]
@@ -116,6 +142,11 @@ Performance >> freq: aDurationInSeconds [
 	"use for playback speed"
 
 	freq := aDurationInSeconds asFloat
+]
+
+{ #category : #'LiveCoding - Performance' }
+Performance >> incrementTransportStep [
+	transportStep := transportStep + 1.
 ]
 
 { #category : #testing }
@@ -316,27 +347,30 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 ]
 
 { #category : #playing }
-Performance >> playDirtAt: aRateInSeconds for: aNumberOfSteps [
+Performance >> playDirtFor: aNumberOfSteps [
 
-	"play the performance to SuperDIrt/SuperCollider audio engine"
+	"play the performance to SuperDIrt/SuperCollider audio engine - default freq is 132 bpm 
+	Performance speed can be changed with p freq: a bpm"
 
-	| process step |
-	step := 1.
+	| process  |
+	self freq: 132 bpm.
+	bpm := 60 / (self freq * 4). 
+	transportStep := 1.
 	process := [ 
 	           aNumberOfSteps timesRepeat: [ 
-		           (Delay forSeconds: aRateInSeconds) wait.
+		           (Delay forSeconds: self freq) wait.
 		           "sequencers scan"
 		           [ 
 		           self valuesDo: [ :seq | 
-			           (seq gates wrap: step) = 1
+			           (seq gates wrap: transportStep) = 1
 				           ifTrue: [ 
-					           seq playBasicDirtEventAt: seq noteIndex.
+					           seq playFullDirtEventAt: seq noteIndex  "delta!!!!" .
 					           "increment note Index"
 					           seq noteIndex: seq noteIndex + 1 ]
 				           ifFalse: [ nil ] ] ] forkAt: Processor timingPriority.
 
 		           "step is incremented anyway"
-		           step := step + 1 ] ] forkAt: Processor timingPriority.
+		           self incrementTransportStep ] ] forkAt: Processor timingPriority.
 
 
 	^ process
@@ -527,7 +561,7 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 	step := 0.
 
 	^ [ 
-	  bpm toLocal: 'BPM'.
+	  bpm toLocal: 'BPM/'.
 
 	  aNumberOfSteps timesRepeat: [ 
 		  (Delay forSeconds: aRateInSeconds) wait.
@@ -542,7 +576,7 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 							  note := value notes at:
 								          (value noteIndex modulo: value notesSize).
 							  key asString
-								  toLocalFor: gateTime
+								  toLocalAsGate: gateTime
 									  *
 									  (value durations at:
 										   (value noteIndex modulo: value durationsSize))
@@ -554,7 +588,7 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 								  ifTrue: [ 
 									  ((value extra1 at: 2) at:
 										   (value noteIndex modulo: value extra1Size)) toLocal:
-										  (key asString , (value extra1 at: 1)) ]
+										  key asString , (value extra1 at: 1) ]
 								  ifFalse: [ nil ].
 							  value noteIndex: value noteIndex + 1 ]
 						  ifFalse: [ nil ] ]
@@ -833,6 +867,11 @@ Performance >> swap: firstKey with: secondKey [
 	tempValue := self at: firstKey.
 	self at: firstKey put: (self at: secondKey).
 	self at: secondKey put: tempValue
+]
+
+{ #category : #accessing }
+Performance >> transportStep [
+	^ transportStep
 ]
 
 { #category : #'LiveCoding - performance' }

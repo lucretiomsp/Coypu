@@ -67,6 +67,15 @@ PerformanceTest >> testBwToKey [
 ]
 
 { #category : #tests }
+PerformanceTest >> testDirtNotesToKey [
+
+| seq |
+seq := 16 downbeats sound: #('arpy') dirtNotes: #(60 61 62 63) to: #aKeyInPerf.
+
+self assert: seq samplesIndex equals: #(0 1 2 3)
+]
+
+{ #category : #tests }
 PerformanceTest >> testExtra1ToKey [
 
 	| p |
@@ -84,6 +93,20 @@ PerformanceTest >> testExtra2ToKey [
 	16 downbeats to: #synth.
 	#synth extra2: #( #Duty #( 0.1 0.3 ) ).
 	self assert: (p at: #synth) extra2 equals: #( #Duty #( 0.1 0.3 ) )
+]
+
+{ #category : #tests }
+PerformanceTest >> testHexPatternAndDirtSoundsToKey [
+
+	| p |
+	p := Performance uniqueInstance.
+	'8888' sound: #( 'cp' ) to: #synth.
+
+	self
+		assert: (p at: #synth) gates
+		equals: #( 1 0 0 0 1 0 0 0 1 0 0 0 1 0 0 0 ) asRhythm.
+	self assert: (p at: #synth) soundPattern  equals: #('cp').
+
 ]
 
 { #category : #tests }

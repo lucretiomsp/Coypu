@@ -64,7 +64,7 @@ Clock >> start [
 			 shapes: characters;
 			 yourself).
 
-	canvas addAll: ('TICK' asArray collectWithIndex: [ :m :i | 
+	canvas addAll: ('TICK' asDirtArray collectWithIndex: [ :m :i | 
 			 | s |
 			 s := RSLabel new
 				      color: Color white;

@@ -6,7 +6,7 @@ Integer >> adowa [
 | pattern |
 pattern := #(0 0 0 1 0 1 0 1).
 
-^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm .
+^ (((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm) asSeq.
 
 ]
 
@@ -173,7 +173,7 @@ Integer >> ones [
 { #category : #'*LiveCoding' }
 Integer >> pattern [ 
 	| arrayOfCharacters s result|
-	arrayOfCharacters := (self printStringBase: 2) asArray.
+	arrayOfCharacters := (self printStringBase: 2) asDirtArray.
 	s := arrayOfCharacters size.
 	result := (1 to: s) collect: [ :i | (arrayOfCharacters at: i) digitValue ].
 	^ result asSeq. 
@@ -184,6 +184,109 @@ Integer >> pattern [
 Integer >> quavers [
 "creates an Array of aNumber of values (0,1) with 1 to the position corresponding to a rhtyhm of quavers (downbeat + upbeat)"
 	^ (((1 to: self) collect: [ :i | ((((i rem: 4) = 1)) | (((i rem: 4) = 3)) ) asBit ]) asRhythm ) asSeq.
+]
+
+{ #category : #'*LiveCoding' }
+Integer >> randomInside: anArray [
+
+	"return an array of self size choosing from the values inside anArray"
+
+	| result |
+	result := (1 to: self) collect: [ :i | 
+		          anArray at:
+			          (Random new nextIntegerBetween: 1 and: anArray size) ].
+
+	^ result
+]
+
+{ #category : #'*LiveCoding' }
+Integer >> randomInts: aMaximum [
+
+
+
+^ (1 to: self) collect: [ :i | (Random new next *  aMaximum) rounded ].
+
+]
+
+{ #category : #'*LiveCoding' }
+Integer >> randomNotesFrom: anArray root: aRootNote octaves: aNumber [
+
+	"return an array of self size of a random note from anArray of note numbers with root aRootNote, and aNumber octave range"
+
+	| intervals melody |
+	intervals := (1 to: self) collect: [ :i | 
+		             (anArray at: (Random new nextInteger: anArray size))
+		             + ((Random new nextInteger: aNumber + 1) - 1 * 12) ].
+	melody := intervals + aRootNote.
+	^ melody
+]
+
+{ #category : #'*LiveCoding' }
+Integer >> randomSamplesFromFolder: aStringForASuperDirtSamplesFolder [
+
+	"return a Sequencer with self random trigs and random  samples from the folder named by the string
+	/ for example 16 randomSamplesFrom: 'cpu' "
+
+	| triggers randIndex folder folderSize|
+	triggers := self randomTrigs.
+	folder := SuperDirt samplesFolder / aStringForASuperDirtSamplesFolder .
+	folderSize := folder asFileReference allChildren size. 
+	randIndex:= triggers trigs randomInts: folderSize .
+	^ triggers sound: aStringForASuperDirtSamplesFolder  dirtNotes: randIndex .
+]
+
+{ #category : #'*LiveCoding' }
+Integer >> randomSequencer [
+
+	"return a Sequencer with self random trigs and random notes  "
+
+	| triggers randNotes |
+	triggers := self randomTrigs.
+	randNotes := triggers trigs randomFrom: #( 24 88 ).
+	^ triggers notes: randNotes
+]
+
+{ #category : #'*LiveCoding' }
+Integer >> randomSequencerIn: anArray [
+
+	"return a Sequencer with self random trigs and random notes in the array "
+
+	| triggers randNotes |
+	triggers := self randomTrigs.
+	randNotes := triggers trigs randomInside: anArray.
+	^ triggers notes: randNotes
+]
+
+{ #category : #'*LiveCoding' }
+Integer >> randomSequencerIn: anArray withProbability: anInteger [
+
+	"return a Sequencer with self random trigs withProbability and random notes in the array "
+
+	| triggers randNotes |
+	triggers := self randomTrigsWithProbability: anInteger.
+	randNotes := triggers trigs randomInside: anArray.
+	^ triggers notes: randNotes
+]
+
+{ #category : #'*LiveCoding' }
+Integer >> randomTrigs [
+
+| result |
+result := Array new: self.
+
+1 to: self do: [ :i | result at: i put: Random new next rounded ].
+^ result asSeq.
+]
+
+{ #category : #'*LiveCoding' }
+Integer >> randomTrigsWithProbability: anInteger [
+
+
+| result |
+result := Array new: self.
+
+1 to: self do: [ :i | result at: i put: ((Random new nextIntegerBetween: 0 and: 100) < anInteger ) asInteger ].
+^ result asSeq.
 ]
 
 { #category : #'*LiveCoding' }
