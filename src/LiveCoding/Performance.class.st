@@ -347,6 +347,37 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 ]
 
 { #category : #playing }
+Performance >> playDirt [
+
+	"play the performance to SuperDIrt/SuperCollider audio engine - default freq is 132 bpm 
+	Performance speed can be changed with p freq: a bpm"
+
+	| process |
+	
+	bpm := 60 / (self freq * 4). 
+	transportStep := 1.
+	process := [ 
+		        "the perfrormance last 4 days at 120 bpm"
+	           (4 days asMilliSeconds  / 120) timesRepeat: [ 
+		           (Delay forSeconds: self freq) wait.
+		           "sequencers scan"
+		           [ 
+		           self valuesDo: [ :seq | 
+			           (seq gates wrap: transportStep) = 1
+				           ifTrue: [ 
+					           seq playFullDirtEventAt: seq noteIndex  "delta!!!!" .
+					           "increment note Index"
+					           seq noteIndex: seq noteIndex + 1 ]
+				           ifFalse: [ nil ] ] ] forkAt: Processor timingPriority.
+
+		           "step is incremented anyway"
+		           self incrementTransportStep ] ] forkAt: Processor timingPriority.
+
+
+	^ process
+]
+
+{ #category : #playing }
 Performance >> playDirtFor: aNumberOfSteps [
 
 	"play the performance to SuperDIrt/SuperCollider audio engine - default freq is 132 bpm 
