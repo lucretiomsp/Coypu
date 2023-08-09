@@ -14,6 +14,7 @@ Class {
 { #category : #accessing }
 Transport >> increment [ 
 position := position + 1.
+^ position
 ]
 
 { #category : #initialization }

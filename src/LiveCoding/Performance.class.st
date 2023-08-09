@@ -102,7 +102,7 @@ Performance >> at: key put: anObject [
 				rsGroupDictionary at: key put: anObject visualGroup ] ]
 ]
 
-{ #category : #'LiveCoding - performance' }
+{ #category : #'LiveCoding - Performance' }
 Performance >> backup [
 
 	
@@ -577,7 +577,7 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 		  step := step + 1 ] ] forkAt: Processor timingPriority
 ]
 
-{ #category : #playing }
+{ #category : #'as yet unclassified' }
 Performance >> playLocalSequenceAt: aRateInSeconds for: aNumberOfSteps [
 
 	" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
@@ -846,7 +846,7 @@ Performance >> resetAllSequencers [
 			ifFalse: [ nil ] ]
 ]
 
-{ #category : #'LiveCoding - performance' }
+{ #category : #'LiveCoding - Performance' }
 Performance >> restore [
 
 	"restore what the performance was before receiveing messages muteAll or solo"
@@ -905,7 +905,7 @@ Performance >> transportStep [
 	^ transportStep
 ]
 
-{ #category : #'LiveCoding - performance' }
+{ #category : #'LiveCoding - Performance' }
 Performance >> unsolo: aKeyInPerformance [
 	"convenience method to unsolo a key in the performance"
 	
