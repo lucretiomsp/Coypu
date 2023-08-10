@@ -110,6 +110,12 @@ Performance >> backup [
 ]
 
 { #category : #accessing }
+Performance >> backup: anObject [
+
+	backup := anObject
+]
+
+{ #category : #accessing }
 Performance >> bpm [
 
 	^ bpm
@@ -358,37 +364,7 @@ Performance >> playDirt [
 	transportStep := 1.
 	process := [ 
 		        "the perfrormance last 4 days at 120 bpm"
-	           (4 days asMilliSeconds  / 120) timesRepeat: [ 
-		           (Delay forSeconds: self freq) wait.
-		           "sequencers scan"
-		           [ 
-		           self valuesDo: [ :seq | 
-			           (seq gates wrap: transportStep) = 1
-				           ifTrue: [ 
-					           seq playFullDirtEventAt: seq noteIndex  "delta!!!!" .
-					           "increment note Index"
-					           seq noteIndex: seq noteIndex + 1 ]
-				           ifFalse: [ nil ] ] ] forkAt: Processor timingPriority.
-
-		           "step is incremented anyway"
-		           self incrementTransportStep ] ] forkAt: Processor timingPriority.
-
-
-	^ process
-]
-
-{ #category : #playing }
-Performance >> playDirtFor: aNumberOfSteps [
-
-	"play the performance to SuperDIrt/SuperCollider audio engine - default freq is 132 bpm 
-	Performance speed can be changed with p freq: a bpm"
-
-	| process  |
-	self freq: 132 bpm.
-	bpm := 60 / (self freq * 4). 
-	transportStep := 1.
-	process := [ 
-	           aNumberOfSteps timesRepeat: [ 
+	           (4 days asMilliSeconds  / 0.125) timesRepeat: [ 
 		           (Delay forSeconds: self freq) wait.
 		           "sequencers scan"
 		           [ 
@@ -418,6 +394,15 @@ Performance >> playExtra: anExtraCollection of: baseGate at: index [
 	fullGate := baseGate , extraGate.
 
 	performer playGate: fullGate withNote: currentNote
+]
+
+{ #category : #playing }
+Performance >> playFor: aNumberOfSteps [
+
+	" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
+an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
+
+self performer playFor: aNumberOfSteps 
 ]
 
 { #category : #'as yet unclassified' }
@@ -903,6 +888,12 @@ Performance >> swap: firstKey with: secondKey [
 { #category : #accessing }
 Performance >> transportStep [
 	^ transportStep
+]
+
+{ #category : #accessing }
+Performance >> transportStep: anObject [
+
+	transportStep := anObject
 ]
 
 { #category : #'LiveCoding - Performance' }
