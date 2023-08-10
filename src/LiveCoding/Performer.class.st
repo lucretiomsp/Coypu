@@ -8,7 +8,21 @@ Class {
 	#name : #Performer,
 	#superclass : #Object,
 	#instVars : [
-		'performance'
+		'performance',
+		'freq'
 	],
 	#category : #'LiveCoding-Performance'
 }
+
+{ #category : #initialization }
+Performer >> initialize [ 
+super initialize .
+performance :=  Performance uniqueInstance .
+freq := performance freq.
+]
+
+{ #category : #playing }
+Performer >> playDirtFor: aNumberOfSteps [
+
+self subclassResponsibility 
+]
