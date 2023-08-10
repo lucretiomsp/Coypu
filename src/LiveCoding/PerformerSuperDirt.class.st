@@ -23,7 +23,7 @@ PerformerSuperDirt >> playDirtFor: aNumberOfSteps [
 	
 	performance bpm: 60 / (performance freq * 4). 
 	performance transportStep: 1.
-	process := [ 
+	performance activeProcess: [ 
 	           aNumberOfSteps timesRepeat: [ 
 		           (Delay forSeconds: performance freq) wait.
 		           "sequencers scan"
@@ -40,5 +40,5 @@ PerformerSuperDirt >> playDirtFor: aNumberOfSteps [
 		           performance incrementTransportStep ] ] forkAt: Processor timingPriority.
 
 
-	^ process
+	
 ]

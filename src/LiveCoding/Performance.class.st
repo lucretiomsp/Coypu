@@ -15,7 +15,8 @@ Class {
 		'freq',
 		'backup',
 		'bpm',
-		'transportStep'
+		'transportStep',
+		'activeProcess'
 	],
 	#classInstVars : [
 		'uniqueInstance',
@@ -72,6 +73,18 @@ Performance class >> withCircles [
 	^ self new
 		  visualization: CircleVisualization new;
 		  yourself
+]
+
+{ #category : #accessing }
+Performance >> activeProcess [
+
+	^ activeProcess
+]
+
+{ #category : #accessing }
+Performance >> activeProcess: anObject [
+
+	activeProcess := anObject
 ]
 
 { #category : #'performance  - adding' }
@@ -140,6 +153,12 @@ canvas := aRSCanvas
 { #category : #accessing }
 Performance >> freq [
 ^ freq
+]
+
+{ #category : #accessing }
+Performance >> freq1: anObject [
+
+	freq := anObject
 ]
 
 { #category : #accessing }
