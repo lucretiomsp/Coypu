@@ -316,6 +316,11 @@ Performance >> performer: aPerformer [
 ]
 
 { #category : #playing }
+Performance >> play [
+	self performer play
+]
+
+{ #category : #playing }
 Performance >> play: aRateInSeconds for: aNumberOfSteps [
 
 	" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
@@ -381,7 +386,7 @@ Performance >> playDirt [
 	
 	bpm := 60 / (self freq * 4). 
 	transportStep := 1.
-	process := [ 
+	activeProcess := [ 
 		        "the perfrormance last 4 days at 120 bpm"
 	           (4 days asMilliSeconds  / 0.125) timesRepeat: [ 
 		           (Delay forSeconds: self freq) wait.
@@ -839,6 +844,11 @@ Performance >> solo: aKeyOrAnArrayOfKeys [
 			canvas removeShape: (rsGroupDictionary at: i) asShape ] ]] ] fork
 " 
 				keys ~= aKeyOrAnArrayOfKeys ] ]
+]
+
+{ #category : #accessing }
+Performance >> stop [
+	self activeProcess terminate
 ]
 
 { #category : #modifying }
