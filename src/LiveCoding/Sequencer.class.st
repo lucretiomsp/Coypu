@@ -338,6 +338,12 @@ Sequencer >> flip [
 	^ result asRhythm asSeq.
 ]
 
+{ #category : #'LiveCoding  - SuperDirt' }
+Sequencer >> gain: aFloatOrAnArray [
+" add gain pattern to the Sequencer"
+	self dirtMessage at: 'gain' put:  aFloatOrAnArray   asDirtArray
+]
+
 { #category : #accessing }
 Sequencer >> gates [
 
