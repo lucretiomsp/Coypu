@@ -9,7 +9,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'performance',
-		'freq'
+		'freq',
+		'fourDaysAt120BPM'
 	],
 	#category : #'LiveCoding-Performance'
 }
@@ -19,10 +20,10 @@ Performer >> initialize [
 super initialize .
 performance :=  Performance uniqueInstance .
 freq := performance freq.
+fourDaysAt120BPM  := 4 days asMilliSeconds / ((60/ 120) /4)
 ]
 
 { #category : #playing }
-Performer >> playDirtFor: aNumberOfSteps [
-
+Performer >> play [ 
 self subclassResponsibility 
 ]

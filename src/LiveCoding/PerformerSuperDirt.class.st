@@ -10,7 +10,7 @@ Class {
 { #category : #playing }
 PerformerSuperDirt >> play [
 "play the performance for almost 4 days at 132 bpm"
-self playDirtFor: (4 days asMilliSeconds / ((60 /132) / 4))
+self playDirtFor: fourDaysAt120BPM 
 ]
 
 { #category : #playing }

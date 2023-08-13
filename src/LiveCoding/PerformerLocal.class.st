@@ -6,3 +6,8 @@ Class {
 	#superclass : #Performer,
 	#category : #'LiveCoding-Performance'
 }
+
+{ #category : #playing }
+PerformerLocal >> play [
+self shouldBeImplemented 
+]
