@@ -123,6 +123,29 @@ self pattern notes: anArrayOfNotes to: aKeyInAPerformance .
 ]
 
 { #category : #'*LiveCoding' }
+ByteString >> once [
+"play the sound from the SuperDirt audio engine once at the desired index if any -
+for exampe cp:4 sound the 3rd sample of the /Library/Application\ Support/SuperCollider/downloaded-quarks/Dirt-Samples/cp folder"
+| sound note message parsedString|
+parsedString := (self findBetweenSubstrings: ':') .
+sound := parsedString at: 1. 
+parsedString size = 2 ifTrue: [ note:= parsedString at: 2 ] ifFalse:  [note := 0].
+message := OSCMessage for: { '/dirt/play' . 's' . sound . 'n' . note}. 
+(OSCBundle for: { message } )sendToAddressString:  '127.0.0.1' port: 57120. 
+]
+
+{ #category : #'*LiveCoding' }
+ByteString >> onceAtSpeed: aFloat [
+"play the soundfrom the SuperDirt audio engine once at the desired speed"
+| sound note message parsedString|
+parsedString := (self findBetweenSubstrings: ':') .
+sound := parsedString at: 1. 
+parsedString size = 2 ifTrue: [ note:= parsedString at: 2 ] ifFalse:  [note := 0].
+message := OSCMessage for: { '/dirt/play' . 's' . sound . 'n' . note . 'speed' . aFloat}. 
+(OSCBundle for: { message } )sendToAddressString:  '127.0.0.1' port: 57120. 
+]
+
+{ #category : #'*LiveCoding' }
 ByteString >> pattern [ 
 " convert a string with an Hexadecimal number to the Kyma array correspondong to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex)"
 |   strings flat |

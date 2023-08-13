@@ -405,6 +405,7 @@ Sequencer >> initialize [
 
 super initialize .
 dirtMessage := Dictionary new.
+
 dirtMessage  at: 'cps' put: 0.56.
 "superdirt orbits are 12"
 self class orbit: self class orbit + 1.
@@ -638,7 +639,7 @@ if you want to send out ccs
 		  step := step + 1 ] ] forkAt: Processor timingPriority
 ]
 
-{ #category : #'sequencer - playing' }
+{ #category : #'LiveCoding  - SuperDirt' }
 Sequencer >> playBasicDirtEventAt: anIndex [
 
 	"convenience method to play single events inside a Sequencer / it is possible to select only sound and index"
@@ -653,7 +654,7 @@ message addAll: { '_id' . '1' . 'cps' . 0.56 . 'delta' . 0.125 . 'orbit' . 0 . '
 	^ true 
 ]
 
-{ #category : #'sequencer - playing' }
+{ #category : #'LiveCoding  - SuperDirt' }
 Sequencer >> playBasicDirtEventAt: anIndex delta: aRateInSeconds [
 
 	"convenience method to play single events inside a Sequencer / it is possible to select only sound and index
@@ -670,7 +671,7 @@ message addAll: { '_id' . '1' . 'cps' . 0.56 . 'delta' . (aRateInSeconds * dur) 
 	^ true 
 ]
 
-{ #category : #'sequencer - playing' }
+{ #category : #'LiveCoding  - SuperDirt' }
 Sequencer >> playBasicDirtEventAt: anIndex id: aString [
 
 	"convenience method to play single events inside a Sequencer / it is possible to select only sound and index"
@@ -687,7 +688,7 @@ message addAll: { '_id' . aString . 'cps' . 0.22 . 'delta' . 0.125 . 'orbit' . 0
 	^ true 
 ]
 
-{ #category : #'sequencer - playing' }
+{ #category : #'LiveCoding  - SuperDirt' }
 Sequencer >> playBasicDirtEventAt: anIndex id: aString delta: aDurationInSeconds [
 
 	"convenience method to play single events inside a Sequencer / it is possible to select only sound and index 
@@ -705,14 +706,15 @@ message addAll: { '_id' . aString . 'cps' . 0.22 . 'delta' . aDurationInSeconds 
 	^ true 
 ]
 
-{ #category : #'sequencer - playing' }
+{ #category : #'LiveCoding  - SuperDirt' }
 Sequencer >> playFullDirtEventAt: anIndex [
 
 	"sends a mesaage to SuperDirt with all the desired OSC arguments and values" 
 | message dur |
 message := OrderedCollection new.
-dur := self durations asDirtArray  wrap: anIndex .
 message add: '/dirt/play'.
+dur := self durations asDirtArray  wrap: anIndex .
+
 message add: 'delta'; add: 0.123. "delta should change"
 dirtMessage keysAndValuesDo:  [ :key :value | message add: key; add: (value asDirtArray  wrap: anIndex ) ].
 
@@ -727,12 +729,13 @@ message addAll: { '_id' . '1' . 'cps' . 0.56 . 'delta' . 0.125 . 'orbit' . 0 . '
 	^ true 
 ]
 
-{ #category : #'sequencer - playing' }
+{ #category : #'LiveCoding  - SuperDirt' }
 Sequencer >> playFullDirtEventAt: anIndex delta: aRateInSeconds [
 
 	"sends a mesaage to SuperDirt with all the desired OSC arguments and values" 
 | message dur |
 message := OrderedCollection new.
+message add: '/dirt/play'.
 dur := self durations asDirtArray  wrap: anIndex .
 message add: 'delta'; add: (aRateInSeconds * dur) asFloat asDirtArray . 
 dirtMessage keysAndValuesDo:  [ :key :value | message add: key; add: (value asDirtArray  wrap: anIndex ) ].
@@ -748,7 +751,7 @@ message addAll: { '_id' . '1' . 'cps' . 0.56 . 'delta' . 0.125 . 'orbit' . 0 . '
 	^ true 
 ]
 
-{ #category : #'sequencer - playing' }
+{ #category : #'LiveCoding  - SuperDirt' }
 Sequencer >> playToDirt: aNumberOfSteps rate: aRateInSeconds [
 
 	"play the sequencer to the SuperDirt/SuperCollider synth engine"
