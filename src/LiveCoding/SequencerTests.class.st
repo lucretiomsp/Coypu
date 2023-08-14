@@ -47,6 +47,12 @@ SequencerTests >> testChangeSequencerGatesSize [
 ]
 
 { #category : #tests }
+SequencerTests >> testChords: aChord [
+self shouldBeImplemented 
+
+]
+
+{ #category : #tests }
 SequencerTests >> testEuclideanRhythmFromArray [
 
 	| tresillo seq |

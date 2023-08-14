@@ -137,12 +137,26 @@ message := OSCMessage for: { '/dirt/play' . 's' . sound . 'n' . note}.
 { #category : #'*LiveCoding' }
 ByteString >> onceAtSpeed: aFloat [
 "play the soundfrom the SuperDirt audio engine once at the desired speed"
-| sound note message parsedString|
+| sound note message parsedString condition|
+note := 0.
 parsedString := (self findBetweenSubstrings: ':') .
 sound := parsedString at: 1. 
-parsedString size = 2 ifTrue: [ note:= parsedString at: 2 ] ifFalse:  [note := 0].
+condition := parsedString size = 2.
+condition  ifTrue: [ note:= parsedString at: 2 ] ifFalse:  [note := 0].
 message := OSCMessage for: { '/dirt/play' . 's' . sound . 'n' . note . 'speed' . aFloat}. 
 (OSCBundle for: { message } )sendToAddressString:  '127.0.0.1' port: 57120. 
+
+
+]
+
+{ #category : #'*LiveCoding' }
+ByteString >> parseChord [
+	|root chord notes|
+	root := (self findBetweenSubstrings: ' ') at: 1.
+	chord :=(self findBetweenSubstrings: ' ') at: 2.
+	notes := Array new: 11.
+	notes := #('c' 'c#' 'd' 'd#' 'e' 'f' 'f#' 'g#' 'a' 'a#' 'b').
+		^ (Chord perform: chord asLowercase  asSymbol) + (notes indexOf: root asLowercase  ).
 ]
 
 { #category : #'*LiveCoding' }
