@@ -7,3 +7,8 @@ Class {
 	#type : #variable,
 	#category : #'LiveCoding-Sequencers'
 }
+
+{ #category : #'LiveCoding - sequencer' }
+SequencerMono >> isPolySeq [ 
+^ false
+]

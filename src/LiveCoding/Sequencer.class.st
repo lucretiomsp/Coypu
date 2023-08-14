@@ -414,6 +414,12 @@ orbit := self class orbit.
 "dirtMessage addAll: { '_id' -> 1 . 'cps' -> 0.56 .  'orbit' -> 0 }"
 ]
 
+{ #category : #'LiveCoding - sequencer' }
+Sequencer >> isPolySeq [
+
+self subclassResponsibility 
+]
+
 { #category : #testing }
 Sequencer >> isSequencer [
 
@@ -748,6 +754,29 @@ dirtMessage keysAndValuesDo:  [ :key :value | message add: key; add: (value asDi
 message addAll: { '_id' . '1' . 'cps' . 0.56 . 'delta' . 0.125 . 'orbit' . 0 . 's' . sound . 'n' . index}. "
 
 	message asOSCMessageForSuperDirt .
+	^ true 
+]
+
+{ #category : #'LiveCoding  - SuperDirt' }
+Sequencer >> playFullDirtEventAt: anIndex port: aPort [
+
+	"sends a mesaage to SuperDirt with all the desired OSC arguments and values" 
+| message dur |
+message := OrderedCollection new.
+message add: '/dirt/play'.
+dur := self durations asDirtArray  wrap: anIndex .
+
+message add: 'delta'; add: 0.123. "delta should change"
+dirtMessage keysAndValuesDo:  [ :key :value | message add: key; add: (value asDirtArray  wrap: anIndex ) ].
+
+	"| index sound message  delta|
+	index := 'n' -> (self samplesIndex wrap: anIndex) asFloat.
+	sound := 'sound' -> (self soundPattern wrap: anIndex).
+	delta := 'delta' -> 0.125. change it to have changing delta values
+   message := OrderedCollection new.
+message addAll: { '_id' . '1' . 'cps' . 0.56 . 'delta' . 0.125 . 'orbit' . 0 . 's' . sound . 'n' . index}. "
+
+	(OSCBundle for: {  OSCMessage for: message  }  )  sendToAddressString: '127.0.0.1' port: aPort.
 	^ true 
 ]
 

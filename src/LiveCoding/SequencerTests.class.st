@@ -38,6 +38,16 @@ self assert: (initial arp: #(0 1 2 3)) equals: result
 ]
 
 { #category : #tests }
+SequencerTests >> testAsPolySeq [
+
+| monoseq |
+
+monoseq := 16 downbeats.
+
+self assert: monoseq asPolySeq isPolySeq   
+]
+
+{ #category : #tests }
 SequencerTests >> testChangeSequencerGatesSize [
 
 	| seq |

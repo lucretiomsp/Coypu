@@ -75,6 +75,24 @@ Array >> arp: anArrayOfIntervals [
 ]
 
 { #category : #'*LiveCoding' }
+Array >> asMonoSeq [
+
+	"returns Sequencer with default note 60nn and default durations 1/16th and noteIndex = 0"
+
+	"duration now expressed in number of steps"
+
+	| numberOfNotes |
+	numberOfNotes := Array new: self trigs withAll: 60.
+	^ SequencerMono new
+		  gates: self;
+		  notes: numberOfNotes;
+		  durations: #( 1 );
+		  noteIndex: 0
+" duration in steps"
+
+]
+
+{ #category : #'*LiveCoding' }
 Array >> asRhythm [
 " convert Array into a Rhythm"
 | rhythm |
