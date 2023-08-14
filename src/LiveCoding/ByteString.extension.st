@@ -58,38 +58,37 @@ ByteString >> asVerticalFaderLocal: aRange [
 ]
 
 { #category : #'*LiveCoding' }
-ByteString >> forDirt [
+ByteString >> hexBeat [
 
-	" parse a String into a Sequencer containing information to end to the SuperDirt synth for SuperCollider"
+" convert a string with an Hexadecimal number to the Kyma array correspondong to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex)"
+|   strings flat |
 
-	| seq gates soundsAndIndexs soundsAndIndexsAndGates indexes sounds |
-	soundsAndIndexsAndGates := self findBetweenSubstrings: ' '.
-	gates := OrderedCollection new.
-	soundsAndIndexsAndGates do: [ :i | 
-		i ~= '~'
-			ifTrue: [ gates add: 1 ]
-			ifFalse: [ gates add: 0 ] ].
-	soundsAndIndexs := soundsAndIndexsAndGates reject: [ :i | i = '~' ].
-	sounds := OrderedCollection new.
-	(1 to: soundsAndIndexs size) do: [ :i | 
-		sounds add:
-			(((soundsAndIndexs at: i) findBetweenSubstrings: ':') at: 1) ].
-	indexes := OrderedCollection new.
-	(1 to: soundsAndIndexs size) do: [ :i | 
-		((soundsAndIndexs at: i) findBetweenSubstrings: ':') size > 1
-			ifTrue: [ 
-				indexes add:
-					(((soundsAndIndexs at: i) findBetweenSubstrings: ':') at: 2)
-						asInteger ]
-			ifFalse: [ indexes add: 0 ] ].
+strings := (1 to: (self size)) collect: [ :i | 
+((self at: i) digitValue printStringBase: 2 length: 4 padded: true ) ].
+flat := strings flatCollect: [ :each | each ].
+^ ((( 1 to: (flat size)) collect: [ :i | (flat at: i ) digitValue ]) asRhythm ) asSeq.
+]
 
-	seq := Sequencer new
-		       gates: gates asDirtArray;
-		       soundPattern: sounds asDirtArray;
-		       samplesIndex: indexes asDirtArray;
-		       noteIndex: 1.
+{ #category : #'*LiveCoding' }
+ByteString >> hexBeat: anArrayOfNoteNumbers [ 
+" convert a string with an Hexadecimal number to the Kyma array corresponding to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex) , and with  anArrayOfNoteNumbers as Notes"
+|   strings flat |
 
-	^ seq
+strings := (1 to: (self size)) collect: [ :i | 
+((self at: i) digitValue printStringBase: 2 length: 4 padded: true ) ].
+flat := strings flatCollect: [ :each | each ].
+^ ((( 1 to: (flat size)) collect: [ :i | (flat at: i ) digitValue ]) asRhythm ) and: anArrayOfNoteNumbers  .
+]
+
+{ #category : #'*LiveCoding' }
+ByteString >> hexBeat: anArrayOfNoteNumbers and: anArrayOfDurations [
+" convert a string with an Hexadecimal number to the Kyma array corresponding to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex) , and with  anArrayOfNoteNumbers as Notes and anArrayOfDurations as Durations"
+|   strings flat |
+
+strings := (1 to: (self size)) collect: [ :i | 
+((self at: i) digitValue printStringBase: 2 length: 4 padded: true ) ].
+flat := strings flatCollect: [ :each | each ].
+^ ((( 1 to: (flat size)) collect: [ :i | (flat at: i ) digitValue ]) asRhythm ) and: anArrayOfNoteNumbers and: anArrayOfDurations .
 ]
 
 { #category : #'*LiveCoding' }

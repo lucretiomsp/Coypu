@@ -317,7 +317,10 @@ Performance >> performer: aPerformer [
 
 { #category : #playing }
 Performance >> play [
-	self performer play
+"just on performance at once"
+self activeProcess isTerminated ifTrue: [ self performer play ] ifFalse: [ ] 
+
+	
 ]
 
 { #category : #playing }

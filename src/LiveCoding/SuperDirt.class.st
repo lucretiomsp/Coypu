@@ -8,6 +8,18 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+SuperDirt class >> listOfDrumSynth [
+
+
+| drumList  |
+
+drumList := OrderedCollection new.
+drumList add: (SuperDirtSynth name: 'superkick' parameters: #('n' 'accelerate' 'pitch1' 'decay')); add: (SuperDirtSynth name: 'super808' parameters: #('n' 'voice' 'rate')).
+
+^ drumList 
+]
+
+{ #category : #'as yet unclassified' }
 SuperDirt class >> listOfDrums [
 
 
