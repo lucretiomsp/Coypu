@@ -8,6 +8,11 @@ Class {
 	#category : #'LiveCoding-Sequencers'
 }
 
+{ #category : #converting }
+SequencerPoly >> asPolySeq [ 
+^ self
+]
+
 { #category : #'LiveCoding - sequencer' }
 SequencerPoly >> isPolySeq [ 
 ^ true

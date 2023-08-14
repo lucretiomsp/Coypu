@@ -109,8 +109,8 @@ Array >> asSeq [
 	"duration now expressed in number of steps"
 
 	| numberOfNotes |
-	numberOfNotes := Array new: self trigs withAll: 60.
-	^ Sequencer new
+	numberOfNotes := self class new: self trigs withAll: 60.
+	^ SequencerMono new
 		  gates: self;
 		  notes: numberOfNotes;
 		  durations: #( 1 );

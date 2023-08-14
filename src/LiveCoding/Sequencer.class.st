@@ -116,6 +116,13 @@ Sequencer >> allNotes: anInteger [
 	self notes: newNotes.
 ]
 
+{ #category : #converting }
+Sequencer >> asPolySeq [
+	
+	
+self subclassResponsibility 
+]
+
 { #category : #accessing }
 Sequencer >> chords [
 

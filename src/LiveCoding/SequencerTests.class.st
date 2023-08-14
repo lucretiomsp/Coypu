@@ -40,11 +40,18 @@ self assert: (initial arp: #(0 1 2 3)) equals: result
 { #category : #tests }
 SequencerTests >> testAsPolySeq [
 
-| monoseq |
+| monoseq polyseq |
 
 monoseq := 16 downbeats.
+polyseq  := monoseq asPolySeq.
 
-self assert: monoseq asPolySeq isPolySeq   
+self assert:  polyseq isPolySeq .   
+
+self assert: polyseq gates equals: monoseq gates.
+self assert: polyseq durations  equals: monoseq durations.
+self assert: polyseq noteIndex  equals: monoseq noteIndex.
+self assert: polyseq dirtMessage  equals: monoseq dirtMessage .
+
 ]
 
 { #category : #tests }
