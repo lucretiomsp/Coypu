@@ -95,14 +95,15 @@ self assert: (Sequencer new orbit > 0) & (Sequencer new orbit < 12) equals: true
 { #category : #tests }
 SequencerTests >> testSequencerOffset [
 
-| seq result1 result2 |
-seq := 16 downbeats.
+| seq1 seq2 result1 result2 |
+seq1 := 4 downbeats.
+seq2 := 4 downbeats.
 
-result1 := '2222' pattern.
-result2 := '1111' pattern.
+result1 := #(0 0 1 0) asSeq .
+result2 := #(0 0 0 1) asSeq .
 
-self assert: (seq offset: 2) equals: result1.
-self assert: (seq offset: -1) equals: result2.
+self assert: (seq1 offset: 2) gates  equals: result1 gates.
+self assert: (seq2 offset: -1) gates equals: result2 gates.
 ]
 
 { #category : #tests }

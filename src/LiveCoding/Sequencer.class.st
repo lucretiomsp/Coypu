@@ -591,7 +591,7 @@ Sequencer >> offset: aNumber [
 
 	| newArray |
 	newArray := Array new: self gates size.
-	(1 to: self gates size) do: [ :i | newArray at: ((i + aNumber ) modulo: self gates size) put: (self gates at: i) ].
+	1 to: self gates size do: [ :i | newArray at: ((i + aNumber ) modulo: self gates size) put: (self gates at: i) ].
 	self gates: newArray
 ]
 
