@@ -208,9 +208,9 @@ ByteString >> toKymaAsGate [
 "	pacaAddress := NetNameResolver stringFromAddress: (NetNameResolver 	addressForName:'beslime-691.local'). "
 
 	vcslabel := '/vcs/', self , 'Gate', '/1'.
-	(OSCMessage for: { vcslabel  . 1.0  }) sendToAddressString: pacaAddress  port: 8000.
+	(OSCMessage for: { vcslabel  . 1.0  }) sendToAddressString: PacaAddress address  port: 8000.
 	(Delay forSeconds: 2) wait.
-	(OSCMessage for: { vcslabel  . 0.0  }) sendToAddressString: pacaAddress  port: 8000.
+	(OSCMessage for: { vcslabel  . 0.0  }) sendToAddressString: PacaAddress address  port: 8000.
 ]
 
 { #category : #'*LiveCoding' }
@@ -221,9 +221,9 @@ ByteString >> toKymaAsGate: gateTimeInSeconds [
 "	pacaAddress := NetNameResolver stringFromAddress: (NetNameResolver 	addressForName:'beslime-691.local'). "
 
 	vcslabel := '/vcs/', self , 'Gate', '/1'.
-	^ [(OSCMessage for: { vcslabel  . 1.0  }) sendToAddressString: pacaAddress  port: 8000.
+	^ [(OSCMessage for: { vcslabel  . 1.0  }) sendToAddressString: PacaAddress address port: 8000.
 	(Delay forSeconds: gateTimeInSeconds ) wait.
-	(OSCMessage for: { vcslabel  . 0.0  }) sendToAddressString: pacaAddress  port: 8000.
+	(OSCMessage for: { vcslabel  . 0.0  }) sendToAddressString: PacaAddress address port: 8000.
 	] fork
 ]
 
@@ -240,20 +240,20 @@ ByteString >> toKymaAsGate: gateTimeInSeconds note: aNoteNumber [
 	sendNoteNumber := (OSCMessage for: { 
 			                   vcsNoteLabel.
 			                   aNoteNumber asFloat })
-		                  sendToAddressString: pacaAddress
+		                  sendToAddressString:PacaAddress address
 		                  port: 8000.
 	[ "first NoteOff for VoiceStealing"
 	(OSCMessage for: { 
 			 vcsGatelabel.
-			 0.0 }) sendToAddressString: pacaAddress port: 8000."then note On"
+			 0.0 }) sendToAddressString:  PacaAddress address port: 8000."then note On"
 	(OSCMessage for: { 
 			 vcsGatelabel.
-			 1.0 }) sendToAddressString: pacaAddress port: 8000.
+			 1.0 }) sendToAddressString: PacaAddress address port: 8000.
 	(Delay forSeconds: gateTimeInSeconds) wait.
 	"then note Off"
 	(OSCMessage for: { 
 			 vcsGatelabel.
-			 0.0 }) sendToAddressString: pacaAddress port: 8000 ] fork
+			 0.0 }) sendToAddressString: PacaAddress address port: 8000 ] fork
 ]
 
 { #category : #'*LiveCoding' }
@@ -271,15 +271,15 @@ ByteString >> toKymaAsGateOld: gateTimeInSeconds note: aNoteNumber [
 	  (OSCMessage for: { 
 			   vcsNoteLabel.
 			   aNoteNumber asFloat })
-		  sendToAddressString: pacaAddress
+		  sendToAddressString: PacaAddress address
 		  port: 8000.
 	  (OSCMessage for: { 
 			   vcsGatelabel.
-			   1.0 }) sendToAddressString: pacaAddress port: 8000.
+			   1.0 }) sendToAddressString: PacaAddress address port: 8000.
 	  (Delay forSeconds: gateTimeInSeconds) wait.
 	  (OSCMessage for: { 
 			   vcsGatelabel.
-			   0.0 }) sendToAddressString: pacaAddress port: 8000 ] fork
+			   0.0 }) sendToAddressString: PacaAddress address port: 8000 ] fork
 ]
 
 { #category : #'*LiveCoding' }
@@ -291,8 +291,8 @@ ByteString >> toKymaAsNoteOff: aNoteNumber [
 	vcsGatelabel := '/vcs/', self , 'Gate', '/1'.
 	vcsNoteLabel := '/vcs/', self , 'Note', '/1'.
 	
-(OSCMessage for: { vcsNoteLabel  . aNoteNumber asFloat }) sendToAddressString: pacaAddress  port: 8000.
-(OSCMessage for: { vcsGatelabel  . 0.0  }) sendToAddressString: pacaAddress  port: 8000.
+(OSCMessage for: { vcsNoteLabel  . aNoteNumber asFloat }) sendToAddressString: PacaAddress address port: 8000.
+(OSCMessage for: { vcsGatelabel  . 0.0  }) sendToAddressString: PacaAddress address  port: 8000.
 
 ]
 
@@ -306,8 +306,8 @@ ByteString >> toKymaAsNoteOn: aNoteNumber [
 	vcsGatelabel := '/vcs/', self , 'Gate', '/1'.
 	vcsNoteLabel := '/vcs/', self , 'Note', '/1'.
 	
-(OSCMessage for: { vcsNoteLabel  . aNoteNumber asFloat }) sendToAddressString: pacaAddress  port: 8000.
-(OSCMessage for: { vcsGatelabel  . 1.0  }) sendToAddressString: pacaAddress  port: 8000.
+(OSCMessage for: { vcsNoteLabel  . aNoteNumber asFloat }) sendToAddressString: PacaAddress address port: 8000.
+(OSCMessage for: { vcsGatelabel  . 1.0  }) sendToAddressString: PacaAddress address port: 8000.
 
 ]
 
@@ -322,11 +322,11 @@ ByteString >> toKymaAsTrig [
 	^ [ 
 	  (OSCMessage for: { 
 			   vcslabel.
-			   1.0 }) sendToAddressString: pacaAddress port: 8000.
+			   1.0 }) sendToAddressString: PacaAddress address port: 8000.
 	  (Delay forSeconds: 0.01) wait.
 	  (OSCMessage for: { 
 			   vcslabel.
-			   0.0 }) sendToAddressString: pacaAddress port: 8000 ] fork
+			   0.0 }) sendToAddressString: PacaAddress address port: 8000 ] fork
 ]
 
 { #category : #'*LiveCoding' }
