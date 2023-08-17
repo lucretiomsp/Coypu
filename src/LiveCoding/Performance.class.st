@@ -326,57 +326,7 @@ self activeProcess isTerminated ifTrue: [ self performer play ] ifFalse: [ ]
 { #category : #playing }
 Performance >> play: aRateInSeconds for: aNumberOfSteps [
 
-	" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
-an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
-
-	"if the value in the dictionay is a Sequencer, an OSC message is sent to the key as OSC address with two arguments, one for the gate, and one for the note. the gate stays at 1 for the duration selected."
-
-	| step bpm beatInSeconds gateTime |
-	bpm := 60 / (aRateInSeconds * 4).
-	gateTime := aRateInSeconds * 0.8.
-	beatInSeconds := aRateInSeconds * 4.
-	step := 0.
-
-	^ [ 
-	  performer bpm: bpm.
-	  visualization startWith: bpm.
-
-	  aNumberOfSteps timesRepeat: [ 
-		  (Delay forSeconds: aRateInSeconds) wait. "WAIT time"
-		  " test if dictionary values is an Array of two arrays or as defined, a sequence"
-
-		  self keysAndValuesDo: [ :key :value | 
-			  value isSequencer
-				  ifTrue: [ 
-					  (value gates at: (step modulo: value gatesSize)) = 1 ifTrue: [ 
-						  | note gateTimeInSeconds |
-						  note := value note.
-						  gateTimeInSeconds := gateTime * value duration.
-
-						  performer
-							  playGate: key
-							  withTime: gateTimeInSeconds
-							  withNote: note.
-						  visualization showSound: key withNote: note.
-
-						  "maybe this part is not useful anymore"
-						  value durations isArray ifTrue: [ 
-							  performer duration: value duration forGate: key ].
-
-						  "experimental, for extra control parameter"
-						  value extra1 isArray ifTrue: [ 
-							  self playExtra: value extra1 of: key at: value noteIndex ].
-						  value extra2 isArray ifTrue: [ 
-							  self playExtra: value extra2 of: key at: value noteIndex ].
-
-						  value stepIndex ] ]
-				  ifFalse: [ 
-					  | note |
-					  note := value at: (step modulo: value size).
-					  performer playGate: key withNote: note ] ].
-
-		  "step is incrementing in any case"
-		  step := step + 1 ] ] forkAt: Processor timingPriority
+self activeProcess isTerminated ifTrue: [ self performer playFor: aNumberOfSteps  ] ifFalse: [ ] 
 ]
 
 { #category : #playing }

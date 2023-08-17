@@ -413,7 +413,7 @@ Sequencer >> initialize [
 super initialize .
 dirtMessage := Dictionary new.
 
-dirtMessage  at: 'cps' put: 0.56.
+dirtMessage  at: 'cps' put: Performance uniqueInstance freq * 4.
 "superdirt orbits are 12"
 self class orbit: self class orbit + 1.
 orbit := self class orbit.
@@ -723,12 +723,13 @@ message addAll: { '_id' . aString . 'cps' . 0.22 . 'delta' . aDurationInSeconds 
 Sequencer >> playFullDirtEventAt: anIndex [
 
 	"sends a mesaage to SuperDirt with all the desired OSC arguments and values" 
-| message dur |
+| message dur stepDuration|
+stepDuration := Performance uniqueInstance freq.
 message := OrderedCollection new.
 message add: '/dirt/play'.
 dur := self durations asDirtArray  wrap: anIndex .
 
-message add: 'delta'; add: 0.123. "delta should change"
+message add: 'delta'; add: stepDuration * dur. "delta should change"
 dirtMessage keysAndValuesDo:  [ :key :value | message add: key; add: (value asDirtArray  wrap: anIndex ) ].
 
 	"| index sound message  delta|

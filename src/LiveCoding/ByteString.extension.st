@@ -58,6 +58,41 @@ ByteString >> asVerticalFaderLocal: aRange [
 ]
 
 { #category : #'*LiveCoding' }
+ByteString >> forDirt [
+
+	" parse a String into a Sequencer containing information to end to the SuperDirt synth for SuperCollider"
+
+	| seq gates soundsAndIndexs soundsAndIndexsAndGates indexes sounds |
+	soundsAndIndexsAndGates := self findBetweenSubstrings: ' '.
+	gates := OrderedCollection new.
+	soundsAndIndexsAndGates do: [ :i | 
+		i ~= '~'
+			ifTrue: [ gates add: 1 ]
+			ifFalse: [ gates add: 0 ] ].
+	soundsAndIndexs := soundsAndIndexsAndGates reject: [ :i | i = '~' ].
+	sounds := OrderedCollection new.
+	(1 to: soundsAndIndexs size) do: [ :i | 
+		sounds add:
+			(((soundsAndIndexs at: i) findBetweenSubstrings: ':') at: 1) ].
+	indexes := OrderedCollection new.
+	(1 to: soundsAndIndexs size) do: [ :i | 
+		((soundsAndIndexs at: i) findBetweenSubstrings: ':') size > 1
+			ifTrue: [ 
+				indexes add:
+					(((soundsAndIndexs at: i) findBetweenSubstrings: ':') at: 2)
+						asInteger ]
+			ifFalse: [ indexes add: 0 ] ].
+
+	seq := Sequencer new
+		       gates: gates asDirtArray;
+		       soundPattern: sounds asDirtArray;
+		       samplesIndex: indexes asDirtArray;
+		       noteIndex: 1.
+
+	^ seq
+]
+
+{ #category : #'*LiveCoding' }
 ByteString >> hexBeat [
 
 " convert a string with an Hexadecimal number to the Kyma array correspondong to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex)"
