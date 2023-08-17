@@ -62,7 +62,7 @@ ByteString >> forDirt [
 
 	" parse a String into a Sequencer containing information to end to the SuperDirt synth for SuperCollider"
 
-	| seq gates soundsAndIndexs soundsAndIndexsAndGates indexes sounds |
+	| seq gates soundsAndIndexs soundsAndIndexsAndGates  soundsString|
 	soundsAndIndexsAndGates := self findBetweenSubstrings: ' '.
 	gates := OrderedCollection new.
 	soundsAndIndexsAndGates do: [ :i | 
@@ -70,26 +70,17 @@ ByteString >> forDirt [
 			ifTrue: [ gates add: 1 ]
 			ifFalse: [ gates add: 0 ] ].
 	soundsAndIndexs := soundsAndIndexsAndGates reject: [ :i | i = '~' ].
-	sounds := OrderedCollection new.
-	(1 to: soundsAndIndexs size) do: [ :i | 
-		sounds add:
-			(((soundsAndIndexs at: i) findBetweenSubstrings: ':') at: 1) ].
-	indexes := OrderedCollection new.
-	(1 to: soundsAndIndexs size) do: [ :i | 
-		((soundsAndIndexs at: i) findBetweenSubstrings: ':') size > 1
-			ifTrue: [ 
-				indexes add:
-					(((soundsAndIndexs at: i) findBetweenSubstrings: ':') at: 2)
-						asInteger ]
-			ifFalse: [ indexes add: 0 ] ].
+	
+	soundsString  := Character space join: soundsAndIndexs  .
+	
 
 	seq := Sequencer new
-		       gates: gates asDirtArray;
-		       soundPattern: sounds asDirtArray;
-		       samplesIndex: indexes asDirtArray;
+		       gates: gates asArray ;
+		       sound: soundsString  ;
+		       durations: 1 asDirtArray;
 		       noteIndex: 1.
 
-	^ seq
+	^ seq 
 ]
 
 { #category : #'*LiveCoding' }
