@@ -218,6 +218,16 @@ flat := strings flatCollect: [ :each | each ].
 ]
 
 { #category : #'*LiveCoding' }
+ByteString >> randomNotesFromFolder [
+"returns a random number (between 2 and 512) of indexes from the folder wit self name"
+| randIndex folder folderSize|
+	randIndex := Random new nextIntegerBetween: 2 and:  512.
+	folder := SuperDirt samplesFolder / self .
+	folderSize := folder asFileReference allChildren size. 
+	^ randIndex randomInts: folderSize .
+]
+
+{ #category : #'*LiveCoding' }
 ByteString >> to: aKeyInPerformance [ 
 	"convenience method to insert at aKeyInPerformance a pattern from the hex string"
 	
