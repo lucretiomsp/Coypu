@@ -850,6 +850,16 @@ Sequencer >> randomCounterPoint [
 ]
 
 { #category : #'LiveCoding  - SuperDirt' }
+Sequencer >> randomSamplesFromFolder: aStringForAFolderOfSamples [
+"returns a random number (between 2 and 512) of indexes from the selected folder inside Dirt-Samples"
+| randIndex folder folderSize|
+	randIndex := Random new nextIntegerBetween: 2 and:  512.
+	folder := SuperDirt samplesFolder / aStringForAFolderOfSamples .
+	folderSize := folder asFileReference allChildren size. 
+	self sound: aStringForAFolderOfSamples ; dirtNotes: (randIndex  randomInts: folderSize) .
+]
+
+{ #category : #'LiveCoding  - SuperDirt' }
 Sequencer >> room: aFloatOrAnArray [
 " add reverb to the Sequencer"
 	self dirtMessage at: 'room' put:  aFloatOrAnArray   asDirtArray
