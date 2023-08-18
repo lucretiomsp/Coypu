@@ -74,7 +74,7 @@ ByteString >> forDirt [
 	soundsString  := Character space join: soundsAndIndexs  .
 	
 
-	seq := Sequencer new
+	seq := SequencerMono new
 		       gates: gates asArray ;
 		       sound: soundsString  ;
 		       durations: 1 asDirtArray;
@@ -87,12 +87,13 @@ ByteString >> forDirt [
 ByteString >> hexBeat [
 
 " convert a string with an Hexadecimal number to the Kyma array correspondong to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex)"
-|   strings flat |
+|   strings flat rhythm|
 
 strings := (1 to: (self size)) collect: [ :i | 
 ((self at: i) digitValue printStringBase: 2 length: 4 padded: true ) ].
 flat := strings flatCollect: [ :each | each ].
-^ ((( 1 to: (flat size)) collect: [ :i | (flat at: i ) digitValue ]) asRhythm ) asSeq.
+rhythm := ((( 1 to: (flat size)) collect: [ :i | (flat at: i ) digitValue ]) asRhythm ).
+^ rhythm asSeq.
 ]
 
 { #category : #'*LiveCoding' }

@@ -5,6 +5,9 @@ Class {
 	#name : #SequencerPoly,
 	#superclass : #Sequencer,
 	#type : #variable,
+	#instVars : [
+		'dirtMessages'
+	],
 	#category : #'LiveCoding-Sequencers'
 }
 

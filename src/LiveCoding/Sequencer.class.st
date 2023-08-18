@@ -132,8 +132,9 @@ Sequencer >> chords [
 { #category : #accessing }
 Sequencer >> chords: anArrayOfChords [
 " for example #('maj' 'min' 'sus4' 'min7')"
-
-	chords := anArrayOfChords 
+chords := anArrayOfChords .
+   ^ self asPolySeq .
+	
 ]
 
 { #category : #'sequencer - cycles' }
@@ -659,94 +660,9 @@ if you want to send out ccs
 ]
 
 { #category : #'LiveCoding  - SuperDirt' }
-Sequencer >> playBasicDirtEventAt: anIndex [
-
-	"convenience method to play single events inside a Sequencer / it is possible to select only sound and index"
-
-	| index sound message |
-	index := (self samplesIndex wrap: anIndex) asFloat.
-	sound := self soundPattern wrap: anIndex.
-   message := OrderedCollection new.
-message addAll: { '_id' . '1' . 'cps' . 0.56 . 'delta' . 0.125 . 'orbit' . 0 . 's' . sound . 'n' . index}. 
-
-	message asOSCMessageForSuperDirt .
-	^ true 
-]
-
-{ #category : #'LiveCoding  - SuperDirt' }
-Sequencer >> playBasicDirtEventAt: anIndex delta: aRateInSeconds [
-
-	"convenience method to play single events inside a Sequencer / it is possible to select only sound and index
-	for a Durtion of aRateinSeconds"
-
-	| index sound message dur |
-	index := (self samplesIndex wrap: anIndex) asFloat.
-	sound := self soundPattern wrap: anIndex.
-   dur := self durations wrap: anIndex .
-   message := OrderedCollection new.
-message addAll: { '_id' . '1' . 'cps' . 0.56 . 'delta' . (aRateInSeconds * dur) asFloat . 's' . sound . 'n' . index}. 
-
-	message asOSCMessageForSuperDirt .
-	^ true 
-]
-
-{ #category : #'LiveCoding  - SuperDirt' }
-Sequencer >> playBasicDirtEventAt: anIndex id: aString [
-
-	"convenience method to play single events inside a Sequencer / it is possible to select only sound and index"
-
-
-	| index sound message |
-	index := (self samplesIndex wrap: anIndex) asFloat.
-	sound := self soundPattern wrap: anIndex.
-   message := OrderedCollection new.
-"which value for CPS"
-message addAll: { '_id' . aString . 'cps' . 0.22 . 'delta' . 0.125 . 'orbit' . 0 . 's' . sound . 'n' . index}. 
-
-	message asOSCMessageForSuperDirt .
-	^ true 
-]
-
-{ #category : #'LiveCoding  - SuperDirt' }
-Sequencer >> playBasicDirtEventAt: anIndex id: aString delta: aDurationInSeconds [
-
-	"convenience method to play single events inside a Sequencer / it is possible to select only sound and index 
-	delta is the duration of the event"
-
-
-	| index sound message |
-	index := (self samplesIndex wrap: anIndex) asFloat.
-	sound := self soundPattern wrap: anIndex.
-   message := OrderedCollection new.
-"which value for CPS"
-message addAll: { '_id' . aString . 'cps' . 0.22 . 'delta' . aDurationInSeconds asFloat. 'orbit' . 0 . 's' . sound . 'n' . index}. 
-
-	message asOSCMessageForSuperDirt .
-	^ true 
-]
-
-{ #category : #'LiveCoding  - SuperDirt' }
 Sequencer >> playFullDirtEventAt: anIndex [
 
-	"sends a mesaage to SuperDirt with all the desired OSC arguments and values" 
-| message dur stepDuration|
-stepDuration := Performance uniqueInstance freq.
-message := OrderedCollection new.
-message add: '/dirt/play'.
-dur := self durations asDirtArray  wrap: anIndex .
-
-message add: 'delta'; add: stepDuration * dur. "delta should change"
-dirtMessage keysAndValuesDo:  [ :key :value | message add: key; add: (value asDirtArray  wrap: anIndex ) ].
-
-	"| index sound message  delta|
-	index := 'n' -> (self samplesIndex wrap: anIndex) asFloat.
-	sound := 'sound' -> (self soundPattern wrap: anIndex).
-	delta := 'delta' -> 0.125. change it to have changing delta values
-   message := OrderedCollection new.
-message addAll: { '_id' . '1' . 'cps' . 0.56 . 'delta' . 0.125 . 'orbit' . 0 . 's' . sound . 'n' . index}. "
-
-	(OSCBundle for: {  OSCMessage for: message  }  )  sendToAddressString: '127.0.0.1' port: 57120.
-	^ true 
+self subclassResponsibility .
 ]
 
 { #category : #'LiveCoding  - SuperDirt' }
@@ -914,12 +830,12 @@ Sequencer >> sound: soundsAndIndexs [
 	 
 	"
 	
-	| seq soundsAndIndexsSeparated  indexes sounds |
+	|  soundsAndIndexsSeparated  indexes sounds |
 	soundsAndIndexsSeparated:= soundsAndIndexs findBetweenSubstrings: ' '.
 	
 	
 	sounds := OrderedCollection new.
-	(1 to: soundsAndIndexsSeparated size) do: [ :i | 
+	1 to: soundsAndIndexsSeparated size do: [ :i | 
 		sounds add:
 			(((soundsAndIndexsSeparated at: i) findBetweenSubstrings: ':') at: 1) ].
 	indexes := OrderedCollection new.

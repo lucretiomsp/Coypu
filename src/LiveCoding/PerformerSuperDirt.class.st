@@ -61,7 +61,7 @@ PerformerSuperDirt >> playDirtFor: aNumberOfSteps [
 		           performance valuesDo: [ :seq | 
 			           (seq gates wrap: performance transportStep) = 1
 				           ifTrue: [ 
-					           seq playFullDirtEventAt: seq noteIndex  "delta!!!!" .
+					           seq playFullDirtEventAt: seq noteIndex  .
 					           "increment note Index"
 					           seq noteIndex: seq noteIndex + 1 ]
 				           ifFalse: [ nil ] ] ] forkAt: Processor timingPriority.

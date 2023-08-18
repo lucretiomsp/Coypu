@@ -51,6 +51,7 @@ self assert: polyseq gates equals: monoseq gates.
 self assert: polyseq durations  equals: monoseq durations.
 self assert: polyseq noteIndex  equals: monoseq noteIndex.
 self assert: polyseq dirtMessage  equals: monoseq dirtMessage .
+self assert: (polyseq dirtMessage includesKey: 'n') equals: false.
 
 ]
 
@@ -64,8 +65,12 @@ SequencerTests >> testChangeSequencerGatesSize [
 ]
 
 { #category : #tests }
-SequencerTests >> testChords: aChord [
-self shouldBeImplemented 
+SequencerTests >> testChords: aChordOrAnArrayOfChords [
+
+| polySeq |
+polySeq := 4 breves sound: 'superpiano'; chords: 'cmajor'. 
+
+self assert: polySeq dirtMessages size equals: 3.
 
 ]
 
