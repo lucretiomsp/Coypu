@@ -317,6 +317,8 @@ Performance >> performer: aPerformer [
 
 { #category : #playing }
 Performance >> play [
+" reset all the Sequencers"
+self resetAllSequencers .
 "just on performance at once"
 self activeProcess isTerminated ifTrue: [ self performer play ] ifFalse: [ ] 
 

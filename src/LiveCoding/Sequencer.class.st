@@ -607,6 +607,12 @@ Sequencer >> orbit: anObject [
 	orbit := anObject
 ]
 
+{ #category : #'LiveCoding  - SuperDirt' }
+Sequencer >> pan: aFloatOrAnArray [
+" add gain pattern to the Sequencer"
+	self dirtMessage at: 'pan' put:  aFloatOrAnArray   asDirtArray
+]
+
 { #category : #'sequencer - cycles' }
 Sequencer >> playAsCycle [
 
