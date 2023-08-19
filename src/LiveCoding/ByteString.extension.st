@@ -58,6 +58,16 @@ ByteString >> asVerticalFaderLocal: aRange [
 ]
 
 { #category : #'*LiveCoding' }
+ByteString >> chordsToArrays [
+	
+| chordsAsStrings chordAsArrays|
+chordsAsStrings := self findBetweenSubstrings: ' '.
+chordAsArrays := chordsAsStrings collect: [ :i| i parseChord  ].
+^ chordAsArrays 
+
+]
+
+{ #category : #'*LiveCoding' }
 ByteString >> forDirt [
 
 	" parse a String into a Sequencer containing information to end to the SuperDirt synth for SuperCollider"
@@ -178,11 +188,11 @@ message := OSCMessage for: { '/dirt/play' . 's' . sound . 'n' . note . 'speed' .
 { #category : #'*LiveCoding' }
 ByteString >> parseChord [
 	|root chord notes|
-	root := (self findBetweenSubstrings: ' ') at: 1.
-	chord :=(self findBetweenSubstrings: ' ') at: 2.
+	root := (self findBetweenSubstrings: '-') at: 1.
+	chord :=(self findBetweenSubstrings: '-') at: 2.
 	notes := Array new: 11.
 	notes := #('c' 'c#' 'd' 'd#' 'e' 'f' 'f#' 'g#' 'a' 'a#' 'b').
-		^ (Chord perform: chord asLowercase  asSymbol) + (notes indexOf: root asLowercase  ).
+		^ (Chord perform: chord asLowercase  asSymbol) + (notes indexOf: root asLowercase  ) - 1.
 ]
 
 { #category : #'*LiveCoding' }

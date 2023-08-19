@@ -930,7 +930,7 @@ Sequencer >> times: anInteger [
 
 
 
-	^ Sequencer new
+	^ SequencerMono new
 		  gates: newGates;
 		  notes: newNotes;
 		  durations: newDurations;
@@ -939,8 +939,6 @@ Sequencer >> times: anInteger [
 
 { #category : #'LiveCoding - Performance' }
 Sequencer >> to: aSymbol [
-
-	"put the sequencer into the active Performance at Symbol as key"
 
 	Performance uniqueInstance at: aSymbol put: self.
 	self seqKey: aSymbol asString .
