@@ -5,7 +5,7 @@ or other musica languages by sending OSC messages in an economic, iconic and tra
 It has been originally designed to work with SymbolicSound Kyma but can be used with any OSC compatible application.
 
 ## Getting Started ##
-Create a performance\
+Create a performance
 ```Smalltalk
 p := Performance uniqueInstance.
 ```
