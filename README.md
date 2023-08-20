@@ -9,17 +9,26 @@ Create a performance\
 ```Smalltalk
 p := Performance uniqueInstance.
 ```
-add sequencers to the performance\
+assign a Performer to the Performance (PerformerLocal or PerformerKyma or PerformerMIDI or PerformerSuperDirt)
+```Smalltalk
+p performer: aPerformerSubClass new
+```
+add sequencers to the performance
 ```Smalltalk
 16 rumba to: #snare
 ```
-play the performance\
+or
 ```Smalltalk
-x := p playLocalAt: 142 bpm for: 64 bars
+16 semiquavers to: #hats; midich: 7
+```
+
+play the performance
+```Smalltalk
+ p play
 ```
 if you want to stop your performance\
 ```Smalltalk
-x terminate
+p terminate
 ```
 
 ### Basic usage ###
@@ -37,12 +46,12 @@ when arrays are sent, each index of the array will be sent to the corresponding 
 
 #### Requirements ####
 
-OSC package versions stable 1.0 must be available in your Pharo image. \
-You can get it with this Metacello script (just copy and paste it into your Playground)\
+OSC package versions stable 1.0 must be available in your Pharo image. 
+You can get it with this Metacello script (just copy and paste it into your Playground)
 
 ``` Smalltalk
 Metacello new baseline: 'OSC'; repository: 'github://Ducasse/OSC/src'; load.
 ```
 ## MIDI Support ##
-The Pharo LiveCoding Package can be used to play external MIDI hardware. \
+The Pharo LiveCoding Package can be used to play external MIDI hardware. 
 [pharo-sound] (https://github.com/pharo-contributions/pharo-sound)
