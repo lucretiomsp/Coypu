@@ -56,6 +56,6 @@ Metacello new baseline: 'OSC'; repository: 'github://Ducasse/OSC/src'; load.
 The Pharo LiveCoding Package can be used to play external MIDI hardware. 
 [pharo-sound] (https://github.com/pharo-contributions/pharo-sound)
 
-## SuperDirt Connection ##
+### SuperDirt Connection ###
 The Pharo LiveCoding Package can be used to play the SuperDirt audio engine for SuperCollider. 
 [install SuperDirt ] (https://github.com/musikinformatik/SuperDirt)
