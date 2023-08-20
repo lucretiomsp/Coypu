@@ -50,7 +50,10 @@ OSC package versions stable 1.0 must be available in your Pharo image.
 You can get it with this Metacello script (just copy and paste it into your Playground)
 
 ``` Smalltalk
-Metacello new baseline: 'OSC'; repository: 'github://Ducasse/OSC/src'; load.
+Metacello new
+  baseline: 'OSC';
+  repository: 'github://Ducasse/OSC/src';
+  load.
 ```
 ## MIDI Support ##
 The Pharo LiveCoding Package can be used to play external MIDI hardware. 
