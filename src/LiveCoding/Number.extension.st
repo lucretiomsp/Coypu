@@ -36,7 +36,7 @@ Number >> toKyma: aString [
 "	pacaAddress := NetNameResolver stringFromAddress: (NetNameResolver 	addressForName:'beslime-691.local'). "
 
 	vcslabel := '/vcs/', aString, '/1'.
-	(OSCMessage for: { vcslabel  . (self asFloat)  }) sendToAddressString: pacaAddress  port: 8000.
+	(OSCMessage for: { vcslabel  . (self asFloat)  }) sendToAddressString: PacaAddress address  port: 8000.
 ]
 
 { #category : #'*LiveCoding' }

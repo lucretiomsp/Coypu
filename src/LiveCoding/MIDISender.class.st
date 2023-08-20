@@ -20,7 +20,7 @@ Class {
 { #category : #'as yet unclassified' }
 MIDISender >> allNotesOff [
 
-(1 to: 16) do: [ :i | 
+1 to: 16 do: [ :i | 
 self sendCC: 123 withValue: 0 onChannel: i]
 ]
 
@@ -48,6 +48,7 @@ MIDISender >> initialize [
 	self instance: PortMidiLibrary uniqueInstance.
 	self defaultOutput: instance getDefaultOutputDeviceID.
 	self midiOut: (instance createNewPointerForStreamWithType: 'void**').
+	
 	
 ]
 
@@ -80,6 +81,9 @@ MIDISender >> openWithDevice: aDeviceID [
 	"
 	
 	self instance: PortMidiLibrary uniqueInstance.
+	
+	"assign the MIDISender to the PerformerMIDI"
+	PerformerMIDI midiOut: self.
 	
 	self midiOut: (instance createNewPointerForStreamWithType: 'void**').
 	^ (aDeviceID = -1) ifFalse: 

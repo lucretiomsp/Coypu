@@ -1,29 +1,34 @@
+"
+The Performer selects the audio backend.
+PerformerKyma for Symbolic SoundKyma.
+PerformerLocal for a local OSC backend (FAUST, ChucK, PureData, Max/MSP - just to name a few)
+PerformerSuperDirt for the SuperDirt audio engine, a SuperCollider quark which is usually controlled by TidalCycles
+"
 Class {
 	#name : #Performer,
 	#superclass : #Object,
+	#instVars : [
+		'performance',
+		'freq',
+		'fourDaysAt120BPM'
+	],
 	#category : #'LiveCoding-Performance'
 }
 
-{ #category : #api }
-Performer >> bpm: bpm [
-
-	self subclassResponsibility 
+{ #category : #initialization }
+Performer >> initialize [ 
+super initialize .
+performance :=  Performance uniqueInstance .
+freq := performance freq.
+fourDaysAt120BPM  := 4 days asMilliSeconds / ((60/ 120) /4)
 ]
 
-{ #category : #api }
-Performer >> duration: duration forGate: gate [
-
-	self subclassResponsibility
+{ #category : #playing }
+Performer >> play [ 
+self subclassResponsibility 
 ]
 
-{ #category : #api }
-Performer >> playGate: gate withNote: note [
-
-	self subclassResponsibility 
-]
-
-{ #category : #api }
-Performer >> playGate: gate withTime: gateTimeInSeconds withNote: note [
-
-	self subclassResponsibility
+{ #category : #playing }
+Performer >> playFor: aNumberOfSteps [ 
+self subclassResponsibility 
 ]

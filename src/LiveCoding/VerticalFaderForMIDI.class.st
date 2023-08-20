@@ -1,3 +1,6 @@
+"
+Creates a Vertical Fader to send MIDI COntrol CHange messages to the selected MIDI Channel.
+"
 Class {
 	#name : #VerticalFaderForMIDI,
 	#superclass : #VerticalFader,

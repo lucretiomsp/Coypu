@@ -3,7 +3,7 @@ Subcalss of OSCSever for the Announcements
 "
 Class {
 	#name : #LiveCodingOSCServer,
-	#superclass : #OSCServer,
+	#superclass : #AnObsoleteOSCServer,
 	#instVars : [
 		'announcer',
 		'rcvValue'

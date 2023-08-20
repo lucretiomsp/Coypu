@@ -15,7 +15,8 @@ Class {
 		'freq',
 		'backup',
 		'bpm',
-		'transportStep'
+		'transportStep',
+		'activeProcess'
 	],
 	#classInstVars : [
 		'uniqueInstance',
@@ -74,6 +75,18 @@ Performance class >> withCircles [
 		  yourself
 ]
 
+{ #category : #accessing }
+Performance >> activeProcess [
+
+	^ activeProcess
+]
+
+{ #category : #accessing }
+Performance >> activeProcess: anObject [
+
+	activeProcess := anObject
+]
+
 { #category : #'performance  - adding' }
 Performance >> add: aSequencer channel: anIntegerBetween1And16 [
 
@@ -102,11 +115,17 @@ Performance >> at: key put: anObject [
 				rsGroupDictionary at: key put: anObject visualGroup ] ]
 ]
 
-{ #category : #'LiveCoding - performance' }
+{ #category : #'LiveCoding - Performance' }
 Performance >> backup [
 
 	
 	^ backup
+]
+
+{ #category : #accessing }
+Performance >> backup: anObject [
+
+	backup := anObject
 ]
 
 { #category : #accessing }
@@ -134,6 +153,12 @@ canvas := aRSCanvas
 { #category : #accessing }
 Performance >> freq [
 ^ freq
+]
+
+{ #category : #accessing }
+Performance >> freq1: anObject [
+
+	freq := anObject
 ]
 
 { #category : #accessing }
@@ -291,73 +316,34 @@ Performance >> performer: aPerformer [
 ]
 
 { #category : #playing }
-Performance >> play: aRateInSeconds for: aNumberOfSteps [
+Performance >> play [
+" reset all the Sequencers"
+self resetAllSequencers .
+"just on performance at once"
+self activeProcess isTerminated ifTrue: [ self performer play ] ifFalse: [ ] 
 
-	" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
-an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
-
-	"if the value in the dictionay is a Sequencer, an OSC message is sent to the key as OSC address with two arguments, one for the gate, and one for the note. the gate stays at 1 for the duration selected."
-
-	| step bpm beatInSeconds gateTime |
-	bpm := 60 / (aRateInSeconds * 4).
-	gateTime := aRateInSeconds * 0.8.
-	beatInSeconds := aRateInSeconds * 4.
-	step := 0.
-
-	^ [ 
-	  performer bpm: bpm.
-	  visualization startWith: bpm.
-
-	  aNumberOfSteps timesRepeat: [ 
-		  (Delay forSeconds: aRateInSeconds) wait. "WAIT time"
-		  " test if dictionary values is an Array of two arrays or as defined, a sequence"
-
-		  self keysAndValuesDo: [ :key :value | 
-			  value isSequencer
-				  ifTrue: [ 
-					  (value gates at: (step modulo: value gatesSize)) = 1 ifTrue: [ 
-						  | note gateTimeInSeconds |
-						  note := value note.
-						  gateTimeInSeconds := gateTime * value duration.
-
-						  performer
-							  playGate: key
-							  withTime: gateTimeInSeconds
-							  withNote: note.
-						  visualization showSound: key withNote: note.
-
-						  "maybe this part is not useful anymore"
-						  value durations isArray ifTrue: [ 
-							  performer duration: value duration forGate: key ].
-
-						  "experimental, for extra control parameter"
-						  value extra1 isArray ifTrue: [ 
-							  self playExtra: value extra1 of: key at: value noteIndex ].
-						  value extra2 isArray ifTrue: [ 
-							  self playExtra: value extra2 of: key at: value noteIndex ].
-
-						  value stepIndex ] ]
-				  ifFalse: [ 
-					  | note |
-					  note := value at: (step modulo: value size).
-					  performer playGate: key withNote: note ] ].
-
-		  "step is incrementing in any case"
-		  step := step + 1 ] ] forkAt: Processor timingPriority
+	
 ]
 
 { #category : #playing }
-Performance >> playDirtFor: aNumberOfSteps [
+Performance >> play: aRateInSeconds for: aNumberOfSteps [
+
+self activeProcess isTerminated ifTrue: [ self performer playFor: aNumberOfSteps  ] ifFalse: [ ] 
+]
+
+{ #category : #playing }
+Performance >> playDirt [
 
 	"play the performance to SuperDIrt/SuperCollider audio engine - default freq is 132 bpm 
 	Performance speed can be changed with p freq: a bpm"
 
-	| process  |
-	self freq: 132 bpm.
+	| process |
+	
 	bpm := 60 / (self freq * 4). 
 	transportStep := 1.
-	process := [ 
-	           aNumberOfSteps timesRepeat: [ 
+	activeProcess := [ 
+		        "the perfrormance last 4 days at 120 bpm"
+	           (4 days asMilliSeconds  / 0.125) timesRepeat: [ 
 		           (Delay forSeconds: self freq) wait.
 		           "sequencers scan"
 		           [ 
@@ -387,6 +373,15 @@ Performance >> playExtra: anExtraCollection of: baseGate at: index [
 	fullGate := baseGate , extraGate.
 
 	performer playGate: fullGate withNote: currentNote
+]
+
+{ #category : #playing }
+Performance >> playFor: aNumberOfSteps [
+
+	" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
+an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
+
+self performer playFor: aNumberOfSteps 
 ]
 
 { #category : #'as yet unclassified' }
@@ -546,7 +541,7 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 		  step := step + 1 ] ] forkAt: Processor timingPriority
 ]
 
-{ #category : #playing }
+{ #category : #'as yet unclassified' }
 Performance >> playLocalSequenceAt: aRateInSeconds for: aNumberOfSteps [
 
 	" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
@@ -610,7 +605,7 @@ keys in the Performance represents MIDI channels and must be written as #ch1 #ch
 if you want to send out ccs
 "
 
-	| step bpm beatInSeconds gateTime |
+	| step  beatInSeconds gateTime |
 	"as in early hardware sequencers, default gatetime is 80% of the step duration"
 	bpm := 60 / (aRateInSeconds * 4).
 	beatInSeconds := aRateInSeconds * 4.
@@ -623,24 +618,17 @@ if you want to send out ccs
 		  (Delay forSeconds: aRateInSeconds) wait.
 		  " test if dictionary values is an Array of two arrays or as defined, a sequence"
 
-		  self values do: [ :value | 
+		  self valuesDo: [ :value | 
 			  value isSequencer
 				  ifTrue: [ 
 					  (value gates at: (step modulo: value gatesSize)) = 1 ifTrue: [ "noteIndex := noteIndex + 1."
-						  value hasChords
-							  ifFalse: [ 
+						 
+							  
 								  aMIDISender
 									  playDrum:
 									  (value notes at: (value noteIndex modulo: value notesSize))
-									  onChannel: value midiChannel ]
-							  ifTrue: [ 
-								  aMIDISender
-									  playChord: 60
-									  type: (Chord chordLists at:
-											   (value chords at:
-												    (value noteIndex modulo: value chords size)))
-									  onChannel: value midiChannel
-									  duration: 0.2 ].
+									  onChannel: value midiChannel .
+							  
 						  "sends a ControlChange message on the same channel, if provided"
 						  value extra1 notNil
 							  ifTrue: [ 
@@ -671,134 +659,6 @@ if you want to send out ccs
 		  step := step + 1 ] ] forkAt: Processor timingPriority
 ]
 
-{ #category : #playing }
-Performance >> playOldMIDISequenceAt: aRateInSeconds steps: aNumberOfSteps on: aMIDISender [
-
-	"test"
-
-	" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through athe Performance containing arrays of numbers as values
-keys in the Performance represents MIDI channels and must be written as #ch1 #ch2 #ch3 and so on if you want to send noteOn/off or
-
-if you want to send out ccs
-"
-
-	| step bpm beatInSeconds gateTime |
-	"as in early hardware sequencers, default gatetime is 80% of the step duration"
-	bpm := 60 / (aRateInSeconds * 4).
-	beatInSeconds := aRateInSeconds * 4.
-	gateTime := aRateInSeconds * 0.8.
-	step := 0.
-
-
-	^ [ "bpm toKyma: 'BPM'."" we dont do a visualization at the momentn""visualization startWith: bpm."
-	  aNumberOfSteps timesRepeat: [ 
-		  (Delay forSeconds: aRateInSeconds) wait.
-		  " test if dictionary values is an Array of two arrays or as defined, a sequence"
-
-		  self keysAndValuesDo: [ :key :value | 
-			  value isSequencer
-				  ifTrue: [ "end of the isSequencer true condition"
-					  (value gates at: (step modulo: value gatesSize)) = 1
-						  ifTrue: [ 
-							  aMIDISender
-								  playDrum:
-								  (value notes at: (value noteIndex modulo: value notesSize))
-								  onChannel: value midiChannel.
-
-							  "visualization showSound: key withNote: 60."
-
-
-							  "sends a ControlChange message on the same channel, if provided"
-							  value extra1 notNil
-								  ifTrue: [ 
-									  aMIDISender
-										  sendCC: (value extra1 at: 1)
-										  withValue:
-										  ((value extra1 at: 2) at:
-											   (value noteIndex modulo: value extra1Size))
-										  onChannel: (key asString at: 3) digitValue ]
-								  ifFalse: [ nil ].
-
-							  "sends another ControlChange message on the same channel, if provided"
-							  value extra2 notNil
-								  ifTrue: [ 
-									  aMIDISender
-										  sendCC: (value extra2 at: 1)
-										  withValue:
-										  ((value extra2 at: 2) at:
-											   (value noteIndex modulo: value extra2Size))
-										  onChannel: (key asString at: 3) digitValue ]
-								  ifFalse: [ nil ].
-
-							  "advance"
-							  value noteIndex: value noteIndex + 1
-
-							  "noteIndex := noteIndex + 1." ]
-						  ifFalse: [ nil ] ]
-				  ifFalse: [ 
-					  aMIDISender
-						  sendCC: 74
-						  withValue: (value at: (step modulo: value size))
-						  onChannel: (key asString at: 3) digitValue ] ].
-
-		  "step is incrementing in any case"
-		  step := step + 1 ] ] forkAt: Processor timingPriority
-]
-
-{ #category : #playing }
-Performance >> playSCSequenceAt: aRateInSeconds for: aNumberOfSteps [
-
-	" use to play SuperCollider server"
-
-	" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out"
-
-	"if the value in the dictionay is a Sequencer, an OSC message is sent to the key as OSC address with two arguments, one for the gate, and one for the note. the gate stays at 1 for the duration selected."
-
-	| step bpm beatInSeconds gateTime |
-	bpm := 60 / (aRateInSeconds * 4).
-	gateTime := aRateInSeconds * 0.8.
-	beatInSeconds := aRateInSeconds * 4.
-	step := 0.
-
-	^ [ 
-	  bpm toLocal: 'BPM'.
-
-	  aNumberOfSteps timesRepeat: [ 
-		  (Delay forSeconds: aRateInSeconds) wait.
-		  " test if dictionary values is an Array of two arrays or as defined, a sequence"
-
-		  self keysAndValuesDo: [ :key :value | 
-			  value isSequencer
-				  ifTrue: [ 
-					  (value gates at: (step modulo: value gatesSize)) = 1
-						  ifTrue: [ 
-							  | note |
-							  note := value notes at:
-								          (value noteIndex modulo: value notesSize).
-							  key 
-								  toSCAsGate: gateTime
-									  *
-									  (value durations at:
-										   (value noteIndex modulo: value durationsSize))
-								  note: note.
-
-
-							  "experimental, for extra control parameter"
-							  value extra1 notNil
-								  ifTrue: [ 
-									  ((value extra1 at: 2) at:
-										   (value noteIndex modulo: value extra1Size)) toLocal:
-										  (key asString , value extra1 at: 1) ]
-								  ifFalse: [ nil ].
-							  value noteIndex: value noteIndex + 1 ]
-						  ifFalse: [ nil ] ]
-				  ifFalse: [ 
-				  (value at: (step modulo: value size)) toLocal: key asString ] ].
-
-		  "step is incrementing in any case"
-		  step := step + 1 ] ] forkAt: Processor timingPriority
-]
-
 { #category : #removing }
 Performance >> remove: aKey [
 "shorter version of removeKey:"
@@ -815,7 +675,7 @@ Performance >> resetAllSequencers [
 			ifFalse: [ nil ] ]
 ]
 
-{ #category : #'LiveCoding - performance' }
+{ #category : #'LiveCoding - Performance' }
 Performance >> restore [
 
 	"restore what the performance was before receiveing messages muteAll or solo"
@@ -860,6 +720,11 @@ Performance >> solo: aKeyOrAnArrayOfKeys [
 				keys ~= aKeyOrAnArrayOfKeys ] ]
 ]
 
+{ #category : #accessing }
+Performance >> stop [
+	self activeProcess terminate
+]
+
 { #category : #modifying }
 Performance >> swap: firstKey with: secondKey [
 "swap the values of two perfromance keys"
@@ -874,7 +739,13 @@ Performance >> transportStep [
 	^ transportStep
 ]
 
-{ #category : #'LiveCoding - performance' }
+{ #category : #accessing }
+Performance >> transportStep: anInteger [
+
+	transportStep := anInteger 
+]
+
+{ #category : #'LiveCoding - Performance' }
 Performance >> unsolo: aKeyInPerformance [
 	"convenience method to unsolo a key in the performance"
 	

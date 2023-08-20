@@ -1,3 +1,6 @@
+"
+Experimental class to control Kyma gates from tehe Keyboard, typing inside a window
+"
 Class {
 	#name : #KeyboardToKymaDrums,
 	#superclass : #SimpleSwitchMorph,

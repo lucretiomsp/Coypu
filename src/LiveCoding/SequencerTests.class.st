@@ -38,12 +38,40 @@ self assert: (initial arp: #(0 1 2 3)) equals: result
 ]
 
 { #category : #tests }
+SequencerTests >> testAsPolySeq [
+
+| monoseq polyseq |
+
+monoseq := 16 downbeats.
+polyseq  := monoseq asPolySeq.
+
+self assert:  polyseq isPolySeq .   
+
+self assert: polyseq gates equals: monoseq gates.
+self assert: polyseq durations  equals: monoseq durations.
+self assert: polyseq noteIndex  equals: monoseq noteIndex.
+self assert: polyseq dirtMessage  equals: monoseq dirtMessage .
+self assert: (polyseq dirtMessage includesKey: 'n') equals: false.
+
+]
+
+{ #category : #tests }
 SequencerTests >> testChangeSequencerGatesSize [
 
 	| seq |
 	seq := 16 downbeats.
 	seq gatesSize: 1.
 	self assert: (seq gatesSize) equals: 1
+]
+
+{ #category : #tests }
+SequencerTests >> testChords: aChordOrAnArrayOfChords [
+
+| polySeq |
+polySeq := 4 breves sound: 'superpiano'; chords: 'c-major d-minor e-major'. 
+
+self assert: (polySeq dirtMessage at: 'n') equals: ( 'c-major d-minor e-major' chordsToArrays ).
+
 ]
 
 { #category : #tests }
@@ -70,16 +98,27 @@ self assert: (Sequencer new orbit > 0) & (Sequencer new orbit < 12) equals: true
 ]
 
 { #category : #tests }
+SequencerTests >> testReverse [
+
+| seq |
+seq := '000F' hexBeat sound: 'sd cp'; dirtNotes: #(1 2 3) .
+self assert: seq reverse gates  equals: #( 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0) asRhythm .
+self assert: (seq reverse dirtMessage at: 'n') equals: #( 3 2 1).
+self assert: (seq reverse dirtMessage at: 's') equals: #('cp' 'sd').
+]
+
+{ #category : #tests }
 SequencerTests >> testSequencerOffset [
 
-| seq result1 result2 |
-seq := 16 downbeats.
+| seq1 seq2 result1 result2 |
+seq1 := 4 downbeats.
+seq2 := 4 downbeats.
 
-result1 := '2222' pattern.
-result2 := '1111' pattern.
+result1 := #(0 0 1 0) asSeq .
+result2 := #(0 0 0 1) asSeq .
 
-self assert: (seq offset: 2) equals: result1.
-self assert: (seq offset: -1) equals: result2.
+self assert: (seq1 offset: 2) gates  equals: result1 gates.
+self assert: (seq2 offset: -1) gates equals: result2 gates.
 ]
 
 { #category : #tests }

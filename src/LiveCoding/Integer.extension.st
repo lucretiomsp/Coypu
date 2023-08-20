@@ -1,89 +1,9 @@
 Extension { #name : #Integer }
 
 { #category : #'*LiveCoding' }
-Integer >> adowa [
-" create an array of self size of  sikyi (by Ashanti people of Ghana) rhytm pulses. Better if the receiever is a multiple of 8."
-| pattern |
-pattern := #(0 0 0 1 0 1 0 1).
-
-^ (((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm) asSeq.
-
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> aksak [
-" create an array of self size of Balcan pseudo aksak rhytm pulses. Better if used with self = 8 x anInteger "
-| pattern |
-pattern := #(1 0 1 0 0 0 1 0 0 0).
-
-^ (((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm)  asSeq.
-
-"implement shifting to the left"
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> banda [
-" create an array of self size of Banda (Haiti/Vodoo) rhytm pulses. Better if used with self = 8 x anInteger . it is the same rhythm played in the moribayasa rhythm among the Malinke people of Guinea and in Cuba it is called cinquillo"
-| pattern |
-pattern := #(1 0 1 1 0 1 1 0).
-
-^ (((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm ) asSeq.
-
-"implement shifting to the left"
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> bars [
-"convert bars into steps. 16 steps per bar"
-^ (self * 16).
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> bomba [
-" create an array of self size of  puertorican Bomba rhytm pulses. Better if the receiever is a multiple of eight."
-| pattern |
-pattern := #(1 0 0 1 1 1 1 0 ).
-
-^ (((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm ) asSeq .
-
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> bossa [
-" create an array of self size of  bossanova rhytm pulses. Better if used with self = 16 x anInteger "
-| pattern |
-pattern := #(1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 ).
-
-^ (((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm) asSeq .
-
-"implement shifting to the left"
-]
-
-{ #category : #'*LiveCoding' }
 Integer >> bpm [
 "return the duration of 1/16th at self bpm"
 ^ ((60/  self) /4).
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> breves [
-
-	" returns self number of brevesin the first position of the bars"
-
-	| result |
-	result := '80000000' pattern times: self.
-	result durations: #(32).
-	^ result
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> claveSon [
-" create an array of self size of  Cuban clave Son rhytm pulses. Better if the receiever is a multiple of 16."
-| pattern |
-pattern := #(1 0 0 1 0 0 1 0 0 0 1 0 1 0 0 0).
-
-^ (((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm) asSeq.
-
 ]
 
 { #category : #'*LiveCoding' }
@@ -102,27 +22,6 @@ resultSize := result  size.
 [ :i | result at: (i + 1) put: (anArray  at:  (i // (resultSize /anArray size)) + 1)].
 
 ^ result
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> downbeats [
-
-	"create a sequence of self downbeats"
-
-	
-	^ ((1 to: self) collect: [ :i | ((i rem: 4) = 1) asBit ]) asRhythm
-		  asSeq
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> gahu [
-" create an array of self size of gahu (from Ewe people) rhytm pulses. Better if used with self = 8 x anInteger "
-| pattern |
-pattern := #(1 0 0 1 0 0 1 0 0 0 1 0 0 0 1 0 ).
-
-^ (((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm) asSeq .
-
-"implement shifting to the left"
 ]
 
 { #category : #'*LiveCoding' }
@@ -145,12 +44,6 @@ Integer >> melodyFrom: aScale [
 ]
 
 { #category : #'*LiveCoding' }
-Integer >> microsecondsAsSecondsAndNanos [
-
-self shouldNotImplement 
-]
-
-{ #category : #'*LiveCoding' }
 Integer >> minor [
 "returns an aray with the major third, fith seventh and ninth relative to the note number that is the receiver"
  ^ #(3 7 10 14) collect: [ :i | i + self ].
@@ -166,155 +59,9 @@ Integer >> modulo: anInteger [
 
 { #category : #'*LiveCoding' }
 Integer >> ones [
-	" retuns an array of self size with all  ones "
-^ (Array new: self withAll: 1) asRhythm.
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> pattern [ 
-	| arrayOfCharacters s result|
-	arrayOfCharacters := (self printStringBase: 2) asDirtArray.
-	s := arrayOfCharacters size.
-	result := (1 to: s) collect: [ :i | (arrayOfCharacters at: i) digitValue ].
-	^ result asSeq. 
 	
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> quavers [
-"creates an Array of aNumber of values (0,1) with 1 to the position corresponding to a rhtyhm of quavers (downbeat + upbeat)"
-	^ (((1 to: self) collect: [ :i | ((((i rem: 4) = 1)) | (((i rem: 4) = 3)) ) asBit ]) asRhythm ) asSeq.
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> randomInside: anArray [
-
-	"return an array of self size choosing from the values inside anArray"
-
-	| result |
-	result := (1 to: self) collect: [ :i | 
-		          anArray at:
-			          (Random new nextIntegerBetween: 1 and: anArray size) ].
-
-	^ result
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> randomInts: aMaximum [
-
-
-
-^ (1 to: self) collect: [ :i | (Random new next *  aMaximum) rounded ].
-
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> randomNotesFrom: anArray root: aRootNote octaves: aNumber [
-
-	"return an array of self size of a random note from anArray of note numbers with root aRootNote, and aNumber octave range"
-
-	| intervals melody |
-	intervals := (1 to: self) collect: [ :i | 
-		             (anArray at: (Random new nextInteger: anArray size))
-		             + ((Random new nextInteger: aNumber + 1) - 1 * 12) ].
-	melody := intervals + aRootNote.
-	^ melody
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> randomSamplesFromFolder: aStringForASuperDirtSamplesFolder [
-
-	"return a Sequencer with self random trigs and random  samples from the folder named by the string
-	/ for example 16 randomSamplesFrom: 'cpu' "
-
-	| triggers randIndex folder folderSize|
-	triggers := self randomTrigs.
-	folder := SuperDirt samplesFolder / aStringForASuperDirtSamplesFolder .
-	folderSize := folder asFileReference allChildren size. 
-	randIndex:= triggers trigs randomInts: folderSize .
-	^ triggers sound: aStringForASuperDirtSamplesFolder  dirtNotes: randIndex .
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> randomSequencer [
-
-	"return a Sequencer with self random trigs and random notes  "
-
-	| triggers randNotes |
-	triggers := self randomTrigs.
-	randNotes := triggers trigs randomFrom: #( 24 88 ).
-	^ triggers notes: randNotes
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> randomSequencerIn: anArray [
-
-	"return a Sequencer with self random trigs and random notes in the array "
-
-	| triggers randNotes |
-	triggers := self randomTrigs.
-	randNotes := triggers trigs randomInside: anArray.
-	^ triggers notes: randNotes
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> randomSequencerIn: anArray withProbability: anInteger [
-
-	"return a Sequencer with self random trigs withProbability and random notes in the array "
-
-	| triggers randNotes |
-	triggers := self randomTrigsWithProbability: anInteger.
-	randNotes := triggers trigs randomInside: anArray.
-	^ triggers notes: randNotes
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> randomTrigs [
-
-| result |
-result := Array new: self.
-
-1 to: self do: [ :i | result at: i put: Random new next rounded ].
-^ result asSeq.
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> randomTrigsWithProbability: anInteger [
-
-
-| result |
-result := Array new: self.
-
-1 to: self do: [ :i | result at: i put: ((Random new nextIntegerBetween: 0 and: 100) < anInteger ) asInteger ].
-^ result asSeq.
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> rumba [
-" create an array of self size of Cuban rumba rhytm pulses. Better if used with self = 16 x anInteger "
-| pattern |
-pattern := #(1 0 0 1 0 0 0 1 0 0 1 0 1 0 0 0 ).
-
-^ (((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm ) asSeq.
-
-"implement shifting to the left"
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> semibreves [
-
-	" returns self number of semibrevesin the first position of the bars"
-
-	| result |
-	result := '8000' pattern times: self.
-	result durations: #(16).
-	^ result
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> semiquavers [ 
-
-^ ((Array new: self withAll: 1) asRhythm ) asSeq .
+	" retuns a Sequencer of gates size = self with all ones - same as semiquavers"
+^ (Array new: self withAll: 1) asRhythm asSeq.
 ]
 
 { #category : #'*LiveCoding' }
@@ -372,38 +119,6 @@ noteIndex := 0. "or 0???????"
 ]
 
 { #category : #'*LiveCoding' }
-Integer >> shiko [
-" create an array of self size of shiko (West-African / Caribbean) rhytm pulses. Better if used with self = 16 x anInteger "
-| pattern |
-pattern := #(1 0 0 0 1 0 1 0 0 0 1 0 1 0 0 0).
-
-^ (((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm) asSeq.
-
-"implement shifting to the left"
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> sikyi [
-" create an array of self size of  sikyi (by Ashanti people of Ghana) rhytm pulses. Better if the receiever is a multiple of 8."
-| pattern |
-pattern := #(0 0 0 1 0 1 0 1).
-
-^ (((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm ) asSeq.
-
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> soukous [
-" create an array of self size of Central Africa soukous rhytm pulses. Better if used with self = 8 x anInteger "
-| pattern |
-pattern := #(1 0 0 1 0 0 1 0 0 0 1 1 0 0 0 0 ).
-
-^ (((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm) asSeq .
-
-"implement shifting to the left"
-]
-
-{ #category : #'*LiveCoding' }
 Integer >> toSCAsGate [
 
 	" send an OSC message to superCollider that mimics the behaviour oa MIDI note on message, note is held for a default duration of 2 seconds"
@@ -455,80 +170,7 @@ Integer >> toSCAsGate: aDurationInSeconds note: aNoteNumber [
 ]
 
 { #category : #'*LiveCoding' }
-Integer >> tresillo [
-" create an array of self size of  tresillo rhytm pulses. Better if used with self = 8 x anInteger "
-| pattern newArray rhythm |
-
-pattern := #(1 0 0 1 0 0 1 0 ).
-
-newArray := (0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ].
-rhythm := Rhythm new: (newArray size).
-(1 to: (rhythm size)) do: [ :i | rhythm at: i put: (newArray  at: i) ].
-^ rhythm asSeq.
-
-"
-| pattern |
-pattern := #(1 0 0 1 0 0 1 0 ).
-
-^ (0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ].
-"
-"implement shifting to the left"
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> tresillo: aNoteNumberOrAnArrayOfNN [
-
-	" create an array of self size of  tresillo rhytm pulses. Better if used with self = 8 x anInteger "
-
-	| pattern newArray rhythm notes |
-	notes := Array with: aNoteNumberOrAnArrayOfNN.
-	pattern := #( 1 0 0 1 0 0 1 0 ).
-
-	newArray := (0 to: self - 1) collect: [ :i | 
-		            pattern at: (i rem: pattern size) + 1 ].
-	rhythm := Rhythm new: newArray size.
-	(1 to: rhythm size) do: [ :i | rhythm at: i put: (newArray at: i) ].
-	^ Sequencer new gates: rhythm; notes: notes
-
-	"
-| pattern |
-pattern := #(1 0 0 1 0 0 1 0 ).
-
-^ (0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ].
-"
-	"implement shifting to the left"
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> trueAksak [
-" create an array of self size of Balcan aksak rhytm pulses. Better if used with self = 13 x anInteger "
-| pattern |
-pattern := #(1 0 1 0 1 0 1 0 0 1 0 1 0).
-
-^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm .
-
-"implement shifting to the left"
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> tumbao [
-" create an array of self size of  habanera/tumbao rhytm pulses. Better if the receiever is a multiple of eight."
-| pattern rhythm |
-pattern := #(1 0 0 1 1 0 1 0 ).
-
-rhythm := ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm .
-^ rhythm asSeq.
-
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> upbeats [
-"creates an Array of size=self  of values (0,1) with 1 to the position corresponding to a 4/4 upbeat rhythm"
-	^ (((1 to: self) collect: [ :i | (((i rem: 4) = 3)) asBit ]) asRhythm ) asSeq.
-]
-
-{ #category : #'*LiveCoding' }
 Integer >> zeros [
-	" retuns an array of self size with all zeros"
-^ ((Array new: self withAll: 0) asRhythm) asSeq .
+	" retuns a Sequencer of gates size = self with all zeros / to create long rests "
+^ (Array new: self withAll: 0) asRhythm asSeq.
 ]

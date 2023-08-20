@@ -58,11 +58,21 @@ ByteString >> asVerticalFaderLocal: aRange [
 ]
 
 { #category : #'*LiveCoding' }
+ByteString >> chordsToArrays [
+	
+| chordsAsStrings chordAsArrays|
+chordsAsStrings := self findBetweenSubstrings: ' '.
+chordAsArrays := chordsAsStrings collect: [ :i| i parseChord  ].
+^ chordAsArrays 
+
+]
+
+{ #category : #'*LiveCoding' }
 ByteString >> forDirt [
 
 	" parse a String into a Sequencer containing information to end to the SuperDirt synth for SuperCollider"
 
-	| seq gates soundsAndIndexs soundsAndIndexsAndGates indexes sounds |
+	| seq gates soundsAndIndexs soundsAndIndexsAndGates  soundsString|
 	soundsAndIndexsAndGates := self findBetweenSubstrings: ' '.
 	gates := OrderedCollection new.
 	soundsAndIndexsAndGates do: [ :i | 
@@ -70,26 +80,52 @@ ByteString >> forDirt [
 			ifTrue: [ gates add: 1 ]
 			ifFalse: [ gates add: 0 ] ].
 	soundsAndIndexs := soundsAndIndexsAndGates reject: [ :i | i = '~' ].
-	sounds := OrderedCollection new.
-	(1 to: soundsAndIndexs size) do: [ :i | 
-		sounds add:
-			(((soundsAndIndexs at: i) findBetweenSubstrings: ':') at: 1) ].
-	indexes := OrderedCollection new.
-	(1 to: soundsAndIndexs size) do: [ :i | 
-		((soundsAndIndexs at: i) findBetweenSubstrings: ':') size > 1
-			ifTrue: [ 
-				indexes add:
-					(((soundsAndIndexs at: i) findBetweenSubstrings: ':') at: 2)
-						asInteger ]
-			ifFalse: [ indexes add: 0 ] ].
+	
+	soundsString  := Character space join: soundsAndIndexs  .
+	
 
-	seq := Sequencer new
-		       gates: gates asDirtArray;
-		       soundPattern: sounds asDirtArray;
-		       samplesIndex: indexes asDirtArray;
+	seq := SequencerMono new
+		       gates: gates asArray ;
+		       sound: soundsString  ;
+		       durations: 1 asDirtArray;
 		       noteIndex: 1.
 
-	^ seq
+	^ seq 
+]
+
+{ #category : #'*LiveCoding' }
+ByteString >> hexBeat [
+
+" convert a string with an Hexadecimal number to the Kyma array correspondong to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex)"
+|   strings flat rhythm|
+
+strings := (1 to: (self size)) collect: [ :i | 
+((self at: i) digitValue printStringBase: 2 length: 4 padded: true ) ].
+flat := strings flatCollect: [ :each | each ].
+rhythm := ((( 1 to: (flat size)) collect: [ :i | (flat at: i ) digitValue ]) asRhythm ).
+^ rhythm asSeq.
+]
+
+{ #category : #'*LiveCoding' }
+ByteString >> hexBeat: anArrayOfNoteNumbers [ 
+" convert a string with an Hexadecimal number to the Kyma array corresponding to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex) , and with  anArrayOfNoteNumbers as Notes"
+|   strings flat |
+
+strings := (1 to: (self size)) collect: [ :i | 
+((self at: i) digitValue printStringBase: 2 length: 4 padded: true ) ].
+flat := strings flatCollect: [ :each | each ].
+^ ((( 1 to: (flat size)) collect: [ :i | (flat at: i ) digitValue ]) asRhythm ) and: anArrayOfNoteNumbers  .
+]
+
+{ #category : #'*LiveCoding' }
+ByteString >> hexBeat: anArrayOfNoteNumbers and: anArrayOfDurations [
+" convert a string with an Hexadecimal number to the Kyma array corresponding to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex) , and with  anArrayOfNoteNumbers as Notes and anArrayOfDurations as Durations"
+|   strings flat |
+
+strings := (1 to: (self size)) collect: [ :i | 
+((self at: i) digitValue printStringBase: 2 length: 4 padded: true ) ].
+flat := strings flatCollect: [ :each | each ].
+^ ((( 1 to: (flat size)) collect: [ :i | (flat at: i ) digitValue ]) asRhythm ) and: anArrayOfNoteNumbers and: anArrayOfDurations .
 ]
 
 { #category : #'*LiveCoding' }
@@ -120,6 +156,43 @@ ByteString >> notes: anArrayOfNotes  to: aKeyInAPerformance [
 "convenience method to avoid extra parenthesis when sending an HEX rhythm pattern to aKeyInPerformance"
 
 self pattern notes: anArrayOfNotes to: aKeyInAPerformance .
+]
+
+{ #category : #'*LiveCoding' }
+ByteString >> once [
+"play the sound from the SuperDirt audio engine once at the desired index if any -
+for exampe cp:4 sound the 3rd sample of the /Library/Application\ Support/SuperCollider/downloaded-quarks/Dirt-Samples/cp folder"
+| sound note message parsedString|
+parsedString := (self findBetweenSubstrings: ':') .
+sound := parsedString at: 1. 
+parsedString size = 2 ifTrue: [ note:= parsedString at: 2 ] ifFalse:  [note := 0].
+message := OSCMessage for: { '/dirt/play' . 's' . sound . 'n' . note}. 
+(OSCBundle for: { message } )sendToAddressString:  '127.0.0.1' port: 57120. 
+]
+
+{ #category : #'*LiveCoding' }
+ByteString >> onceAtSpeed: aFloat [
+"play the soundfrom the SuperDirt audio engine once at the desired speed"
+| sound note message parsedString condition|
+note := 0.
+parsedString := (self findBetweenSubstrings: ':') .
+sound := parsedString at: 1. 
+condition := parsedString size = 2.
+condition  ifTrue: [ note:= parsedString at: 2 ] ifFalse:  [note := 0].
+message := OSCMessage for: { '/dirt/play' . 's' . sound . 'n' . note . 'speed' . aFloat}. 
+(OSCBundle for: { message } )sendToAddressString:  '127.0.0.1' port: 57120. 
+
+
+]
+
+{ #category : #'*LiveCoding' }
+ByteString >> parseChord [
+	|root chord notes|
+	root := (self findBetweenSubstrings: '-') at: 1.
+	chord :=(self findBetweenSubstrings: '-') at: 2.
+	notes := Array new: 11.
+	notes := #('c' 'c#' 'd' 'd#' 'e' 'f' 'f#' 'g#' 'a' 'a#' 'b').
+		^ (Chord list at: chord asLowercase  asSymbol) + (notes indexOf: root asLowercase  ) - 1.
 ]
 
 { #category : #'*LiveCoding' }
@@ -156,6 +229,16 @@ flat := strings flatCollect: [ :each | each ].
 ]
 
 { #category : #'*LiveCoding' }
+ByteString >> randomNotesFromFolder [
+"returns a random number (between 2 and 512) of indexes from the folder wit self name"
+| randIndex folder folderSize|
+	randIndex := Random new nextIntegerBetween: 2 and:  512.
+	folder := SuperDirt samplesFolder / self .
+	folderSize := folder asFileReference allChildren size. 
+	^ randIndex randomInts: folderSize .
+]
+
+{ #category : #'*LiveCoding' }
 ByteString >> to: aKeyInPerformance [ 
 	"convenience method to insert at aKeyInPerformance a pattern from the hex string"
 	
@@ -172,9 +255,9 @@ ByteString >> toKymaAsGate [
 "	pacaAddress := NetNameResolver stringFromAddress: (NetNameResolver 	addressForName:'beslime-691.local'). "
 
 	vcslabel := '/vcs/', self , 'Gate', '/1'.
-	(OSCMessage for: { vcslabel  . 1.0  }) sendToAddressString: pacaAddress  port: 8000.
+	(OSCMessage for: { vcslabel  . 1.0  }) sendToAddressString: PacaAddress address  port: 8000.
 	(Delay forSeconds: 2) wait.
-	(OSCMessage for: { vcslabel  . 0.0  }) sendToAddressString: pacaAddress  port: 8000.
+	(OSCMessage for: { vcslabel  . 0.0  }) sendToAddressString: PacaAddress address  port: 8000.
 ]
 
 { #category : #'*LiveCoding' }
@@ -185,9 +268,9 @@ ByteString >> toKymaAsGate: gateTimeInSeconds [
 "	pacaAddress := NetNameResolver stringFromAddress: (NetNameResolver 	addressForName:'beslime-691.local'). "
 
 	vcslabel := '/vcs/', self , 'Gate', '/1'.
-	^ [(OSCMessage for: { vcslabel  . 1.0  }) sendToAddressString: pacaAddress  port: 8000.
+	^ [(OSCMessage for: { vcslabel  . 1.0  }) sendToAddressString: PacaAddress address port: 8000.
 	(Delay forSeconds: gateTimeInSeconds ) wait.
-	(OSCMessage for: { vcslabel  . 0.0  }) sendToAddressString: pacaAddress  port: 8000.
+	(OSCMessage for: { vcslabel  . 0.0  }) sendToAddressString: PacaAddress address port: 8000.
 	] fork
 ]
 
@@ -204,20 +287,20 @@ ByteString >> toKymaAsGate: gateTimeInSeconds note: aNoteNumber [
 	sendNoteNumber := (OSCMessage for: { 
 			                   vcsNoteLabel.
 			                   aNoteNumber asFloat })
-		                  sendToAddressString: pacaAddress
+		                  sendToAddressString:PacaAddress address
 		                  port: 8000.
 	[ "first NoteOff for VoiceStealing"
 	(OSCMessage for: { 
 			 vcsGatelabel.
-			 0.0 }) sendToAddressString: pacaAddress port: 8000."then note On"
+			 0.0 }) sendToAddressString:  PacaAddress address port: 8000."then note On"
 	(OSCMessage for: { 
 			 vcsGatelabel.
-			 1.0 }) sendToAddressString: pacaAddress port: 8000.
+			 1.0 }) sendToAddressString: PacaAddress address port: 8000.
 	(Delay forSeconds: gateTimeInSeconds) wait.
 	"then note Off"
 	(OSCMessage for: { 
 			 vcsGatelabel.
-			 0.0 }) sendToAddressString: pacaAddress port: 8000 ] fork
+			 0.0 }) sendToAddressString: PacaAddress address port: 8000 ] fork
 ]
 
 { #category : #'*LiveCoding' }
@@ -235,15 +318,15 @@ ByteString >> toKymaAsGateOld: gateTimeInSeconds note: aNoteNumber [
 	  (OSCMessage for: { 
 			   vcsNoteLabel.
 			   aNoteNumber asFloat })
-		  sendToAddressString: pacaAddress
+		  sendToAddressString: PacaAddress address
 		  port: 8000.
 	  (OSCMessage for: { 
 			   vcsGatelabel.
-			   1.0 }) sendToAddressString: pacaAddress port: 8000.
+			   1.0 }) sendToAddressString: PacaAddress address port: 8000.
 	  (Delay forSeconds: gateTimeInSeconds) wait.
 	  (OSCMessage for: { 
 			   vcsGatelabel.
-			   0.0 }) sendToAddressString: pacaAddress port: 8000 ] fork
+			   0.0 }) sendToAddressString: PacaAddress address port: 8000 ] fork
 ]
 
 { #category : #'*LiveCoding' }
@@ -255,8 +338,8 @@ ByteString >> toKymaAsNoteOff: aNoteNumber [
 	vcsGatelabel := '/vcs/', self , 'Gate', '/1'.
 	vcsNoteLabel := '/vcs/', self , 'Note', '/1'.
 	
-(OSCMessage for: { vcsNoteLabel  . aNoteNumber asFloat }) sendToAddressString: pacaAddress  port: 8000.
-(OSCMessage for: { vcsGatelabel  . 0.0  }) sendToAddressString: pacaAddress  port: 8000.
+(OSCMessage for: { vcsNoteLabel  . aNoteNumber asFloat }) sendToAddressString: PacaAddress address port: 8000.
+(OSCMessage for: { vcsGatelabel  . 0.0  }) sendToAddressString: PacaAddress address  port: 8000.
 
 ]
 
@@ -270,8 +353,8 @@ ByteString >> toKymaAsNoteOn: aNoteNumber [
 	vcsGatelabel := '/vcs/', self , 'Gate', '/1'.
 	vcsNoteLabel := '/vcs/', self , 'Note', '/1'.
 	
-(OSCMessage for: { vcsNoteLabel  . aNoteNumber asFloat }) sendToAddressString: pacaAddress  port: 8000.
-(OSCMessage for: { vcsGatelabel  . 1.0  }) sendToAddressString: pacaAddress  port: 8000.
+(OSCMessage for: { vcsNoteLabel  . aNoteNumber asFloat }) sendToAddressString: PacaAddress address port: 8000.
+(OSCMessage for: { vcsGatelabel  . 1.0  }) sendToAddressString: PacaAddress address port: 8000.
 
 ]
 
@@ -286,11 +369,11 @@ ByteString >> toKymaAsTrig [
 	^ [ 
 	  (OSCMessage for: { 
 			   vcslabel.
-			   1.0 }) sendToAddressString: pacaAddress port: 8000.
+			   1.0 }) sendToAddressString: PacaAddress address port: 8000.
 	  (Delay forSeconds: 0.01) wait.
 	  (OSCMessage for: { 
 			   vcslabel.
-			   0.0 }) sendToAddressString: pacaAddress port: 8000 ] fork
+			   0.0 }) sendToAddressString: PacaAddress address port: 8000 ] fork
 ]
 
 { #category : #'*LiveCoding' }
