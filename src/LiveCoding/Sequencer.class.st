@@ -125,12 +125,6 @@ self subclassResponsibility
 ]
 
 { #category : #accessing }
-Sequencer >> chords [
-
-	^ chords
-]
-
-{ #category : #accessing }
 Sequencer >> chords: aStringWithOneOrMoreChords [
 " note and chord type separated by an hyphen for example 'c-maj d#-min sus4 min7')"
 | arrayOfChords |
@@ -172,29 +166,6 @@ anArrayForSuperDirt doWithIndex: [ :value :i| (i odd ) ifTrue: [keys add: value 
 
 
 
-]
-
-{ #category : #'as yet unclassified' }
-Sequencer >> dirt: anArrayForSuperDirt chord: someChords  to: aKeyInPerformance [
-
-"convenience method to avoid extra parenthesis you can create here chords progressions"
-| dirtMessage2 seq2 dirtMessage3 seq3 |
-
-
-(self dirt: anArrayForSuperDirt ) to: aKeyInPerformance .
-
-dirtMessage2 := dirtMessage copy   .
-dirtMessage2 at: 'n' put: ((dirtMessage at: 'n' ) + (Chord chordLists  at: someChords  at: 2 )).
-seq2 := self copy.
-seq2 dirtMessage: dirtMessage2 .
-seq2 to: (aKeyInPerformance asString , 'Note2') asSymbol.
-
-dirtMessage3 := dirtMessage copy .
-dirtMessage3 at: 'n' put: ((dirtMessage at: 'n' ) + (Chord chordLists  at: someChords  at: 3)).
-seq3 := self copy.
-seq3 dirtMessage: dirtMessage3 .
-seq3 to: (aKeyInPerformance asString , 'Note3') asSymbol.
- 
 ]
 
 { #category : #'as yet unclassified' }
