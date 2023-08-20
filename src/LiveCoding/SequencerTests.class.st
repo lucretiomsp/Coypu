@@ -68,9 +68,9 @@ SequencerTests >> testChangeSequencerGatesSize [
 SequencerTests >> testChords: aChordOrAnArrayOfChords [
 
 | polySeq |
-polySeq := 4 breves sound: 'superpiano'; chords: 'cmajor'. 
+polySeq := 4 breves sound: 'superpiano'; chords: 'c-major d-minor e-major'. 
 
-self assert: polySeq dirtMessages size equals: 3.
+self assert: (polySeq dirtMessage at: 'n') equals: ( 'c-major d-minor e-major' chordsToArrays ).
 
 ]
 

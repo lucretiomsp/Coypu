@@ -25,7 +25,7 @@ Class {
 		'midiChannel',
 		'visualGroup',
 		'cycleDurations',
-		'chords',
+		'seqChords',
 		'soundPattern',
 		'samplesIndex',
 		'dirtMessage',
@@ -130,9 +130,12 @@ Sequencer >> chords [
 ]
 
 { #category : #accessing }
-Sequencer >> chords: anArrayOfChords [
-" for example #('maj' 'min' 'sus4' 'min7')"
-chords := anArrayOfChords .
+Sequencer >> chords: aStringWithOneOrMoreChords [
+" note and chord type separated by an hyphen for example 'c-maj d#-min sus4 min7')"
+| arrayOfChords |
+arrayOfChords :=  (aStringWithOneOrMoreChords chordsToArrays) .
+seqChords := arrayOfChords .
+
    ^ self asPolySeq .
 	
 ]
@@ -797,6 +800,18 @@ Sequencer >> samplesIndex [
 Sequencer >> samplesIndex: anArrayOfIntegers [
 
 	samplesIndex := anArrayOfIntegers 
+]
+
+{ #category : #accessing }
+Sequencer >> seqChords [
+
+	^ seqChords
+]
+
+{ #category : #accessing }
+Sequencer >> seqChords: anObject [
+
+	seqChords := anObject
 ]
 
 { #category : #accessing }

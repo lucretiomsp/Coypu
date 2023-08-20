@@ -207,8 +207,8 @@ Chord >> initialize [
 super initialize .
 
 list := Dictionary new.
-list at: #major put: #(0 4 7); at: #minor put: #(0 3 7).
-'merda' traceCr.
+list at: #major put: #(0 4 7); at: #minor put: #(0 3 7); at: #aug put: #( 0 4 8); at: #six put: #( 0 4 7 9); at: #six9 put: #( 0 4 7 9 14 ); at: #major7 put: #( 0 4 7 11); at: #major9 put: #( 0 4 7 11 14); at: #add9 put: #( 0 4 7 14); at: #major11 put: #( 0 4 7 11 14 17); at: #add11 put: #( 0 4 7 17); at: #major13 put: #( 0 4 7 11 14 17 21); at: #minor7 put: #( 0 3 7 10).
+
 
 ]
 
