@@ -29,7 +29,8 @@ Class {
 		'soundPattern',
 		'samplesIndex',
 		'dirtMessage',
-		'orbit'
+		'orbit',
+		'isPoly'
 	],
 	#classInstVars : [
 		'orbit'
@@ -415,6 +416,7 @@ Sequencer >> index: anArrayOfIndexes to: aKeyInPerformance [
 Sequencer >> initialize [ 
 
 super initialize .
+isPoly := false.
 dirtMessage := Dictionary new.
 
 dirtMessage  at: 'cps' put: Performance uniqueInstance freq * 4.
@@ -423,6 +425,18 @@ self class orbit: self class orbit + 1.
 orbit := self class orbit.
 
 "dirtMessage addAll: { '_id' -> 1 . 'cps' -> 0.56 .  'orbit' -> 0 }"
+]
+
+{ #category : #accessing }
+Sequencer >> isPoly [
+
+	^ isPoly
+]
+
+{ #category : #accessing }
+Sequencer >> isPoly: aBolean [
+
+	isPoly := aBolean
 ]
 
 { #category : #'LiveCoding - sequencer' }
@@ -927,6 +941,12 @@ Sequencer >> sounds: aStringForDirt [
 		samplesIndex: indexes asDirtArray
 ]
 
+{ #category : #'LiveCoding  - SuperDirt' }
+Sequencer >> squiz: aFloatOrAnArray [
+" add squiz distortion to the Sequencer"
+	self dirtMessage at: 'room' put:  aFloatOrAnArray   asDirtArray
+]
+
 { #category : #accessing }
 Sequencer >> stepIndex [
 
@@ -955,10 +975,11 @@ Sequencer >> times: anInteger [
 { #category : #'LiveCoding - Performance' }
 Sequencer >> to: aSymbol [
 
-	Performance uniqueInstance at: aSymbol put: self.
+	
 	self seqKey: aSymbol asString .
 	self dirtMessage  at: '_id' put: self seqKey.
 	self dirtMessage  at: 'orbit' put: self orbit.
+   seqChords ifNotNil:  [Performance uniqueInstance at: aSymbol put: self] ifNil: [  Performance uniqueInstance at: aSymbol put: self asPolySeq] 
 ]
 
 { #category : #addToPerformance }

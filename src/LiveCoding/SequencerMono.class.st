@@ -15,7 +15,7 @@ SequencerMono >> asPolySeq [
 polySeq := SequencerPoly new.
 polySeq gates: self gates; noteIndex: self noteIndex; durations: self durations; dirtMessage: self dirtMessage; seqChords: self seqChords . 
 polySeq dirtMessage removeKey: #n ifAbsent: [ ] .
-
+polySeq isPoly: true.
 ^ polySeq 
 ]
 
