@@ -127,8 +127,8 @@ PortMidi >> getDeviceNameid: aDeviceID [
 	name := (self getDeviceInfo: aDeviceID) name bytesFromCString
 		        utf8Decoded.
 	(self getDeviceInfo: aDeviceID) input = 0
-		ifTrue: [ type := ' is output' ]
-		ifFalse: [ type := 'is input' ].
+		ifTrue: [ type := ' is OUTPUT' ]
+		ifFalse: [ type := 'is INPUT' ].
 	^ name , type
 ]
 

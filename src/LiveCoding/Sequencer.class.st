@@ -710,6 +710,12 @@ message addAll: { '_id' . '1' . 'cps' . 0.56 . 'delta' . 0.125 . 'orbit' . 0 . '
 	^ true 
 ]
 
+{ #category : #'LiveCoding - Performance' }
+Sequencer >> playMIDIEventAt: anIndex [
+
+self subclassResponsibility 
+]
+
 { #category : #'LiveCoding  - SuperDirt' }
 Sequencer >> playToDirt: aNumberOfSteps rate: aRateInSeconds [
 
