@@ -1,3 +1,6 @@
+"
+Vertical Fader for Kyma
+"
 Class {
 	#name : #VerticalFaderForKyma,
 	#superclass : #VerticalFader,

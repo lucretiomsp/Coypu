@@ -48,6 +48,22 @@ message addAll: { '_id' . '1' . 'cps' . 0.56 . 'delta' . 0.125 . 'orbit' . 0 . '
 	^ true 
 ]
 
+{ #category : #'LiveCoding  - SuperDirt' }
+SequencerMono >> playMIDIEventAt: anIndex [
+
+	"sends a mesaage to SuperDirt with all the desired OSC arguments and values" 
+| message dur midiNote mch stepDuration midiSender|
+midiSender := PerformerMIDI midiOut .
+mch := self midiChannel .
+stepDuration := Performance uniqueInstance freq.
+midiNote := self notes asDirtArray  wrap: anIndex .
+dur := self durations asDirtArray  wrap: anIndex .
+midiSender playDrum:  notes  onChannel: mch.
+
+
+	^ true 
+]
+
 { #category : #highlighting }
 SequencerMono >> reverse [
   " reverese gates"
