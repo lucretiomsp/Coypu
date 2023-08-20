@@ -4,12 +4,56 @@ Performer for external MIDI hardware
 Class {
 	#name : #PerformerMIDI,
 	#superclass : #Performer,
+	#classInstVars : [
+		'midiOut'
+	],
 	#category : #'LiveCoding-Performance'
 }
+
+{ #category : #accessing }
+PerformerMIDI class >> midiOut [
+
+	^ midiOut
+]
+
+{ #category : #accessing }
+PerformerMIDI class >> midiOut: aMIDISender [
+
+	midiOut := aMIDISender 
+]
 
 { #category : #playing }
 PerformerMIDI >> play [
 self shouldBeImplemented 
+]
+
+{ #category : #playing }
+PerformerMIDI >> playFor: aNumberOfSteps [
+
+	"play the performance to SuperDIrt/SuperCollider audio engine - default freq is 132 bpm 
+	Performance speed can be changed with p freq: a bpm"
+
+	
+	performance bpm: 60 / (performance freq * 4). 
+	performance transportStep: 1.
+	performance activeProcess: ([ 
+	           aNumberOfSteps timesRepeat: [ 
+		           (Delay forSeconds: performance freq) wait.
+		           "sequencers scan"
+		           [ 
+		           performance valuesDo: [ :seq | 
+			           (seq gates wrap: performance transportStep) = 1
+				           ifTrue: [ 
+					           seq playFullDirtEventAt: seq noteIndex  "delta!!!!" .
+					           "increment note Index"
+					           seq noteIndex: seq noteIndex + 1 ]
+				           ifFalse: [ nil ] ] ] forkAt: Processor timingPriority.
+
+		           "step is incremented anyway"
+		           performance incrementTransportStep ] ] forkAt: Processor timingPriority).
+
+
+	
 ]
 
 { #category : #accessing }
@@ -36,7 +80,7 @@ if you want to send out ccs
 		  (Delay forSeconds: aRateInSeconds) wait.
 		  " test if dictionary values is an Array of two arrays or as defined, a sequence"
 
-		  performance values do: [ :value | 
+		  performance valuesDo: [ :value | 
 			  value isSequencer
 				  ifTrue: [ 
 					  (value gates at: (step modulo: value gatesSize)) = 1 ifTrue: [ "noteIndex := noteIndex + 1."

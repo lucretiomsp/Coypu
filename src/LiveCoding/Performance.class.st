@@ -605,7 +605,7 @@ keys in the Performance represents MIDI channels and must be written as #ch1 #ch
 if you want to send out ccs
 "
 
-	| step bpm beatInSeconds gateTime |
+	| step  beatInSeconds gateTime |
 	"as in early hardware sequencers, default gatetime is 80% of the step duration"
 	bpm := 60 / (aRateInSeconds * 4).
 	beatInSeconds := aRateInSeconds * 4.
@@ -618,24 +618,17 @@ if you want to send out ccs
 		  (Delay forSeconds: aRateInSeconds) wait.
 		  " test if dictionary values is an Array of two arrays or as defined, a sequence"
 
-		  self values do: [ :value | 
+		  self valuesDo: [ :value | 
 			  value isSequencer
 				  ifTrue: [ 
 					  (value gates at: (step modulo: value gatesSize)) = 1 ifTrue: [ "noteIndex := noteIndex + 1."
-						  value hasChords
-							  ifFalse: [ 
+						 
+							  
 								  aMIDISender
 									  playDrum:
 									  (value notes at: (value noteIndex modulo: value notesSize))
-									  onChannel: value midiChannel ]
-							  ifTrue: [ 
-								  aMIDISender
-									  playChord: 60
-									  type: (Chord chordLists at:
-											   (value chords at:
-												    (value noteIndex modulo: value chords size)))
-									  onChannel: value midiChannel
-									  duration: 0.2 ].
+									  onChannel: value midiChannel .
+							  
 						  "sends a ControlChange message on the same channel, if provided"
 						  value extra1 notNil
 							  ifTrue: [ 

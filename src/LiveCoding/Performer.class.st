@@ -27,3 +27,8 @@ fourDaysAt120BPM  := 4 days asMilliSeconds / ((60/ 120) /4)
 Performer >> play [ 
 self subclassResponsibility 
 ]
+
+{ #category : #playing }
+Performer >> playFor: aNumberOfSteps [ 
+self subclassResponsibility 
+]

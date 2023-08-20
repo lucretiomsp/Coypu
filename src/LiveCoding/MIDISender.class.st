@@ -49,6 +49,7 @@ MIDISender >> initialize [
 	self defaultOutput: instance getDefaultOutputDeviceID.
 	self midiOut: (instance createNewPointerForStreamWithType: 'void**').
 	
+	
 ]
 
 { #category : #accessing }
@@ -80,6 +81,9 @@ MIDISender >> openWithDevice: aDeviceID [
 	"
 	
 	self instance: PortMidiLibrary uniqueInstance.
+	
+	"assign the MIDISender to the PerformerMIDI"
+	PerformerMIDI midiOut: self.
 	
 	self midiOut: (instance createNewPointerForStreamWithType: 'void**').
 	^ (aDeviceID = -1) ifFalse: 

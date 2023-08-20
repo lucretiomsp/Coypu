@@ -124,6 +124,18 @@ Sequencer >> asPolySeq [
 self subclassResponsibility 
 ]
 
+{ #category : #'LiveCoding  - SuperDirt' }
+Sequencer >> bpf: aFloatOrAnArray [
+" add bandpass filter effect to the Sequencer at aFloatOrArray frequency"
+	self dirtMessage at: 'bandf' put:  aFloatOrAnArray   asDirtArray
+]
+
+{ #category : #'LiveCoding  - SuperDirt' }
+Sequencer >> bpq: aFloatOrAnArray [
+" add bandpass filter effect to the Sequencer with aFloatOrArray frequency"
+	self dirtMessage at: 'bpq' put:  aFloatOrAnArray   asDirtArray
+]
+
 { #category : #accessing }
 Sequencer >> chords: aStringWithOneOrMoreChords [
 " note and chord type separated by an hyphen for example 'c-maj d#-min sus4 min7')"
@@ -1034,6 +1046,12 @@ Sequencer >> visualizeOn: aRSCanvas [
 	visualGroup translateTo: 0 @ 0.
 	aRSCanvas add: visualGroup asShape.
 	aRSCanvas signalUpdate
+]
+
+{ #category : #'LiveCoding  - SuperDirt' }
+Sequencer >> voice: aFloatOrAnArray [
+" add voice variation for SuperDirt Synths to the Sequencer"
+	self dirtMessage at: 'voice' put:  aFloatOrAnArray   asDirtArray
 ]
 
 { #category : #random }

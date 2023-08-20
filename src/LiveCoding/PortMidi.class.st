@@ -69,13 +69,17 @@ PortMidi class >> terminate [
 { #category : #'as yet unclassified' }
 PortMidi class >> traceAllDevices [
 
-	"Show on Transcript all the available MIDI Device"
-Transcript
+	" return an array of MIDI devices"
+	| devices |
+	devices :=  (0 to: self countDevices - 1)  collect: [ :i |
+	(self uniqueInstance getDeviceNameid: i)  ].
+  ^ devices.
+"Transcript
 		clear.
 	 0 to: self countDevices - 1 do: [ :i | Transcript show: i; tab.
 	(self uniqueInstance getDeviceNameid: i) traceCr ].
 	
-	Transcript	open
+	Transcript	open"
 ]
 
 { #category : #writing }
