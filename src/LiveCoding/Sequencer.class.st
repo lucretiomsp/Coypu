@@ -945,11 +945,12 @@ Sequencer >> times: anInteger [
 
 { #category : #'LiveCoding - Performance' }
 Sequencer >> to: aSymbol [
-
+" assign sequencer to the performance at aSymbol. if a sound for SuperDirt is not specified, the symbol is used for sound name"
 	
 	self seqKey: aSymbol asString .
 	self dirtMessage  at: '_id' put: self seqKey.
 	self dirtMessage  at: 'orbit' put: self orbit.
+	(self dirtMessage includesKey: 's') ifFalse: [ self dirtMessage at: 's' put: aSymbol asString asDirtArray  ] ifTrue: [  ] .
    seqChords ifNil:  [Performance uniqueInstance at: aSymbol put: self] ifNotNil: [  Performance uniqueInstance at: aSymbol put: self asPolySeq] 
 ]
 
