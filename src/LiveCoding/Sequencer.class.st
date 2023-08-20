@@ -950,7 +950,7 @@ Sequencer >> to: aSymbol [
 	self seqKey: aSymbol asString .
 	self dirtMessage  at: '_id' put: self seqKey.
 	self dirtMessage  at: 'orbit' put: self orbit.
-   seqChords ifNotNil:  [Performance uniqueInstance at: aSymbol put: self] ifNil: [  Performance uniqueInstance at: aSymbol put: self asPolySeq] 
+   seqChords ifNil:  [Performance uniqueInstance at: aSymbol put: self] ifNotNil: [  Performance uniqueInstance at: aSymbol put: self asPolySeq] 
 ]
 
 { #category : #addToPerformance }

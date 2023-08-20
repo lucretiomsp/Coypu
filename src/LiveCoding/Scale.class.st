@@ -4,7 +4,7 @@ Sending the name of the desired Scale to the Scale class returns the desired cla
 "
 Class {
 	#name : #Scale,
-	#superclass : #Array,
+	#superclass : #Object,
 	#type : #variable,
 	#instVars : [
 		'root'

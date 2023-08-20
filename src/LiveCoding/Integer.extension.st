@@ -59,8 +59,9 @@ Integer >> modulo: anInteger [
 
 { #category : #'*LiveCoding' }
 Integer >> ones [
-	" retuns an array of self size with all  ones "
-^ (Array new: self withAll: 1) asRhythm.
+	
+	" retuns a Sequencer of gates size = self with all ones - same as semiquavers"
+^ (Array new: self withAll: 1) asRhythm asSeq.
 ]
 
 { #category : #'*LiveCoding' }
@@ -166,4 +167,10 @@ Integer >> toSCAsGate: aDurationInSeconds note: aNoteNumber [
 			 'gate'.
 			 0 }) sendToAddressString: '127.0.0.1' port: 57110.
 			] fork
+]
+
+{ #category : #'*LiveCoding' }
+Integer >> zeros [
+	" retuns a Sequencer of gates size = self with all zeros / to create long rests "
+^ (Array new: self withAll: 0) asRhythm asSeq.
 ]

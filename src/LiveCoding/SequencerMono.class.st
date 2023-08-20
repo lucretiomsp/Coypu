@@ -47,3 +47,10 @@ message addAll: { '_id' . '1' . 'cps' . 0.56 . 'delta' . 0.125 . 'orbit' . 0 . '
 	(OSCBundle for: {  OSCMessage for: message  }  )  sendToAddressString: '127.0.0.1' port: 57120.
 	^ true 
 ]
+
+{ #category : #highlighting }
+SequencerMono >> reverse [
+  " reverese gates"
+	self gates: self gates reverse.
+	
+]

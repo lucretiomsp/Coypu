@@ -192,7 +192,7 @@ ByteString >> parseChord [
 	chord :=(self findBetweenSubstrings: '-') at: 2.
 	notes := Array new: 11.
 	notes := #('c' 'c#' 'd' 'd#' 'e' 'f' 'f#' 'g#' 'a' 'a#' 'b').
-		^ (Chord perform: chord asLowercase  asSymbol) + (notes indexOf: root asLowercase  ) - 1.
+		^ (Chord list at: chord asLowercase  asSymbol) + (notes indexOf: root asLowercase  ) - 1.
 ]
 
 { #category : #'*LiveCoding' }

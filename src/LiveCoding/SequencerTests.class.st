@@ -98,6 +98,16 @@ self assert: (Sequencer new orbit > 0) & (Sequencer new orbit < 12) equals: true
 ]
 
 { #category : #tests }
+SequencerTests >> testReverse [
+
+| seq |
+seq := '000F' hexBeat sound: 'sd cp'; dirtNotes: #(1 2 3) .
+self assert: seq reverse gates  equals: #( 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0) asRhythm .
+self assert: (seq reverse dirtMessage at: 'n') equals: #( 3 2 1).
+self assert: (seq reverse dirtMessage at: 's') equals: #('cp' 'sd').
+]
+
+{ #category : #tests }
 SequencerTests >> testSequencerOffset [
 
 | seq1 seq2 result1 result2 |
