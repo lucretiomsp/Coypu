@@ -1,3 +1,7 @@
+"
+Minimal Playground for programming music on-the fly.
+
+"
 Class {
 	#name : #Playground4LiveCoding,
 	#superclass : #StPlaygroundPagePresenter,
@@ -24,7 +28,8 @@ Playground4LiveCoding class >> defaultTitle [
 Playground4LiveCoding >> initializeWindow: aWindowPresenter [
 
 	super initializeWindow: aWindowPresenter.
+	
 	aWindowPresenter
-		title: 'PROGRAMMIN MUSIC ON-FLY';
-		initialExtent: 800 @ 700
+		title: 'PROGRAMMING MUSIC ON-THE-FLY';
+		initialExtent: self currentWorld width @ 700
 ]
