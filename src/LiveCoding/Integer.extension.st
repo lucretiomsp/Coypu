@@ -276,6 +276,16 @@ Integer >> randomNotesFrom: anArray octaves: aNumber [
 ]
 
 { #category : #'*LiveCoding' }
+Integer >> randomSamplesFromFolder: aStringForAFolderOfSamples [
+"return a Sequencer witha random number (between 2 and 512) of trigs and of samples fro the selected folder"
+| randIndex folder folderSize|
+	randIndex := Random new nextIntegerBetween: 2 and:  512.
+	folder := SuperDirt samplesFolder / aStringForAFolderOfSamples .
+	folderSize := folder asFileReference allChildren size. 
+	^ self randomTrigs sound: aStringForAFolderOfSamples ; dirtNotes: (randIndex  randomInts: folderSize) .
+]
+
+{ #category : #'*LiveCoding' }
 Integer >> randomTrigs [
 "generates an Array of random 0s and 1s of size: aNumber"
 	| r |

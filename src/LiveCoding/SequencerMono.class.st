@@ -17,6 +17,15 @@ aStringOfChords chordsToArrays do: [ :i | arpNotes addAll: i ].
 self dirtMessage at: 'n' put: arpNotes .
 ]
 
+{ #category : #'as yet unclassified' }
+SequencerMono >> arpeggiate: aStringOfChords octave: anIntegerOrAnArray [
+	| arpNotes |
+	
+	arpNotes := OrderedCollection new.
+aStringOfChords chordsToArrays do: [ :i | arpNotes addAll: i ].
+self dirtMessage at: 'n' put: arpNotes + (anIntegerOrAnArray * 12) .
+]
+
 { #category : #converting }
 SequencerMono >> asPolySeq [ 
 

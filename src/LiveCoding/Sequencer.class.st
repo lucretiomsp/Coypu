@@ -458,6 +458,12 @@ p := Performance uniqueInstance .
 	p at: aKeyInPerformance put: (self midiChannel: anInteger) .
 ]
 
+{ #category : #'LiveCoding  - SuperDirt' }
+Sequencer >> midiChan: anIntegerOrAnArrayOfIntegers [
+" add midichannel for SuperDirt to the Sequencer"
+	self dirtMessage at: 'midiChan' put:  anIntegerOrAnArrayOfIntegers   asDirtArray
+]
+
 { #category : #accessing }
 Sequencer >> midiChannel [ 
 
