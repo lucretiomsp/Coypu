@@ -490,8 +490,8 @@ p := Performance uniqueInstance .
 
 { #category : #'LiveCoding  - SuperDirt' }
 Sequencer >> midiChan: anIntegerOrAnArrayOfIntegers [
-" add midichannel for SuperDirt to the Sequencer"
-	self dirtMessage at: 'midiChan' put:  anIntegerOrAnArrayOfIntegers   asDirtArray
+" add midichannel for SuperDirt to the Sequencer - count from 0"
+	self dirtMessage at: 'midichan' put:  anIntegerOrAnArrayOfIntegers   asDirtArray
 ]
 
 { #category : #accessing }
