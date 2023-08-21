@@ -159,6 +159,24 @@ Sequencer >> cycleDurations: anArrayOfFractions [
 cycleDurations := anArrayOfFractions 
 ]
 
+{ #category : #'LiveCoding  - SuperDirt' }
+Sequencer >> delay: aFloatOrAnArray [
+" add delay wet/dry pattern to the Sequencer"
+	self dirtMessage at: 'delay' put:  aFloatOrAnArray   asDirtArray
+]
+
+{ #category : #'LiveCoding  - SuperDirt' }
+Sequencer >> delayFb: aFloatOrAnArray [
+" add delay feedback pattern to the Sequencer"
+	self dirtMessage at: 'delayfb' put:  aFloatOrAnArray   asDirtArray
+]
+
+{ #category : #'LiveCoding  - SuperDirt' }
+Sequencer >> delayTime: aFloatOrAnArray [
+" add delay time pattern to the Sequencer"
+	self dirtMessage at: 'delaytime' put:  aFloatOrAnArray   asDirtArray
+]
+
 { #category : #'as yet unclassified' }
 Sequencer >> dirt: anArrayForSuperDirt [
 "fills the OSC dirtmessage for SuperDirt with suitable values"
@@ -375,6 +393,12 @@ result := false.
 		^ result
 ]
 
+{ #category : #'LiveCoding  - SuperDirt' }
+Sequencer >> hold: aFloatOrAnArray [
+" add hold ASR envelope pattern to the Sequencer"
+	self dirtMessage at: 'rel' put:  aFloatOrAnArray   asDirtArray
+]
+
 { #category : #'accessing - sequencer' }
 Sequencer >> index [
 
@@ -432,6 +456,12 @@ self subclassResponsibility
 Sequencer >> isSequencer [
 
 ^ true
+]
+
+{ #category : #'LiveCoding  - SuperDirt' }
+Sequencer >> lock: aFloatOrAnArray [
+" add lock pattern to the Sequencer -  a pattern of numbers. Specifies whether delaytime is calculated relative to bpm. When set to 1, delaytime is a direct multiple of a bar."
+	self dirtMessage at: 'lock' put:  aFloatOrAnArray   asDirtArray
 ]
 
 { #category : #modifying }
@@ -794,8 +824,14 @@ Sequencer >> randomSamplesFromFolder: aStringForAFolderOfSamples [
 ]
 
 { #category : #'LiveCoding  - SuperDirt' }
+Sequencer >> rel: aFloatOrAnArray [
+" add release ASR envelope pattern to the Sequencer"
+	self dirtMessage at: 'rel' put:  aFloatOrAnArray   asDirtArray
+]
+
+{ #category : #'LiveCoding  - SuperDirt' }
 Sequencer >> room: aFloatOrAnArray [
-" add reverb to the Sequencer"
+" add room size reverb pattern to the Sequencer"
 	self dirtMessage at: 'room' put:  aFloatOrAnArray   asDirtArray
 ]
 
@@ -843,6 +879,12 @@ Sequencer >> size [
 	result := self gates select: [ :i | i > 0 ].
 	size := result size.
 	^ size
+]
+
+{ #category : #'LiveCoding  - SuperDirt' }
+Sequencer >> size: aFloatOrAnArray [
+" add rdepth reverb pattern to the Sequencer"
+	self dirtMessage at: 'size' put:  aFloatOrAnArray   asDirtArray
 ]
 
 { #category : #'LiveCoding  - SuperDirt' }
