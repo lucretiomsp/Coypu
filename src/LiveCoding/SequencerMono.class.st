@@ -8,6 +8,15 @@ Class {
 	#category : #'LiveCoding-Sequencers'
 }
 
+{ #category : #'as yet unclassified' }
+SequencerMono >> arpeggiate: aStringOfChords [ 
+	| arpNotes |
+	
+	arpNotes := OrderedCollection new.
+aStringOfChords chordsToArrays do: [ :i | arpNotes addAll: i ].
+self dirtMessage at: 'n' put: arpNotes .
+]
+
 { #category : #converting }
 SequencerMono >> asPolySeq [ 
 

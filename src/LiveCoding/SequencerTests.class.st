@@ -108,6 +108,15 @@ self assert: (seq reverse dirtMessage at: 's') equals: #('cp' 'sd').
 ]
 
 { #category : #tests }
+SequencerTests >> testSequencerArpeggiate [
+| seq |
+seq := 8 semiquavers .
+seq arpeggiate: 'c-minor7 d-minor7'.
+
+self assert: (seq dirtMessage at: 'n') equals: #(0 3 7 10 2 5 9 12) asArray .
+]
+
+{ #category : #tests }
 SequencerTests >> testSequencerOffset [
 
 | seq1 seq2 result1 result2 |

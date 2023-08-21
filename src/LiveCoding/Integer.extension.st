@@ -349,7 +349,7 @@ result durations: 16.
 { #category : #'*LiveCoding' }
 Integer >> semiquavers [ 
 
-^ (Array new: self withAll: 1) asRhythm .
+^ (Array new: self withAll: 1) asRhythm asSeq.
 ]
 
 { #category : #'*LiveCoding' }
