@@ -174,6 +174,12 @@ Performance >> incrementTransportStep [
 	transportStep := transportStep + 1.
 ]
 
+{ #category : #initialization }
+Performance >> initialize [
+super initialize.
+freq := 132 bpm.
+]
+
 { #category : #testing }
 Performance >> isPerformance [
 
@@ -319,8 +325,7 @@ Performance >> performer: aPerformer [
 Performance >> play [
 " reset all the Sequencers"
 self resetAllSequencers .
-" set the frequency to 132 bpm if it has not be set before "
-self freq ifNil: [ self freq: 132 bpm ] ifNotNil: [  ].
+
 "just on performance at once"
 self activeProcess isTerminated ifTrue: [ self performer play ] ifFalse: [ ] 
 

@@ -75,6 +75,12 @@ Array >> arp: anArrayOfIntervals [
 ]
 
 { #category : #'*LiveCoding' }
+Array >> asDirtArray [
+"convenience method to send OSC messages to SuperDirt"
+^ self
+]
+
+{ #category : #'*LiveCoding' }
 Array >> asMonoSeq [
 
 	"returns Sequencer with default note 60nn and default durations 1/16th and noteIndex = 0"
