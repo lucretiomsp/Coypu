@@ -18,6 +18,16 @@ Class {
 }
 
 { #category : #'instance creation' }
+VerticalFader class >> closeAll [
+
+	| fadersInWorld |
+	
+	fadersInWorld := self  currentWorld submorphs select: [ :i |
+		                 i class = FaderWindow  ].
+	fadersInWorld do: [ :i | i delete ]
+]
+
+{ #category : #'instance creation' }
 VerticalFader class >> newWithAddress: anAddress [
 
 	" the fader label is also the OSC address"
@@ -160,4 +170,22 @@ positionLeft := self currentWorld width - faderWidth .
 positionTop := 200.
 
 	^ ((self openInWindowLabeled: destination  ) position: (positionLeft @positionTop )) extent: faderWidth@faderHeight .
+]
+
+{ #category : #'as yet unclassified' }
+VerticalFader >> wrappedInWindow [
+	"Changed to include the inset margin in the bound calculation."
+
+	| window extent |
+	window := FaderWindow new.
+	window
+		addMorph: self frame: (0@0 extent: 1@1);
+		updatePaneColors.
+	" calculate extent after adding in case any size related attributes were changed.  Use
+	fullBounds in order to trigger re-layout of layout morphs"
+	extent := self fullBounds extent +
+			(window borderWidth@window labelHeight) + window borderWidth +
+			(window class borderWidth * 2 @ (window class borderWidth + 1)). "include inset margin"
+	window extent: extent.
+	^ window
 ]

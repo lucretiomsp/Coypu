@@ -14,6 +14,8 @@ parsedString := aStringWithADestinationAndAParameter findBetweenSubstrings: ' '.
 ^ (self new) 
 		destination: (parsedString  at: 1) ;
 		parameter: (parsedString  at: 2) ;
+		color: Color random;
+		cursorColor: Color black;
 		minValue: 0;
 		maxValue: 1;
 		yourself
