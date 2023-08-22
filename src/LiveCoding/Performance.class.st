@@ -342,9 +342,9 @@ Performance >> playFor: aNumberOfSteps [
 self resetAllSequencers .
 
 "just on performance at once"
-self activeProcess isTerminated ifTrue: [ self performer play ] ifFalse: [ ] .
+self activeProcess isTerminated ifTrue: [ self performer playFor: aNumberOfSteps  ] ifFalse: [ ] .
 
-self performer playFor: aNumberOfSteps 
+
 ]
 
 { #category : #'as yet unclassified' }

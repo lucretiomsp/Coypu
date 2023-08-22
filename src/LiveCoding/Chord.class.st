@@ -21,7 +21,7 @@ Chord class >> list [
 	"retrurn the list of all Chords"
 	| list | 
 list := Dictionary new.
-list at: #major put: #(0 4 7); at: #minor put: #(0 3 7); at: #aug put: #( 0 4 8); at: #six put: #( 0 4 7 9); at: #six9 put: #( 0 4 7 9 14 ); at: #major7 put: #( 0 4 7 11); at: #major9 put: #( 0 4 7 11 14); at: #add9 put: #( 0 4 7 14); at: #major11 put: #( 0 4 7 11 14 17); at: #add11 put: #( 0 4 7 17); at: #major13 put: #( 0 4 7 11 14 17 21); at: #minor7 put: #( 0 3 7 10) ; at: #diminished put: #( 0 3 6) ; at: #minorSharp5 put: #( 0 3 8) ; at: #minor5 put: #( 0 3 7 9) ; at: #minorSixNine put: #( 0 3 7 9 14) ; at: #minor7flat5 put: #( 0 3 6 10) ; at: #minor7Sharp5 put: #( 0 3 8 10); at: #diminished7 put: #( 0 3 6 9); at: #minor9 put: #( 0 3 7 10 14); at: #minor11 put: #( 0 3 7 10 14 17); at: #minor13 put: #( 0 3 7 10 14 17 21); at: #minorMajor7 put: #( 0 3 7 11); at: #five put: #( 0 5); at: #sus2 put: #( 0 2 7 ); at: #sus4 put: #( 0 5 7 );  at: #sevenSus2 put: #( 0 2 7 10 );  at: #sevenSus4 put: #( 0 5 7 10 );  at: #nineSus2 put: #( 0 2 7 10 14 );   at: #nineSus4 put: #( 0 5 7 10 14 );at: #sevenFlat10 put: #( 0 4 7 10 15); at: #nineSharp5 put: #( 0 1 13); at: #minor9Sharp5 put: #( 0 1 14) ; at: #sevenSharp5Flat9 put: #( 0 4 8 10 13) ; at: #minor7Sharp5Flat9  put: #( 0 3 8 10 13) ; at: #elevenSharp put: #( 0 4 7 10 14 18)  ;at: #minor11Sharp put: #( 0 3 7 10 14 18); at: #dom7 put: #(0 4 7 10); at: #dom7 put: #(0 4 7 10) ; at: #dom9 put: #(0 4 7 14) ; at: #dom11 put: #(0 4 7 17) ;at: #dom13 put: #(0 4 7 21) ; at: #sevenFlat5 put: #(0 4 6 10) ; at: #sevenSharp5 put: #(0 4 8 10) ; at: #sevenFlat9 put: #(0 4 7 10 13) ; at: #nine put: #(0 4 7 10 14) ; at: #eleven put: #(0 4 7 10 14 17); at: #thirteen put: #(0 4 7 10 14 17 21).
+list at: #major put: #(0 4 7); at: #minor put: #(0 3 7); at: #aug put: #( 0 4 8); at: #six put: #( 0 4 7 9); at: #six9 put: #( 0 4 7 9 14 ); at: #major7 put: #( 0 4 7 11); at: #major9 put: #( 0 4 7 11 14); at: #add9 put: #( 0 4 7 14); at: #major11 put: #( 0 4 7 11 14 17); at: #add11 put: #( 0 4 7 17); at: #major13 put: #( 0 4 7 11 14 17 21); at: #minor7 put: #( 0 3 7 10) ; at: #diminished put: #( 0 3 6) ; at: #minorsharp5 put: #( 0 3 8) ; at: #minor5 put: #( 0 3 7 9) ; at: #minorSixNine put: #( 0 3 7 9 14) ; at: #minor7flat5 put: #( 0 3 6 10) ; at: #minor7sharp5 put: #( 0 3 8 10); at: #diminished7 put: #( 0 3 6 9); at: #minor9 put: #( 0 3 7 10 14); at: #minor11 put: #( 0 3 7 10 14 17); at: #minor13 put: #( 0 3 7 10 14 17 21); at: #minorMajor7 put: #( 0 3 7 11); at: #five put: #( 0 5); at: #sus2 put: #( 0 2 7 ); at: #sus4 put: #( 0 5 7 );  at: #sevensus2 put: #( 0 2 7 10 );  at: #sevensus4 put: #( 0 5 7 10 );  at: #nineSus2 put: #( 0 2 7 10 14 );   at: #ninesus4 put: #( 0 5 7 10 14 );at: #sevenflat10 put: #( 0 4 7 10 15); at: #ninesharp5 put: #( 0 1 13); at: #minor9sharp5 put: #( 0 1 14) ; at: #sevensharp5flat9 put: #( 0 4 8 10 13) ; at: #minor7sharp5flat9  put: #( 0 3 8 10 13) ; at: #elevensharp put: #( 0 4 7 10 14 18)  ;at: #minor11sharp put: #( 0 3 7 10 14 18); at: #dom7 put: #(0 4 7 10); at: #dom7 put: #(0 4 7 10) ; at: #dom9 put: #(0 4 7 14) ; at: #dom11 put: #(0 4 7 17) ;at: #dom13 put: #(0 4 7 21) ; at: #sevenflat5 put: #(0 4 6 10) ; at: #sevensharp5 put: #(0 4 8 10) ; at: #sevenflat9 put: #(0 4 7 10 13) ; at: #nine put: #(0 4 7 10 14) ; at: #eleven put: #(0 4 7 10 14 17); at: #thirteen put: #(0 4 7 10 14 17 21).
 
 
 
@@ -138,12 +138,6 @@ Chord >> initialize [
 super initialize .
 
 
-]
-
-{ #category : #accessing }
-Chord >> list [
-
-	^ list
 ]
 
 { #category : #generating }

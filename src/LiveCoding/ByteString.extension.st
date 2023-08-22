@@ -1,16 +1,6 @@
 Extension { #name : #ByteString }
 
 { #category : #'*LiveCoding' }
-ByteString >> asChord [
-
-	"return an Array with the Intervals of the Chord in semitones"
-	
-	
-
-	
-]
-
-{ #category : #'*LiveCoding' }
 ByteString >> asDirtArray [
 "convenience method to send OSC messages to SuperDirt"
 ^ Array with: self
@@ -118,7 +108,7 @@ flat := strings flatCollect: [ :each | each ].
 ]
 
 { #category : #'*LiveCoding' }
-ByteString >> hexBeat: anArrayOfNoteNumbers and: anArrayOfDurations [
+ByteString >> hexBeat: anArrayOfNoteNumbers dur: anArrayOfDurations [
 " convert a string with an Hexadecimal number to the Kyma array corresponding to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex) , and with  anArrayOfNoteNumbers as Notes and anArrayOfDurations as Durations"
 |   strings flat |
 

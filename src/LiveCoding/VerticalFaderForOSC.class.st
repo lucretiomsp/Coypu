@@ -23,6 +23,11 @@ VerticalFaderForOSC class >> new: anArrayWithDestinationAndParameter [
 ]
 
 { #category : #accessing }
+VerticalFaderForOSC >> destination [ 
+^ destination 
+]
+
+{ #category : #accessing }
 VerticalFaderForOSC >> destination: aDestination [
 destination  := aDestination
 ]
@@ -48,6 +53,11 @@ VerticalFaderForOSC >> mouseMove: anEvent [
 ]
 
 { #category : #accessing }
+VerticalFaderForOSC >> parameter [ 
+^ parameter 
+]
+
+{ #category : #accessing }
 VerticalFaderForOSC >> parameter: aParameter [
-parameter := parameter
+parameter := aParameter
 ]
