@@ -12,11 +12,12 @@ Class {
 }
 
 { #category : #'instance creation' }
-VerticalFaderForOSC class >> new: anArrayWithDestinationAndParameter [
-
+VerticalFaderForOSC class >> new: aStringWithADestinationAndAParameter [
+| parsedString |
+parsedString := aStringWithADestinationAndAParameter findBetweenSubstrings: ' '.
 ^ (self new) 
-		destination: (anArrayWithDestinationAndParameter at: 1) ;
-		parameter: (anArrayWithDestinationAndParameter at: 2) ;
+		destination: (parsedString  at: 1) ;
+		parameter: (parsedString  at: 2) ;
 		minValue: 0;
 		maxValue: 1;
 		yourself
