@@ -10,7 +10,9 @@ Class {
 		'cursor',
 		'minValue',
 		'maxValue',
-		'cursorColor'
+		'cursorColor',
+		'destination',
+		'parameter'
 	],
 	#category : #'LiveCoding-GUI'
 }
@@ -151,5 +153,11 @@ faderCanMove := false
 { #category : #'as yet unclassified' }
 VerticalFader >> openInWindow [
    
-	^ ((self openInWindowLabeled: faderAddress ) position: (800@200)) extent: 100@500.
+|faderWidth faderHeight positionLeft positionTop |
+faderWidth := 150.
+faderHeight := 500.
+positionLeft := self currentWorld width - faderWidth .
+positionTop := 200.
+
+	^ ((self openInWindowLabeled: destination  ) position: (positionLeft @positionTop )) extent: faderWidth@faderHeight .
 ]

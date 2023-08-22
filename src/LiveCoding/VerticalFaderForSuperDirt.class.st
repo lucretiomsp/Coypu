@@ -24,7 +24,7 @@ VerticalFaderForSuperDirt >> mouseMove: anEvent [
 			mappedY := (((cursorY min: faderBottom) - faderBottom) abs min:
 				            self extent y) / self extent y * range + minValue.
 				
-			(Performance uniqueInstance at: destination ) ifNotNil: [ (Performance uniqueInstance at: destination )  dirtMessage  at: parameter put: mappedY.
+			(Performance uniqueInstance at: destination ifAbsent: [ ]  ) ifNotNil: [ (Performance uniqueInstance at: destination )  dirtMessage  at: parameter put: mappedY.
 			 ] ifNil: [ ] ]
 			ifFalse: [ "for debug" nil ]
 ]

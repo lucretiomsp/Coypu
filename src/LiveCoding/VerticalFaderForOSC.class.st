@@ -4,10 +4,6 @@ Vertical Fader to send OSC messages to the audio server.
 Class {
 	#name : #VerticalFaderForOSC,
 	#superclass : #VerticalFader,
-	#instVars : [
-		'destination',
-		'parameter'
-	],
 	#category : #'LiveCoding-GUI'
 }
 
