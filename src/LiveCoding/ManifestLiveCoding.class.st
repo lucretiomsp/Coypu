@@ -20,6 +20,13 @@ ManifestLiveCoding class >> ruleReGuardClauseRuleV1FalsePositive [
 ]
 
 { #category : #'code-critics' }
+ManifestLiveCoding class >> ruleRefersToClassRuleV1FalsePositive [
+
+	<ignoreForCoverage>
+	^ #(#(#(#RGMetaclassDefinition #(#'FaderWindow class' #FaderWindow)) #'2023-08-23T14:36:52.925452+02:00') )
+]
+
+{ #category : #'code-critics' }
 ManifestLiveCoding class >> ruleUnoptimizedToDoRuleV1FalsePositive [
 	^ #(#(#(#RGMethodDefinition #(#MIDISender #playChord:type:onChannel:duration: #false)) #'2022-06-27T11:28:11.059804+02:00') )
 ]

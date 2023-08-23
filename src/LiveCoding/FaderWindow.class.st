@@ -9,7 +9,7 @@ FaderWindow class >> countFadersInWorld [
 
 	| fadersInWorld  |
 	
-	fadersInWorld := self currentWorld submorphs select: [ :i |
-		                 i class = self class ].
+	fadersInWorld := self currentWorld submorphs select: [ 
+		                 :i | (i class = FaderWindow)].
 	^ fadersInWorld size
 ]

@@ -9,12 +9,13 @@ Class {
 
 { #category : #'instance creation' }
 VerticalFaderForOSC class >> new: aStringWithADestinationAndAParameter [
-| parsedString |
+| parsedString bgColor |
+bgColor := Color random lighter lighter.
 parsedString := aStringWithADestinationAndAParameter findBetweenSubstrings: ' '.
 ^ (self new) 
 		destination: (parsedString  at: 1) ;
 		parameter: (parsedString  at: 2) ;
-		color: Color random;
+		color: bgColor;
 		cursorColor: Color black;
 		minValue: 0;
 		maxValue: 1;

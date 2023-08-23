@@ -163,10 +163,11 @@ faderCanMove := false
 { #category : #'as yet unclassified' }
 VerticalFader >> openInWindow [
    
-|faderWidth faderHeight positionLeft positionTop |
+|faderWidth faderHeight positionLeft positionTop fadersInWorld|
+fadersInWorld := FaderWindow countFadersInWorld + 1.
 faderWidth := 150.
 faderHeight := 500.
-positionLeft := self currentWorld width - faderWidth .
+positionLeft := self currentWorld width - (faderWidth * fadersInWorld ).
 positionTop := 200.
 
 	^ ((self openInWindowLabeled: destination  ) position: (positionLeft @positionTop )) extent: faderWidth@faderHeight .
