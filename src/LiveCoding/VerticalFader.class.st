@@ -163,14 +163,17 @@ faderCanMove := false
 { #category : #'as yet unclassified' }
 VerticalFader >> openInWindow [
    
-|faderWidth faderHeight positionLeft positionTop fadersInWorld|
-fadersInWorld := FaderWindow countFadersInWorld + 1.
+|faderWidth faderHeight positionLeft positionTop fadersInWorld bgColor|
+fadersInWorld := FaderWindow countFadersInWorld.
 faderWidth := 150.
-faderHeight := 500.
-positionLeft := self currentWorld width - (faderWidth * fadersInWorld ).
-positionTop := 200.
+faderHeight := self currentWorld height / 2.1.
+positionLeft := self currentWorld width - (faderWidth * ((fadersInWorld  + 1) modulo: 3)).
+positionTop := (self currentWorld submorphs at: 1) extent y + (faderHeight * ((fadersInWorld // 3) )).
+bgColor := Color random lighter lighter.
+self color: bgColor.
+self cursorColor: Color black.
 
-	^ ((self openInWindowLabeled: destination  ) position: (positionLeft @positionTop )) extent: faderWidth@faderHeight .
+	^ ((self openInWindowLabeled: destination  ) position: (positionLeft @positionTop )) extent: faderWidth@faderHeight.
 ]
 
 { #category : #'as yet unclassified' }

@@ -329,7 +329,6 @@ self resetAllSequencers .
 "just on performance at once"
 self activeProcess isTerminated ifTrue: [ self performer play ] ifFalse: [ ] .
 
-self performer play
 
 	
 ]

@@ -979,6 +979,12 @@ Sequencer >> sounds: aStringForDirt [
 ]
 
 { #category : #'LiveCoding  - SuperDirt' }
+Sequencer >> speed: aFloatOrAnArray [
+" add speed size pattern to the Sequencer - change speed of samples playback"
+	self dirtMessage at: 'speed' put:  aFloatOrAnArray   asDirtArray
+]
+
+{ #category : #'LiveCoding  - SuperDirt' }
 Sequencer >> squiz: aFloatOrAnArray [
 " add squiz distortion to the Sequencer"
 	self dirtMessage at: 'room' put:  aFloatOrAnArray   asDirtArray

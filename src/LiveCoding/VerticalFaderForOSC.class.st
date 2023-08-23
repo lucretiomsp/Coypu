@@ -9,16 +9,36 @@ Class {
 
 { #category : #'instance creation' }
 VerticalFaderForOSC class >> new: aStringWithADestinationAndAParameter [
-| parsedString bgColor |
-bgColor := Color random lighter lighter.
+
+" if the paameter is a number, the fader sends out to MIDI via SuperDirt the cursor value for the control change number assigned"
+| parsedString dest param |
+
+parsedString := aStringWithADestinationAndAParameter findBetweenSubstrings: ' '.
+dest := (parsedString  at: 1).
+param := (parsedString  at: 2). 
+
+param asInteger ifNotNil: [ ((Performance uniqueInstance at: dest) dirtMessage) at: 'ccn' put: param asInteger. param := 'ccv'] ifNil: [ ] .
+
+^ (self new) 
+		destination: dest;
+		parameter: param;
+		
+		minValue: 0;
+		maxValue: 1 + ( 126 * ((parsedString at: 2) asInteger isNotNil asInteger));
+		yourself
+]
+
+{ #category : #'instance creation' }
+VerticalFaderForOSC class >> new: aStringWithADestinationAndAParameter range: anArrayWirhMinAndMax [
+| parsedString  |
+
 parsedString := aStringWithADestinationAndAParameter findBetweenSubstrings: ' '.
 ^ (self new) 
 		destination: (parsedString  at: 1) ;
 		parameter: (parsedString  at: 2) ;
-		color: bgColor;
-		cursorColor: Color black;
-		minValue: 0;
-		maxValue: 1;
+		
+		minValue: anArrayWirhMinAndMax first;
+		maxValue: anArrayWirhMinAndMax second;
 		yourself
 ]
 
