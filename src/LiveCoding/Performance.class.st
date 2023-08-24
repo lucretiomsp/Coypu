@@ -318,7 +318,10 @@ Performance >> performer [
 { #category : #accessing }
 Performance >> performer: aPerformer [
 "choose a Performer for the Performance"
-	performer := aPerformer 
+" to be safe, it clear the performance"
+Performance uniqueInstance muteAll.
+performer := aPerformer. 
+Performance uniqueInstance muteAll.
 ]
 
 { #category : #playing }
