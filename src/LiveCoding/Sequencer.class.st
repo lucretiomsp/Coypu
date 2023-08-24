@@ -147,6 +147,18 @@ seqChords := arrayOfChords .
 	
 ]
 
+{ #category : #accessing }
+Sequencer >> chords: aStringWithOneOrMoreChords octave: anIntegerOrAnArray [ 
+" note and chord type separated by an hyphen for example 'c-maj d#-min sus4 min7')"
+| arrayOfChords |
+arrayOfChords :=  (aStringWithOneOrMoreChords chordsToArrays) .
+.
+seqChords := arrayOfChords +  (anIntegerOrAnArray * 12) .
+
+   ^ self asPolySeq .
+	
+]
+
 { #category : #'sequencer - cycles' }
 Sequencer >> cycleDurations [
 " return the duration of each event in the cycle"

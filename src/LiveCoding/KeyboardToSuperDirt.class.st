@@ -15,7 +15,10 @@ KeyboardToSuperDirt class >> new: aStringWithASound [
 
 	^ (self new) 
 		sound: aStringWithASound ;
-		
+		color: Color darkGray ;
+		onColor: Color white;
+      offColor: Color darkGray ;
+      label: aStringWithASound ;
 		yourself
 ]
 
