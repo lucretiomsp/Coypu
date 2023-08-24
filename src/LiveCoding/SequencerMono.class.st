@@ -62,6 +62,25 @@ dirtMessage keysAndValuesDo:  [ :key :value | message add: key; add: (value asDi
 ]
 
 { #category : #'LiveCoding  - SuperDirt' }
+SequencerMono >> playLocalEventAt: anIndex [
+
+	"sends a mesaage to SuperDirt with all the desired OSC arguments and values" 
+| message dur stepDuration|
+stepDuration := Performance uniqueInstance freq.
+message := OrderedCollection new.
+
+dur := self durations asDirtArray  wrap: anIndex .
+
+message add: 'delta'; add: stepDuration * dur. "delta should change"
+dirtMessage keysAndValuesDo:  [ :key :value | message add: key; add: (value asDirtArray  wrap: anIndex ) ].
+
+
+
+	(OSCBundle for: {  OSCMessage for: message  }  )  sendToAddressString: '127.0.0.1' port: 57120.
+	^ true 
+]
+
+{ #category : #'LiveCoding  - SuperDirt' }
 SequencerMono >> playMIDIEventAt: anIndex [
 
 	"sends a mesaage to SuperDirt with all the desired OSC arguments and values" 
