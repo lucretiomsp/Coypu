@@ -345,6 +345,14 @@ pattern := #(1 0 0 1 0 0 1 0 0 0 1 1 0 0 0 0 ).
 ]
 
 { #category : #'*LiveCoding' }
+Integer >> spreadOver: anInteger [
+
+| result |
+result := (0 to: self by: self/anInteger) asArray collect: [:i | i asFloat].
+^ result
+]
+
+{ #category : #'*LiveCoding' }
 Integer >> toSCAsGate [
 
 	" send an OSC message to superCollider that mimics the behaviour oa MIDI note on message, note is held for a default duration of 2 seconds"
