@@ -16,6 +16,12 @@ DirtSingleEvent >> add: anAssociationParameterValue [
 self dirtMessage add: anAssociationParameterValue key asString ; add: anAssociationParameterValue value
 ]
 
+{ #category : #'LiveCoding  - SuperDirt' }
+DirtSingleEvent >> delay: anInteger [
+"change dry/wet delay  for the sound ".
+self dirtMessage add: 'delay'; add: anInteger
+]
+
 { #category : #accessing }
 DirtSingleEvent >> dirtMessage [
 
@@ -26,6 +32,12 @@ DirtSingleEvent >> dirtMessage [
 DirtSingleEvent >> dirtMessage: anObject [
 
 	dirtMessage := anObject
+]
+
+{ #category : #'LiveCoding  - SuperDirt' }
+DirtSingleEvent >> fb: anInteger [
+"change deleay feedback for the sound ".
+self dirtMessage add: 'delayfb'; add: anInteger
 ]
 
 { #category : #initialization }
@@ -39,6 +51,18 @@ dirtMessage := OrderedCollection new add: '/dirt/play'; yourself.
 DirtSingleEvent >> note: anInteger [
 "select the note or the folder index for the single event with the name of a folder in the SuperDirt sample folder".
 self dirtMessage add: 'n'; add: anInteger
+]
+
+{ #category : #'LiveCoding  - SuperDirt' }
+DirtSingleEvent >> phaserAmount: anInteger [
+"change phaserRate for the sound ".
+self dirtMessage add: 'phaserdepth'; add: anInteger
+]
+
+{ #category : #'LiveCoding  - SuperDirt' }
+DirtSingleEvent >> phaserRate: anInteger [
+"change phaserRate for the sound ".
+self dirtMessage add: 'phaserrate'; add: anInteger
 ]
 
 { #category : #'LiveCoding  - SuperDirt' }
@@ -80,4 +104,10 @@ self dirtMessage add: 'speed'; add: anInteger
 DirtSingleEvent >> squiz: anInteger [
 "change squiz amount for the sound ".
 self dirtMessage add: 'size'; add: anInteger
+]
+
+{ #category : #'LiveCoding  - SuperDirt' }
+DirtSingleEvent >> time: anInteger [
+"change deleay time for the sound ".
+self dirtMessage add: 'delaytime'; add: anInteger
 ]

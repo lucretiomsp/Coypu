@@ -97,6 +97,13 @@ resultSize := result  size.
 ]
 
 { #category : #'*LiveCoding' }
+Integer >> dirtNoteToSpeed [
+" for SUperDirt, convert a note into speed, for sample playback"
+^ 2 raisedTo: (self /12)
+
+]
+
+{ #category : #'*LiveCoding' }
 Integer >> downbeats [ 
 
  ^ ((1 to: self) collect: [ :i | (((i rem: 4) = 1)) asBit ]) asRhythm asSeq. 
