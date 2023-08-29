@@ -146,6 +146,16 @@ algorithm based on the Bresenham approach"
 ]
 
 { #category : #'*LiveCoding' }
+Array >> fullScale [
+| x numberOfOctaves|
+numberOfOctaves := 6.
+
+x  := OrderedCollection  new.
+1 to: numberOfOctaves  do: [ :i | x addAll: (self + (self size * i) ) ].
+^  x
+]
+
+{ #category : #'*LiveCoding' }
 Array >> innestedWithTrigs: anotherArray [
 " add trigs in self if anotherArray has trigs at indexes where self have not"
 (1 to: (self size)) do: [ :i  |  self at: i put: (1 min: ((self at: i) + (anotherArray at: i)))].

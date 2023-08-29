@@ -121,6 +121,12 @@ pattern := #(1 0 0 1 0 0 1 0 0 0 1 0 0 0 1 0 ).
 ]
 
 { #category : #'*LiveCoding' }
+Integer >> into: anArray [
+
+^ anArray fullScale  wrap: self
+]
+
+{ #category : #'*LiveCoding' }
 Integer >> melodyFrom: aScale [
 
 	| array |
