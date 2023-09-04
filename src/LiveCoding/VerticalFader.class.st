@@ -10,10 +10,22 @@ Class {
 		'cursor',
 		'minValue',
 		'maxValue',
-		'cursorColor'
+		'cursorColor',
+		'destination',
+		'parameter'
 	],
 	#category : #'LiveCoding-GUI'
 }
+
+{ #category : #'instance creation' }
+VerticalFader class >> closeAll [
+
+	| fadersInWorld |
+	
+	fadersInWorld := self  currentWorld submorphs select: [ :i |
+		                 i class = FaderWindow  ].
+	fadersInWorld do: [ :i | i delete ]
+]
 
 { #category : #'instance creation' }
 VerticalFader class >> newWithAddress: anAddress [
@@ -151,5 +163,33 @@ faderCanMove := false
 { #category : #'as yet unclassified' }
 VerticalFader >> openInWindow [
    
-	^ ((self openInWindowLabeled: faderAddress ) position: (800@200)) extent: 100@500.
+|faderWidth faderHeight positionLeft positionTop fadersInWorld bgColor|
+fadersInWorld := FaderWindow countFadersInWorld.
+faderWidth := 150.
+faderHeight := self currentWorld height / 2.1.
+positionLeft := self currentWorld width - (faderWidth * ((fadersInWorld  + 1) modulo: 3)).
+positionTop := (self currentWorld submorphs at: 1) extent y + (faderHeight * ((fadersInWorld // 3) )).
+bgColor := Color random lighter lighter.
+self color: bgColor.
+self cursorColor: Color black.
+
+	^ ((self openInWindowLabeled: destination  ) position: (positionLeft @positionTop )) extent: faderWidth@faderHeight.
+]
+
+{ #category : #'as yet unclassified' }
+VerticalFader >> wrappedInWindow [
+	"Changed to include the inset margin in the bound calculation."
+
+	| window extent |
+	window := FaderWindow new.
+	window
+		addMorph: self frame: (0@0 extent: 1@1);
+		updatePaneColors.
+	" calculate extent after adding in case any size related attributes were changed.  Use
+	fullBounds in order to trigger re-layout of layout morphs"
+	extent := self fullBounds extent +
+			(window borderWidth@window labelHeight) + window borderWidth +
+			(window class borderWidth * 2 @ (window class borderWidth + 1)). "include inset margin"
+	window extent: extent.
+	^ window
 ]

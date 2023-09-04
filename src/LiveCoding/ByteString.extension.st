@@ -1,16 +1,6 @@
 Extension { #name : #ByteString }
 
 { #category : #'*LiveCoding' }
-ByteString >> asChord [
-
-	"return an Array with the Intervals of the Chord in semitones"
-	
-	
-
-	
-]
-
-{ #category : #'*LiveCoding' }
 ByteString >> asDirtArray [
 "convenience method to send OSC messages to SuperDirt"
 ^ Array with: self
@@ -118,7 +108,7 @@ flat := strings flatCollect: [ :each | each ].
 ]
 
 { #category : #'*LiveCoding' }
-ByteString >> hexBeat: anArrayOfNoteNumbers and: anArrayOfDurations [
+ByteString >> hexBeat: anArrayOfNoteNumbers dur: anArrayOfDurations [
 " convert a string with an Hexadecimal number to the Kyma array corresponding to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex) , and with  anArrayOfNoteNumbers as Notes and anArrayOfDurations as Durations"
 |   strings flat |
 
@@ -180,6 +170,21 @@ sound := parsedString at: 1.
 condition := parsedString size = 2.
 condition  ifTrue: [ note:= parsedString at: 2 ] ifFalse:  [note := 0].
 message := OSCMessage for: { '/dirt/play' . 's' . sound . 'n' . note . 'speed' . aFloat}. 
+(OSCBundle for: { message } )sendToAddressString:  '127.0.0.1' port: 57120. 
+
+
+]
+
+{ #category : #'*LiveCoding' }
+ByteString >> onceAtSpeed: aFloat withNote: aNote [
+"play the soundfrom the SuperDirt audio engine once at the desired speed"
+| sound message parsedString condition|
+
+parsedString := (self findBetweenSubstrings: ':') .
+sound := parsedString at: 1. 
+condition := parsedString size = 2.
+
+message := OSCMessage for: { '/dirt/play' . 's' . sound . 'n' . aNote . 'speed' . aFloat}. 
 (OSCBundle for: { message } )sendToAddressString:  '127.0.0.1' port: 57120. 
 
 

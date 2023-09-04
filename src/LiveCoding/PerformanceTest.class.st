@@ -24,7 +24,7 @@ PerformanceTest >> playPerformance [
 PerformanceTest >> setUp [
 
 	performance := Performance uniqueInstance .
-	performer := PerformerMock new.
+
 	performance performer: performer
 
 
@@ -35,7 +35,7 @@ PerformanceTest >> setUp [
 PerformanceTest >> testAddSequencerAndReplace [
 
 	| p seq1 seq2 |
-	p := Performance new.
+	p := Performance uniqueInstance .
 	seq1 := 16 downbeats.
 	seq2 := 16 tumbao.
 	p add: seq1.
@@ -49,7 +49,7 @@ PerformanceTest >> testAssignMIDIChannelToSequencerAutomatically [
 
 	| perf seq |
 	perf := Performance new.
-	seq := Sequencer new.
+	seq := Sequencer uniqueInstance.
 	
 	perf at: #midi7 put: seq.
 
@@ -70,29 +70,9 @@ PerformanceTest >> testBwToKey [
 PerformanceTest >> testDirtNotesToKey [
 
 | seq |
-seq := 16 downbeats sound: #('arpy') dirtNotes: #(60 61 62 63) to: #aKeyInPerf.
+seq := 16 downbeats sound: 'arpy' dirtNotes: #(60 61 62 63) to: #aKeyInPerf.
 
 self assert: seq samplesIndex equals: #(0 1 2 3)
-]
-
-{ #category : #tests }
-PerformanceTest >> testExtra1ToKey [
-
-	| p |
-	p := Performance uniqueInstance.
-	16 downbeats to: #synth.
-	#synth extra1: #(#Duty #(0.1 0.3)).
-	self assert: (p at: #synth) extra1 equals: #(#Duty #(0.1 0.3))
-]
-
-{ #category : #tests }
-PerformanceTest >> testExtra2ToKey [
-
-	| p |
-	p := Performance uniqueInstance.
-	16 downbeats to: #synth.
-	#synth extra2: #( #Duty #( 0.1 0.3 ) ).
-	self assert: (p at: #synth) extra2 equals: #( #Duty #( 0.1 0.3 ) )
 ]
 
 { #category : #tests }
@@ -293,45 +273,6 @@ PerformanceTest >> testPerformanceKeysSwap [
 ]
 
 { #category : #tests }
-PerformanceTest >> testPerformanceSendBPMOnPlay [
-
-	self assert: performer bpm equals: 60
-]
-
-{ #category : #tests }
-PerformanceTest >> testPerformanceSendDurations [
-
-	self assert: (performer durationFor: 'gate') equals: 1
-]
-
-{ #category : #tests }
-PerformanceTest >> testPerformanceSendGateWithExtra1 [
-
-	self assert: (performer noteFor: 'gateextra1') equals: 40
-]
-
-{ #category : #tests }
-PerformanceTest >> testPerformanceSendGateWithExtra2 [
-
-	self assert: (performer noteFor: 'gateextra2') equals: 45
-]
-
-{ #category : #tests }
-PerformanceTest >> testPerformanceSendGateWithFirstNote [
-
-	self assert: performer lastGate equals: 'gate'.
-	self assert: (performer noteFor: 'gate') equals: 10
-]
-
-{ #category : #tests }
-PerformanceTest >> testPerformanceSendGateWithSecondNote [
-
-	self waitASecond. "Wait another second"
-
-	self assert: (performer noteFor: 'gate') equals: 20
-]
-
-{ #category : #tests }
 PerformanceTest >> testPerformanceSolo [
 
 	| p |
@@ -442,16 +383,6 @@ PerformanceTest >> testUnsoloPerformance [
 	p unsolo: #ch.
 	self assert: (p at: #kick) equals: 16 downbeats.
 	self assert: (p at: #ch) equals: 16 upbeats
-]
-
-{ #category : #tests }
-PerformanceTest >> testXToKey [
-
-	| p |
-	p := Performance uniqueInstance.
-	16 downbeats to: #synth.
-	#synth x: #( 1 2 3 4 ).
-	self assert: (p at: #synth) extra1 equals: #( #x #( 1 2 3 4 ) )
 ]
 
 { #category : #tests }

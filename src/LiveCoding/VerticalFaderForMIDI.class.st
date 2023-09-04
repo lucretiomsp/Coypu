@@ -120,14 +120,6 @@ VerticalFaderForMIDI >> mouseMove: anEvent [
 		ifFalse: [ "for debug" nil ]
 ]
 
-{ #category : #'as yet unclassified' }
-VerticalFaderForMIDI >> openInWindow [
-
-	^ (self openInWindowLabeled: faderLabel)
-		  extent: 100 @ 400;
-		  position: 800 @ 200
-]
-
 { #category : #accessing }
 VerticalFaderForMIDI >> visualization: aVisualization [
 visualization := aVisualization .

@@ -147,6 +147,18 @@ seqChords := arrayOfChords .
 	
 ]
 
+{ #category : #accessing }
+Sequencer >> chords: aStringWithOneOrMoreChords octave: anIntegerOrAnArray [ 
+" note and chord type separated by an hyphen for example 'c-maj d#-min sus4 min7')"
+| arrayOfChords |
+arrayOfChords :=  (aStringWithOneOrMoreChords chordsToArrays) .
+.
+seqChords := arrayOfChords +  (anIntegerOrAnArray * 12) .
+
+   ^ self asPolySeq .
+	
+]
+
 { #category : #'sequencer - cycles' }
 Sequencer >> cycleDurations [
 " return the duration of each event in the cycle"
@@ -157,6 +169,24 @@ Sequencer >> cycleDurations [
 Sequencer >> cycleDurations: anArrayOfFractions [
 
 cycleDurations := anArrayOfFractions 
+]
+
+{ #category : #'LiveCoding  - SuperDirt' }
+Sequencer >> delay: aFloatOrAnArray [
+" add delay wet/dry pattern to the Sequencer"
+	self dirtMessage at: 'delay' put:  aFloatOrAnArray   asDirtArray
+]
+
+{ #category : #'LiveCoding  - SuperDirt' }
+Sequencer >> delayFb: aFloatOrAnArray [
+" add delay feedback pattern to the Sequencer"
+	self dirtMessage at: 'delayfb' put:  aFloatOrAnArray   asDirtArray
+]
+
+{ #category : #'LiveCoding  - SuperDirt' }
+Sequencer >> delayTime: aFloatOrAnArray [
+" add delay time pattern to the Sequencer"
+	self dirtMessage at: 'delaytime' put:  aFloatOrAnArray   asDirtArray
 ]
 
 { #category : #'as yet unclassified' }
@@ -375,6 +405,12 @@ result := false.
 		^ result
 ]
 
+{ #category : #'LiveCoding  - SuperDirt' }
+Sequencer >> hold: aFloatOrAnArray [
+" add hold ASR envelope pattern to the Sequencer"
+	self dirtMessage at: 'rel' put:  aFloatOrAnArray   asDirtArray
+]
+
 { #category : #'accessing - sequencer' }
 Sequencer >> index [
 
@@ -434,6 +470,12 @@ Sequencer >> isSequencer [
 ^ true
 ]
 
+{ #category : #'LiveCoding  - SuperDirt' }
+Sequencer >> lock: aFloatOrAnArray [
+" add lock pattern to the Sequencer -  a pattern of numbers. Specifies whether delaytime is calculated relative to bpm. When set to 1, delaytime is a direct multiple of a bar."
+	self dirtMessage at: 'lock' put:  aFloatOrAnArray   asDirtArray
+]
+
 { #category : #modifying }
 Sequencer >> melodyFrom: aScale [
 
@@ -456,6 +498,12 @@ Sequencer >> midiCh: anInteger to: aKeyInPerformance [
    | p |
 p := Performance uniqueInstance .
 	p at: aKeyInPerformance put: (self midiChannel: anInteger) .
+]
+
+{ #category : #'LiveCoding  - SuperDirt' }
+Sequencer >> midiChan: anIntegerOrAnArrayOfIntegers [
+" add midichannel for SuperDirt to the Sequencer"
+	self dirtMessage at: 'midichan' put:  (anIntegerOrAnArrayOfIntegers  -1) asDirtArray
 ]
 
 { #category : #accessing }
@@ -711,6 +759,12 @@ message addAll: { '_id' . '1' . 'cps' . 0.56 . 'delta' . 0.125 . 'orbit' . 0 . '
 ]
 
 { #category : #'LiveCoding - Performance' }
+Sequencer >> playLocalEventAt: anIndex [
+
+self subclassResponsibility 
+]
+
+{ #category : #'LiveCoding - Performance' }
 Sequencer >> playMIDIEventAt: anIndex [
 
 self subclassResponsibility 
@@ -788,8 +842,14 @@ Sequencer >> randomSamplesFromFolder: aStringForAFolderOfSamples [
 ]
 
 { #category : #'LiveCoding  - SuperDirt' }
+Sequencer >> rel: aFloatOrAnArray [
+" add release ASR envelope pattern to the Sequencer"
+	self dirtMessage at: 'rel' put:  aFloatOrAnArray   asDirtArray
+]
+
+{ #category : #'LiveCoding  - SuperDirt' }
 Sequencer >> room: aFloatOrAnArray [
-" add reverb to the Sequencer"
+" add room size reverb pattern to the Sequencer"
 	self dirtMessage at: 'room' put:  aFloatOrAnArray   asDirtArray
 ]
 
@@ -837,6 +897,12 @@ Sequencer >> size [
 	result := self gates select: [ :i | i > 0 ].
 	size := result size.
 	^ size
+]
+
+{ #category : #'LiveCoding  - SuperDirt' }
+Sequencer >> size: aFloatOrAnArray [
+" add rdepth reverb pattern to the Sequencer"
+	self dirtMessage at: 'size' put:  aFloatOrAnArray   asDirtArray
 ]
 
 { #category : #'LiveCoding  - SuperDirt' }
@@ -928,6 +994,12 @@ Sequencer >> sounds: aStringForDirt [
 	self
 		soundPattern: sounds asDirtArray;
 		samplesIndex: indexes asDirtArray
+]
+
+{ #category : #'LiveCoding  - SuperDirt' }
+Sequencer >> speed: aFloatOrAnArray [
+" add speed size pattern to the Sequencer - change speed of samples playback"
+	self dirtMessage at: 'speed' put:  aFloatOrAnArray   asDirtArray
 ]
 
 { #category : #'LiveCoding  - SuperDirt' }

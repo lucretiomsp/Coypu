@@ -110,21 +110,17 @@ rhythm := Rhythm new: (self size).
 { #category : #'*LiveCoding' }
 Array >> asSeq [
 
-	"returns Sequencer with default note 60nn and default durations 1/16th and noteIndex = 0"
+	"returns Sequencer with default note 60nn and default durations = self size / numberOfTrigs and noteIndex = 0"
 
-	"duration now expressed in number of steps"
 
-	| numberOfNotes |
+
+	| numberOfNotes dur seq|
 	numberOfNotes := self class new: self trigs withAll: 60.
-	^ SequencerMono new
-		  gates: self;
-		  notes: numberOfNotes;
-		  durations: #( 1 );
-		  noteIndex: 0
+seq :=  SequencerMono new gates: self; notes: numberOfNotes; noteIndex: 0; midiChannel: 1.
+dur := self size / seq numberOfTrigs.
+seq durations: dur asDirtArray.
+^ seq  
 
-	" durations formerly in fraction of bar
-(Sequencer with: self with: #(60) with: #(0.125) with: 0).
-"
 ]
 
 { #category : #'*LiveCoding' }
@@ -147,6 +143,16 @@ algorithm based on the Bresenham approach"
 		previous := current ].
 
 	^ result asDirtArray asRhythm asSeq
+]
+
+{ #category : #'*LiveCoding' }
+Array >> fullScale [
+| x numberOfOctaves|
+numberOfOctaves := 6.
+
+x  := OrderedCollection  new.
+1 to: numberOfOctaves  do: [ :i | x addAll: (self + (self size * i) ) ].
+^  x
 ]
 
 { #category : #'*LiveCoding' }

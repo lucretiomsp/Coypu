@@ -97,57 +97,10 @@ resultSize := result  size.
 ]
 
 { #category : #'*LiveCoding' }
-Integer >> debugSequenceFor: aDictionaryOfPatterns rate: aRateInSeconds [
-" DEBUG THE PROCESS THAT iterates over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
-an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
-| step noteIndex bpm beatInSeconds|
-bpm := 60 / (aRateInSeconds * 4).
-beatInSeconds := aRateInSeconds * 4.
-step := 0.
-noteIndex := 0. 
-"note index is inside the sequencer"
+Integer >> dirtNoteToSpeed [
+" for SUperDirt, convert a note into speed, for sample playback"
+^ 2 raisedTo: (self /12)
 
-
-[ 	
-	bpm toLocal: 'BPM'.
-	self timesRepeat: [ (Delay forSeconds: aRateInSeconds   ) wait.
-		" test if dictionary values is an Array od two arrays or as defined, a sequence"
-		 
-		aDictionaryOfPatterns keysAndValuesDo: [ :key : value |
-		(value isSequencer) ifTrue: [  	
-		"first of all, the noteIndex is equal to the 4th value of the Dictionary/Performance"
-		
-		Transcript show: 'Step is '; tab; show: step; cr.
-		
-		
-		(((value gates) at: (step modulo: (value gatesSize ))) = 1)
-		ifTrue:
-		[ 
-			"first of all check the noteIndex"
-			Transcript show: ((key asString),'Gate'); space; show: 'Note Index is '; tab; show: (value noteIndex); cr.
-			
-		
-			Transcript show: 0; tab; show: ((key asString),'Gate'); tab; show: 1; tab; show: (' / '); tab; 
-			show: ((value notes) at: ((value noteIndex) modulo: (value notesSize))); tab; tab;
-			show: ((key asString),'Note'); 
-			tab; show: ' / '.		
-		
-		((value durations) isArray) ifTrue:
-		[ Transcript  show: ((value durations ) at: (( value noteIndex) modulo: (value durationsSize))); show: ((key asString),'Duration'); tab; 		cr. ] ifFalse: [Transcript cr].
-		
-		value at: 4 put: ((value noteIndex) + 1).
-		"noteIndex := noteIndex + 1."
-		] 
-		ifFalse: [nil]]
-		ifFalse: [(value at: (step modulo: (value size))) toLocal: (key asString) ] 
-		].
-	
-		"step is incrementing in any case"
-		step := step + 1.
-		
-	]
-	
-	] forkAt: (Processor timingPriority )
 ]
 
 { #category : #'*LiveCoding' }
@@ -168,6 +121,12 @@ pattern := #(1 0 0 1 0 0 1 0 0 0 1 0 0 0 1 0 ).
 ]
 
 { #category : #'*LiveCoding' }
+Integer >> into: anArray [
+
+^ anArray fullScale asArray wrap: self
+]
+
+{ #category : #'*LiveCoding' }
 Integer >> melodyFrom: aScale [
 
 	| array |
@@ -178,12 +137,6 @@ Integer >> melodyFrom: aScale [
 		((array at: i) rem: 12)= 2 ifTrue: [ array at: i - 1 put: (aScale at: 5) ] ].
 	"last note is mediante or dominante"
 	^ array
-]
-
-{ #category : #'*LiveCoding' }
-Integer >> minor [
-"returns an aray with the major third, fith seventh and ninth relative to the note number that is the receiver"
- ^ #(3 7 10 14) collect: [ :i | i + self ].
 ]
 
 { #category : #'*LiveCoding' }
@@ -276,6 +229,26 @@ Integer >> randomNotesFrom: anArray octaves: aNumber [
 ]
 
 { #category : #'*LiveCoding' }
+Integer >> randomSamplesFromFolder: aStringForAFolderOfSamples [
+"return a Sequencer witha random number (between 2 and 512) of trigs and of samples fro the selected folder"
+| randIndex folder folderSize|
+	randIndex := Random new nextIntegerBetween: 2 and:  512.
+	folder := SuperDirt samplesFolder / aStringForAFolderOfSamples .
+	folderSize := folder asFileReference allChildren size. 
+	^ self randomTrigs sound: aStringForAFolderOfSamples ; dirtNotes: (randIndex  randomInts: folderSize) .
+]
+
+{ #category : #'*LiveCoding' }
+Integer >> randomSamplesFromFolder: aStringForAFolderOfSamples withProbability: aProbability [
+"return a Sequencer witha random number (between 2 and 512) of trigs and of samples fro the selected folder"
+| randIndex folder folderSize|
+	randIndex := Random new nextIntegerBetween: 2 and:  512.
+	folder := SuperDirt samplesFolder / aStringForAFolderOfSamples .
+	folderSize := folder asFileReference allChildren size. 
+	^ (self randomTrigsWithProbability: aProbability ) sound: aStringForAFolderOfSamples ; dirtNotes: (randIndex  randomInts: folderSize) .
+]
+
+{ #category : #'*LiveCoding' }
 Integer >> randomTrigs [
 "generates an Array of random 0s and 1s of size: aNumber"
 	| r |
@@ -349,7 +322,7 @@ result durations: 16.
 { #category : #'*LiveCoding' }
 Integer >> semiquavers [ 
 
-^ (Array new: self withAll: 1) asRhythm .
+^ (Array new: self withAll: 1) asRhythm asSeq.
 ]
 
 { #category : #'*LiveCoding' }
@@ -382,6 +355,14 @@ pattern := #(1 0 0 1 0 0 1 0 0 0 1 1 0 0 0 0 ).
 ^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm asSeq.
 
 "implement shifting to the left"
+]
+
+{ #category : #'*LiveCoding' }
+Integer >> spreadOver: anInteger [
+
+| result |
+result := (0 to: self by: self/anInteger) asArray collect: [:i | i asFloat].
+^ result
 ]
 
 { #category : #'*LiveCoding' }

@@ -36,6 +36,70 @@ address := aStringAddress.
 ^ aStringAddress.
 ]
 
+{ #category : #'as yet unclassified' }
+KeyboardToOSC >> fillNoteListDictionary [
+
+
+noteDictionary := Dictionary new.
+noteDictionary at: #a put: 60.
+noteDictionary at: #w put: 61.
+noteDictionary at: #s put: 62.
+noteDictionary at: #e put: 63.
+noteDictionary at: #d put: 64.
+noteDictionary at: #r put: 65.
+noteDictionary at: #f put: 66.
+noteDictionary at: #t put: 67.
+noteDictionary at: #g put: 68.
+noteDictionary at: #y put: 69.
+noteDictionary at: #h put: 70.
+noteDictionary at: #j put: 71.
+noteDictionary at: #k put: 72.
+
+"the note Array, 2 octaves chromatic keyboard"
+noteArray := Array new: 128.
+"lower octave"
+noteArray at: $a asciiValue  put: 35. "B"
+noteArray at: $z asciiValue  put: 36. "C"
+noteArray at: $s asciiValue put: 37.
+noteArray at: $x asciiValue put: 38. "D"
+noteArray at: $d asciiValue  put: 39.
+noteArray at: $c asciiValue put: 40. "E"
+noteArray at: $v asciiValue put: 41. "F"
+noteArray at: $g asciiValue  put: 42. 
+noteArray at: $b asciiValue put: 43.
+noteArray at: $h asciiValue put: 44.
+noteArray at: $n asciiValue  put: 45.
+noteArray at: $j asciiValue put: 46.
+noteArray at: $m asciiValue put: 47.
+noteArray at: $, asciiValue put: 48.
+noteArray at: $k asciiValue put: 49.
+noteArray at: $. asciiValue put: 50.
+noteArray at: $l asciiValue put: 51.
+noteArray at: $. asciiValue put: 52.
+noteArray at: $/ asciiValue put: 53.
+"upper octave"
+noteArray at: $q asciiValue  put: 48. "C"
+noteArray at: $2 asciiValue put: 49.
+noteArray at: $w asciiValue put: 50. "D"
+noteArray at: $3 asciiValue  put: 51.
+noteArray at: $e asciiValue put: 52. "E"
+noteArray at: $r asciiValue put: 53. "F"
+noteArray at: $5 asciiValue  put: 54.
+noteArray at: $t asciiValue put: 55. "G"
+noteArray at: $6 asciiValue put: 56.
+noteArray at: $y asciiValue  put: 57. "A"
+noteArray at: $7 asciiValue put: 58.
+noteArray at: $u asciiValue put: 59.
+noteArray at: $i asciiValue put: 60. "C"
+noteArray at: $9 asciiValue put: 61.
+noteArray at: $o asciiValue put: 62. "D"
+noteArray at: $0 asciiValue put: 63.
+noteArray at: $p asciiValue put: 64. "E"
+noteArray at: $[ asciiValue put: 65. "F"
+noteArray at: $= asciiValue put: 65. "F"
+noteArray at: $] asciiValue put: 67.
+]
+
 { #category : #'event handling' }
 KeyboardToOSC >> handlesKeyDown: anEvent [
 | debug kv |
@@ -86,64 +150,7 @@ octave := 0.
 "initial mouseWheelValue"
 mouseWheelValue := 0.
 
-"the notea dictionary"
-noteDictionary := Dictionary new.
-noteDictionary at: #a put: 60.
-noteDictionary at: #w put: 61.
-noteDictionary at: #s put: 62.
-noteDictionary at: #e put: 63.
-noteDictionary at: #d put: 64.
-noteDictionary at: #r put: 65.
-noteDictionary at: #f put: 66.
-noteDictionary at: #t put: 67.
-noteDictionary at: #g put: 68.
-noteDictionary at: #y put: 69.
-noteDictionary at: #h put: 70.
-noteDictionary at: #j put: 71.
-noteDictionary at: #k put: 72.
-
-"the note Array, 2 octaves chromatic keyboard"
-noteArray := Array new: 128.
-"lower octave"
-noteArray at: $z asciiValue  put: 36. "C"
-noteArray at: $s asciiValue put: 37.
-noteArray at: $x asciiValue put: 38. "D"
-noteArray at: $d asciiValue  put: 39.
-noteArray at: $c asciiValue put: 41. "E"
-noteArray at: $v asciiValue put: 42. "F"
-noteArray at: $g asciiValue  put: 43. 
-noteArray at: $b asciiValue put: 44.
-noteArray at: $h asciiValue put: 45.
-noteArray at: $n asciiValue  put: 46.
-noteArray at: $j asciiValue put: 47.
-noteArray at: $m asciiValue put: 48.
-noteArray at: $, asciiValue put: 50.
-noteArray at: $k asciiValue put: 50.
-noteArray at: $. asciiValue put: 52.
-noteArray at: $l asciiValue put: 53.
-noteArray at: $. asciiValue put: 54.
-noteArray at: $/ asciiValue put: 55.
-"upper octave"
-noteArray at: $q asciiValue  put: 48. "C"
-noteArray at: $2 asciiValue put: 49.
-noteArray at: $w asciiValue put: 50. "D"
-noteArray at: $3 asciiValue  put: 51.
-noteArray at: $e asciiValue put: 52. "E"
-noteArray at: $r asciiValue put: 53. "F"
-noteArray at: $5 asciiValue  put: 54.
-noteArray at: $t asciiValue put: 55. "G"
-noteArray at: $6 asciiValue put: 56.
-noteArray at: $y asciiValue  put: 57. "A"
-noteArray at: $7 asciiValue put: 58.
-noteArray at: $u asciiValue put: 59.
-noteArray at: $i asciiValue put: 60. "C"
-noteArray at: $9 asciiValue put: 61.
-noteArray at: $o asciiValue put: 62. "D"
-noteArray at: $0 asciiValue put: 63.
-noteArray at: $p asciiValue put: 64. "E"
-noteArray at: $[ asciiValue put: 65. "F"
-noteArray at: $= asciiValue put: 65. "F"
-noteArray at: $] asciiValue put: 67.
+self fillNoteListDictionary .
 ]
 
 { #category : #'as yet unclassified' }
@@ -201,4 +208,18 @@ anEvent isDown ifTrue: [ mouseWheelValue  := mouseWheelValue  +1. mouseWheelValu
 { #category : #accessing }
 KeyboardToOSC >> noteDictionary [
 ^ noteDictionary
+]
+
+{ #category : #'as yet unclassified' }
+KeyboardToOSC >> openInWindow [
+
+	| buttonWidth buttonHeight positionLeft positionTop |
+	 
+	buttonWidth := 200.
+	buttonHeight := 200.
+	positionLeft := 627.
+	positionTop := 354.
+
+	^ ((self openInWindowLabeled: self sound) position:
+		   positionLeft @ positionTop) extent: buttonWidth @ buttonHeight
 ]
