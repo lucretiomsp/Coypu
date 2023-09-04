@@ -22,6 +22,12 @@ DirtSingleEvent >> delay: anInteger [
 self dirtMessage add: 'delay'; add: anInteger
 ]
 
+{ #category : #'LiveCoding  - SuperDirt' }
+DirtSingleEvent >> delta: anInteger [
+"change deltaduration for the sound ".
+self dirtMessage add: 'delta'; add: anInteger
+]
+
 { #category : #accessing }
 DirtSingleEvent >> dirtMessage [
 
@@ -38,6 +44,12 @@ DirtSingleEvent >> dirtMessage: anObject [
 DirtSingleEvent >> fb: anInteger [
 "change deleay feedback for the sound ".
 self dirtMessage add: 'delayfb'; add: anInteger
+]
+
+{ #category : #'LiveCoding  - SuperDirt' }
+DirtSingleEvent >> gain: anInteger [
+"change gain for the sound ".
+self dirtMessage add: 'gain'; add: anInteger
 ]
 
 { #category : #initialization }
@@ -110,4 +122,10 @@ self dirtMessage add: 'size'; add: anInteger
 DirtSingleEvent >> time: anInteger [
 "change deleay time for the sound ".
 self dirtMessage add: 'delaytime'; add: anInteger
+]
+
+{ #category : #'LiveCoding  - SuperDirt' }
+DirtSingleEvent >> voice: aFloat [
+"change voice parameter  for synthesizer".
+self dirtMessage add: 'voice'; add: aFloat
 ]

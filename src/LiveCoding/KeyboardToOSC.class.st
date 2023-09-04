@@ -58,6 +58,7 @@ noteDictionary at: #k put: 72.
 "the note Array, 2 octaves chromatic keyboard"
 noteArray := Array new: 128.
 "lower octave"
+noteArray at: $a asciiValue  put: 35. "B"
 noteArray at: $z asciiValue  put: 36. "C"
 noteArray at: $s asciiValue put: 37.
 noteArray at: $x asciiValue put: 38. "D"
@@ -210,15 +211,15 @@ KeyboardToOSC >> noteDictionary [
 ]
 
 { #category : #'as yet unclassified' }
-KeyboardToOSC >> openInWindow [ 
+KeyboardToOSC >> openInWindow [
 
-|buttonWidth buttonHeight positionLeft positionTop |
+	| buttonWidth buttonHeight positionLeft positionTop |
+	 
+	buttonWidth := 200.
+	buttonHeight := 200.
+	positionLeft := 627.
+	positionTop := 354.
 
-buttonWidth := 200.
-buttonHeight := 200.
-positionLeft := 0.
-positionTop := self currentWorld extent y - buttonHeight .
-
-^ ((self openInWindowLabeled: self sound  ) position: (positionLeft @positionTop )) extent: buttonWidth@buttonHeight.
-
+	^ ((self openInWindowLabeled: self sound) position:
+		   positionLeft @ positionTop) extent: buttonWidth @ buttonHeight
 ]
