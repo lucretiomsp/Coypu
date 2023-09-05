@@ -66,6 +66,12 @@ self dirtMessage add: 'n'; add: anInteger
 ]
 
 { #category : #'LiveCoding  - SuperDirt' }
+DirtSingleEvent >> pan: aFloat [
+"change stereo panorama for the sound  - 0 hard left, 1 hard righ".
+self dirtMessage add: 'pan'; add: aFloat
+]
+
+{ #category : #'LiveCoding  - SuperDirt' }
 DirtSingleEvent >> phaserAmount: anInteger [
 "change phaserRate for the sound ".
 self dirtMessage add: 'phaserdepth'; add: anInteger
@@ -119,9 +125,9 @@ self dirtMessage add: 'size'; add: anInteger
 ]
 
 { #category : #'LiveCoding  - SuperDirt' }
-DirtSingleEvent >> time: anInteger [
+DirtSingleEvent >> time: aFloat [
 "change deleay time for the sound ".
-self dirtMessage add: 'delaytime'; add: anInteger
+self dirtMessage add: 'delaytime'; add: aFloat
 ]
 
 { #category : #'LiveCoding  - SuperDirt' }
