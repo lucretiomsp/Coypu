@@ -180,6 +180,12 @@ super initialize.
 freq := 132 bpm.
 ]
 
+{ #category : #initialization }
+Performance >> initialize: aSize [
+super initialize: aSize.
+freq := 132 bpm.
+]
+
 { #category : #testing }
 Performance >> isPerformance [
 
@@ -330,7 +336,8 @@ Performance >> play [
 self resetAllSequencers .
 
 "just on performance at once"
-self activeProcess isTerminated ifTrue: [ self performer play ] ifFalse: [ ] .
+self activeProcess  ifNil:  [ self performer play ] ifNotNil: [(self activeProcess isNil or: self activeProcess isTerminated )ifTrue: [ self performer play ] ifFalse: [ ] ]
+.
 
 
 	
@@ -344,7 +351,7 @@ Performance >> playFor: aNumberOfSteps [
 self resetAllSequencers .
 
 "just on performance at once"
-self activeProcess isTerminated ifTrue: [ self performer playFor: aNumberOfSteps  ] ifFalse: [ ] .
+( self activeProcess isNil or: self activeProcess isTerminated) ifTrue: [ self performer playFor: aNumberOfSteps  ] ifFalse: [ ] .
 
 
 ]
