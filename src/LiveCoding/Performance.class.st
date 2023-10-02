@@ -336,7 +336,8 @@ Performance >> play [
 self resetAllSequencers .
 
 "just on performance at once"
-(self activeProcess isNil or: self activeProcess isTerminated )ifTrue: [ self performer play ] ifFalse: [ ] .
+self activeProcess  ifNil:  [ self performer play ] ifNotNil: [(self activeProcess isNil or: self activeProcess isTerminated )ifTrue: [ self performer play ] ifFalse: [ ] ]
+.
 
 
 	
