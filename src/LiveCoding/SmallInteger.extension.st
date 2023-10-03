@@ -17,6 +17,12 @@ SmallInteger >> asInt8 [
 ]
 
 { #category : #'*LiveCoding' }
+SmallInteger >> bars [
+	"return number of steps in self bars"
+	^ self*16
+]
+
+{ #category : #'*LiveCoding' }
 SmallInteger >> saw [
 
 	"fill an array of self steps with values representing a sawtooth with range 0 - 1"
