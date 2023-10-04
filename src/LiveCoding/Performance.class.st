@@ -175,14 +175,9 @@ Performance >> incrementTransportStep [
 ]
 
 { #category : #initialization }
-Performance >> initialize [
-super initialize.
-freq := 132 bpm.
-]
-
-{ #category : #initialization }
 Performance >> initialize: aSize [
 super initialize: aSize.
+activeProcess := Process new terminate.
 freq := 132 bpm.
 ]
 
@@ -351,7 +346,7 @@ Performance >> playFor: aNumberOfSteps [
 self resetAllSequencers .
 
 "just on performance at once"
-( self activeProcess isNil or: self activeProcess isTerminated) ifTrue: [ self performer playFor: aNumberOfSteps  ] ifFalse: [ ] .
+( self activeProcess isTerminated) ifTrue: [ self performer playFor: aNumberOfSteps  ] ifFalse:[].
 
 
 ]

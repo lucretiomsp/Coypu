@@ -49,7 +49,7 @@ PerformerSuperDirt >> playDirtFor: aNumberOfSteps [
 	"play the performance to SuperDIrt/SuperCollider audio engine - default freq is 132 bpm 
 	Performance speed can be changed with p freq: a bpm"
 
-	| process  |
+
 	
 	performance bpm: 60 / (performance freq * 4). 
 	performance transportStep: 1.
@@ -79,8 +79,8 @@ PerformerSuperDirt >> playFor: aNumberOfSteps [
 	"play the performance to SuperDIrt/SuperCollider audio engine - default freq is 132 bpm 
 	Performance speed can be changed with p freq: a bpm"
 
-	| process  |
-	
+
+
 	performance bpm: 60 / (performance freq * 4). 
 	performance transportStep: 1.
 	performance activeProcess: ([ 
