@@ -502,8 +502,14 @@ p := Performance uniqueInstance .
 
 { #category : #'LiveCoding  - SuperDirt' }
 Sequencer >> midiChan: anIntegerOrAnArrayOfIntegers [
-" add midichannel for SuperDirt to the Sequencer"
-	self dirtMessage at: 'midichan' put:  (anIntegerOrAnArrayOfIntegers  -1) asDirtArray
+" add midichannel for SuperDirt to the Sequencer "
+	self dirtMessage at: 'midichan' put:  (anIntegerOrAnArrayOfIntegers  -1) asDirtArray.
+   " the Sequencer will pe played from the dirtMidiDevice assigned to the Sequencer class"
+   self dirtMessage at: 's' put: (Performance uniqueInstance dirtMIDIDevice  ). 	
+	"id sequencer has no note values"
+	(self dirtMessage includesKey:  'n') ifFalse: [  (self dirtNotes: 0)].
+	^ self
+	
 ]
 
 { #category : #accessing }

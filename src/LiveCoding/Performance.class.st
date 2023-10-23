@@ -16,7 +16,8 @@ Class {
 		'backup',
 		'bpm',
 		'transportStep',
-		'activeProcess'
+		'activeProcess',
+		'dirtMIDIDevice'
 	],
 	#classInstVars : [
 		'uniqueInstance',
@@ -73,6 +74,24 @@ Performance class >> withCircles [
 	^ self new
 		  visualization: CircleVisualization new;
 		  yourself
+]
+
+{ #category : #'as yet unclassified' }
+Performance >> Dictionary [  Variable or expression expected -><< #Performance
+	layout: VariableLayout;
+	slots: {
+			 #visualization .
+			 #performer .
+			 #canvas .
+			 #rsGroupDictionary .
+			 #freq .
+			 #backup .
+			 #bpm .
+			 #transportStep .
+			 #activeProcess.
+			 };
+	tag: 'Performance';
+	package: 'LiveCoding'
 ]
 
 { #category : #accessing }
@@ -148,6 +167,18 @@ Performance >> canvas [
 { #category : #accessing }
 Performance >> canvas: aRSCanvas [
 canvas := aRSCanvas 
+]
+
+{ #category : #accessing }
+Performance >> dirtMIDIDevice [
+
+	^ dirtMIDIDevice
+]
+
+{ #category : #accessing }
+Performance >> dirtMIDIDevice: aString [
+"select a SuperDirt MIDI device for the Performance"
+	dirtMIDIDevice := aString
 ]
 
 { #category : #accessing }
