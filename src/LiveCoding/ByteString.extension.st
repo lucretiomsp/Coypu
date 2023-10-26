@@ -7,6 +7,23 @@ ByteString >> asDirtArray [
 ]
 
 { #category : #'*LiveCoding' }
+ByteString >> asDirtNotes [
+" returns a sequncer containing a trig for each integer and a rest for whatever other character and with the notes coresponding to the integeres inside the string"
+| seq characters trigs notes |
+
+
+characters :=  self findBetweenSubstrings: ' '.
+trigs := OrderedCollection new.
+notes := OrderedCollection new.
+characters do: [ :i | i asInteger isNotNil ifTrue: [ trigs add: 1. notes add: i asInteger  ] ifFalse: [ trigs add: 0 ] ].
+seq := trigs asArray asSeq.
+seq dirtNotes: notes asArray .
+
+
+^seq
+]
+
+{ #category : #'*LiveCoding' }
 ByteString >> asLocalGate: gateTimeInSeconds note: aNoteNumber [
 " gate-like OSC messsage with multiple arguments"
 	" send an OSC message that mimics the behaviour oa MIDI note on message.
