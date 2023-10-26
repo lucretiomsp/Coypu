@@ -7,7 +7,7 @@ Class {
 	#category : #'LiveCoding-SuperDirt'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'SuperDirt-List' }
 SuperDirt class >> listOfDrumSynth [
 
 
@@ -19,7 +19,7 @@ drumList add: (SuperDirtSynth name: 'superkick' parameters: #('n' 'accelerate' '
 ^ drumList 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'SuperDirt-List' }
 SuperDirt class >> listOfDrums [
 
 
@@ -31,7 +31,7 @@ drumList add: (SuperDirtSynth name: 'superkick' parameters: #('n' 'accelerate' '
 ^ drumList 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'SuperDirt-List' }
 SuperDirt class >> listOfSynths [
 "print on Transcript the list of SuperDirt available Synths"
 | synthList  cr |
@@ -53,7 +53,26 @@ SuperDirt class >> listOfSynths2 [
 | synthList  |
 
 synthList := OrderedCollection new.
-synthList add: (SuperDirtSynth name: 'supermandolin' parameters: #('sustain' 'accelerate' 'detune')); add: (SuperDirtSynth name: 'supergong' parameters: #('voice' 'accelerate' 'decay')).
+synthList add: (SuperDirtSynth name: 'supermandolin' parameters: #('sustain' 'accelerate' 'detune')); 
+add: (SuperDirtSynth name: 'supergong' parameters: #('voice' 'accelerate' 'decay'));
+add: (SuperDirtSynth name: 'supersquare' parameters: #('voice' 'accelerate' 'decay' 'semitone' 'resonance' 'lfo' 'rate' 'pitch1'));
+add: (SuperDirtSynth name: 'supersaw' parameters: #('voice' 'accelerate' 'decay' 'semitone' 'resonance' 'lfo' 'rate' 'pitch1'));
+add: (SuperDirtSynth name: 'superpwm' parameters: #('voice' 'accelerate' 'decay' 'semitone' 'resonance' 'lfo' 'rate' 'pitch1'));
+add: (SuperDirtSynth name: 'superchip' parameters: #('voice' 'slide' 'accelerate' 'rate' 'pitch2' 'pitch3' ));
+add: (SuperDirtSynth name: 'superhoover' parameters: #('decay' 'accelerate' 'slide'));
+add: (SuperDirtSynth name: 'superzow' parameters: #('decay' 'accelerate' 'slide' 'detune'));
+add: (SuperDirtSynth name: 'supertron' parameters: #('voice' 'accelerate' 'detune'));
+add: (SuperDirtSynth name: 'superreese' parameters: #('voice' 'accelerate' 'detune'));
+add: (SuperDirtSynth name: 'superstatic' parameters: #('voice' 'accelerate' 'pitch1' 'slide' 'resonance'));
+add: (SuperDirtSynth name: 'supercomparator' parameters: #('voice' 'decya' 'accelerate' 'lfo' 'rate' 'pitch1' 'slide' 'resonance'))
+
+.
+
+
+
+
+
+
 
 ^ synthList 
 ]
