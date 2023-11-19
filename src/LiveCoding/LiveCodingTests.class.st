@@ -49,6 +49,12 @@ LiveCodingTests >> testIntegerAsArray [
 ]
 
 { #category : #tests }
+LiveCodingTests >> testMultiplyString [
+
+self assert: 'h'*3 equals: 'h h h'
+]
+
+{ #category : #tests }
 LiveCodingTests >> testSawtoothTable [
 
 | array result increment|.

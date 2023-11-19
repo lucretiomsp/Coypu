@@ -1,6 +1,18 @@
 Extension { #name : #ByteString }
 
 { #category : #'*LiveCoding' }
+ByteString >> * aNumber [
+
+" returns a string with aNumber repetiotion of self separated by space"
+| result |
+ result := self.
+ (1 to: aNumber - 1) do: [ :i | result := result , ' ' , self ].
+
+
+^ result
+]
+
+{ #category : #'*LiveCoding' }
 ByteString >> asDirtArray [
 "convenience method to send OSC messages to SuperDirt"
 ^ Array with: self
