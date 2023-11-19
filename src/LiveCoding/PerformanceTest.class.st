@@ -5,7 +5,7 @@ Class {
 		'performance',
 		'performer'
 	],
-	#category : #'LiveCoding-Tests'
+	#category : #'LiveCoding-Performance'
 }
 
 { #category : #tests }

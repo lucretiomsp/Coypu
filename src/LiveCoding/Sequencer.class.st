@@ -50,6 +50,25 @@ Sequencer class >> orbit: anInteger [
 	orbit := anInteger % 12 
 ]
 
+{ #category : #replication }
+Sequencer >> * anInteger [
+
+	"returns a sequencer containing anInteger repetition of self - polysemic bunary version of times:"
+
+	| newGates newNotes newDurations |
+	newGates := (self gates times: anInteger) asRhythm.
+	newNotes := self notes times: anInteger.
+	newDurations := self durations times: anInteger.
+
+
+
+	^ SequencerMono new
+		  gates: newGates;
+		  notes: newNotes;
+		  durations: newDurations;
+		  noteIndex: 0
+]
+
 { #category : #arithmetic }
 Sequencer >> + aString [ 
 	self shouldBeImplemented.
