@@ -21,16 +21,27 @@ ByteString >> asDirtArray [
 { #category : #'*LiveCoding' }
 ByteString >> asDirtNotes [
 " returns a sequncer containing a trig for each integer and a rest for whatever other character and with the notes coresponding to the integeres inside the string"
-| seq characters trigs notes |
+| seq tokens trigs notes units notesAsChars |
 
 
-characters :=  self findBetweenSubstrings: ' '.
+tokens :=  OrderedCollection new.
+units := String new.
 trigs := OrderedCollection new.
 notes := OrderedCollection new.
-characters do: [ :i | i asInteger isNotNil ifTrue: [ trigs add: 1. notes add: i asInteger  ] ifFalse: [ trigs add: 0 ] ].
+notesAsChars := String new.
+
+(self findBetweenSubstrings: ' ') do: [ :i | (i includes: $* ) ifFalse: [tokens add: i] ifTrue: [  tokens add: (i before: $*) asString * ((i after: $*) asString asInteger) ]  ].
+
+tokens do: [ :i  | units := units , ' ' , i ].
+units.
+units do: [ :i | (i ~= Character space)ifTrue: [  i asString asInteger ifNotNil:  [ trigs add: 1. ] ifNil: [ trigs add: 0 ] ]].
+
+
+notesAsChars := units copyReplaceAll:  '~' with: ''. 
+notesAsChars do: [ :i | i asString asInteger ifNotNil: [notes addLast: (i asString asInteger) ]].
+
 seq := trigs asArray asSeq.
 seq dirtNotes: notes asArray .
-
 
 ^seq
 ]

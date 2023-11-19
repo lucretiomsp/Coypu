@@ -49,6 +49,12 @@ LiveCodingTests >> testIntegerAsArray [
 ]
 
 { #category : #tests }
+LiveCodingTests >> testMultiplyCharacter [
+
+self assert: $h*3 equals: 'h h h'
+]
+
+{ #category : #tests }
 LiveCodingTests >> testMultiplyString [
 
 self assert: 'h'*3 equals: 'h h h'
@@ -63,6 +69,26 @@ array := (0 to: 1 by: 1/63).
 result := 4 bars saw.
 
 self assert: array equals: result.
+]
+
+{ #category : #tests }
+LiveCodingTests >> testStringAsDirtNotes [
+
+
+
+| case |
+
+case := '0 2*3 ~ 5' asDirtNotes.
+
+self assert: (case dirtMessage at: 'n') equals: #(0 2 2 2 5).
+self assert: case gates equals: #(1 1 1 1 0 1)
+
+
+
+
+
+
+
 ]
 
 { #category : #tests }
