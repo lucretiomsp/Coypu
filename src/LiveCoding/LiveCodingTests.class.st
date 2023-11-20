@@ -5,16 +5,6 @@ Class {
 }
 
 { #category : #tests }
-LiveCodingTests >> testArrayFromIntegerInString [
-
-| case result |
-case := '38' * 4.
-result := #(38 38 38 38).
-
-self assert: case equals: result.
-]
-
-{ #category : #tests }
 LiveCodingTests >> testArrayIntoScale [
 
 	| indexes newNotes |
@@ -104,6 +94,26 @@ LiveCodingTests >> testStringForDirt [
 self assert: seq gates equals: gates.
 	self assert: seq soundPattern equals: soundsPattern.
 	self assert: seq samplesIndex equals: samplesIndex
+]
+
+{ #category : #tests }
+LiveCodingTests >> testStringOfSoundsForDirt [
+
+
+
+| case |
+
+case := 'sd cp*3 ~ [bd ~*2]' forDirt.
+
+self assert: (case dirtMessage at: 's') equals: #(sd cp cp cp bd bd).
+self assert: case gates equals: #(1 1 1 1 0 1 0 1 0)
+
+
+
+
+
+
+
 ]
 
 { #category : #tests }

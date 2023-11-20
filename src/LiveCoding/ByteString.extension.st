@@ -109,6 +109,41 @@ ByteString >> forDirt [
 
 	" parse a String into a Sequencer containing information to end to the SuperDirt synth for SuperCollider"
 
+
+
+| seq tokens trigs notes units soundsAsStrings |
+
+
+tokens :=  OrderedCollection new.
+units := String new.
+trigs := OrderedCollection new.
+notes := OrderedCollection new.
+soundsAsStrings := String new.
+
+(self findBetweenSubstrings: '[') do: [ :i | 
+	(i includes: $]) ifTrue: [ tokens add:  (((i findBetweenSubstrings: '*') at: 1)  * ( (i findBetweenSubstrings: '*') at:2 ) asInteger )]
+	ifFalse:
+	[(i findBetweenSubstrings: ' ') do: [:j | (j includes: $* ) ifFalse: [tokens add: j] ifTrue: [ tokens add: (((j findBetweenSubstrings: '*') at: 1 ) * ((j findBetweenSubstrings: '*') at: 2 ) asString asInteger ) ]]]].
+
+
+"
+(self findBetweenSubstrings: ' ') do: [ :i | (i includes: $* ) ifFalse: [tokens add: i] ifTrue: [  tokens add: (i before: $*) asString * ((i after: $*) asString asInteger) ]  ].
+"
+tokens do: [ :i  | units := units , ' ' , i ].
+
+(units findBetweenSubstrings: ' ') do: [ :i | i = '~' ifTrue: [trigs add: 0] ifFalse: [trigs add: 1]].
+
+
+soundsAsStrings := units copyReplaceAll:  '~' with: ''. 
+seq := trigs asArray asSeq.
+seq sound: soundsAsStrings  .
+
+^seq
+
+
+
+
+"
 	| seq gates soundsAndIndexs soundsAndIndexsAndGates  soundsString|
 	soundsAndIndexsAndGates := self findBetweenSubstrings: ' '.
 	gates := OrderedCollection new.
@@ -128,6 +163,8 @@ ByteString >> forDirt [
 		       noteIndex: 1.
 
 	^ seq 
+	
+"
 ]
 
 { #category : #'*LiveCoding' }
