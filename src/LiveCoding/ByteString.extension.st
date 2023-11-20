@@ -30,8 +30,15 @@ trigs := OrderedCollection new.
 notes := OrderedCollection new.
 notesAsChars := String new.
 
-(self findBetweenSubstrings: ' ') do: [ :i | (i includes: $* ) ifFalse: [tokens add: i] ifTrue: [  tokens add: (i before: $*) asString * ((i after: $*) asString asInteger) ]  ].
+(self findBetweenSubstrings: '[') do: [ :i | 
+	(i includes: $]) ifTrue: [ tokens add:  (((i findBetweenSubstrings: '*') at: 1)  * ( (i findBetweenSubstrings: '*') at:2 ) asInteger )]
+	ifFalse:
+	[(i findBetweenSubstrings: ' ') do: [:j | (j includes: $* ) ifFalse: [tokens add: j] ifTrue: [  tokens add:  (j before: $*) asString * ((j after: $*) asString asInteger)   ]  ]]].
 
+
+"
+(self findBetweenSubstrings: ' ') do: [ :i | (i includes: $* ) ifFalse: [tokens add: i] ifTrue: [  tokens add: (i before: $*) asString * ((i after: $*) asString asInteger) ]  ].
+"
 tokens do: [ :i  | units := units , ' ' , i ].
 units.
 units do: [ :i | (i ~= Character space)ifTrue: [  i asString asInteger ifNotNil:  [ trigs add: 1. ] ifNil: [ trigs add: 0 ] ]].

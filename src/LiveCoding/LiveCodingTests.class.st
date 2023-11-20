@@ -78,10 +78,10 @@ LiveCodingTests >> testStringAsDirtNotes [
 
 | case |
 
-case := '0 2*3 ~ 5' asDirtNotes.
+case := '0 2*3 ~ [5 ~*2]' asDirtNotes.
 
-self assert: (case dirtMessage at: 'n') equals: #(0 2 2 2 5).
-self assert: case gates equals: #(1 1 1 1 0 1)
+self assert: (case dirtMessage at: 'n') equals: #(0 2 2 2 5 5).
+self assert: case gates equals: #(1 1 1 1 0 1 0 1 0)
 
 
 
