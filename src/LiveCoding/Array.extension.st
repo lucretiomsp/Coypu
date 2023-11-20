@@ -253,7 +253,7 @@ Array >> times: aNumber [
 | newSize newArray  |
 newSize := aNumber * self size.
 newArray := Array new: newSize.
-(1 to: newSize) do: [ :i | newArray  at: i put: (self at: ((i - 1) modulo: (self size )) ) ].
+(1 to: newSize) do: [ :i | newArray  at: i put: (self at: ((i ) modulo: (self size )) ) ].
 ^ newArray
 ]
 

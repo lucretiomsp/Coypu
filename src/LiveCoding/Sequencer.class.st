@@ -531,6 +531,16 @@ Sequencer >> midiChan: anIntegerOrAnArrayOfIntegers [
 	
 ]
 
+{ #category : #'LiveCoding - Performance' }
+Sequencer >> midiChan: anInteger to: aKeyInPerformance [
+
+	" for use with SuperDirt 
+	convenience method to avoid extra parenthesis when assigning a midiChan to  akey in a performance"
+   | p |
+p := Performance uniqueInstance .
+	p at: aKeyInPerformance put: (self midiChan: anInteger) .
+]
+
 { #category : #accessing }
 Sequencer >> midiChannel [ 
 
