@@ -21,14 +21,14 @@ ByteString >> asDirtArray [
 { #category : #'*LiveCoding' }
 ByteString >> asDirtNotes [
 " returns a sequncer containing a trig for each integer and a rest for whatever other character and with the notes coresponding to the integeres inside the string"
-| seq tokens trigs notes units notesAsChars |
+| seq tokens trigs notes  |
 
 
 tokens :=  OrderedCollection new.
-units := String new.
+"units := String new."
 trigs := OrderedCollection new.
 notes := OrderedCollection new.
-notesAsChars := String new.
+
 
 (self findBetweenSubstrings: '[') do: [ :i | 
 	(i includes: $]) ifTrue: [ tokens add:  (((i findBetweenSubstrings: '*') at: 1)  * ( (i findBetweenSubstrings: '*') at:2 ) asInteger )]
@@ -36,13 +36,10 @@ notesAsChars := String new.
 	[(i findBetweenSubstrings: ' ') do: [:j | (j includes: $* ) ifFalse: [tokens add: j. ] ifTrue: [  tokens add:  (j before: $*) asString * ((j after: $*) asString asInteger)   ]  ]]].
 
 
-tokens traceCr.
-tokens do: [ :i  | units := units , ' ' , i ].
-tokens do: [ :i | (i ~= '~'  ) ifTrue: [  trigs add: 1 ] ifFalse: [ trigs add: 0 ] ].
 
 
-notesAsChars := units copyReplaceAll:  '~' with: ''. 
-notesAsChars do: [ :i | i asString asInteger ifNotNil: [notes addLast: (i asString asInteger) ]].
+tokens do: [ :i | (i ~= '~'  ) ifTrue: [  trigs add: 1 . notes addLast: (i asString asInteger)  ] ifFalse: [ trigs add: 0 ] ].
+
 
 seq := trigs asArray asSeq.
 seq dirtNotes: notes asArray .
