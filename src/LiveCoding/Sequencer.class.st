@@ -155,6 +155,13 @@ Sequencer >> bpq: aFloatOrAnArray [
 	self dirtMessage at: 'bpq' put:  aFloatOrAnArray   asDirtArray
 ]
 
+{ #category : #'LiveCoding  - SuperDirt' }
+Sequencer >> ccn: anIntOrAnArray ccv: anotherIntOrArray [
+" add a cc value/array of values to a cc number - to use with MIDI"
+	self dirtMessage at: 'ccn' put:  anIntOrAnArray    asDirtArray.
+	self dirtMessage at: 'ccv' put:  anotherIntOrArray asDirtArray .
+]
+
 { #category : #accessing }
 Sequencer >> chords: aStringWithOneOrMoreChords [
 " note and chord type separated by an hyphen for example 'c-maj d#-min sus4 min7')"
