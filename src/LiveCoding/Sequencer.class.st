@@ -255,6 +255,12 @@ Sequencer >> dirtNotes: anArrayfIndexes [
 	self dirtMessage at: 'n' put:  anArrayfIndexes  asDirtArray
 ]
 
+{ #category : #'LiveCoding  - SuperDirt' }
+Sequencer >> djf: aFloatOrAnArray [
+"Made by Alex McLean. A fun classic DJ Filter. Low pass filter for the first half of the range, high pass for the rest:"
+	self dirtMessage at: 'djf' put:  aFloatOrAnArray   asDirtArray
+]
+
 { #category : #accessing }
 Sequencer >> duration [
 
