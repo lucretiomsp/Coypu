@@ -89,7 +89,7 @@ LiveCodingTests >> testStringForDirt [
 	gates := #(1 1 1 0).
 	soundsPattern := #( 'bd' 'sd' 'cp' ).
 	samplesIndex := #( 1 0 2 ).
-	seq := string forDirt.
+	seq := string asDirtSounds.
 
 self assert: seq gates equals: gates.
 	self assert: seq soundPattern equals: soundsPattern.
@@ -103,7 +103,7 @@ LiveCodingTests >> testStringOfSoundsForDirt [
 
 | case |
 
-case := 'sd cp*3 ~ [bd ~*2]' forDirt.
+case := 'sd cp*3 ~ [bd ~*2]' asDirtSounds.
 
 self assert: (case dirtMessage at: 's') equals: #(sd cp cp cp bd bd).
 self assert: case gates equals: #(1 1 1 1 0 1 0 1 0)
