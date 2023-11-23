@@ -326,6 +326,20 @@ Integer >> semiquavers [
 ]
 
 { #category : #'*LiveCoding' }
+Integer >> semitonesToSpeed [
+
+ "Convert semitones to playback speed factor"
+        | baseFactor semitoneFactor |
+
+        baseFactor := (2 raisedTo: (1 / 12)). "Twelfth root of 2"
+
+        "Calculate the factor for the given number of semitones"
+        semitoneFactor := baseFactor raisedTo: self.
+
+        ^semitoneFactor.
+]
+
+{ #category : #'*LiveCoding' }
 Integer >> shiko [
 " create an array of self size of shiko (West-African / Caribbean) rhytm pulses. Better if used with self = 16 x anInteger "
 | pattern |

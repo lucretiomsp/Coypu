@@ -710,6 +710,14 @@ Sequencer >> pan: aFloatOrAnArray [
 	self dirtMessage at: 'pan' put:  aFloatOrAnArray   asDirtArray
 ]
 
+{ #category : #'LiveCoding  - SuperDirt' }
+Sequencer >> pitch: anIntOrAnArray [
+" add speed pattern to the Sequencer - change speed of samples playback but in chromatic way!"
+   | speeds |
+   speeds :=  anIntOrAnArray collect: [ :i | i semitonesToSpeed  ].
+	self dirtMessage at: 'speed' put:  speeds    asDirtArray
+]
+
 { #category : #'sequencer - cycles' }
 Sequencer >> playAsCycle [
 
