@@ -13,6 +13,20 @@ ByteString >> * aNumber [
 ]
 
 { #category : #'*LiveCoding' }
+ByteString >> / anInteger [
+
+
+
+" return a string with self and anInteger minus one  number of breaks - to be used to construct patterns for SuperDirt"
+	| result |
+	result :=  self.
+	
+	(anInteger - 1) timesRepeat: [ result := result , ' ' , '~'. ].
+	^ result 
+	
+]
+
+{ #category : #'*LiveCoding' }
 ByteString >> asDirtArray [
 "convenience method to send OSC messages to SuperDirt"
 ^ Array with: self

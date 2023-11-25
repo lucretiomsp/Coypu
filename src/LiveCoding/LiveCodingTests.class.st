@@ -82,6 +82,12 @@ self assert: case gates equals: #(1 1 1 1 0 1 0 1 0)
 ]
 
 { #category : #tests }
+LiveCodingTests >> testStringEveryInt [
+
+self assert: 'bd' / 8 equals: 'bd ~ ~ ~ ~ ~ ~ ~'
+]
+
+{ #category : #tests }
 LiveCodingTests >> testStringForDirt [
 
 	| string gates seq soundsPattern samplesIndex |
@@ -114,6 +120,12 @@ self assert: case gates equals: #(1 1 1 1 0 1 0 1 0)
 
 
 
+]
+
+{ #category : #tests }
+LiveCodingTests >> testStringWInWords [
+
+self assert: 'the needs of the many' inWords equals: #('the' 'needs' 'of' 'the' 'many')
 ]
 
 { #category : #tests }
