@@ -34,31 +34,26 @@ ByteString >> asDirtArray [
 
 { #category : #'*LiveCoding' }
 ByteString >> asDirtNotes [
-" returns a sequncer containing a trig for each integer and a rest for whatever other character and with the notes coresponding to the integeres inside the string"
-| seq tokens trigs notes  |
+" returns a sequncer containing a trig for each integer and a rest for whatever other character and with the notes coresponding to the integeres inside the string - tokens must be separated by string"
+| seq tokens gates notesAStrings  notesAsNumbers |
 
+gates := ''.
+tokens := self splitOn: ','.
+tokens do: [ :i | (i  includes: $* ) ifTrue: [gates := gates,  i multiplyStringsInString ] ifFalse: [(i includes: $/) ifTrue: [gates := gates,  i withNRests ]
+	ifFalse:  [gates := gates,  i]
+	]].
 
-tokens :=  OrderedCollection new.
-"units := String new."
-trigs := OrderedCollection new.
-notes := OrderedCollection new.
+notesAStrings := (gates copyReplaceAll: '~' with: '') findBetweenSubstrings: ' '. 
 
-
-(self findBetweenSubstrings: '[') do: [ :i | 
-	(i includes: $]) ifTrue: [ tokens add:  (((i findBetweenSubstrings: '*') at: 1)  * ( (i findBetweenSubstrings: '*') at:2 ) asInteger )]
-	ifFalse:
-	[(i findBetweenSubstrings: ' ') do: [:j | (j includes: $* ) ifFalse: [tokens add: j. ] ifTrue: [  tokens add:  (j before: $*) asString * ((j after: $*) asString asInteger)   ]  ]]].
-
+notesAsNumbers := notesAStrings collect: [ :i | i ~= ' ' ifTrue: [i asInteger] ].
 
 
 
-tokens do: [ :i | (i ~= '~'  ) ifTrue: [  trigs add: 1 . notes addLast: (i asString asInteger)  ] ifFalse: [ trigs add: 0 ] ].
+seq := gates asSeqGates  asSeq.
+seq dirtNotes: notesAsNumbers  asArray .
 
+^ seq
 
-seq := trigs asArray asSeq.
-seq dirtNotes: notes asArray .
-
-^seq
 ]
 
 { #category : #'*LiveCoding' }
@@ -68,40 +63,25 @@ ByteString >> asDirtSounds [
 
 
 
-| seq tokens trigs notes units soundsAsStrings |
 
 
-tokens :=  OrderedCollection new.
-units := String new.
-trigs := OrderedCollection new.
-notes := OrderedCollection new.
-soundsAsStrings := String new.
+| seq tokens gates soundsAsStrings |
 
-(self findBetweenSubstrings: '[') do: [ :i | 
-	(i includes: $]) ifTrue: [ tokens add:  (((i findBetweenSubstrings: '*') at: 1)  * ( (i findBetweenSubstrings: '*') at:2 ) asInteger )]
-	ifFalse:
-	[(i findBetweenSubstrings: ' ') do: [:j | . (j includes: $* ) ifFalse: [tokens add: j] ifTrue: [ tokens add: (((j findBetweenSubstrings: '*') at: 1 ) asString * ((j findBetweenSubstrings: '*') at: 2 ) asString asInteger ) ]]]].
+gates := ''.
+tokens := self splitOn: ','.
+tokens do: [ :i | (i  includes: $* ) ifTrue: [gates := gates,  i multiplyStringsInString ] ifFalse: [(i includes: $/) ifTrue: [gates := gates,  i withNRests ]
+	ifFalse:  [gates := gates,  i]
+	]].
 
-
-"
-(self findBetweenSubstrings: ' ') do: [ :i | (i includes: $* ) ifFalse: [tokens add: i] ifTrue: [  tokens add: (i before: $*) asString * ((i after: $*) asString asInteger) ]  ].
-"
-tokens do: [ :i  | units := units , ' ' , i ].
-
-(units findBetweenSubstrings: ' ') do: [ :i | i = '~' ifTrue: [trigs add: 0] ifFalse: [trigs add: 1]].
+soundsAsStrings := (gates copyReplaceAll: '~' with: '') . 
 
 
-soundsAsStrings := units copyReplaceAll:  '~' with: ''. 
 
-seq := trigs asArray asSeq.
+
+seq := gates asSeqGates  asSeq.
 seq sound: soundsAsStrings  .
 
-^seq
-
-
-
-
-
+^ seq
 ]
 
 { #category : #'*LiveCoding' }
@@ -132,6 +112,20 @@ serialNumber := 'beslime-51.local'.
 			 (NetNameResolver addressForName: serialNumber )).
 	^ NetNameResolver stringFromAddress:
 		  (NetNameResolver addressForName: serialNumber )
+]
+
+{ #category : #'*LiveCoding' }
+ByteString >> asSeqGates [
+	
+| gates tokens|
+
+" return an array of gates and rests, rests corrresponding to the ~ characters in the string"
+gates := OrderedCollection new.
+tokens := self findBetweenSubstrings: ' '.
+tokens do: [ :i | i = '~' ifTrue: [ gates add: 0]  ifFalse: [ gates add: 1  ]  ].
+
+^ gates asArray.
+
 ]
 
 { #category : #'*LiveCoding' }
@@ -202,6 +196,16 @@ self pattern index: anArrayOfIndexes to: aKeyInAPerformance
 ByteString >> midiCh: anInteger to: aKeyInPerformance [
 	"conveneience method to avoid extra parenthesis"
 (self pattern  midiChannel: anInteger) to: aKeyInPerformance 
+]
+
+{ #category : #'*LiveCoding' }
+ByteString >> multiplyStringsInString [
+"multiply the string before the * fro the integer after the *"
+| tokens |
+
+	tokens := self splitOn: '*'. 
+	
+^ tokens first * tokens second asInteger
 ]
 
 { #category : #'*LiveCoding' }

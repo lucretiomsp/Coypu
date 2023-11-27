@@ -18,6 +18,12 @@ self assert: 'bd cp:4 ~ * 2' multiplyStringsInString equals: 'bd cp:4 ~  bd cp:4
 ]
 
 { #category : #tests }
+ParsingTests >> testStringsWitNRests [
+
+self assert: 'bd / 4' withNRests  equals: 'bd  ~ ~ ~'
+]
+
+{ #category : #tests }
 ParsingTests >> testasSeqGates [
 
 self assert: 'bd cp:4 ~ sd' asSeqGates equals: #(1 1 0 1).
