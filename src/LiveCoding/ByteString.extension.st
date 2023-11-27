@@ -150,6 +150,18 @@ chordAsArrays := chordsAsStrings collect: [ :i| i parseChord  ].
 ]
 
 { #category : #'*LiveCoding' }
+ByteString >> every: anInteger [ 
+
+" return a string with self and anInteger minus one  number of breaks - to be used to construct patterns for SuperDirt"
+	| result |
+	result :=  OrderedCollection new.
+	result  add: self.
+	(2 to: anInteger) do: [ :i | result add: ' ';  add: '~' ].
+	^ result
+	
+]
+
+{ #category : #'*LiveCoding' }
 ByteString >> hexBeat [
 
 " convert a string with an Hexadecimal number to the Kyma array correspondong to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex)"
@@ -182,6 +194,12 @@ strings := (1 to: (self size)) collect: [ :i |
 ((self at: i) digitValue printStringBase: 2 length: 4 padded: true ) ].
 flat := strings flatCollect: [ :each | each ].
 ^ ((( 1 to: (flat size)) collect: [ :i | (flat at: i ) digitValue ]) asRhythm ) and: anArrayOfNoteNumbers and: anArrayOfDurations .
+]
+
+{ #category : #'*LiveCoding' }
+ByteString >> inWords [
+" return an Ordered collection separating all the words inside the string"
+	^ self findBetweenSubstrings: ' '
 ]
 
 { #category : #'*LiveCoding' }
@@ -614,4 +632,14 @@ ByteString >> toSCFor: gateTimeInSeconds note: aNoteNumber [
 			   label.
 			   aNoteNumber asFloat.
 			   0.0 }) sendToAddressString: localAddress port: 57110 ] fork
+]
+
+{ #category : #'*LiveCoding' }
+ByteString >> withNRests [
+	" add rests to a string divided by an Integer inside a String"
+	
+| tokens |
+tokens := self splitOn: '/'.
+
+^ tokens first / tokens second asString asInteger
 ]
