@@ -17,7 +17,8 @@ Class {
 		'bpm',
 		'transportStep',
 		'activeProcess',
-		'dirtMIDIDevice'
+		'dirtMIDIDevice',
+		'activeDSP'
 	],
 	#classInstVars : [
 		'uniqueInstance',
@@ -92,6 +93,16 @@ Performance >> Dictionary [  Variable or expression expected -><< #Performance
 			 };
 	tag: 'Performance';
 	package: 'LiveCoding'
+]
+
+{ #category : #accessing }
+Performance >> activeDSP [
+^ activeDSP 
+]
+
+{ #category : #accessing }
+Performance >> activeDSP: aDSP [
+activeDSP := aDSP
 ]
 
 { #category : #accessing }

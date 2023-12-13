@@ -23,7 +23,7 @@ PerformerPhaust >> playFor: aNumberOfSteps [
 	"play the performance to SuperDIrt/SuperCollider audio engine - default freq is 132 bpm 
 	Performance speed can be changed with p freq: a bpm"
 
-
+   Performance uniqueInstance activeDSP ifNil: [ ^ Error new signal: 'There must be an active DSP for this performance' ] ifNotNil: [  
 
 	performance bpm: 60 / (performance freq * 4). 
 	performance transportStep: 1.
@@ -42,7 +42,7 @@ PerformerPhaust >> playFor: aNumberOfSteps [
 
 		           "step is incremented anyway"
 		           performance incrementTransportStep ] ] forkAt: Processor timingPriority).
-
+]
 
 	
 ]

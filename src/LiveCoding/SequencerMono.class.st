@@ -102,18 +102,16 @@ midiSender playNote:  midiNote   onChannel: mch duration: dur * freq * gateTime 
 SequencerMono >> playPhaustEventAt: anIndex [
 
 	"sends a message to Phausto / the DSP api must be written in a sensible way " 
-| message dur stepDuration|
+| dur stepDuration dsp |
+dsp := Performance uniqueInstance activeDSP.
 stepDuration := Performance uniqueInstance freq.
-message := OrderedCollection new.
-message add: '/dirt/play'.
-dur := self durations asDirtArray  wrap: anIndex .
 
-message add: 'delta'; add: stepDuration * dur. "delta should change"
-dirtMessage keysAndValuesDo:  [ :key :value | message add: key; add: (value asDirtArray  wrap: anIndex ) ].
+" please use also duration for gate !!! - future implementation"
+"dur := self durations asDirtArray  wrap: anIndex ."
 
+dsp setValue: (self notes wrap: anIndex) parameter: self seqKey , 'Note' .
+dsp trig: self seqKey , 'Gate'.
 
-
-	(OSCBundle for: {  OSCMessage for: message  }  )  sendToAddressString: '127.0.0.1' port: 57120.
 	^ true 
 ]
 
