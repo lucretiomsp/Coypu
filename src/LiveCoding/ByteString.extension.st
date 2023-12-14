@@ -51,6 +51,7 @@ notesAsNumbers := notesAStrings collect: [ :i | i ~= ' ' ifTrue: [i asInteger] ]
 
 seq := gates asSeqGates  asSeq.
 seq dirtNotes: notesAsNumbers  asArray .
+seq notes: notesAsNumbers asArray.
 
 ^ seq
 
