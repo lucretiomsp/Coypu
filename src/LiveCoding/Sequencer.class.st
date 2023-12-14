@@ -30,7 +30,9 @@ Class {
 		'samplesIndex',
 		'dirtMessage',
 		'orbit',
-		'isPoly'
+		'isPoly',
+		'phaustGateDestination',
+		'phaustNoteDestination'
 	],
 	#classInstVars : [
 		'orbit'
@@ -710,6 +712,30 @@ Sequencer >> pan: aFloatOrAnArray [
 	self dirtMessage at: 'pan' put:  aFloatOrAnArray   asDirtArray
 ]
 
+{ #category : #accessing }
+Sequencer >> phaustGateDestination [
+
+	^ phaustGateDestination
+]
+
+{ #category : #accessing }
+Sequencer >> phaustGateDestination: aString [
+
+	phaustGateDestination := aString
+]
+
+{ #category : #accessing }
+Sequencer >> phaustNoteDestination [
+
+	^ phaustNoteDestination
+]
+
+{ #category : #accessing }
+Sequencer >> phaustNoteDestination: anObject [
+
+	phaustNoteDestination := anObject
+]
+
 { #category : #'LiveCoding  - SuperDirt' }
 Sequencer >> pitch: anIntOrAnArray [
 " add speed pattern to the Sequencer - change speed of samples playback but in chromatic way!"
@@ -1095,11 +1121,19 @@ Sequencer >> to: aSymbol [
 	
 	| sampleFolder sampleIndex |
 	self seqKey: aSymbol asString .
+	
+	"For SuperDirt"
 	self dirtMessage  at: '_id' put: self seqKey.
 	self dirtMessage  at: 'orbit' put: self orbit.
 	
 	(self dirtMessage includesKey: 's') ifFalse: [ self dirtMessage at: 's' put: aSymbol asString asDirtArray  ] ifTrue: [  ] .
-   seqChords ifNil:  [Performance uniqueInstance at: aSymbol put: self] ifNotNil: [  Performance uniqueInstance at: aSymbol put: self asPolySeq] 
+	
+	"For Polyphony"
+   seqChords ifNil:  [Performance uniqueInstance at: aSymbol put: self] ifNotNil: [  Performance uniqueInstance at: aSymbol put: self asPolySeq] .
+
+
+"For PerformerPhaust"
+(Performance uniqueInstance performer class = PerformerPhaust ) ifTrue: [ self phaustGateDestination: self seqKey , 'Gate' . self phaustNoteDestination:self seqKey ,  'Note' ]
 ]
 
 { #category : #addToPerformance }

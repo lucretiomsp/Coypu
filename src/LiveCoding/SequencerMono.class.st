@@ -109,8 +109,8 @@ stepDuration := Performance uniqueInstance freq.
 " please use also duration for gate !!! - future implementation"
 "dur := self durations asDirtArray  wrap: anIndex ."
 
-dsp setValue: (self notes wrap: anIndex) parameter: self seqKey , 'Note' .
-dsp trig: self seqKey , 'Gate'.
+dsp setValue: (self notes wrap: anIndex) parameter: self phaustNoteDestination .
+dsp trig: self phaustGateDestination .
 
 	^ true 
 ]
