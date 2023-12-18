@@ -58,10 +58,10 @@ Metacello new
   load.
 ```
 ## MIDI Support ##
-The Pharo LiveCoding Package can be used to play external MIDI hardware. 
+Coypu can be used to play external MIDI hardware. 
 (https://github.com/pharo-contributions/pharo-sound)
 
 ### SuperDirt Connection ###
-The Pharo LiveCoding Package can be used to play the SuperDirt audio engine for SuperCollider. 
+Coypu can be used to play the SuperDirt audio engine for SuperCollider. 
 ((https://github.com/supercollider/supercollider)
 (https://github.com/musikinformatik/SuperDirt)
