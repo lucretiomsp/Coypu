@@ -387,20 +387,20 @@ ByteString >> toKymaAsGate: gateTimeInSeconds note: aNoteNumber [
 	sendNoteNumber := (OSCMessage for: { 
 			                   vcsNoteLabel.
 			                   aNoteNumber asFloat })
-		                  sendToAddressString:PacaAddress address
+		                  sendToAddressString: pacaAddress
 		                  port: 8000.
 	[ "first NoteOff for VoiceStealing"
 	(OSCMessage for: { 
 			 vcsGatelabel.
-			 0.0 }) sendToAddressString:  PacaAddress address port: 8000."then note On"
+			 0.0 }) sendToAddressString:  pacaAddress port: 8000."then note On"
 	(OSCMessage for: { 
 			 vcsGatelabel.
-			 1.0 }) sendToAddressString: PacaAddress address port: 8000.
+			 1.0 }) sendToAddressString: pacaAddress port: 8000.
 	(Delay forSeconds: gateTimeInSeconds) wait.
 	"then note Off"
 	(OSCMessage for: { 
 			 vcsGatelabel.
-			 0.0 }) sendToAddressString: PacaAddress address port: 8000 ] fork
+			 0.0 }) sendToAddressString: pacaAddress port: 8000 ] fork
 ]
 
 { #category : #'*LiveCoding' }
