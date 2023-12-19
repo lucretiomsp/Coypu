@@ -62,6 +62,26 @@ dirtMessage keysAndValuesDo:  [ :key :value | message add: key; add: (value asDi
 ]
 
 { #category : #'LiveCoding  - SuperDirt' }
+SequencerMono >> playFullKymaEventAt: anIndex [
+	"sends a mesaage to SuperDirt with all the desired OSC arguments and values"
+
+	| message dur note stepDuration |
+	stepDuration := Performance uniqueInstance freq.
+	
+	"as in hardware sequencer, default gate time is 80% of duration time"
+	dur := (self durations asDirtArray wrap: anIndex) * stepDuration * 0.8.
+	note := self notes asDirtArray wrap: anIndex.
+	self seqKey toKymaAsGate: dur note: note.
+	" for extra data"
+	"dirtMessage keysAndValuesDo: [ :key :value |
+		message
+			add: key;
+			add: (value asDirtArray wrap: anIndex) ]."
+	" ####################"
+	^ true
+]
+
+{ #category : #'LiveCoding  - SuperDirt' }
 SequencerMono >> playLocalEventAt: anIndex [
 
 	"sends a mesaage to SuperDirt with all the desired OSC arguments and values" 
