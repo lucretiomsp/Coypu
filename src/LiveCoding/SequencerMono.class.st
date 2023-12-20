@@ -8,6 +8,20 @@ Class {
 	#category : #'LiveCoding-Sequencers'
 }
 
+{ #category : #arithmetic }
+SequencerMono >> + anInteger [
+	"transpose up the sequencer notes by anInteger semitones"
+
+	self notes: self notes + anInteger
+]
+
+{ #category : #arithmetic }
+SequencerMono >> - anInteger [
+	"transpose the sequencer notes by anInteger semitones"
+
+	self notes: self notes - anInteger
+]
+
 { #category : #'as yet unclassified' }
 SequencerMono >> arpeggiate: aStringOfChords [ 
 	| arpNotes |
@@ -35,6 +49,15 @@ polySeq gates: self gates; noteIndex: self noteIndex; durations: self durations;
 polySeq dirtMessage removeKey: #n ifAbsent: [ ] .
 polySeq isPoly: true.
 ^ polySeq 
+]
+
+{ #category : #LiveCoding }
+SequencerMono >> extra: anArray [
+
+	self kymaMessage
+		ifNil: [ self kymaMessage: Dictionary new. self kymaMessage at: (anArray at: 1) put: (anArray at: 2)  ]
+		ifNotNil: [
+		self kymaMessage at: (anArray at: 1) put: (anArray at: 2) ]
 ]
 
 { #category : #'LiveCoding - sequencer' }
@@ -120,19 +143,22 @@ midiSender playNote:  midiNote   onChannel: mch duration: dur * freq * gateTime 
 
 { #category : #'LiveCoding  - SuperDirt' }
 SequencerMono >> playPhaustEventAt: anIndex [
+	"sends a message to Phausto / the DSP api must be written in a sensible way "
 
-	"sends a message to Phausto / the DSP api must be written in a sensible way " 
-| dur stepDuration dsp |
-dsp := Performance uniqueInstance activeDSP.
-stepDuration := Performance uniqueInstance freq.
+	| dur stepDuration dsp |
+	dsp := Performance uniqueInstance activeDSP.
+	stepDuration := Performance uniqueInstance freq.
 
-" please use also duration for gate !!! - future implementation"
-"dur := self durations asDirtArray  wrap: anIndex ."
+	" please use also duration for gate !!! - future implementation"
+	dur := self durations asDirtArray wrap: anIndex.
 
-dsp setValue: (self notes wrap: anIndex) parameter: self phaustNoteDestination .
-dsp trig: self phaustGateDestination .
+	dsp
+		setValue: (self notes wrap: anIndex)
+		parameter: self phaustNoteDestination.
+	"as in early sequencers, standard gate time is 80% of duration"
+	dsp trig: self phaustGateDestination for: (dur * stepDuration * 0.8).
 
-	^ true 
+	^ true
 ]
 
 { #category : #highlighting }

@@ -32,7 +32,8 @@ Class {
 		'orbit',
 		'isPoly',
 		'phaustGateDestination',
-		'phaustNoteDestination'
+		'phaustNoteDestination',
+		'kymaMessage'
 	],
 	#classInstVars : [
 		'orbit'
@@ -502,6 +503,18 @@ self subclassResponsibility
 Sequencer >> isSequencer [
 
 ^ true
+]
+
+{ #category : #accessing }
+Sequencer >> kymaMessage [
+
+	^ kymaMessage
+]
+
+{ #category : #accessing }
+Sequencer >> kymaMessage: anObject [
+
+	kymaMessage := anObject
 ]
 
 { #category : #'LiveCoding  - SuperDirt' }
