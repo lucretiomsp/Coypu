@@ -259,10 +259,23 @@ Sequencer >> dirtMessage: anArrayOfAssociationForSuperDirt [
 ]
 
 { #category : #'LiveCoding  - SuperDirt' }
-Sequencer >> dirtNotes: anArrayfIndexes [
-"add into a Sequencer an index pattern suitable for SuperDirt"
-	
-	self dirtMessage at: 'n' put:  anArrayfIndexes  asDirtArray
+Sequencer >> dirtNotes: aStringWithNotes [
+	"add into a Sequencer anotes from a String in which numbers can be multiplicated"
+
+	| tokens dNotes arrayOfNotes |
+	tokens := aStringWithNotes splitOn: ','.
+	dNotes := ' '.
+	tokens do: [ :i |
+		(i includes: $*)
+			ifTrue: [ dNotes := dNotes , i multiplyStringsInString ]
+			ifFalse: [ [ dNotes := dNotes , i ] ] ].
+
+	arrayOfNotes := (dNotes findBetweenSubstrings: '  ') collect: [ :each |
+		                each asNumber ].
+	self notes: arrayOfNotes asArray.
+	self dirtMessage at: 'n' put: arrayOfNotes asDirtArray.
+
+	^ self
 ]
 
 { #category : #'LiveCoding  - SuperDirt' }
