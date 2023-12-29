@@ -612,10 +612,11 @@ self removeKey: aKey ifAbsent: [  ]
 
 { #category : #initialization }
 Performance >> resetAllSequencers [
-"reset noteIndex fro all the sequencers in the Performance. "
-	self keysAndValuesDo: [ :key :value | 
+	"reset noteIndex fro all the sequencers in the Performance. "
+
+	self keysAndValuesDo: [ :key :value |
 		value isSequencer
-			ifTrue: [ value noteIndex: 0 ]
+			ifTrue: [ value noteIndex: 1 ]
 			ifFalse: [ nil ] ]
 ]
 

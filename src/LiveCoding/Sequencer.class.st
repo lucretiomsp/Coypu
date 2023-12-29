@@ -602,11 +602,10 @@ Sequencer >> note [
 
 { #category : #accessing }
 Sequencer >> noteIndex [
-
 	" returns the fourth array of the sequencer if there is one, otherwise returns 0.
 noteIndex is used to play the folloowing note in the array. Only if there is a trig in the gates the noteIndex  will be incremented"
 
-^ noteIndex
+	^ noteIndex 
 ]
 
 { #category : #accessing }

@@ -151,12 +151,12 @@ SequencerMono >> playPhaustEventAt: anIndex [
 
 	" please use also duration for gate !!! - future implementation"
 	dur := self durations asDirtArray wrap: anIndex.
-
+	self noteIndex traceCr.
 	dsp
 		setValue: (self notes wrap: anIndex)
 		parameter: self phaustNoteDestination.
 	"as in early sequencers, standard gate time is 80% of duration"
-	dsp trig: self phaustGateDestination for: (dur * stepDuration * 0.8).
+	dsp trig: self phaustGateDestination for: dur * stepDuration * 0.8.
 
 	^ true
 ]

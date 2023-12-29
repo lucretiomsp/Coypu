@@ -109,18 +109,18 @@ rhythm := Rhythm new: (self size).
 
 { #category : #'*LiveCoding' }
 Array >> asSeq [
-
 	"returns Sequencer with default note 60nn and default durations = self size / numberOfTrigs and noteIndex = 0"
 
-
-
-	| numberOfNotes dur seq|
+	| numberOfNotes dur seq |
 	numberOfNotes := self class new: self trigs withAll: 60.
-seq :=  SequencerMono new gates: self; notes: numberOfNotes; noteIndex: 0; midiChannel: 1.
-dur := self size / seq numberOfTrigs.
-seq durations: dur asDirtArray.
-^ seq  
-
+	seq := SequencerMono new
+		       gates: self;
+		       notes: numberOfNotes;
+		       noteIndex: 1;
+		       midiChannel: 1.
+	dur := self size / seq numberOfTrigs.
+	seq durations: dur asDirtArray.
+	^ seq
 ]
 
 { #category : #'*LiveCoding' }
