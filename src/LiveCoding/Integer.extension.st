@@ -148,13 +148,6 @@ Integer >> modulo: anInteger [
 ]
 
 { #category : #'*LiveCoding' }
-Integer >> ones [
-	
-	" retuns a Sequencer of gates size = self with all ones - same as semiquavers"
-^ (Array new: self withAll: 1) asRhythm asSeq.
-]
-
-{ #category : #'*LiveCoding' }
 Integer >> pattern [ 
 	| arrayOfCharacters s|
 	arrayOfCharacters := (self printStringBase: 2) asArray.
@@ -449,6 +442,13 @@ pattern := #(1 0 0 1 0 0 1 0 ).
 ^ (0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ].
 "
 "implement shifting to the left"
+]
+
+{ #category : #'*LiveCoding' }
+Integer >> trigs [
+	
+	" retuns a Sequencer of gates size = self with all ones - same as semiquavers"
+^ (Array new: self withAll: 1) asRhythm asSeq.
 ]
 
 { #category : #'*LiveCoding' }
