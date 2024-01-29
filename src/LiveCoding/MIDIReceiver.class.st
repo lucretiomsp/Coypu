@@ -60,14 +60,18 @@ MIDIReceiver >> openMidiInputWithDevice: aDeviceID [
 { #category : #outputManagement }
 MIDIReceiver >> openWithDevice: aDeviceID [
 	"Opens a new MidiOUT Stream with output device id aDeviceID to play notes."
-	^ (aDeviceID = -1) ifFalse: 
-		[PortMidiLibrary uniqueInstance openOutputForStream: midiIn  
-															withDevice: aDeviceID 
-															withOutputDriverInfos: nil 
-															withBufferSize: 512 
-															withTimeProcedure: nil 
-															withTimeInfos: nil 
-															andLatency: 0 ] ifTrue: [ ^ -1 ]
+
+	^ aDeviceID = -1
+		  ifFalse: [
+			  PortMidiLibrary uniqueInstance
+				  openInputForStream: midiIn
+				  withDevice: aDeviceID
+				  withInputDriverInfos: nil
+				  withBufferSize: 512
+				  withTimeProcedure: nil
+				  andTimeInfos: nil
+]
+		  ifTrue: [ ^ -1 ]
 ]
 
 { #category : #'as yet unclassified' }

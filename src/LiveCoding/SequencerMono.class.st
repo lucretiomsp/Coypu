@@ -151,7 +151,7 @@ SequencerMono >> playPhaustEventAt: anIndex [
 
 	" please use also duration for gate !!! - future implementation"
 	dur := self durations asDirtArray wrap: anIndex.
-	self noteIndex traceCr.
+	
 	dsp
 		setValue: (self notes wrap: anIndex)
 		parameter: self phaustNoteDestination.
