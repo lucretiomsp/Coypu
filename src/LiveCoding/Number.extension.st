@@ -23,6 +23,14 @@ Number >> delay [
 ]
 
 { #category : #'*LiveCoding' }
+Number >> midiNoteToFreq [
+" convert Midi note number to frequency"
+	| baseFreq |
+	baseFreq := 440.0. "Standard tuning frequency for A4"
+	^ (baseFreq * (2 raisedTo: self - 69 / 12.0)) asFloat
+]
+
+{ #category : #'*LiveCoding' }
 Number >> secondsInStepAt: aDuration [
 "return the number of steps at aDuration time as 1/16th of a bar which corresponding to self seconds"
 ^ (self / aDuration) asInteger.

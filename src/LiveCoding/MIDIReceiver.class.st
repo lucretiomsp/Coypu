@@ -82,19 +82,20 @@ MIDIReceiver >> readInBuffer: buffer withSize: bufferSize [
 { #category : #'as yet unclassified' }
 MIDIReceiver >> readIncomingMessage [
 
-	| instance buffer |
+	| instance buffer proc |
 	instance := PortMidiLibrary uniqueInstance.
 	buffer := PortMidiEvent new.
-  [[ 1 >0 ] whileTrue: 
-	[
-	instance
-		advancedReadOn: self midiInput value
-		inBuffer: buffer
-		withSize: 512.
-	(instance portMidiGetStatusFromMessage: buffer message) traceCr.
-	(instance portMidiGetFirstDataFromMessage: buffer message) traceCr.
-	(instance portMidiGetSecondDataFromMessage: buffer message) traceCr ]]
-		fork
+	proc := [
+	[ 1 > 0 ] whileTrue: [
+		instance
+			advancedReadOn: self midiInput value
+			inBuffer: buffer
+			withSize: 512.
+		(instance portMidiGetStatusFromMessage: buffer message) traceCr.
+		(instance portMidiGetFirstDataFromMessage: buffer message) traceCr.
+		(instance portMidiGetSecondDataFromMessage: buffer message) traceCr ] ]
+		fork.
+		^ proc
 ]
 
 { #category : #'as yet unclassified' }
@@ -111,4 +112,24 @@ MIDIReceiver >> readIncomingMessageSize: aNumberOfEvents [
 		(instance portMidiGetFirstDataFromMessage: buffer message) traceCr.
 		(instance portMidiGetSecondDataFromMessage: buffer message) traceCr ] ]
 		fork
+]
+
+{ #category : #'as yet unclassified' }
+MIDIReceiver >> trig: aDsp [
+
+	| instance buffer proc |
+	instance := PortMidiLibrary uniqueInstance.
+	buffer := PortMidiEvent new.
+	proc := [
+	        [ 1 > 0 ] whileTrue: [
+		        instance
+			        advancedReadOn: self midiInput value
+			        inBuffer: buffer
+			        withSize: 512.
+		        
+		        aDsp setValue: ((instance portMidiGetFirstDataFromMessage: buffer message) /100)
+			        parameter: 'TrigMe'.
+		        (instance portMidiGetSecondDataFromMessage: buffer message)
+			        traceCr ] ] fork.
+	^ proc
 ]
