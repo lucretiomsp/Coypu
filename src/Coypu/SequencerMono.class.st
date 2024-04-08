@@ -75,7 +75,7 @@ message := OrderedCollection new.
 message add: '/dirt/play'.
 dur := self durations asDirtArray  wrap: anIndex .
 
-message add: 'delta'; add: stepDuration * dur. "delta should change"
+message add: 'delta'; add: (stepDuration * dur) asFloat. "delta should change"
 dirtMessage keysAndValuesDo:  [ :key :value | message add: key; add: (value asDirtArray  wrap: anIndex ) ].
 
 

@@ -194,7 +194,8 @@ Performance >> dirtMIDIDevice: aString [
 
 { #category : #accessing }
 Performance >> freq [
-^ freq
+"better to convert it to Float to avoid OSC sending issues"
+^ freq asFloat
 ]
 
 { #category : #accessing }
