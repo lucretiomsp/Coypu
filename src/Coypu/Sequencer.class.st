@@ -268,7 +268,7 @@ Sequencer >> dirtNotes: aStringWithNotes [
 	tokens do: [ :i |
 		(i includes: $*)
 			ifTrue: [ dNotes := dNotes , i multiplyStringsInString ]
-			ifFalse: [ [ dNotes := dNotes , i ] ] ].
+			ifFalse: [  dNotes := dNotes , i  ] ].
 
 	arrayOfNotes := (dNotes findBetweenSubstrings: '  ') collect: [ :each |
 		                each asNumber ].
