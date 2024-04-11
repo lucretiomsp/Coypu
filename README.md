@@ -85,6 +85,13 @@ If the folder does not exist, create it yourself. You can do this in your operat
 ```cplusplus
 File.mkdir(Platform.userExtensionDir);
 ```
+### Start your engines ###
+Launch SuperCollider and evaluate:
+```c
+SuperDirt.start;
+```
+Now you are ready to have fun with Pharo and Coypu; launch Pharo and open a Playground ===Cmd+OW===
+
 
 
 
