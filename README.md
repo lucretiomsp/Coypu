@@ -21,7 +21,7 @@ Start SuperCollider and type:
 ```c
 include("SuperDirt");
 ```
-evaluate this line of code by placing the cursor on it and pressing <mark>Cmd+Enter=</mark>MacOs) or </mark>Ctrl+enter</mark>(Windows).
+evaluate this line of code by placing the cursor on it and pressing <mark>Cmd+Enter=</mark>MacOs) or <mark>Ctrl+enter</mark>(Windows).
 
 Download the [sc-3 plugins](https://github.com/supercollider/sc3-plugins/releases)
 Unzip the release and move it to your SuperCollider extensions folder. You can find it by evaluating in SuperCollider:
@@ -37,7 +37,7 @@ Launch SuperCollider and evaluate:
 ```c
 SuperDirt.start;
 ```
-Now you are ready to have fun with Pharo and Coypu; launch Pharo and open a Playground </mark>Cmd+OW</mark>
+Now you are ready to have fun with Pharo and Coypu; launch Pharo and open a Playground <mark>Cmd+OW</mark>
 ```Smalltalk
 "Create a new Performance"
 p := Performance uniqueInstance.
@@ -46,7 +46,7 @@ p performer: PerformerSuperDirt new.
 "If you want you can change the spee of the Performance -- don't forget the bpm !!!
 p freq: 138 bpm.
 ```
-Evaluate all these lines of code by selectimg them and pressing </mark>Cmd+D</mark>.
+Evaluate all these lines of code by selectimg them and pressing <mark>Cmd+D</mark>.  
 Add 16 steps of rumba the lt(stand for LowTom) track of your Performance by evaluating:
 ```Smalltalk
 16 rumba to: #conga.
