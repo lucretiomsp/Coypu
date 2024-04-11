@@ -91,7 +91,24 @@ Launch SuperCollider and evaluate:
 SuperDirt.start;
 ```
 Now you are ready to have fun with Pharo and Coypu; launch Pharo and open a Playground ===Cmd+OW===
-
+```Smalltalk
+"Create a new Performance"
+p := Performance uniqueInstance.
+"Assign a SuperDirt Performer to the Performance"
+p performer: PerformerSuperDirt new .
+"If you want you can change the spee of the Performance -- don't forget the bpm !!!
+p freq: 138 bpm.
+```
+Evaluate all these lines of code by selectimg them and pressing ===Cmd+D===.
+Add 16 steps of rumba the lt(stand for LowTom) track of your Performance by evaluating:
+```Smalltalk
+16 rumba to: #conga
+```
+Now let's play the Perfomance for 4 bars, by evaluating:
+```Smalltalk
+p playFor: 4 bars
+"of course you can play as many bars you want "
+```
 
 
 
