@@ -31,6 +31,12 @@ drumList add: (SuperDirtSynth name: 'superkick' parameters: #('n' 'accelerate' '
 ^ drumList 
 ]
 
+{ #category : #'as yet unclassified' }
+SuperDirt class >> listOfSamples [
+
+	^ SamplesFolderInspectorPresenter new
+]
+
 { #category : #'SuperDirt-List' }
 SuperDirt class >> listOfSynths [
 "print on Transcript the list of SuperDirt available Synths"
