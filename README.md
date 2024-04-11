@@ -68,7 +68,12 @@ Metacello new
 Coypu can be used to play external MIDI hardware. 
 (https://github.com/pharo-contributions/pharo-sound)
 
-### SuperDirt Connection ###
-Coypu can be used to play the SuperDirt audio engine for SuperCollider. 
-((https://github.com/supercollider/supercollider)
-(https://github.com/musikinformatik/SuperDirt)
+## Play SuperDirt with Coypu ##
+Coypu can be used to play the [SuperDirt] (https://github.com/musikinformatik/SuperDirt) audio engine for SuperCollider. 
+### Installation ###
+[Download SuperCollider](https://github.com/supercollider/supercollider)
+Start SuperCollider and type:
+```c
+include("SuperDirt");
+```
+
