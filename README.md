@@ -5,9 +5,16 @@ It has been originally designed as a server for SymbolicSound Kyma but can be us
 to interact with [SuperDirt](https://github.com/musikinformatik/SuperDirt)
 The name is an homage to Kyma's Capytalk 'dialect', being the coypu a rodent as the capybara. The coypu is very common on the banks of the rivers in Veneto; everybody thinks it's a rat , but it's a rodent.  Originally from the southern part of the South American continent, introduced into Italy and then bred for fur production in the 1980s, after the end of the animal fur hype of the Yuppies' times it was made to escape from the farms instead of being killed. and it reproduced. It's a nice and peaceful animal, often adopted as a mascot from Italian hackers.
 
+## Install the package 
+```Smalltalk
+Metacello new
+    baseline: 'Coypu';
+    repository: 'github://lucretiomsp/coypu:master';
+    load
+```
 
 ## Getting Started ##
-Create a performance\
+Create a performance
 ```Smalltalk
 p := Performance uniqueInstance.
 ```
