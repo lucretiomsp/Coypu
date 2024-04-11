@@ -64,9 +64,7 @@ Metacello new
   repository: 'github://Ducasse/OSC/src';
   load.
 ```
-## MIDI Support ##
-Coypu can be used to play external MIDI hardware. 
-(https://github.com/pharo-contributions/pharo-sound)
+
 
 ## Play SuperDirt with Coypu ##
 Coypu can be used to play the [SuperDirt] (https://github.com/musikinformatik/SuperDirt) audio engine for SuperCollider. 
@@ -77,3 +75,10 @@ Start SuperCollider and type:
 include("SuperDirt");
 ```
 
+
+
+
+
+## MIDI Support ##
+Coypu can be used to play external MIDI hardware. 
+(https://github.com/pharo-contributions/pharo-sound)
