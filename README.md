@@ -66,7 +66,10 @@ and play it for 16 bars:
 p playFor: 16 bars
 "of course you can play as many bars you want "
 ```
-
+if you want to get a list of the samples available inspect ===Cmd+i===
+```Smalltalk
+SuperDirt listOfSamples
+```
 
 
 
