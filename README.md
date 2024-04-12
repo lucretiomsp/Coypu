@@ -26,7 +26,7 @@ evaluate this line of code by placing the cursor on it and pressing <mark>Cmd+En
 Download the [sc-3 plugins](https://github.com/supercollider/sc3-plugins/releases)
 Unzip the release and move it to your SuperCollider extensions folder. You can find it by evaluating in SuperCollider:
 ```cplusplus
-Platform.userExtensionDir
+Platform.userExtensionDir;
 ```
 If the folder does not exist, create it yourself. You can do this in your operating system's file explorer or from within SuperCollider by evaluating:
 ```cplusplus
