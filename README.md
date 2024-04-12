@@ -43,7 +43,7 @@ Now you are ready to have fun with Pharo and Coypu; launch Pharo and open a Play
 p := Performance uniqueInstance.
 "Assign a SuperDirt Performer to the Performance"
 p performer: PerformerSuperDirt new.
-"If you want you can change the spee of the Performance -- don't forget the bpm !!!
+"If you want you can change the spee of the Performance -- don't forget the bpm !!! "
 p freq: 138 bpm.
 ```
 Evaluate all these lines of code by selectimg them and pressing <mark>Cmd+D</mark>.  
