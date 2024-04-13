@@ -49,7 +49,7 @@ p freq: 138 bpm.
 Evaluate all these lines of code by selectimg them and pressing <mark>Cmd+D</mark>.  
 Add 16 steps of rumba the lt(stand for LowTom) track of your Performance by evaluating:
 ```Smalltalk
-16 rumba to: #conga.
+16 rumba to: #casio.
 ```
 Now let's play the Perfomance for 4 bars, by evaluating:
 ```Smalltalk
@@ -58,8 +58,8 @@ p playFor: 4 bars.
 ```
 Now we can add a four-to-the-floor Bass Drum(bd) and a Closed High-Hat (ch) to our Performance:
 ```Smalltalk
-16 downbeats to: #bd.
-16 upbeats to: #ch.
+16 downbeats to: #kick.
+16 upbeats to: #hh.
 ```
 and play it for 16 bars:
 ```Smalltalk
