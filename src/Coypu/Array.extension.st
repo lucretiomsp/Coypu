@@ -113,12 +113,13 @@ Array >> asSeq [
 
 	| numberOfNotes dur seq |
 	numberOfNotes := self class new: self trigs withAll: 60.
+	dur := 1.
 	seq := SequencerMono new
 		       gates: self;
 		       notes: numberOfNotes;
 		       noteIndex: 1;
 		       midiChannel: 1.
-	dur := self size / seq numberOfTrigs.
+	(seq numberOfTrigs > 0) ifTrue: [dur := self size / seq numberOfTrigs].
 	seq durations: dur asDirtArray.
 	^ seq
 ]
