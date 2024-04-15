@@ -58,7 +58,7 @@ p playFor: 4 bars.
 ```
 Now we can add a four-to-the-floor Bass Drum(bd) and a Closed High-Hat (ch) to our Performance:
 ```Smalltalk
-16 downbeats to: #kick.
+16 downbeats to: #bd.
 16 upbeats to: #hh.
 ```
 and play it for 16 bars:
@@ -68,8 +68,16 @@ p playFor: 16 bars
 ```
 if you want to get a list of the samples available inspect ===Cmd+i===
 ```Smalltalk
-SuperDirt listOfSamples
+SuperDirt listOfSamples.
 ```
+
+### Follow the Examples ###
+If you evaluate in a Playground
+```Smalltalk
+SuperDirtExamples browse.
+```
+You will see a list of examples in the leftmost pane of the class browser. Just click on the small icon on the left of the method and a new Playground with the example code to evaluate will open. Just follow the instructions and have fun.
+
 
 
 
