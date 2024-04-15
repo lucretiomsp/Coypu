@@ -293,6 +293,12 @@ Integer >> randoms [
 ]
 
 { #category : #'*Coypu' }
+Integer >> rests [
+	" retuns a Sequencer of gates size = self with all zeros / to create long rests "
+^ (Array new: self withAll: 0) asRhythm asSeq .
+]
+
+{ #category : #'*Coypu' }
 Integer >> rumba [
 " create an array of self size of Cuban rumba rhytm pulses. Better if used with self = 16 x anInteger "
 | pattern |
@@ -477,10 +483,4 @@ rhythm := ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size)
 Integer >> upbeats [
 "creates an Array of size=self  of values (0,1) with 1 to the position corresponding to a 4/4 upbeat rhythm"
 	^ ((1 to: self) collect: [ :i | (((i rem: 4) = 3)) asBit ]) asRhythm asSeq.
-]
-
-{ #category : #'*Coypu' }
-Integer >> zeros [
-	" retuns a Sequencer of gates size = self with all zeros / to create long rests "
-^ (Array new: self withAll: 0) asRhythm asSeq .
 ]
