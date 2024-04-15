@@ -26,7 +26,7 @@ evaluate this line of code by placing the cursor on it and pressing <mark>Cmd+En
 Download the [sc-3 plugins](https://github.com/supercollider/sc3-plugins/releases)
 Unzip the release and move it to your SuperCollider extensions folder. You can find it by evaluating in SuperCollider:
 ```cplusplus
-Platform.userExtensionDir
+Platform.userExtensionDir;
 ```
 If the folder does not exist, create it yourself. You can do this in your operating system's file explorer or from within SuperCollider by evaluating:
 ```cplusplus
@@ -43,13 +43,13 @@ Now you are ready to have fun with Pharo and Coypu; launch Pharo and open a Play
 p := Performance uniqueInstance.
 "Assign a SuperDirt Performer to the Performance"
 p performer: PerformerSuperDirt new.
-"If you want you can change the spee of the Performance -- don't forget the bpm !!!
+"If you want you can change the spee of the Performance -- don't forget the bpm !!! "
 p freq: 138 bpm.
 ```
 Evaluate all these lines of code by selectimg them and pressing <mark>Cmd+D</mark>.  
 Add 16 steps of rumba the lt(stand for LowTom) track of your Performance by evaluating:
 ```Smalltalk
-16 rumba to: #conga.
+16 rumba to: #casio.
 ```
 Now let's play the Perfomance for 4 bars, by evaluating:
 ```Smalltalk
@@ -58,8 +58,8 @@ p playFor: 4 bars.
 ```
 Now we can add a four-to-the-floor Bass Drum(bd) and a Closed High-Hat (ch) to our Performance:
 ```Smalltalk
-16 downbeats to: #bd.
-16 upbeats to: #ch.
+16 downbeats to: #kick.
+16 upbeats to: #hh.
 ```
 and play it for 16 bars:
 ```Smalltalk
