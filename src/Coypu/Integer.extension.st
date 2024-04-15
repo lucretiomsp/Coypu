@@ -482,5 +482,5 @@ Integer >> upbeats [
 { #category : #'*Coypu' }
 Integer >> zeros [
 	" retuns a Sequencer of gates size = self with all zeros / to create long rests "
-^ (Array new: self withAll: 0) asRhythm asSeq asSeq.
+^ (Array new: self withAll: 0) asRhythm asSeq .
 ]
