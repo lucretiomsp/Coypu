@@ -165,9 +165,10 @@ Performance >> bpm [
 ]
 
 { #category : #accessing }
-Performance >> bpm: aRateInSeconds [
+Performance >> bpm: aBPM [
+" sets the fre of the performance in beats per minutes"
 
-	bpm := 60 / 4 / (aRateInSeconds ).
+self freq: aBPM bpm
 ]
 
 { #category : #accessing }
@@ -206,9 +207,7 @@ Performance >> freq1: anObject [
 
 { #category : #accessing }
 Performance >> freq: aDurationInSeconds [
-
 	"use for playback speed"
-
 	freq := aDurationInSeconds asFloat
 ]
 
