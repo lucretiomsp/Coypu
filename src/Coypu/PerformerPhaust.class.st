@@ -28,7 +28,7 @@ PerformerPhaust >> playFor: aNumberOfSteps [
 				  'There must be an active DSP for this performance' ]
 		ifNotNil: [
 			performance bpm: 60 / (performance freq * 4).
-			performance transportStep: 1.
+			performance transportStep: 0.
 			performance activeProcess: ([
 				 aNumberOfSteps timesRepeat: [
 					 (Delay forSeconds: performance freq) wait.
@@ -39,7 +39,7 @@ PerformerPhaust >> playFor: aNumberOfSteps [
 							 ifTrue: [
 								 seq playPhaustEventAt: seq noteIndex. "delta!!!!"
 								 "increment note Index"
-								 seq noteIndex: seq noteIndex + 1]
+								 seq noteIndex: seq noteIndex + 1 ]
 							 ifFalse: [ nil ] ] ] forkAt: Processor timingPriority.
 
 					 "step is incremented anyway"
