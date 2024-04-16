@@ -99,6 +99,31 @@ Array >> asMonoSeq [
 ]
 
 { #category : #'*Coypu' }
+Array >> asNotes [
+	"convert an array of MIDI note numbers into a Sequencer where 0 corresponds to rests"
+
+	| seq allTrigs validTrigs validNotes allValues |
+	allTrigs := OrderedCollection new.
+
+
+	allValues := OrderedCollection new.
+	self do: [ :i |
+		i isArray
+			ifTrue: [
+				allTrigs addAll: i.
+				allValues addAll: i ]
+			ifFalse: [
+				allTrigs add: i.
+				allValues add: i ] ].
+	validTrigs := allTrigs collect: [ :i | i isZero not asInteger ].
+
+	validNotes := allValues reject: [ :i | i = 0 ].
+	seq := validTrigs asDirtArray asSeq notes: validNotes asDirtArray.
+
+	^ seq
+]
+
+{ #category : #'*Coypu' }
 Array >> asRhythm [
 " convert Array into a Rhythm"
 | rhythm |
@@ -148,12 +173,14 @@ algorithm based on the Bresenham approach"
 
 { #category : #'*Coypu' }
 Array >> fullScale [
-| x numberOfOctaves|
-numberOfOctaves := 6.
 
-x  := OrderedCollection  new.
-1 to: numberOfOctaves  do: [ :i | x addAll: (self + (self size * i) ) ].
-^  x
+"expands a Scale into the full MIDI keyboard range"
+	| x numberOfOctaves |
+	numberOfOctaves := 6.
+
+	x := OrderedCollection new.
+	1 to: numberOfOctaves do: [ :i | x addAll: self + (self size * i) ].
+	^ x
 ]
 
 { #category : #'*Coypu' }
@@ -177,28 +204,6 @@ Array >> into: anotherArray [
 Array >> isSequencer [
 
 	^ false
-]
-
-{ #category : #'*Coypu' }
-Array >> notes [
-
-	"convert an array of MIDI note numbers into a Sequencer where 0 corresponds to rests"
-
-	| seq allTrigs validTrigs validNotes allValues |
-	allTrigs := OrderedCollection new.
-	
-
-	allValues := OrderedCollection new.
-	self do: [ :i | 
-		i isArray
-			ifTrue: [allTrigs addAll: i . allValues addAll: i ]
-			ifFalse: [ allTrigs add: i. allValues add: i ] ].
-	validTrigs := allTrigs collect: [ :i | i isZero not asInteger ].
-
-	validNotes := allValues reject: [ :i | i = 0 ].
-	seq := validTrigs asDirtArray asSeq notes: validNotes asDirtArray.
-	seq cycleDurations: self asCycleDurations.
-	^ seq
 ]
 
 { #category : #'*Coypu' }

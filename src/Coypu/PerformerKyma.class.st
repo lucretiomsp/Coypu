@@ -32,6 +32,8 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 			 (Delay forSeconds: performance freq) wait.
 			 "sequencers scan"
 			 [
+			 'Kyma perf running ' traceCr.
+			 performance freq traceCr.
 			 performance valuesDo: [ :seq |
 				 (seq gates wrap: performance transportStep) = 1
 					 ifTrue: [

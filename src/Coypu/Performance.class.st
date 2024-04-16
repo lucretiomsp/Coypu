@@ -165,10 +165,8 @@ Performance >> bpm [
 ]
 
 { #category : #accessing }
-Performance >> bpm: aBPM [
-" sets the fre of the performance in beats per minutes"
-
-self freq: aBPM bpm
+Performance >> bpm: aRateInSeconds [
+	bpm := 60 / 4 / (aRateInSeconds ).
 ]
 
 { #category : #accessing }
