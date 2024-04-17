@@ -675,10 +675,13 @@ Sequencer >> notes: anArrayOfNotes mode: anArrayOfModes to: aKeyInPerformance [
 { #category : #'LiveCoding - sequencer' }
 Sequencer >> notes: anArrayOfNotes to: aKeyInThePerformance [
 	" convenience method to fill keys in performance without using too many parenthesis"
+
 	| p |
-	p := Performance uniqueInstance .
-	self to: aKeyInThePerformance .
-	aKeyInThePerformance notes: anArrayOfNotes  
+	p := Performance uniqueInstance.
+	self to: aKeyInThePerformance.
+	aKeyInThePerformance notes: anArrayOfNotes.
+	"for SuperDirt"
+	self dirtMessage at: 'n' put: anArrayOfNotes 
 ]
 
 { #category : #accessing }

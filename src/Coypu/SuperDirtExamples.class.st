@@ -78,6 +78,76 @@ p playFor: 16 bars.
 ]
 
 { #category : #'examples - simple' }
+SuperDirtExamples >> randomotes101 [
+
+	<script: ' self new dirtNotes101'>
+	| content |
+	content := '
+"###########################################################################"
+
+"OPEN SUPERCOLLIDER"
+"TYPE: SuperDirt.start;"
+"EVALUATE IT - CMD+ENTER"
+"###########################################################################"
+
+"we assing the PerformerSuperDirt to the uniqueInstance of Performance"
+p := Performance uniqueInstance .
+p performer: PerformerSuperDirt new. 
+
+" set the speed of the performance"
+p freq: 128 bpm.
+
+
+"as we have seen in the previous example, diffferent things happen if we have more trigs or more notes"
+
+''888a'' hexBeat dirtNotes: ''0 * 4 , 3 , 3 * 4 , 5 , 5 * 4 , 6 , 6 * 4 , 5'' ; to: #superreese.
+
+p playFor: 32 bars.
+
+"now try this"
+16 semiquavers dirtNotes: '' -3 -7 4''; to: #superreese.
+
+p playFor: 16 bars.
+
+"we can add a timeline with a snare drum (sd) for rhythmic reference"
+16 downbeats to: #sd.
+p playFor: 16 bars.
+
+"now lets mute the superreese sound (https://en.wikipedia.org/wiki/Kevin_Saunderson#Reese_bass) and let explore a different syntax for random melodies"
+p mute: #superreese.
+
+"explore by yourself the randomNotesFrom: octaves: method so see what happens behind the scenes :)"
+#(5 16) euclidean notes: (64 randomNotesFrom: #(-4 -7 -8 -5)  octaves: 2)  to: #superfm.
+p playFor: 32 bars.
+
+"the Sequencer method named notes: needs an array as argument - you can create an array  of intervals by sending messages to the Scale class"
+16 semiquavers notes: (64 randomNotesFrom: Scale enigmatic  octaves: 2)  to: #superfm.
+p playFor: 16 bars.
+
+"the keyword messages for the Scale class allow to decide the base note of the interval"
+16 semiquavers notes: (64 randomNotesFrom: (Scale blues: -24 ) octaves: 3)  to: #superfm.
+p playFor: 32 bars.
+
+"lets mute the superfm sound and the bass drum and discover about the random wlker"
+p mute: #superfm.
+p mute: #sd.
+"and lets make the performance faster"
+p freq: 168 bpm.
+
+"we can create an array of notes with a random walk (https://en.wikipedia.org/wiki/Random_walk)"
+(128 randomTrigsWithProbability: 70) notes: (256 randomWalksOn: (Scale minor: -24) fullScale ) to: #supermandolin.
+
+" the message full scale extends the scale for 128 values"
+p playFor: 32 bars.
+
+
+
+'.
+
+	^ StPlayground openContents: content
+]
+
+{ #category : #'examples - simple' }
 SuperDirtExamples >> techno101 [
 
 	<script: ' self new techno101'>
