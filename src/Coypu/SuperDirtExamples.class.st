@@ -27,8 +27,8 @@ SuperDirtExamples >> dirtNotes101 [
 p := Performance uniqueInstance .
 p performer: PerformerSuperDirt new. 
 
-" set the bpm of the performance"
-p bpm: 128.
+" set the speed of the performance"
+p freq: 128 bpm.
 
 "in SuperDirt there are many synthesizer available that you can reach if you assign a sequender to a key corresponding to the name of the synth - you can get a list of the synths by inspecting"
 SuperDirt listOfSynths. 
