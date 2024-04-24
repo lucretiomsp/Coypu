@@ -401,7 +401,7 @@ Performance >> playKymaSequencFor: aNumberOfSteps [
 	" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
 an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 
-	| step bpm beatInSeconds gateTime |
+	| step beatInSeconds gateTime |
 	'x' asPacaAddress. "if PacaAddress is not stored yet"
 	self resetAllSequencers. "reset all the sequencers"
 	"as in early hardware sequencers, default gatetime is 80% of the step duration"
@@ -479,7 +479,7 @@ Performance >> playKymaSequenceAt: aRateInSeconds for: aNumberOfSteps [
 	" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
 an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 
-	| step bpm beatInSeconds gateTime |
+	| step beatInSeconds gateTime |
 	'x' asPacaAddress. "if PacaAddress is not stored yet"
 	self resetAllSequencers. "reset all the sequencers"
 	"as in early hardware sequencers, default gatetime is 80% of the step duration"
@@ -559,7 +559,7 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 
 	"if the value in the dictionay is a Sequencer, an OSC message is sent to the key as OSC address with two arguments, one for the gate, and one for the note. the gate stays at 1 for the duration selected."
 
-	| step bpm beatInSeconds gateTime |
+	| step beatInSeconds gateTime |
 	bpm := 60 / (aRateInSeconds * 4).
 	gateTime := aRateInSeconds * 0.8.
 	beatInSeconds := aRateInSeconds * 4.
