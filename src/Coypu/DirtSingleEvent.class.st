@@ -53,9 +53,10 @@ self dirtMessage add: 'gain'; add: anInteger
 ]
 
 { #category : #initialization }
-DirtSingleEvent >> initialize [ 
-super initialize .
-dirtMessage := OrderedCollection new add: '/dirt/play'; yourself.
+DirtSingleEvent >> initialize [
+
+	super initialize.
+	dirtMessage := OrderedCollection new add: '/dirt/play'; yourself.
 
 ]
 

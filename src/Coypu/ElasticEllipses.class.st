@@ -23,6 +23,7 @@ ElasticEllipses >> color: anObject [
 { #category : #accessing }
 ElasticEllipses >> initialize [
 
+	super initialize.
 	color := Color black
 ]
 
