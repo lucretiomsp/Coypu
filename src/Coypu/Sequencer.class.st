@@ -367,8 +367,8 @@ Sequencer >> extra1String [
 
 { #category : #accessing }
 Sequencer >> extra1String: aString [
-"allows the definition of extra1 sufffix"
-extra1String := aString.
+	"allows the definition of extra1 sufffix"
+	extra1String := aString.
 ]
 
 { #category : #accessing }
@@ -485,8 +485,8 @@ Sequencer >> index: anArrayOfIndexes [
 Sequencer >> index: anArrayOfIndexes to: aKeyInPerformance [
 	"convenience method to avoid extra parenthesis to put a sequencer of gates with sample indexes into a performance"
 	| p |
-	p := Performance uniqueInstance .
-	self to: aKeyInPerformance .
+	p := Performance uniqueInstance.
+	self to: aKeyInPerformance.
 	aKeyInPerformance indexes: anArrayOfIndexes 
 ]
 
@@ -851,19 +851,19 @@ if you want to send out ccs
 { #category : #'LiveCoding  - SuperDirt' }
 Sequencer >> playFullDirtEventAt: anIndex [
 
-self subclassResponsibility .
+	self subclassResponsibility
 ]
 
 { #category : #'LiveCoding  - SuperDirt' }
 Sequencer >> playFullDirtEventAt: anIndex delta: aRateInSeconds [
 
 	"sends a mesaage to SuperDirt with all the desired OSC arguments and values" 
-| message dur |
-message := OrderedCollection new.
-message add: '/dirt/play'.
-dur := self durations asDirtArray  wrap: anIndex .
-message add: 'delta'; add: (aRateInSeconds * dur) asFloat asDirtArray . 
-dirtMessage keysAndValuesDo:  [ :key :value | message add: key; add: (value asDirtArray  wrap: anIndex ) ].
+	| message dur |
+	message := OrderedCollection new.
+	message add: '/dirt/play'.
+	dur := self durations asDirtArray  wrap: anIndex .
+	message add: 'delta'; add: (aRateInSeconds * dur) asFloat asDirtArray . 
+	dirtMessage keysAndValuesDo:  [ :key :value | message add: key; add: (value asDirtArray  wrap: anIndex ) ].
 
 	"| index sound message  delta|
 	index := 'n' -> (self samplesIndex wrap: anIndex) asFloat.
@@ -872,7 +872,7 @@ dirtMessage keysAndValuesDo:  [ :key :value | message add: key; add: (value asDi
    message := OrderedCollection new.
 message addAll: { '_id' . '1' . 'cps' . 0.56 . 'delta' . 0.125 . 'orbit' . 0 . 's' . sound . 'n' . index}. "
 
-	message asOSCMessageForSuperDirt .
+	message asOSCMessageForSuperDirt.
 	^ true 
 ]
 
@@ -880,13 +880,15 @@ message addAll: { '_id' . '1' . 'cps' . 0.56 . 'delta' . 0.125 . 'orbit' . 0 . '
 Sequencer >> playFullDirtEventAt: anIndex port: aPort [
 
 	"sends a mesaage to SuperDirt with all the desired OSC arguments and values" 
-| message dur |
-message := OrderedCollection new.
-message add: '/dirt/play'.
-dur := self durations asDirtArray  wrap: anIndex .
+	| message dur |
+	message := OrderedCollection new.
+	message add: '/dirt/play'.
+	dur := self durations asDirtArray  wrap: anIndex .
 
-message add: 'delta'; add: 0.123. "delta should change"
-dirtMessage keysAndValuesDo:  [ :key :value | message add: key; add: (value asDirtArray  wrap: anIndex ) ].
+	message 
+		add: 'delta'; 
+		add: 0.123. "delta should change"
+	dirtMessage keysAndValuesDo:  [ :key :value | message add: key; add: (value asDirtArray  wrap: anIndex ) ].
 
 	"| index sound message  delta|
 	index := 'n' -> (self samplesIndex wrap: anIndex) asFloat.
@@ -895,20 +897,22 @@ dirtMessage keysAndValuesDo:  [ :key :value | message add: key; add: (value asDi
    message := OrderedCollection new.
 message addAll: { '_id' . '1' . 'cps' . 0.56 . 'delta' . 0.125 . 'orbit' . 0 . 's' . sound . 'n' . index}. "
 
-	(OSCBundle for: {  OSCMessage for: message  }  )  sendToAddressString: '127.0.0.1' port: aPort.
+	(OSCBundle for: {  OSCMessage for: message  }  ) 
+		sendToAddressString: '127.0.0.1' 
+		port: aPort.
 	^ true 
 ]
 
 { #category : #'LiveCoding - Performance' }
 Sequencer >> playLocalEventAt: anIndex [
 
-self subclassResponsibility 
+	self subclassResponsibility 
 ]
 
 { #category : #'LiveCoding - Performance' }
 Sequencer >> playMIDIEventAt: anIndex [
 
-self subclassResponsibility 
+	self subclassResponsibility 
 ]
 
 { #category : #'LiveCoding  - SuperDirt' }
@@ -960,7 +964,6 @@ Sequencer >> progression: anArrayOfIntervals [
 
 { #category : #'as yet unclassified' }
 Sequencer >> randomCounterPoint [
-
 	" creates aSequencer of trigs randomly counterpointed with self array"
 
 	| newArray |
@@ -974,8 +977,8 @@ Sequencer >> randomCounterPoint [
 
 { #category : #'LiveCoding  - SuperDirt' }
 Sequencer >> randomSamplesFromFolder: aStringForAFolderOfSamples [
-"returns a random number (between 2 and 512) of indexes from the selected folder inside Dirt-Samples"
-| randIndex folder folderSize|
+	"returns a random number (between 2 and 512) of indexes from the selected folder inside Dirt-Samples"
+	| randIndex folder folderSize|
 	randIndex := Random new nextIntegerBetween: 2 and:  512.
 	folder := SuperDirt samplesFolder / aStringForAFolderOfSamples .
 	folderSize := folder asFileReference allChildren size. 
@@ -984,8 +987,10 @@ Sequencer >> randomSamplesFromFolder: aStringForAFolderOfSamples [
 
 { #category : #'LiveCoding  - SuperDirt' }
 Sequencer >> rel: aFloatOrAnArray [
-" add release ASR envelope pattern to the Sequencer"
-	self dirtMessage at: 'rel' put:  aFloatOrAnArray   asDirtArray
+	" add release ASR envelope pattern to the Sequencer"
+	self dirtMessage 
+		at: 'rel' 
+		put:  aFloatOrAnArray   asDirtArray
 ]
 
 { #category : #'LiveCoding  - SuperDirt' }
