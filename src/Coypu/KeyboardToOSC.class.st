@@ -19,7 +19,7 @@ Class {
 { #category : #'instance creation' }
 KeyboardToOSC class >> newWithAddress: anAddress [
 
-	^ (self new) 
+	^ self new
 		label: anAddress ;
 		address: anAddress ;
 		yourself

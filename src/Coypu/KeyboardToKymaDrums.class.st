@@ -15,11 +15,10 @@ Class {
 { #category : #'instance creation' }
 KeyboardToKymaDrums class >> newWithAddresses: anArrayofAddresses [
 
-| labels |
-
-labels := String new.
-(1 to: anArrayofAddresses size) do: [:i | labels := labels, (anArrayofAddresses at: i), ' ' ].
-	^ (self new) 
+	| labels |
+	labels := String new.
+	(1 to: anArrayofAddresses size) do: [:i | labels := labels, (anArrayofAddresses at: i), ' ' ].
+	^ self new 
 		createKeyDictionary; 
 		label: labels;
 		arrayOfAddresses:  anArrayofAddresses  ;
