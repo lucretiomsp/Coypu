@@ -32,8 +32,8 @@ KeyboardToOSC >> address [
 
 { #category : #accessing }
 KeyboardToOSC >> address: aStringAddress [
-address := aStringAddress.
-^ aStringAddress.
+	address := aStringAddress.
+	
 ]
 
 { #category : #'as yet unclassified' }
