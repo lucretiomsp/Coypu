@@ -142,13 +142,6 @@ self list keysDo:  [ :i | i traceCr ].
 Transcript open.
 ]
 
-{ #category : #initialization }
-Chord >> initialize [ 
-super initialize .
-
-
-]
-
 { #category : #generating }
 Chord >> randomize: aNumber [
 	

@@ -4,11 +4,6 @@ Class {
 	#category : #'Coypu-KeyboardControl'
 }
 
-{ #category : #initialization }
-KeyboardToKyma >> initialize [ 
-super initialize.
-]
-
 { #category : #'event handling' }
 KeyboardToKyma >> keyDown: anEvent [
 
