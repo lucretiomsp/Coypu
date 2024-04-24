@@ -43,22 +43,22 @@ Rhythm class >> random: aNumber [
 	^ (1 to: aNumber) collect: [ :i | (r next ) printShowingDecimalPlaces: 2].
 ]
 
-{ #category : #'bit manipulation' }
+{ #category : #compose }
 Rhythm >> >> anArray [
-" same as and: anArray, but rewritten to test precedence improvement"
-"returns Sequencer with default note 60nn and default durations 1/16th and noteIndex = 0"
-^ (Sequencer with: self with: anArray with: #(0.125) with: 0 )
+	" same as and: anArray, but rewritten to test precedence improvement"
+	"returns Sequencer with default note 60nn and default durations 1/16th and noteIndex = 0"
+	
+	^ (Sequencer with: self with: anArray with: #(0.125) with: 0 )
 ]
 
-{ #category : #controlling }
+{ #category : #compose }
 Rhythm >> and: anArray [
-"returns Sequencer with default note 60nn and default durations 1/16th and noteIndex = 0"
-^ (Sequencer with: self with: anArray with: #(0.125) with: 0 )
+	"returns Sequencer with default note 60nn and default durations 1/16th and noteIndex = 0"
+	^ (Sequencer with: self with: anArray with: #(0.125) with: 0 )
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #compose }
 Rhythm >> and: anArrayOfNotes and: anArrayOfDurations [
-
 	"returns Sequencer with default note 60nn and default durations 1/16th"
 
 	^ Sequencer new gates: self ; notes: anArrayOfNotes; durations: anArrayOfDurations
@@ -95,7 +95,7 @@ Rhythm >> printOn: aStream [
 	aStream print: self asDirtArray 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #random }
 Rhythm >> randomInts: anArrayWithRangeAndMin [
 
 	"return an array of self size with random integers with range [anArrayWithRangeAndMin at: 1 +  anArrayWithRangeAndMin at: 2]"
@@ -109,7 +109,7 @@ Rhythm >> randomInts: anArrayWithRangeAndMin [
 	^ Sequencer new gates: self; notes: result
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #random }
 Rhythm >> randomNotesFrom: anArray [
 
 	"return an array of self size of random notes from anArray"
@@ -121,7 +121,7 @@ Rhythm >> randomNotesFrom: anArray [
 	^ Sequencer new notes: self; gates: result
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #random }
 Rhythm >> randomNotesFrom: anArray octaves: aNumber [
 
 	"return an array of self size of a random note from anArray + a random octave between 0 and aNumber"
