@@ -109,8 +109,8 @@ the first element of the array should be a string - for example 'Index'' - the s
 
 { #category : #comparing }
 Sequencer >> = anotherSequencer [ 
-" equality between sequencers"
-((self notes = anotherSequencer notes) & (self gates = anotherSequencer gates) & (self durations = anotherSequencer durations) & (self extra1 = anotherSequencer extra1) & (self extra2 = anotherSequencer extra2)) ifTrue: [ ^ true ] ifFalse: [ ^ false ]
+	" equality between sequencers"
+	^ ((self notes = anotherSequencer notes) & (self gates = anotherSequencer gates) & (self durations = anotherSequencer durations) & (self extra1 = anotherSequencer extra1) & (self extra2 = anotherSequencer extra2))
 ]
 
 { #category : #addNotesToGates }
@@ -350,13 +350,13 @@ Sequencer >> extra1: aSymbol values: anArrayOfValues [
 
 { #category : #accessing }
 Sequencer >> extra1Size [
-
-"return the size of the array of values for extra1"
-| values |
-values := extra1 at: 2.
+	"return the size of the array of values for extra1"
+	
+	| values |
+	values := extra1 at: 2.
 	^ extra1 notNil
-		  ifTrue: [ ^ values size ]
-		  ifFalse: [ ^ 1 ]
+		  ifTrue: [ values size ]
+		  ifFalse: [ 1 ]
 ]
 
 { #category : #accessing }
@@ -717,23 +717,19 @@ Sequencer >> notesSize [
 
 { #category : #counting }
 Sequencer >> numberOfGates [ 
+	"return number of elements in the Sequencer gates array that are greater than 0"
 
-"return number of elements in the Sequencer gates array that are greater than 0"
-| result size |
-result := (self gates) select: [ :i | i > 0 ].
-size := result size.
-^ size
+	| result |
+	result := (self gates) select: [ :i | i > 0 ].
+	^ result size
 ]
 
 { #category : #counting }
 Sequencer >> numberOfTrigs [
-
 	"return number of elements in the Sequencer gates array that are greater than 0"
-
-	| result size |
-	result := self gates select: [ :i | i > 0 ].
-	size := result size.
-	^ size
+	
+	^ (self gates select: [ :i | i > 0 ]) size
+	
 ]
 
 { #category : #'Sequencer - transformation' }
@@ -1038,13 +1034,10 @@ Sequencer >> seqKey: anObject [
 
 { #category : #counting }
 Sequencer >> size [
-
 	"polysemic version of numberOfTrigs method!!!!. return the number of elements in the Sequencer gates array that are greater than 0"
 
-	| result size |
-	result := self gates select: [ :i | i > 0 ].
-	size := result size.
-	^ size
+	^ (self gates select: [ :i | i > 0 ]) size
+
 ]
 
 { #category : #'LiveCoding  - SuperDirt' }
