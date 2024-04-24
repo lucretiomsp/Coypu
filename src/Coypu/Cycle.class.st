@@ -80,5 +80,5 @@ Cycle >> initialize [
 { #category : #initialization }
 Cycle >> setDuration: aDurationInSeconds [
 
-duration := aDurationInSeconds 
+	duration := aDurationInSeconds 
 ]
