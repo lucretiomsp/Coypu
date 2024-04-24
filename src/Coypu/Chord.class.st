@@ -193,6 +193,7 @@ Chord >> randomize: aNumber withRoot: aRoot [
 
 { #category : #accessing }
 Chord >> root: aNumber [
-" return a Chord with aNumber nn as root"
-^ (self + aNumber).
+	"return a Chord with aNumber nn as root"
+
+	^ (self + aNumber)
 ]
