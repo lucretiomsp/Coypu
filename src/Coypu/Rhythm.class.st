@@ -66,11 +66,12 @@ Rhythm >> and: anArrayOfNotes and: anArrayOfDurations [
 
 { #category : #converting }
 Rhythm >> asDirtArray [ 
-"convert Rhythm into an Array"
-| array |
-array := Array new: (self size).
-( 1 to: (self size)) do:[:i | array at: i put: (self at: i)].
-^ array
+	"convert Rhythm into an Array"
+	
+	| array |
+	array := Array new: self size.
+	( 1 to: self size) do: [ :i | array at: i put: (self at: i)].
+	^ array
 ]
 
 { #category : #'sequencer creation' }
@@ -81,11 +82,14 @@ Rhythm >> notes: anArray [
 
 { #category : #accessing }
 Rhythm >> offset: aNumber [
-"offset the rhythm by aNumber of 'steps' wrapping it around its size"
-| newRhythm |
-newRhythm := Rhythm new: (self size).
-0 to: ((self size) - 1) do: [ :i | newRhythm at: ((i + aNumber) modulo: (self size)) put: (self at: i + 1)].
-^ newRhythm .
+	"offset the rhythm by aNumber of 'steps' wrapping it around its size"
+	| newRhythm |
+	newRhythm := Rhythm new: self size.
+	0 to: ((self size) - 1) do: [ :i | 
+			newRhythm 
+				at: ((i + aNumber) modulo: self size) 
+				put: (self at: i + 1)].
+	^ newRhythm
 
 ]
 
