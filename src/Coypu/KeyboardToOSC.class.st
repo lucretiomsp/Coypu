@@ -101,15 +101,15 @@ KeyboardToOSC >> fillNoteListDictionary [
 
 { #category : #'event handling' }
 KeyboardToOSC >> handlesKeyDown: anEvent [
-| debug kv |
-"keyboard up arrow = 30, keyboard down arrow = 31"
-debug := self keyAsMIDINoteNumber: anEvent.
-key := self keyAsMIDINoteNumber: anEvent.
- .
-kv :=  anEvent keyValue.
-(kv = 30) ifTrue: [  octave := octave + 1] ifFalse: [(kv = 31) ifTrue: [octave := octave -1] ifFalse: [ nil]].
- Transcript show: (key + (octave * 12)) asString, ' '.
-^ true
+	| debug kv |
+	"keyboard up arrow = 30, keyboard down arrow = 31"
+	debug := self keyAsMIDINoteNumber: anEvent.
+	key := self keyAsMIDINoteNumber: anEvent.
+
+	kv :=  anEvent keyValue.
+	(kv = 30) ifTrue: [  octave := octave + 1] ifFalse: [(kv = 31) ifTrue: [octave := octave -1] ifFalse: [ nil]].
+ 	Transcript show: (key + (octave * 12)) asString, ' '.
+	^ true
 ]
 
 { #category : #'event handling' }
