@@ -177,11 +177,12 @@ KeyboardToOSC >> keyAsMIDINoteNumber: anEvent [
 { #category : #'event handling' }
 KeyboardToOSC >> keyDown: anEvent [
 
-
-key := self keyAsMIDINoteNumber: anEvent.
-"key = 60 ifTrue: [ self color: Color yellow ]."
-" if the key pressed corresponds to a MIDI note"
-((key ~= -1) & isHandlingKeyDown) ifTrue: [  address toLocalAsGate: 0.1 note: key + (octave * 12)] ifFalse:[nil]
+	key := self keyAsMIDINoteNumber: anEvent.
+	"key = 60 ifTrue: [ self color: Color yellow ]."
+	" if the key pressed corresponds to a MIDI note"
+	((key ~= -1) & isHandlingKeyDown) 
+		ifTrue: [  address toLocalAsGate: 0.1 note: key + (octave * 12)] 	
+		
 ]
 
 { #category : #'event handling' }
@@ -207,8 +208,10 @@ KeyboardToOSC >> mouseLeave: anEvent [
 { #category : #'event handling' }
 KeyboardToOSC >> mouseWheel: anEvent [
 
-anEvent isUp ifTrue: [ mouseWheelValue  := mouseWheelValue  -1. mouseWheelValue  toKyma: 'SawDetune'] ifFalse: [ nil ].
-anEvent isDown ifTrue: [ mouseWheelValue  := mouseWheelValue  +1. mouseWheelValue  toKyma: 'SawDetune'] ifFalse: [ nil ].
+	anEvent isUp 
+		ifTrue: [ mouseWheelValue  := mouseWheelValue  -1. mouseWheelValue  toKyma: 'SawDetune'].
+	anEvent isDown 
+		ifTrue: [ mouseWheelValue  := mouseWheelValue  +1. mouseWheelValue  toKyma: 'SawDetune'].
 ]
 
 { #category : #accessing }
