@@ -472,7 +472,7 @@ Sequencer >> hold: aFloatOrAnArray [
 { #category : #'accessing - sequencer' }
 Sequencer >> index [
 
-	^ (self extra1 at: 2)
+	^ self extra1 at: 2
 ]
 
 { #category : #'LiveCoding - sequencer' }
