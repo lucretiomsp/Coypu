@@ -69,10 +69,10 @@ PerformanceTest >> testBwToKey [
 { #category : #tests }
 PerformanceTest >> testDirtNotesToKey [
 
-| seq |
-seq := 16 downbeats sound: 'arpy' dirtNotes: #(60 61 62 63) to: #aKeyInPerf.
+	| seq |
+	seq := 16 downbeats sound: 'arpy' dirtNotes: #(60 61 62 63) to: #aKeyInPerf.
 
-self assert: seq samplesIndex equals: #(0 1 2 3)
+	self assert: seq samplesIndex equals: #(0 1 2 3)
 ]
 
 { #category : #tests }
@@ -166,21 +166,21 @@ PerformanceTest >> testMidiChToKey [
 	| p |
 	p := Performance uniqueInstance.
 	16 downbeats midiCh: 2 to: #synth.
-	.
+
 	self assert: (p at: #synth) midiChannel  equals: 2
 ]
 
 { #category : #tests }
 PerformanceTest >> testMuteAll [
-| p |
-p := Performance uniqueInstance .
-p at: #kick put: 16 downbeats .
-p at: #snare put: 16 upbeats.
-p at: #ch put: 16 quavers.
-p at: #oh put: 16 semiquavers.
+	| p |
+	p := Performance uniqueInstance .
+	p at: #kick put: 16 downbeats .
+	p at: #snare put: 16 upbeats.
+	p at: #ch put: 16 quavers.
+	p at: #oh put: 16 semiquavers.
 
-p muteAll.
-self assert: p isEmpty equals: true
+	p muteAll.
+	self assert: p isEmpty equals: true
 ]
 
 { #category : #tests }
@@ -345,7 +345,6 @@ PerformanceTest >> testSequencerPlaysImmediately [
 	| perf |
 	perf := Performance new.
 	16 downbeats to: #kick.
-	
 	self assert: (perf at: #kick) equals: 16 downbeats
 	
 ]
@@ -353,10 +352,10 @@ PerformanceTest >> testSequencerPlaysImmediately [
 { #category : #tests }
 PerformanceTest >> testStringOfHexToPerformance [
 
-| p |
-p := Performance uniqueInstance .
-'8888' to: #kick.
-self assert: (p at: #kick) equals: '8888' pattern
+	| p |
+	p := Performance uniqueInstance.
+	'8888' to: #kick.
+	self assert: (p at: #kick) equals: '8888' pattern
 ]
 
 { #category : #tests }

@@ -17,18 +17,18 @@ Class {
 
 { #category : #initialization }
 Performer >> initialize [ 
-super initialize .
-performance :=  Performance uniqueInstance .
-freq := performance freq.
-fourDaysAt120BPM  := 4 days asMilliSeconds / ((60/ 120) /4)
+	super initialize.
+	performance := Performance uniqueInstance.
+	freq := performance freq.
+	fourDaysAt120BPM := 4 days asMilliSeconds / ((60/ 120) /4)
 ]
 
 { #category : #playing }
 Performer >> play [ 
-self subclassResponsibility 
+	self subclassResponsibility 
 ]
 
 { #category : #playing }
 Performer >> playFor: aNumberOfSteps [ 
-self subclassResponsibility 
+	self subclassResponsibility 
 ]

@@ -19,7 +19,7 @@ MIDIReceiver >> defaultInput [
 
 { #category : #accessing }
 MIDIReceiver >> defaultInput: anInput [
-defaultInput := anInput.
+	defaultInput := anInput.
 ]
 
 { #category : #'as yet unclassified' }

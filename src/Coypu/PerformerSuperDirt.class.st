@@ -9,8 +9,8 @@ Class {
 
 { #category : #playing }
 PerformerSuperDirt >> play [
-"play the performance for almost 4 days at 120 bpm"
-self playDirtFor: fourDaysAt120BPM 
+	"play the performance for almost 4 days at 120 bpm"
+	self playDirtFor: fourDaysAt120BPM 
 ]
 
 { #category : #playing }

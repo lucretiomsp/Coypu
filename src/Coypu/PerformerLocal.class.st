@@ -9,7 +9,7 @@ Class {
 
 { #category : #playing }
 PerformerLocal >> play [
-self playLocalSequenceAt:  132 bpm for: fourDaysAt120BPM  
+	self playLocalSequenceAt:  132 bpm for: fourDaysAt120BPM  
 ]
 
 { #category : #accessing }

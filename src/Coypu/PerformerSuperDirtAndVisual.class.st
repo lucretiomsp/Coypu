@@ -10,7 +10,7 @@ Class {
 
 { #category : #playing }
 PerformerSuperDirtAndVisual >> play [ 
-self playDirtAndVisual 
+	self playDirtAndVisual 
 ]
 
 { #category : #'as yet unclassified' }

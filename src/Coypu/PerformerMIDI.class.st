@@ -24,7 +24,7 @@ PerformerMIDI class >> midiOut: aMIDISender [
 
 { #category : #playing }
 PerformerMIDI >> play [
-self shouldBeImplemented 
+	self shouldBeImplemented 
 ]
 
 { #category : #playing }

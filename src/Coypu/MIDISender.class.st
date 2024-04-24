@@ -20,8 +20,8 @@ Class {
 { #category : #'as yet unclassified' }
 MIDISender >> allNotesOff [
 
-1 to: 16 do: [ :i | 
-self sendCC: 123 withValue: 0 onChannel: i]
+	1 to: 16 do: [ :i | 
+		self sendCC: 123 withValue: 0 onChannel: i]
 ]
 
 { #category : #initialization }

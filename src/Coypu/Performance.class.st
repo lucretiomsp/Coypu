@@ -97,12 +97,12 @@ Performance >> Dictionary [  Variable or expression expected -><< #Performance
 
 { #category : #accessing }
 Performance >> activeDSP [
-^ activeDSP 
+	^ activeDSP 
 ]
 
 { #category : #accessing }
 Performance >> activeDSP: aDSP [
-activeDSP := aDSP
+	activeDSP := aDSP
 ]
 
 { #category : #accessing }
@@ -120,8 +120,8 @@ Performance >> activeProcess: anObject [
 { #category : #'performance  - adding' }
 Performance >> add: aSequencer channel: anIntegerBetween1And16 [
 
-aSequencer midiChannel: anIntegerBetween1And16. 
-super add: aSequencer.
+	aSequencer midiChannel: anIntegerBetween1And16. 
+	super add: aSequencer.
 ]
 
 { #category : #accessing }
@@ -171,12 +171,12 @@ Performance >> bpm: aRateInSeconds [
 
 { #category : #accessing }
 Performance >> canvas [ 
-^ canvas 
+	^ canvas 
 ]
 
 { #category : #accessing }
 Performance >> canvas: aRSCanvas [
-canvas := aRSCanvas 
+	canvas := aRSCanvas 
 ]
 
 { #category : #accessing }
@@ -187,14 +187,14 @@ Performance >> dirtMIDIDevice [
 
 { #category : #accessing }
 Performance >> dirtMIDIDevice: aString [
-"select a SuperDirt MIDI device for the Performance"
+	"select a SuperDirt MIDI device for the Performance"
 	dirtMIDIDevice := aString
 ]
 
 { #category : #accessing }
 Performance >> freq [
-"better to convert it to Float to avoid OSC sending issues"
-^ freq asFloat
+	"better to convert it to Float to avoid OSC sending issues"
+	^ freq asFloat
 ]
 
 { #category : #accessing }
@@ -216,15 +216,16 @@ Performance >> incrementTransportStep [
 
 { #category : #initialization }
 Performance >> initialize: aSize [
-super initialize: aSize.
-activeProcess := Process new terminate.
-freq := 132 bpm.
+
+	super initialize: aSize.
+	activeProcess := Process new terminate.
+	freq := 132 bpm.
 ]
 
 { #category : #testing }
 Performance >> isPerformance [
 
-^ true
+	^ true
 ]
 
 { #category : #accessing }
@@ -360,18 +361,21 @@ Performance >> performer [
 Performance >> performer: aPerformer [
 "choose a Performer for the Performance"
 " to be safe, it clear the performance"
-Performance uniqueInstance muteAll.
-performer := aPerformer. 
-Performance uniqueInstance muteAll.
+	Performance uniqueInstance muteAll.
+	performer := aPerformer. 
+	Performance uniqueInstance muteAll.
 ]
 
 { #category : #playing }
 Performance >> play [
-" reset all the Sequencers"
-self resetAllSequencers .
+	" reset all the Sequencers"
+	self resetAllSequencers.
 
-"just on performance at once"
-self activeProcess  ifNil:  [ self performer play ] ifNotNil: [(self activeProcess isTerminated )ifTrue: [ self performer play ] ifFalse: [ ] ]
+	"just on performance at once"
+	self activeProcess  
+		ifNil:  [ self performer play ] 
+		ifNotNil: [ (self activeProcess isTerminated )
+							 ifTrue: [ self performer play ] ]
 .
 
 
@@ -603,9 +607,9 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 
 { #category : #removing }
 Performance >> remove: aKey [
-"shorter version of removeKey:"
+	"shorter version of removeKey:"
 
-self removeKey: aKey ifAbsent: [  ] 
+	self removeKey: aKey ifAbsent: [  ] 
 ]
 
 { #category : #initialization }
@@ -692,7 +696,7 @@ Performance >> transportStep: anInteger [
 Performance >> unsolo: aKeyInPerformance [
 	"convenience method to unsolo a key in the performance"
 	
-self restore
+	self restore
 ]
 
 { #category : #accessing }
