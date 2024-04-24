@@ -99,7 +99,6 @@ PerformerSuperDirtAndRoassal >> playFor: aNumberOfSteps [
 	"play the performance to SuperDIrt/SuperCollider audio engine - default freq is 132 bpm 
 	Performance speed can be changed with p freq: a bpm"
 
-	| process |
 	performance bpm: 60 / (performance freq * 4).
 	performance transportStep: 1.
 	performance activeProcess: ([
@@ -116,7 +115,7 @@ PerformerSuperDirtAndRoassal >> playFor: aNumberOfSteps [
 						 
 						 "increment note Index"
 						 seq noteIndex: seq noteIndex + 1 ]
-					 ifFalse: [ nil ] ] ] forkAt: Processor timingPriority.
+					 ] ] forkAt: Processor timingPriority.
 
 			 "step is incremented anyway"
 			 performance incrementTransportStep ] ] forkAt:

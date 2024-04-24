@@ -279,8 +279,7 @@ Performance >> pacaDance [
 
 	"convenience method created for the ICLC2023 performance - it just play the performance at 132 bpm for 4096 bars"
 
-	
-	| aRateInSeconds aNumberOfSteps step bpm beatInSeconds gateTime |
+	| aRateInSeconds aNumberOfSteps step beatInSeconds gateTime |
 	aRateInSeconds := 132 bpm.
 	aNumberOfSteps := 4096 bars.
 	'x' asPacaAddress. "if PacaAddress is not stored yet"
@@ -322,24 +321,21 @@ Performance >> pacaDance [
 								  ifTrue: [ 
 									  (value durations at:
 										   (value noteIndex modulo: value durationsSize)) toKyma:
-										  key asString , 'Duration' ]
-								  ifFalse: [ nil ].
+										  key asString , 'Duration' ].
 
 							  "experimental, for extra control parameter"
 							  value extra1 notNil
 								  ifTrue: [ 
 									  ((value extra1 at: 2) at:
 										   (value noteIndex modulo: value extra1Size)) toKyma:
-										  key asString , (value extra1 at: 1) ]
-								  ifFalse: [ nil ].
+										  key asString , (value extra1 at: 1) ].
 
 							  "new experimental, for second extra control"
 							  value extra2 notNil
 								  ifTrue: [ 
 									  ((value extra2 at: 2) at:
 										   (value noteIndex modulo: value extra2Size)) toKyma:
-										  key asString , (value extra2 at: 1) ]
-								  ifFalse: [ nil ].
+										  key asString , (value extra2 at: 1) ].
 
 
 							  value noteIndex: value noteIndex + 1
@@ -388,11 +384,12 @@ Performance >> play [
 Performance >> playFor: aNumberOfSteps [
 
 
-" reset all the Sequencers"
-self resetAllSequencers .
-
-"just on performance at once"
-( self activeProcess isTerminated) ifTrue: [ self performer playFor: aNumberOfSteps  ] ifFalse:[].
+	" reset all the Sequencers"
+	self resetAllSequencers.
+	
+	"just on performance at once"
+	( self activeProcess isTerminated) 
+		ifTrue: [ self performer playFor: aNumberOfSteps  ]
 
 
 ]
@@ -620,8 +617,7 @@ Performance >> resetAllSequencers [
 
 	self keysAndValuesDo: [ :key :value |
 		value isSequencer
-			ifTrue: [ value noteIndex: 1 ]
-			ifFalse: [ nil ] ]
+			ifTrue: [ value noteIndex: 1 ] ]
 ]
 
 { #category : #'LiveCoding - Performance' }
