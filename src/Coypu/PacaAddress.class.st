@@ -2,27 +2,29 @@
 Dummy class to use to look for the Paca(rana) address
 "
 Class {
-	#name : #PacaAddress,
-	#superclass : #Object,
+	#name : 'PacaAddress',
+	#superclass : 'Object',
 	#classInstVars : [
 		'address'
 	],
-	#category : #'Coypu-Performance'
+	#category : 'Coypu-Performance',
+	#package : 'Coypu',
+	#tag : 'Performance'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PacaAddress class >> address [
 
 	^ address
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PacaAddress class >> address: anObject [
 
 	address := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PacaAddress class >> search [
 
 

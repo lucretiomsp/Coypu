@@ -1,20 +1,22 @@
 Class {
-	#name : #CircleVisualization,
-	#superclass : #Object,
+	#name : 'CircleVisualization',
+	#superclass : 'Object',
 	#instVars : [
 		'clock',
 		'ellipses'
 	],
-	#category : #'Coypu-Graph'
+	#category : 'Coypu-Graph',
+	#package : 'Coypu',
+	#tag : 'Graph'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CircleVisualization >> clock [
 
 	^ clock
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CircleVisualization >> ellipses [
 
 	ellipses ifNotNil: [ ^ ellipses ].
@@ -24,7 +26,7 @@ CircleVisualization >> ellipses [
 		              yourself
 ]
 
-{ #category : #rendering }
+{ #category : 'rendering' }
 CircleVisualization >> showSound: soundName withNote: note [
 
 	| color |
@@ -35,7 +37,7 @@ CircleVisualization >> showSound: soundName withNote: note [
 		update
 ]
 
-{ #category : #initialize }
+{ #category : 'initialize' }
 CircleVisualization >> startWith: bpm [
 
 	clock := Clock new

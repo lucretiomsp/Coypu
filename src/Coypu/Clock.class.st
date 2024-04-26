@@ -1,46 +1,48 @@
 Class {
-	#name : #Clock,
-	#superclass : #Object,
+	#name : 'Clock',
+	#superclass : 'Object',
 	#instVars : [
 		'bpm',
 		'radius',
 		'canvas',
 		'characters'
 	],
-	#category : #'Coypu-Graph'
+	#category : 'Coypu-Graph',
+	#package : 'Coypu',
+	#tag : 'Graph'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Clock >> bpm [
 
 	^ bpm
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Clock >> bpm: anObject [
 
 	bpm := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Clock >> radius [
 
 	^ radius
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Clock >> radius: aNumber [
 
 	radius := aNumber
 ]
 
-{ #category : #rendering }
+{ #category : 'rendering' }
 Clock >> slice [
 
 	^ Float twoPi / 16
 ]
 
-{ #category : #rendering }
+{ #category : 'rendering' }
 Clock >> start [
 
 	| slice animation ios |
@@ -99,7 +101,7 @@ Clock >> start [
 	canvas open
 ]
 
-{ #category : #rendering }
+{ #category : 'rendering' }
 Clock >> update [
 
 	characters doWithIndex: [ :s :i | 

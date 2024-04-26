@@ -2,12 +2,14 @@
 Special OSC Vertical Fader to use with SuperDirt
 "
 Class {
-	#name : #VerticalFaderForSuperDirt,
-	#superclass : #VerticalFaderForOSC,
-	#category : #'Coypu-GUI'
+	#name : 'VerticalFaderForSuperDirt',
+	#superclass : 'VerticalFaderForOSC',
+	#category : 'Coypu-GUI',
+	#package : 'Coypu',
+	#tag : 'GUI'
 }
 
-{ #category : #'event handling' }
+{ #category : 'event handling' }
 VerticalFaderForSuperDirt >> mouseMove: anEvent [
 " the VerticalFaderForSuperDirt modify the contents of the Sequencer in Performance named as destination"
 	| newLocation mappedY cursorY faderBottom range faderTop |

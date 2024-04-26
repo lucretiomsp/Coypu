@@ -2,12 +2,14 @@
 Convenience class to interface with and get information on the SuperDirt audioEngine for SuperCollider
 "
 Class {
-	#name : #SuperDirt,
-	#superclass : #Object,
-	#category : #'Coypu-SuperDirt'
+	#name : 'SuperDirt',
+	#superclass : 'Object',
+	#category : 'Coypu-SuperDirt',
+	#package : 'Coypu',
+	#tag : 'SuperDirt'
 }
 
-{ #category : #'SuperDirt-List' }
+{ #category : 'SuperDirt-List' }
 SuperDirt class >> listOfDrumSynth [
 
 	| drumList  |
@@ -18,7 +20,7 @@ SuperDirt class >> listOfDrumSynth [
 	^ drumList 
 ]
 
-{ #category : #'SuperDirt-List' }
+{ #category : 'SuperDirt-List' }
 SuperDirt class >> listOfDrums [
 
 	| drumList  |
@@ -29,13 +31,13 @@ SuperDirt class >> listOfDrums [
 	^ drumList 
 ]
 
-{ #category : #'SuperDirt-List' }
+{ #category : 'SuperDirt-List' }
 SuperDirt class >> listOfSamples [
 
 	^ SamplesFolderInspectorPresenter new
 ]
 
-{ #category : #'SuperDirt-List' }
+{ #category : 'SuperDirt-List' }
 SuperDirt class >> listOfSynths [
 	"print on Transcript the list of SuperDirt available Synths"
 	| synthList |
@@ -49,7 +51,7 @@ SuperDirt class >> listOfSynths [
 	^ synthList 
 ]
 
-{ #category : #'SuperDirt-List' }
+{ #category : 'SuperDirt-List' }
 SuperDirt class >> listOfSynths2 [
 	"print on Transcript the list of SuperDirt available Synths"
 	| synthList  |
@@ -71,7 +73,7 @@ SuperDirt class >> listOfSynths2 [
 	^ synthList 
 ]
 
-{ #category : #'SuperDirt-List' }
+{ #category : 'SuperDirt-List' }
 SuperDirt class >> openListOfSynths [
 
 	| instrumentsTable drumsTable presenter |
@@ -101,7 +103,7 @@ SuperDirt class >> openListOfSynths [
 	^ presenter
 ]
 
-{ #category : #'SuperDirt-List' }
+{ #category : 'SuperDirt-List' }
 SuperDirt class >> samplesFolder [
 	"return the path to the folder where the superdirt samples are located"
 	| home folder |

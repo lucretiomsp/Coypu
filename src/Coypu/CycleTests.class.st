@@ -1,10 +1,12 @@
 Class {
-	#name : #CycleTests,
-	#superclass : #TestCase,
-	#category : #'Coypu-Tests'
+	#name : 'CycleTests',
+	#superclass : 'TestCase',
+	#category : 'Coypu-Tests',
+	#package : 'Coypu',
+	#tag : 'Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 CycleTests >> testArrayAsCycleDuration [
 
 	| array expectedResult |
@@ -13,7 +15,7 @@ CycleTests >> testArrayAsCycleDuration [
 	self assert: array asCycleDurations equals: expectedResult
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CycleTests >> testCycleOf3QuarterNotesAnd2Quavers [
 
 	| s expectedResult |
@@ -29,7 +31,7 @@ CycleTests >> testCycleOf3QuarterNotesAnd2Quavers [
 	self assert: s asCycleDurations equals: expectedResult
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CycleTests >> testCycleOfQuarterNotes [
 
 	| s  expectedResult |

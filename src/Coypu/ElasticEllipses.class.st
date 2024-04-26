@@ -1,33 +1,35 @@
 Class {
-	#name : #ElasticEllipses,
-	#superclass : #Object,
+	#name : 'ElasticEllipses',
+	#superclass : 'Object',
 	#instVars : [
 		'color',
 		'canvas'
 	],
-	#category : #'Coypu-Graph'
+	#category : 'Coypu-Graph',
+	#package : 'Coypu',
+	#tag : 'Graph'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 ElasticEllipses >> color [
 
 	^ color
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 ElasticEllipses >> color: anObject [
 
 	color := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 ElasticEllipses >> initialize [
 
 	super initialize.
 	color := Color black
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 ElasticEllipses >> start [
 
 	canvas := RSCanvas new.
@@ -36,7 +38,7 @@ ElasticEllipses >> start [
 	canvas open
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 ElasticEllipses >> update [
 
 	| c1 c2 random realColor |

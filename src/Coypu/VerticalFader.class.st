@@ -2,8 +2,8 @@
 Vertical fader to control values on the client
 "
 Class {
-	#name : #VerticalFader,
-	#superclass : #Morph,
+	#name : 'VerticalFader',
+	#superclass : 'Morph',
 	#instVars : [
 		'faderAddress',
 		'faderCanMove',
@@ -14,10 +14,12 @@ Class {
 		'destination',
 		'parameter'
 	],
-	#category : #'Coypu-GUI'
+	#category : 'Coypu-GUI',
+	#package : 'Coypu',
+	#tag : 'GUI'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 VerticalFader class >> closeAll [
 
 	| fadersInWorld |
@@ -27,7 +29,7 @@ VerticalFader class >> closeAll [
 	fadersInWorld do: [ :i | i delete ]
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 VerticalFader class >> newWithAddress: anAddress [
 
 	" the fader label is also the OSC address"
@@ -42,7 +44,7 @@ VerticalFader class >> newWithAddress: anAddress [
 		  yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 VerticalFader class >> newWithAddress: anAddress range: anArrayWithMinAndMax [
 " the fader label is also the OSC address"
 ^ (self new) 
@@ -52,28 +54,28 @@ VerticalFader class >> newWithAddress: anAddress range: anArrayWithMinAndMax [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 VerticalFader >> address [ 
 ^ faderAddress 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 VerticalFader >> address: anAddress [
 "set address (and labels)"
 faderAddress := anAddress 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 VerticalFader >> cursorColor [
 ^ cursorColor
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 VerticalFader >> cursorColor: aColor [
 cursor color: aColor
 ]
 
-{ #category : #windowing }
+{ #category : 'windowing' }
 VerticalFader >> drawCursor [
 "draw the fader cursor"
 | cursorWidth cursorHeight |
@@ -87,22 +89,22 @@ self addMorph: cursor.
 cursor center: self center.
 ]
 
-{ #category : #'event handling' }
+{ #category : 'event handling' }
 VerticalFader >> handlesMouseDown: anEvent [
 ^ true
 ]
 
-{ #category : #'event handling' }
+{ #category : 'event handling' }
 VerticalFader >> handlesMouseMove: anEvent [
 ^ true
 ]
 
-{ #category : #'event handling' }
+{ #category : 'event handling' }
 VerticalFader >> handlesMouseUp: anEvent [
 ^ true
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 VerticalFader >> initialize [
 
 	super initialize.
@@ -114,17 +116,17 @@ VerticalFader >> initialize [
 	self drawCursor
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 VerticalFader >> maxValue: aNumber [
 maxValue := aNumber asFloat .
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 VerticalFader >> minValue: aNumber [
 minValue := aNumber asFloat .
 ]
 
-{ #category : #'event handling' }
+{ #category : 'event handling' }
 VerticalFader >> mouseDown: anEvent [
 
 
@@ -135,7 +137,7 @@ faderCanMove := true.
 
 ]
 
-{ #category : #'event handling' }
+{ #category : 'event handling' }
 VerticalFader >> mouseMove: anEvent [
 
 	| newLocation mappedY cursorY faderBottom |
@@ -157,12 +159,12 @@ VerticalFader >> mouseMove: anEvent [
 
 ]
 
-{ #category : #'event handling' }
+{ #category : 'event handling' }
 VerticalFader >> mouseUp: anEvent [
 faderCanMove := false
 ]
 
-{ #category : #windowing }
+{ #category : 'windowing' }
 VerticalFader >> openInWindow [
 
 	| faderWidth faderHeight positionLeft positionTop fadersInWorld bgColor |
@@ -181,7 +183,7 @@ VerticalFader >> openInWindow [
 		   positionLeft @ positionTop) extent: faderWidth @ faderHeight
 ]
 
-{ #category : #windowing }
+{ #category : 'windowing' }
 VerticalFader >> wrappedInWindow [
 	"Changed to include the inset margin in the bound calculation."
 

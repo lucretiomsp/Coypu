@@ -1,10 +1,12 @@
 Class {
-	#name : #NoneVisualization,
-	#superclass : #Object,
-	#category : #'Coypu-Graph'
+	#name : 'NoneVisualization',
+	#superclass : 'Object',
+	#category : 'Coypu-Graph',
+	#package : 'Coypu',
+	#tag : 'Graph'
 }
 
-{ #category : #rendering }
+{ #category : 'rendering' }
 NoneVisualization >> showSound: soundName withNote: note [
 
 	"Do nothing"
@@ -12,7 +14,7 @@ NoneVisualization >> showSound: soundName withNote: note [
 	
 ]
 
-{ #category : #initialize }
+{ #category : 'initialize' }
 NoneVisualization >> startWith: bpm [
 
 	"Do nothing"

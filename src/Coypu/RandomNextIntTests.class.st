@@ -1,10 +1,12 @@
 Class {
-	#name : #RandomNextIntTests,
-	#superclass : #TestCase,
-	#category : #'Coypu-Tests'
+	#name : 'RandomNextIntTests',
+	#superclass : 'TestCase',
+	#category : 'Coypu-Tests',
+	#package : 'Coypu',
+	#tag : 'Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 RandomNextIntTests >> testRandomNextInt [
 
 	self 
