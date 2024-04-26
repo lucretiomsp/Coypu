@@ -46,7 +46,7 @@ SequencerPoly >> playFullDirtEventAt: anIndex [
 	^ true 
 ]
 
-{ #category : 'LiveCoding  - SuperDirt' }
+{ #category : 'LiveCoding-Kyma' }
 SequencerPoly >> playFullKymaEventAt: anIndex [
 	"sends a mesaage to SuperDirt with all the desired OSC arguments and values"
 

@@ -99,7 +99,7 @@ SequencerMono >> playFullDirtEventAt: anIndex [
 	^ true 
 ]
 
-{ #category : 'LiveCoding  - SuperDirt' }
+{ #category : 'LiveCoding-Kyma' }
 SequencerMono >> playFullKymaEventAt: anIndex [
 	"sends a mesaage to SuperDirt with all the desired OSC arguments and values"
 
