@@ -54,7 +54,7 @@ SequencerPoly >> playFullKymaEventAt: anIndex [
 	stepDuration := Performance uniqueInstance freq.
 	message := OrderedCollection new.
 	message add: '/dirt/play'.
-	dur := self durations asDirtArray wrap: anIndex.
+	dur := (self durations asDirtArray wrap: anIndex) * stepDuration .
 	chord := self seqChords asDirtArray wrap: anIndex.
 	notesInChord := chord size.
 	message
@@ -70,11 +70,13 @@ SequencerPoly >> playFullKymaEventAt: anIndex [
 			                 ((message copyWith: 'n') copyWith: (chord at: i)) ]."
 	
 	
-	'playing Kyma polyseq ' traceCr.	
-	self extraParams keysAndValuesDo: [ :k :v  | (v wrap: anIndex ) toKyma: ( self seqKey , k asString  ) ].
-	1 to: notesInChord do: [ :i |
-		(chord at: i) toKyma: self seqKey , i asString.
-		1 toKymaAsTrigWithDuration: dur].
 
+	self extraParams keysAndValuesDo: [ :k :v  | (v wrap: anIndex ) toKyma: ( self seqKey , k asString  ) ].
+	"send the notes"
+	1 to: notesInChord do: [ :i | notesInChord traceCr.
+		(chord at: i) + 60 toKyma: self seqKey , 'Note' , i asString.
+		].
+	"send the gates"
+self seqKey , 'Gate' toKymaAsTrigWithDuration: dur.
 	^ true
 ]

@@ -113,8 +113,7 @@ SequencerMono >> playFullKymaEventAt: anIndex [
 	dur := (self durations asDirtArray wrap: anIndex) * stepDuration * 0.8.
 	note := self notes asDirtArray wrap: anIndex.
 	self seqKey toKymaAsGate: dur note: note.
-	
-	'Playing mono Kyma seq' traceCr.
+
 	^ true
 ]
 
