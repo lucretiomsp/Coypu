@@ -68,9 +68,13 @@ SequencerPoly >> playFullKymaEventAt: anIndex [
 	"chordMessages := (1 to: notesInChord) collect: [ :i |
 		                 OSCMessage for:
 			                 ((message copyWith: 'n') copyWith: (chord at: i)) ]."
+	
+	
+	'playing Kyma polyseq ' traceCr.	
+	self extraParams keysAndValuesDo: [ :k :v  | (v wrap: anIndex ) toKyma: ( self seqKey , k asString  ) ].
 	1 to: notesInChord do: [ :i |
 		(chord at: i) toKyma: self seqKey , i asString.
-		1 toKymaAsGate ].
+		1 toKymaAsTrigWithDuration: dur].
 
 	^ true
 ]

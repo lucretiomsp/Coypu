@@ -52,6 +52,7 @@ SequencerMono >> asPolySeq [
 	| polySeq | 
 	polySeq := SequencerPoly new.
 	polySeq 
+	seqKey: self seqKey;
 		gates: self gates; 
 		noteIndex: self noteIndex; 
 		durations: self durations; 
@@ -112,12 +113,8 @@ SequencerMono >> playFullKymaEventAt: anIndex [
 	dur := (self durations asDirtArray wrap: anIndex) * stepDuration * 0.8.
 	note := self notes asDirtArray wrap: anIndex.
 	self seqKey toKymaAsGate: dur note: note.
-	" for extra data"
-	"dirtMessage keysAndValuesDo: [ :key :value |
-		message
-			add: key;
-			add: (value asDirtArray wrap: anIndex) ]."
-	" ####################"
+	
+	'Playing mono Kyma seq' traceCr.
 	^ true
 ]
 
