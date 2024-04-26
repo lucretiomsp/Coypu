@@ -171,7 +171,7 @@ Sequencer >> ccn: anIntOrAnArray ccv: anotherIntOrArray [
 
 { #category : 'accessing' }
 Sequencer >> chords: aStringWithOneOrMoreChords [
-	" note and chord type separated by an hyphen for example 'c-maj d#-min f-sus4 e-min7')"
+	" note and chord type separated by an hyphen for example 'c-maj d#-min f-sus4 e-min7') - can be expressed with a letter or with a note number."
 
 	| arrayOfChords |
 	arrayOfChords := aStringWithOneOrMoreChords chordsToArrays.

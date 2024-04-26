@@ -74,7 +74,7 @@ SequencerPoly >> playFullKymaEventAt: anIndex [
 	self extraParams keysAndValuesDo: [ :k :v  | (v wrap: anIndex ) toKyma: ( self seqKey , k asString  ) ].
 	"send the notes"
 	1 to: notesInChord do: [ :i | notesInChord traceCr.
-		(chord at: i) + 60 toKyma: self seqKey , 'Note' , i asString.
+		(chord at: i) toKyma: self seqKey , 'Note' , i asString.
 		].
 	"send the gates"
 self seqKey , 'Gate' toKymaAsTrigWithDuration: dur.

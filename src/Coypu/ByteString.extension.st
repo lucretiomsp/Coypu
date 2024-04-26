@@ -292,12 +292,14 @@ message := OSCMessage for: { '/dirt/play' . 's' . sound . 'n' . aNote . 'speed' 
 
 { #category : '*Coypu' }
 ByteString >> parseChord [
+"chords can be xpressed both with letteres or with MIDI NoteNumbers"
 	|root chord notes|
 	root := (self findBetweenSubstrings: '-') at: 1.
 	chord :=(self findBetweenSubstrings: '-') at: 2.
 	notes := Array new: 11.
 	notes := #('c' 'c#' 'd' 'd#' 'e' 'f' 'f#' 'g#' 'a' 'a#' 'b').
-		^ (Chord list at: chord asLowercase  asSymbol) + (notes indexOf: root asLowercase  ) - 1.
+	root asInteger ifNotNil: [ ^ (Chord list at: chord asLowercase  asSymbol) + root asInteger ] ifNil:
+		[^ (Chord list at: chord asLowercase  asSymbol) + (notes indexOf: root asLowercase  ) - 1].
 ]
 
 { #category : '*Coypu' }
