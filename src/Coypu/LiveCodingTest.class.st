@@ -1,11 +1,11 @@
 Class {
-	#name : #LiveCodingTests,
+	#name : #LiveCodingTest,
 	#superclass : #TestCase,
 	#category : #'Coypu-Tests'
 }
 
 { #category : #tests }
-LiveCodingTests >> testArrayIntoScale [
+LiveCodingTest >> testArrayIntoScale [
 
 	| indexes newNotes |
 	indexes := #( -1 0 1 2 3 4 5 6 7 8 9 10  20 ).
@@ -17,7 +17,7 @@ LiveCodingTests >> testArrayIntoScale [
 ]
 
 { #category : #tests }
-LiveCodingTests >> testArrayWrap [
+LiveCodingTest >> testArrayWrap [
 
 	| array |
 	array := (1 to: 10) asDirtArray.
@@ -25,7 +25,7 @@ LiveCodingTests >> testArrayWrap [
 ]
 
 { #category : #tests }
-LiveCodingTests >> testFullScale [
+LiveCodingTest >> testFullScale [
 
 	| result |
 	result := (Scale chromatic: 60) fullScale.
@@ -33,25 +33,25 @@ LiveCodingTests >> testFullScale [
 ]
 
 { #category : #tests }
-LiveCodingTests >> testIntegerAsArray [
+LiveCodingTest >> testIntegerAsArray [
 
 	self assert: 16 asArrayOfInts equals: (1 to: 16) asDirtArray
 ]
 
 { #category : #tests }
-LiveCodingTests >> testMultiplyCharacter [
+LiveCodingTest >> testMultiplyCharacter [
 
-self assert: $h*3 equals: 'h h h'
+	self assert: $h*3 equals: 'h h h'
 ]
 
 { #category : #tests }
-LiveCodingTests >> testMultiplyString [
+LiveCodingTest >> testMultiplyString [
 
-self assert: 'h'*3 equals: 'h h h'
+	self assert: 'h'*3 equals: 'h h h'
 ]
 
 { #category : #tests }
-LiveCodingTests >> testSawtoothTable [
+LiveCodingTest >> testSawtoothTable [
 
 | array result increment|.
 
@@ -62,7 +62,7 @@ self assert: array equals: result.
 ]
 
 { #category : #tests }
-LiveCodingTests >> testStringAsDirtNotes [
+LiveCodingTest >> testStringAsDirtNotes [
 
 
 
@@ -82,13 +82,13 @@ self assert: case gates equals: #(1 1 1 1 0 1 0 1 0)
 ]
 
 { #category : #tests }
-LiveCodingTests >> testStringEveryInt [
+LiveCodingTest >> testStringEveryInt [
 
-self assert: 'bd' / 8 equals: 'bd ~ ~ ~ ~ ~ ~ ~'
+	self assert: 'bd' / 8 equals: 'bd ~ ~ ~ ~ ~ ~ ~'
 ]
 
 { #category : #tests }
-LiveCodingTests >> testStringForDirt [
+LiveCodingTest >> testStringForDirt [
 
 	| string gates seq soundsPattern samplesIndex |
 	string := 'bd:1 sd cp:2 ~'.
@@ -103,16 +103,17 @@ self assert: seq gates equals: gates.
 ]
 
 { #category : #tests }
-LiveCodingTests >> testStringOfSoundsForDirt [
+LiveCodingTest >> testStringOfSoundsForDirt [
 
+	| case |
+	case := 'sd cp*3 ~ [bd ~*2]' asDirtSounds.
 
-
-| case |
-
-case := 'sd cp*3 ~ [bd ~*2]' asDirtSounds.
-
-self assert: (case dirtMessage at: 's') equals: #(sd cp cp cp bd bd).
-self assert: case gates equals: #(1 1 1 1 0 1 0 1 0)
+	self 
+		assert: (case dirtMessage at: 's') 
+		equals: #(sd cp cp cp bd bd).
+	self 
+		assert: case gates 
+		equals: #(1 1 1 1 0 1 0 1 0)
 
 
 
@@ -123,13 +124,13 @@ self assert: case gates equals: #(1 1 1 1 0 1 0 1 0)
 ]
 
 { #category : #tests }
-LiveCodingTests >> testStringWInWords [
+LiveCodingTest >> testStringWInWords [
 
-self assert: 'the needs of the many' inWords equals: #('the' 'needs' 'of' 'the' 'many')
+	self assert: 'the needs of the many' inWords equals: #('the' 'needs' 'of' 'the' 'many')
 ]
 
 { #category : #tests }
-LiveCodingTests >> testTriangleTable [
+LiveCodingTest >> testTriangleTable [
 
 	| array up down result |
 	up := 0 to: 1 by: 1 / 31.

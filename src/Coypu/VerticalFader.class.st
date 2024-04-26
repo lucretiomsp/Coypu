@@ -73,7 +73,7 @@ VerticalFader >> cursorColor: aColor [
 cursor color: aColor
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #windowing }
 VerticalFader >> drawCursor [
 "draw the fader cursor"
 | cursorWidth cursorHeight |
@@ -135,24 +135,26 @@ faderCanMove := true.
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'event handling' }
 VerticalFader >> mouseMove: anEvent [
 
-| newLocation mappedY cursorY faderBottom  |
+	| newLocation mappedY cursorY faderBottom |
+	faderCanMove
+		ifTrue: [
+			faderBottom := self extent y + self position y.
+			cursorY := anEvent position y.
+			newLocation := Point x: self center x y: cursorY.
+			cursor center: newLocation.
+			"map cursorY to value from 0 to 1"
+			mappedY := (((cursorY min: faderBottom) - faderBottom) abs min:
+				            self extent y) / self extent y.
+			Transcript
+				show: newLocation;
+				cr.
+			Transcript
+				show: 'mapped value' , ' ' , mappedY asString;
+				cr ]
 
-faderCanMove ifTrue:
-[
-faderBottom := self extent y + self position y.
-cursorY := anEvent position y.
-newLocation := Point x: (self center x) y: cursorY.
-cursor center: newLocation .
-"map cursorY to value from 0 to 1"
-mappedY := ((((cursorY min: faderBottom )- faderBottom ) abs) min: self extent y) / self extent y.
-Transcript show: newLocation ; cr.
-Transcript show: 'mapped value' , ' ' , mappedY asString ; cr.
-] ifFalse: [ nil] .
-
-"for debug"
 ]
 
 { #category : #'event handling' }
@@ -160,7 +162,7 @@ VerticalFader >> mouseUp: anEvent [
 faderCanMove := false
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #windowing }
 VerticalFader >> openInWindow [
 
 	| faderWidth faderHeight positionLeft positionTop fadersInWorld bgColor |
@@ -179,7 +181,7 @@ VerticalFader >> openInWindow [
 		   positionLeft @ positionTop) extent: faderWidth @ faderHeight
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #windowing }
 VerticalFader >> wrappedInWindow [
 	"Changed to include the inset margin in the bound calculation."
 

@@ -12,9 +12,9 @@ Class {
 
 { #category : #playing }
 PerformerPhaust >> play [ 
-"play a Phaust performance for 4 days at 120 bpm"
+	"play a Phaust performance for 4 days at 120 bpm"
 
-self playFor: fourDaysAt120BPM 
+	self playFor: fourDaysAt120BPM 
 ]
 
 { #category : #playing }
@@ -40,7 +40,7 @@ PerformerPhaust >> playFor: aNumberOfSteps [
 								 seq playPhaustEventAt: seq noteIndex. "delta!!!!"
 								 "increment note Index"
 								 seq noteIndex: seq noteIndex + 1 ]
-							 ifFalse: [ nil ] ] ] forkAt: Processor timingPriority.
+								 ] ] forkAt: Processor timingPriority.
 
 					 "step is incremented anyway"
 					 performance incrementTransportStep ] ] forkAt:

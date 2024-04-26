@@ -24,7 +24,7 @@ PerformerMIDI class >> midiOut: aMIDISender [
 
 { #category : #playing }
 PerformerMIDI >> play [
-self shouldBeImplemented 
+	self shouldBeImplemented 
 ]
 
 { #category : #playing }
@@ -45,7 +45,7 @@ PerformerMIDI >> playFor: aNumberOfSteps [
 						 seq playMIDIEventAt: seq noteIndex. "delta!!!!"
 						 "increment note Index"
 						 seq noteIndex: seq noteIndex + 1 ]
-					 ifFalse: [ nil ] ] ] forkAt: Processor timingPriority.
+						 ] ] forkAt: Processor timingPriority.
 
 			 "step is incremented anyway"
 			 performance incrementTransportStep ] ] forkAt:
@@ -102,8 +102,7 @@ if you want to send out ccs
 									  withValue:
 									  ((value extra1 at: 2) at:
 										   (value noteIndex modulo: value extra1Size))
-									  onChannel: value midiChannel ]
-							  ifFalse: [ nil ].
+									  onChannel: value midiChannel ].
 
 						  "sends another ControlChange message on the same channel, if provided"
 						  value extra2 notNil
@@ -113,8 +112,7 @@ if you want to send out ccs
 									  withValue:
 									  ((value extra2 at: 2) at:
 										   (value noteIndex modulo: value extra2Size))
-									  onChannel: value midiChannel ]
-							  ifFalse: [ nil ].
+									  onChannel: value midiChannel ] .
 
 						  "advance"
 						  value noteIndex: value noteIndex + 1 ] ]

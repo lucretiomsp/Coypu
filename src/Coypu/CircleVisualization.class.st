@@ -29,8 +29,10 @@ CircleVisualization >> showSound: soundName withNote: note [
 
 	| color |
 	color := Color r: note * 2 g: 0 b: note / 2.
-"	clock radius: note; update."
-	self ellipses color: color; update
+	"	clock radius: note; update."
+	self ellipses 
+		color: color; 
+		update
 ]
 
 { #category : #initialize }

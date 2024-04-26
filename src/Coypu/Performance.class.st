@@ -97,12 +97,12 @@ Performance >> Dictionary [  Variable or expression expected -><< #Performance
 
 { #category : #accessing }
 Performance >> activeDSP [
-^ activeDSP 
+	^ activeDSP 
 ]
 
 { #category : #accessing }
 Performance >> activeDSP: aDSP [
-activeDSP := aDSP
+	activeDSP := aDSP
 ]
 
 { #category : #accessing }
@@ -120,8 +120,8 @@ Performance >> activeProcess: anObject [
 { #category : #'performance  - adding' }
 Performance >> add: aSequencer channel: anIntegerBetween1And16 [
 
-aSequencer midiChannel: anIntegerBetween1And16. 
-super add: aSequencer.
+	aSequencer midiChannel: anIntegerBetween1And16. 
+	super add: aSequencer.
 ]
 
 { #category : #accessing }
@@ -171,12 +171,12 @@ Performance >> bpm: aRateInSeconds [
 
 { #category : #accessing }
 Performance >> canvas [ 
-^ canvas 
+	^ canvas 
 ]
 
 { #category : #accessing }
 Performance >> canvas: aRSCanvas [
-canvas := aRSCanvas 
+	canvas := aRSCanvas 
 ]
 
 { #category : #accessing }
@@ -187,14 +187,14 @@ Performance >> dirtMIDIDevice [
 
 { #category : #accessing }
 Performance >> dirtMIDIDevice: aString [
-"select a SuperDirt MIDI device for the Performance"
+	"select a SuperDirt MIDI device for the Performance"
 	dirtMIDIDevice := aString
 ]
 
 { #category : #accessing }
 Performance >> freq [
-"better to convert it to Float to avoid OSC sending issues"
-^ freq asFloat
+	"better to convert it to Float to avoid OSC sending issues"
+	^ freq asFloat
 ]
 
 { #category : #accessing }
@@ -216,24 +216,27 @@ Performance >> incrementTransportStep [
 
 { #category : #initialization }
 Performance >> initialize: aSize [
-super initialize: aSize.
-activeProcess := Process new terminate.
-freq := 132 bpm.
+
+	super initialize: aSize.
+	activeProcess := Process new terminate.
+	freq := 132 bpm.
 ]
 
 { #category : #testing }
 Performance >> isPerformance [
 
-^ true
+	^ true
 ]
 
 { #category : #accessing }
 Performance >> length [
-"return the number of steps of the largest array contained in the performance values"
-| valuesSizes maxLength |
-valuesSizes := (1 to: (self values size)) collect: [ :i | ((self values at: i) at: 1 )size ].
-maxLength := valuesSizes inject: 0 into: [ :a :c | (a > c) ifTrue: [ a ] ifFalse: [ c ] ].
-^ maxLength 
+	"return the number of steps of the largest array contained in the performance values"
+
+	| valuesSizes maxLength |
+	valuesSizes := (1 to: self values size) collect: [ :i |
+		               ((self values at: i) at: 1) size ].
+	maxLength := valuesSizes inject: 0 into: [ :a :c | a max: c ].
+	^ maxLength
 ]
 
 { #category : #'muting and soloing' }
@@ -276,8 +279,7 @@ Performance >> pacaDance [
 
 	"convenience method created for the ICLC2023 performance - it just play the performance at 132 bpm for 4096 bars"
 
-	
-	| aRateInSeconds aNumberOfSteps step bpm beatInSeconds gateTime |
+	| aRateInSeconds aNumberOfSteps step beatInSeconds gateTime |
 	aRateInSeconds := 132 bpm.
 	aNumberOfSteps := 4096 bars.
 	'x' asPacaAddress. "if PacaAddress is not stored yet"
@@ -319,24 +321,21 @@ Performance >> pacaDance [
 								  ifTrue: [ 
 									  (value durations at:
 										   (value noteIndex modulo: value durationsSize)) toKyma:
-										  key asString , 'Duration' ]
-								  ifFalse: [ nil ].
+										  key asString , 'Duration' ].
 
 							  "experimental, for extra control parameter"
 							  value extra1 notNil
 								  ifTrue: [ 
 									  ((value extra1 at: 2) at:
 										   (value noteIndex modulo: value extra1Size)) toKyma:
-										  key asString , (value extra1 at: 1) ]
-								  ifFalse: [ nil ].
+										  key asString , (value extra1 at: 1) ].
 
 							  "new experimental, for second extra control"
 							  value extra2 notNil
 								  ifTrue: [ 
 									  ((value extra2 at: 2) at:
 										   (value noteIndex modulo: value extra2Size)) toKyma:
-										  key asString , (value extra2 at: 1) ]
-								  ifFalse: [ nil ].
+										  key asString , (value extra2 at: 1) ].
 
 
 							  value noteIndex: value noteIndex + 1
@@ -360,18 +359,21 @@ Performance >> performer [
 Performance >> performer: aPerformer [
 "choose a Performer for the Performance"
 " to be safe, it clear the performance"
-Performance uniqueInstance muteAll.
-performer := aPerformer. 
-Performance uniqueInstance muteAll.
+	Performance uniqueInstance muteAll.
+	performer := aPerformer. 
+	Performance uniqueInstance muteAll.
 ]
 
 { #category : #playing }
 Performance >> play [
-" reset all the Sequencers"
-self resetAllSequencers .
+	" reset all the Sequencers"
+	self resetAllSequencers.
 
-"just on performance at once"
-self activeProcess  ifNil:  [ self performer play ] ifNotNil: [(self activeProcess isTerminated )ifTrue: [ self performer play ] ifFalse: [ ] ]
+	"just on performance at once"
+	self activeProcess  
+		ifNil:  [ self performer play ] 
+		ifNotNil: [ (self activeProcess isTerminated )
+							 ifTrue: [ self performer play ] ]
 .
 
 
@@ -382,11 +384,12 @@ self activeProcess  ifNil:  [ self performer play ] ifNotNil: [(self activeProce
 Performance >> playFor: aNumberOfSteps [
 
 
-" reset all the Sequencers"
-self resetAllSequencers .
-
-"just on performance at once"
-( self activeProcess isTerminated) ifTrue: [ self performer playFor: aNumberOfSteps  ] ifFalse:[].
+	" reset all the Sequencers"
+	self resetAllSequencers.
+	
+	"just on performance at once"
+	( self activeProcess isTerminated) 
+		ifTrue: [ self performer playFor: aNumberOfSteps  ]
 
 
 ]
@@ -398,7 +401,7 @@ Performance >> playKymaSequencFor: aNumberOfSteps [
 	" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
 an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 
-	| step bpm beatInSeconds gateTime |
+	| step beatInSeconds gateTime |
 	'x' asPacaAddress. "if PacaAddress is not stored yet"
 	self resetAllSequencers. "reset all the sequencers"
 	"as in early hardware sequencers, default gatetime is 80% of the step duration"
@@ -476,7 +479,7 @@ Performance >> playKymaSequenceAt: aRateInSeconds for: aNumberOfSteps [
 	" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
 an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 
-	| step bpm beatInSeconds gateTime |
+	| step beatInSeconds gateTime |
 	'x' asPacaAddress. "if PacaAddress is not stored yet"
 	self resetAllSequencers. "reset all the sequencers"
 	"as in early hardware sequencers, default gatetime is 80% of the step duration"
@@ -556,7 +559,7 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 
 	"if the value in the dictionay is a Sequencer, an OSC message is sent to the key as OSC address with two arguments, one for the gate, and one for the note. the gate stays at 1 for the duration selected."
 
-	| step bpm beatInSeconds gateTime |
+	| step beatInSeconds gateTime |
 	bpm := 60 / (aRateInSeconds * 4).
 	gateTime := aRateInSeconds * 0.8.
 	beatInSeconds := aRateInSeconds * 4.
@@ -603,9 +606,9 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 
 { #category : #removing }
 Performance >> remove: aKey [
-"shorter version of removeKey:"
+	"shorter version of removeKey:"
 
-self removeKey: aKey ifAbsent: [  ] 
+	self removeKey: aKey ifAbsent: [  ] 
 ]
 
 { #category : #initialization }
@@ -614,8 +617,7 @@ Performance >> resetAllSequencers [
 
 	self keysAndValuesDo: [ :key :value |
 		value isSequencer
-			ifTrue: [ value noteIndex: 1 ]
-			ifFalse: [ nil ] ]
+			ifTrue: [ value noteIndex: 1 ] ]
 ]
 
 { #category : #'LiveCoding - Performance' }
@@ -692,7 +694,7 @@ Performance >> transportStep: anInteger [
 Performance >> unsolo: aKeyInPerformance [
 	"convenience method to unsolo a key in the performance"
 	
-self restore
+	self restore
 ]
 
 { #category : #accessing }

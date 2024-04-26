@@ -9,8 +9,8 @@ Class {
 
 { #category : #playing }
 PerformerSuperDirt >> play [
-"play the performance for almost 4 days at 120 bpm"
-self playDirtFor: fourDaysAt120BPM 
+	"play the performance for almost 4 days at 120 bpm"
+	self playDirtFor: fourDaysAt120BPM 
 ]
 
 { #category : #playing }
@@ -34,7 +34,7 @@ PerformerSuperDirt >> playDirt [
 					           seq playFullDirtEventAt: seq noteIndex  "delta!!!!" .
 					           "increment note Index"
 					           seq noteIndex: seq noteIndex + 1 ]
-				           ifFalse: [ nil ] ] ] forkAt: Processor timingPriority.
+				            ] ] forkAt: Processor timingPriority.
 
 		           "step is incremented anyway"
 		           performance  incrementTransportStep ] ] forkAt: Processor timingPriority).
@@ -64,7 +64,7 @@ PerformerSuperDirt >> playDirtFor: aNumberOfSteps [
 					           seq playFullDirtEventAt: seq noteIndex  .
 					           "increment note Index"
 					           seq noteIndex: seq noteIndex + 1 ]
-				           ifFalse: [ nil ] ] ] forkAt: Processor timingPriority.
+				            ] ] forkAt: Processor timingPriority.
 
 		           "step is incremented anyway"
 		           performance incrementTransportStep ] ] forkAt: Processor timingPriority).
@@ -91,7 +91,7 @@ PerformerSuperDirt >> playFor: aNumberOfSteps [
 						 seq playFullDirtEventAt: seq noteIndex. "delta!!!!"
 						 "increment note Index"
 						 seq noteIndex: seq noteIndex + 1 ]
-					 ifFalse: [ nil ] ] ] forkAt: Processor timingPriority.
+					  ] ] forkAt: Processor timingPriority.
 
 			 "step is incremented anyway"
 			 performance incrementTransportStep ] ] forkAt:

@@ -12,7 +12,7 @@ PerformerKyma >> play [
 self playKymaSequencFor: fourDaysAt120BPM 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #playing }
 PerformerKyma >> playFor: aNumberOfSteps [
 	"with this method you can chane the Performance speed in real time! "
 
@@ -23,7 +23,6 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 	'x' asPacaAddress. "if PacaAddress is not stored yet"
 	performance resetAllSequencers. "reset all the sequencers"
 	bpm := 60 / (performance freq * 4) bpm toKyma: 'BPM'.
-
 
 	performance bpm: bpm.
 	performance transportStep: 0.
@@ -46,7 +45,7 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 			 Processor timingPriority)
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #playing }
 PerformerKyma >> playForOld: aNumberOfSteps [
 
 "with this method you can chane the Performance speed in real time! "
@@ -124,7 +123,7 @@ performance  activeProcess: ([
 		  step := step + 1 ] ] forkAt: Processor timingPriority)
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #playing }
 PerformerKyma >> playKymaSequencFor: aNumberOfSteps [
 
 "with this method you can chane the Performance speed in real time! "

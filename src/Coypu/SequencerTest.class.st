@@ -1,5 +1,5 @@
 Class {
-	#name : #SequencerTests,
+	#name : #SequencerTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'sequencer'
@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #running }
-SequencerTests >> setUp [
+SequencerTest >> setUp [
 
 	sequencer := 8 downbeats.
 	
@@ -17,7 +17,7 @@ SequencerTests >> setUp [
 ]
 
 { #category : #tests }
-SequencerTests >> testAddAssociationForDirtMesage [
+SequencerTest >> testAddAssociationForDirtMesage [
 
 | seq |
 seq := 16 downbeats sound: 'cp'.
@@ -28,7 +28,7 @@ self assert: (seq dirtMessage includes: #( 0 1  2) ) equals: true.
 ]
 
 { #category : #tests }
-SequencerTests >> testArpeggiateArray [
+SequencerTest >> testArpeggiateArray [
 
 | initial  result|
 initial := #(60 61 62 63).
@@ -38,7 +38,7 @@ self assert: (initial arp: #(0 1 2 3)) equals: result
 ]
 
 { #category : #tests }
-SequencerTests >> testAsPolySeq [
+SequencerTest >> testAsPolySeq [
 
 | monoseq polyseq |
 
@@ -56,7 +56,7 @@ self assert: (polyseq dirtMessage includesKey: 'n') equals: false.
 ]
 
 { #category : #tests }
-SequencerTests >> testChangeSequencerGatesSize [
+SequencerTest >> testChangeSequencerGatesSize [
 
 	| seq |
 	seq := 16 downbeats.
@@ -65,7 +65,7 @@ SequencerTests >> testChangeSequencerGatesSize [
 ]
 
 { #category : #tests }
-SequencerTests >> testChords: aChordOrAnArrayOfChords [
+SequencerTest >> testChords: aChordOrAnArrayOfChords [
 
 | polySeq |
 polySeq := 4 breves sound: 'superpiano'; chords: 'c-major d-minor e-major'. 
@@ -75,7 +75,7 @@ self assert: (polySeq dirtMessage at: 'n') equals: ( 'c-major d-minor e-major' c
 ]
 
 { #category : #tests }
-SequencerTests >> testEuclideanRhythmFromArray [
+SequencerTest >> testEuclideanRhythmFromArray [
 
 	| tresillo seq |
 	tresillo := #( 3 8) euclidean.
@@ -84,7 +84,7 @@ SequencerTests >> testEuclideanRhythmFromArray [
 ]
 
 { #category : #tests }
-SequencerTests >> testFlipSequencer [
+SequencerTest >> testFlipSequencer [
 
 	| tresillo seq |
 	tresillo := #( 3 8 ) euclidean flip.
@@ -93,12 +93,12 @@ SequencerTests >> testFlipSequencer [
 ]
 
 { #category : #tests }
-SequencerTests >> testInitialize [
+SequencerTest >> testInitialize [
 self assert: (Sequencer new orbit > 0) & (Sequencer new orbit < 12) equals: true
 ]
 
 { #category : #tests }
-SequencerTests >> testReverse [
+SequencerTest >> testReverse [
 
 | seq |
 seq := '000F' hexBeat sound: 'sd cp'; dirtNotes: #(1 2 3) .
@@ -108,7 +108,7 @@ self assert: (seq reverse dirtMessage at: 's') equals: #('cp' 'sd').
 ]
 
 { #category : #tests }
-SequencerTests >> testSequencerArpeggiate [
+SequencerTest >> testSequencerArpeggiate [
 | seq |
 seq := 8 semiquavers .
 seq arpeggiate: 'c-minor7 d-minor7'.
@@ -117,7 +117,7 @@ self assert: (seq dirtMessage at: 'n') equals: #(0 3 7 10 2 5 9 12) asArray .
 ]
 
 { #category : #tests }
-SequencerTests >> testSequencerOffset [
+SequencerTest >> testSequencerOffset [
 
 | seq1 seq2 result1 result2 |
 seq1 := 4 downbeats.
@@ -131,7 +131,7 @@ self assert: (seq2 offset: -1) gates equals: result2 gates.
 ]
 
 { #category : #tests }
-SequencerTests >> testSequencerSound [
+SequencerTest >> testSequencerSound [
 
 | seq |
 seq := 16 downbeats sound: #('bd' 'cp:2').
@@ -141,7 +141,7 @@ self assert: seq samplesIndex equals: #(0 2).
 ]
 
 { #category : #tests }
-SequencerTests >> testSequencerToPerformance [
+SequencerTest >> testSequencerToPerformance [
 
 sequencer to: #track.
 self assert: (Performance uniqueInstance at: #track) equals: sequencer

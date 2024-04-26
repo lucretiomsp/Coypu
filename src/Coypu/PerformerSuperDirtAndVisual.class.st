@@ -10,7 +10,7 @@ Class {
 
 { #category : #playing }
 PerformerSuperDirtAndVisual >> play [ 
-self playDirtAndVisual 
+	self playDirtAndVisual 
 ]
 
 { #category : #'as yet unclassified' }
@@ -35,7 +35,7 @@ PerformerSuperDirtAndVisual >> playDirtAndVisual [
 					            
 					           "increment note Index"
 					           seq noteIndex: seq noteIndex + 1 ]
-				           ifFalse: [ nil ] ] ] forkAt: Processor timingPriority.
+				            ] ] forkAt: Processor timingPriority.
 
 		           "step is incremented anyway"
 		           performance  incrementTransportStep ] ] forkAt: Processor timingPriority).
