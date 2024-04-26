@@ -15,10 +15,6 @@ Class {
 	#instVars : [
 		'seqKey',
 		'extraParams',
-		'extra1String',
-		'extra2String',
-		'extra1',
-		'extra2',
 		'notes',
 		'durations',
 		'noteIndex',

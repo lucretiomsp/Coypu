@@ -106,6 +106,8 @@ SequencerMono >> playFullKymaEventAt: anIndex [
 	| dur note stepDuration |
 	stepDuration := Performance uniqueInstance freq.
 	
+	self extraParams keysAndValuesDo: [ :k :v  | (v wrap: anIndex ) toKyma: ( self seqKey , k asString  ) ].
+	
 	"as in hardware sequencer, default gate time is 80% of duration time"
 	dur := (self durations asDirtArray wrap: anIndex) * stepDuration * 0.8.
 	note := self notes asDirtArray wrap: anIndex.
