@@ -292,12 +292,14 @@ message := OSCMessage for: { '/dirt/play' . 's' . sound . 'n' . aNote . 'speed' 
 
 { #category : #'*Coypu' }
 ByteString >> parseChord [
+"chords can be xpressed both with letteres or with MIDI NoteNumbers"
 	|root chord notes|
 	root := (self findBetweenSubstrings: '-') at: 1.
 	chord :=(self findBetweenSubstrings: '-') at: 2.
 	notes := Array new: 11.
 	notes := #('c' 'c#' 'd' 'd#' 'e' 'f' 'f#' 'g#' 'a' 'a#' 'b').
-		^ (Chord list at: chord asLowercase  asSymbol) + (notes indexOf: root asLowercase  ) - 1.
+	root asInteger ifNotNil: [ ^ (Chord list at: chord asLowercase  asSymbol) + root asInteger ] ifNil:
+		[^ (Chord list at: chord asLowercase  asSymbol) + (notes indexOf: root asLowercase  ) - 1].
 ]
 
 { #category : #'*Coypu' }
@@ -476,6 +478,24 @@ ByteString >> toKymaAsTrig [
 			   vcslabel.
 			   1.0 }) sendToAddressString: PacaAddress address port: 8000.
 	  (Delay forSeconds: 0.01) wait.
+	  (OSCMessage for: { 
+			   vcslabel.
+			   0.0 }) sendToAddressString: PacaAddress address port: 8000 ] fork
+]
+
+{ #category : #'*Coypu' }
+ByteString >> toKymaAsTrigWithDuration: aDurationInSeconds [
+
+	" send an OSC message acting as a 10ms dutyCycle trigger"
+
+	| vcslabel |
+	"	pacaAddress := NetNameResolver stringFromAddress: (NetNameResolver 	addressForName:'beslime-691.local'). "
+	vcslabel := '/vcs/' , self , '/1'.
+	^ [ 
+	  (OSCMessage for: { 
+			   vcslabel.
+			   1.0 }) sendToAddressString: PacaAddress address port: 8000.
+	  (Delay forSeconds: aDurationInSeconds ) wait.
 	  (OSCMessage for: { 
 			   vcslabel.
 			   0.0 }) sendToAddressString: PacaAddress address port: 8000 ] fork

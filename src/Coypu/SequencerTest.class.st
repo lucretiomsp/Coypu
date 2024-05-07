@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'sequencer'
 	],
-	#category : #'Coypu-Tests'
+	#category : 'Coypu-Tests'
 }
 
 { #category : #running }
@@ -25,6 +25,16 @@ seq add: 'squiz'->#(0 1 2).
 
 self assert: (seq dirtMessage includesKey: #squiz) equals: true.
 self assert: (seq dirtMessage includes: #( 0 1  2) ) equals: true.
+]
+
+{ #category : #tests }
+SequencerTest >> testAddExtraParamsForKyma [
+
+| seq |
+seq := 16 downbeats extra: #Cutoff values: #(300 400 500).
+self assert: seq gates  equals: #( 1 0 0 0 1 0 0 0 1 0 0 0 1 0 0 0 ) asRhythm .
+self assert: (seq extraParams at: #Cutoff) equals: #(300 400 500).
+
 ]
 
 { #category : #tests }

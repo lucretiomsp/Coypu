@@ -5,7 +5,7 @@ Class {
 	#name : #SequencerPoly,
 	#superclass : #Sequencer,
 	#type : #variable,
-	#category : #'Coypu-Sequencers'
+	#category : 'Coypu-Sequencers'
 }
 
 { #category : #converting }
@@ -44,7 +44,7 @@ SequencerPoly >> playFullDirtEventAt: anIndex [
 	^ true 
 ]
 
-{ #category : #'LiveCoding  - SuperDirt' }
+{ #category : #'LiveCoding-Kyma' }
 SequencerPoly >> playFullKymaEventAt: anIndex [
 	"sends a mesaage to SuperDirt with all the desired OSC arguments and values"
 
@@ -52,7 +52,7 @@ SequencerPoly >> playFullKymaEventAt: anIndex [
 	stepDuration := Performance uniqueInstance freq.
 	message := OrderedCollection new.
 	message add: '/dirt/play'.
-	dur := self durations asDirtArray wrap: anIndex.
+	dur := (self durations asDirtArray wrap: anIndex) * stepDuration .
 	chord := self seqChords asDirtArray wrap: anIndex.
 	notesInChord := chord size.
 	message
@@ -66,9 +66,15 @@ SequencerPoly >> playFullKymaEventAt: anIndex [
 	"chordMessages := (1 to: notesInChord) collect: [ :i |
 		                 OSCMessage for:
 			                 ((message copyWith: 'n') copyWith: (chord at: i)) ]."
-	1 to: notesInChord do: [ :i |
-		(chord at: i) toKyma: self seqKey , i asString.
-		1 toKymaAsGate ].
+	
+	
 
+	self extraParams keysAndValuesDo: [ :k :v  | (v wrap: anIndex ) toKyma: ( self seqKey , k asString  ) ].
+	"send the notes"
+	1 to: notesInChord do: [ :i | notesInChord traceCr.
+		(chord at: i) toKyma: self seqKey , 'Note' , i asString.
+		].
+	"send the gates"
+self seqKey , 'Gate' toKymaAsTrigWithDuration: dur.
 	^ true
 ]

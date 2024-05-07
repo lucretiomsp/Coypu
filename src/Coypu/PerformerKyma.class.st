@@ -4,7 +4,7 @@ Performer for  Symbolic Sound Kyma
 Class {
 	#name : #PerformerKyma,
 	#superclass : #Performer,
-	#category : #'Coypu-Performance'
+	#category : 'Coypu-Performance'
 }
 
 { #category : #playing }
@@ -33,6 +33,7 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 			 [
 			 
 			 performance valuesDo: [ :seq |
+				
 				 (seq gates wrap: performance transportStep) = 1
 					 ifTrue: [
 						 seq playFullKymaEventAt: seq noteIndex.

@@ -5,7 +5,7 @@ Class {
 	#name : #SequencerMono,
 	#superclass : #Sequencer,
 	#type : #variable,
-	#category : #'Coypu-Sequencers'
+	#category : 'Coypu-Sequencers'
 }
 
 { #category : #arithmetic }
@@ -50,6 +50,7 @@ SequencerMono >> asPolySeq [
 	| polySeq | 
 	polySeq := SequencerPoly new.
 	polySeq 
+	seqKey: self seqKey;
 		gates: self gates; 
 		noteIndex: self noteIndex; 
 		durations: self durations; 
@@ -97,23 +98,20 @@ SequencerMono >> playFullDirtEventAt: anIndex [
 	^ true 
 ]
 
-{ #category : #'LiveCoding  - SuperDirt' }
+{ #category : #'LiveCoding-Kyma' }
 SequencerMono >> playFullKymaEventAt: anIndex [
 	"sends a mesaage to SuperDirt with all the desired OSC arguments and values"
 
 	| dur note stepDuration |
 	stepDuration := Performance uniqueInstance freq.
 	
+	self extraParams keysAndValuesDo: [ :k :v  | (v wrap: anIndex ) toKyma: ( self seqKey , k asString  ) ].
+	
 	"as in hardware sequencer, default gate time is 80% of duration time"
 	dur := (self durations asDirtArray wrap: anIndex) * stepDuration * 0.8.
 	note := self notes asDirtArray wrap: anIndex.
 	self seqKey toKymaAsGate: dur note: note.
-	" for extra data"
-	"dirtMessage keysAndValuesDo: [ :key :value |
-		message
-			add: key;
-			add: (value asDirtArray wrap: anIndex) ]."
-	" ####################"
+
 	^ true
 ]
 

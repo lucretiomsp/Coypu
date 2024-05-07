@@ -14,10 +14,7 @@ Class {
 	#type : #variable,
 	#instVars : [
 		'seqKey',
-		'extra1String',
-		'extra2String',
-		'extra1',
-		'extra2',
+		'extraParams',
 		'notes',
 		'durations',
 		'noteIndex',
@@ -38,7 +35,7 @@ Class {
 	#classInstVars : [
 		'orbit'
 	],
-	#category : #'Coypu-Sequencers'
+	#category : 'Coypu-Sequencers'
 }
 
 { #category : #accessing }
@@ -110,7 +107,7 @@ the first element of the array should be a string - for example 'Index'' - the s
 { #category : #comparing }
 Sequencer >> = anotherSequencer [ 
 	" equality between sequencers"
-	^ ((self notes = anotherSequencer notes) & (self gates = anotherSequencer gates) & (self durations = anotherSequencer durations) & (self extra1 = anotherSequencer extra1) & (self extra2 = anotherSequencer extra2))
+	^ ((self notes = anotherSequencer notes) & (self gates = anotherSequencer gates) & (self durations = anotherSequencer durations) & (self extraParams = anotherSequencer extraParams))
 ]
 
 { #category : #addNotesToGates }
@@ -172,7 +169,7 @@ Sequencer >> ccn: anIntOrAnArray ccv: anotherIntOrArray [
 
 { #category : #accessing }
 Sequencer >> chords: aStringWithOneOrMoreChords [
-	" note and chord type separated by an hyphen for example 'c-maj d#-min sus4 min7')"
+	" note and chord type separated by an hyphen for example 'c-maj d#-min f-sus4 e-min7') - can be expressed with a letter or with a note number."
 
 	| arrayOfChords |
 	arrayOfChords := aStringWithOneOrMoreChords chordsToArrays.
@@ -324,88 +321,25 @@ Sequencer >> durationsSize [
 	^ durations size
 ]
 
-{ #category : #accessing }
-Sequencer >> extra1 [
+{ #category : #'LiveCoding-Kyma' }
+Sequencer >> extra: aSymbol values: aNumberorAnArray [
 
-	" returns extra1 if it is defined, otherwise returns a dummy array"
+"stores extra values to control synths parameters on Kyma"
 
-	^ extra1
+self extraParams at: aSymbol put: aNumberorAnArray asDirtArray
+
 ]
 
 { #category : #accessing }
-Sequencer >> extra1: anArrayWithStringAndArray [
-	"example #('cutoff' #(99 111 87 56))"
-	
-	extra1 := anArrayWithStringAndArray
+Sequencer >> extraParams [
+
+	^ extraParams
 ]
 
 { #category : #accessing }
-Sequencer >> extra1: aSymbol values: anArrayOfValues [
-	"example 
-	extra1: #cutoff values: #(300 600 800).
-	"
+Sequencer >> extraParams: anObject [
 
-	extra1 := Array with: aSymbol with: anArrayOfValues.
-]
-
-{ #category : #accessing }
-Sequencer >> extra1Size [
-	"return the size of the array of values for extra1"
-	
-	| values |
-	values := extra1 at: 2.
-	^ extra1 notNil
-		  ifTrue: [ values size ]
-		  ifFalse: [ 1 ]
-]
-
-{ #category : #accessing }
-Sequencer >> extra1String [
-
-	^ extra1String
-]
-
-{ #category : #accessing }
-Sequencer >> extra1String: aString [
-	"allows the definition of extra1 sufffix"
-	extra1String := aString.
-]
-
-{ #category : #accessing }
-Sequencer >> extra2 [
-	" returns extra1 if it is defined, otherwise returns a dummy array"
-
-	^ extra2
-]
-
-{ #category : #accessing }
-Sequencer >> extra2: anArrayWithStringAndArray [
-	"example #('cutoff' #(99 111 87 56))"
-
-	extra2 := anArrayWithStringAndArray
-]
-
-{ #category : #accessing }
-Sequencer >> extra2Size [
-	"return the size of the array of values for extra2"
-
-	| values |
-	values := extra2 at: 2.
-	^ extra1 notNil
-		  ifTrue: [ values size ]
-		  ifFalse: [ 1 ]
-]
-
-{ #category : #accessing }
-Sequencer >> extra2String [
-
-	^ extra2String
-]
-
-{ #category : #accessing }
-Sequencer >> extra2String: aString [
-	"allows the definition of extra1 sufffix"
-	extra2String := aString
+	extraParams := anObject
 ]
 
 { #category : #'Sequencer - transformation' }
@@ -501,6 +435,9 @@ Sequencer >> initialize [
 	"superdirt orbits are 12"
 	self class orbit: self class orbit + 1.
 	orbit := self class orbit.
+	
+	"for Kyma"
+	extraParams := Dictionary new.
 
 	"dirtMessage addAll: { '_id' -> 1 . 'cps' -> 0.56 .  'orbit' -> 0 }"
 ]
