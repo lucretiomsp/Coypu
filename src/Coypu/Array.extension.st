@@ -76,8 +76,9 @@ Array >> arp: anArrayOfIntervals [
 
 { #category : #'*Coypu' }
 Array >> asDirtArray [
-"convenience method to send OSC messages to SuperDirt"
-^ self
+	"convenience method to send OSC messages to SuperDirt - the same message sent to a Number converts it into an array with just that number as element"
+
+	^ self
 ]
 
 { #category : #'*Coypu' }
@@ -147,6 +148,18 @@ Array >> asSeq [
 	(seq numberOfTrigs > 0) ifTrue: [dur := self size / seq numberOfTrigs].
 	seq durations: dur asDirtArray.
 	^ seq
+]
+
+{ #category : #'*Coypu' }
+Array >> asSeries [
+
+"convenience method to create a series of integers incremented by 1"
+^ ((self at: 1) rounded to: (self at: 2) rounded) asArray
+
+
+
+
+
 ]
 
 { #category : #'*Coypu' }

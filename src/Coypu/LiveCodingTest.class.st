@@ -5,6 +5,12 @@ Class {
 }
 
 { #category : #tests }
+LiveCodingTest >> testArrayAsSeries [
+
+	self assert: #(48 60) asSeries equals: (48 to: 60) asArray
+]
+
+{ #category : #tests }
 LiveCodingTest >> testArrayIntoScale [
 
 	| indexes newNotes |
@@ -20,7 +26,7 @@ LiveCodingTest >> testArrayIntoScale [
 LiveCodingTest >> testArrayWrap [
 
 	| array |
-	array := (1 to: 10) asDirtArray.
+	array := (1 to: 10) asArray .
 	self assert: (array wrap: 11) equals: 1
 ]
 
@@ -29,13 +35,7 @@ LiveCodingTest >> testFullScale [
 
 	| result |
 	result := (Scale chromatic: 60) fullScale.
-	self assert: result equals: (0 to: 127) asDirtArray
-]
-
-{ #category : #tests }
-LiveCodingTest >> testIntegerAsArray [
-
-	self assert: 16 asArrayOfInts equals: (1 to: 16) asDirtArray
+	self assert: result equals: (0 to: 127) asArray
 ]
 
 { #category : #tests }
@@ -68,7 +68,7 @@ LiveCodingTest >> testStringAsDirtNotes [
 
 | case |
 
-case := '0 2*3 ~ [5 ~*2]' asDirtNotes.
+case := '0 , 2*3 , ~ , 5 ~*2' asDirtNotes.
 
 self assert: (case dirtMessage at: 'n') equals: #(0 2 2 2 5 5).
 self assert: case gates equals: #(1 1 1 1 0 1 0 1 0)
@@ -91,7 +91,7 @@ LiveCodingTest >> testStringEveryInt [
 LiveCodingTest >> testStringForDirt [
 
 	| string gates seq soundsPattern samplesIndex |
-	string := 'bd:1 sd cp:2 ~'.
+	string := 'bd:1 , sd , cp:2 , ~'.
 	gates := #(1 1 1 0).
 	soundsPattern := #( 'bd' 'sd' 'cp' ).
 	samplesIndex := #( 1 0 2 ).
@@ -103,10 +103,16 @@ self assert: seq gates equals: gates.
 ]
 
 { #category : #tests }
+LiveCodingTest >> testStringInWords [
+
+	self assert: 'the needs of the many' inWords equals: #('the' 'needs' 'of' 'the' 'many') asOrderedCollection 
+]
+
+{ #category : #tests }
 LiveCodingTest >> testStringOfSoundsForDirt [
 
 	| case |
-	case := 'sd cp*3 ~ [bd ~*2]' asDirtSounds.
+	case := 'sd ,  cp*3 , ~ , bd ~*2' asDirtSounds.
 
 	self 
 		assert: (case dirtMessage at: 's') 
@@ -121,12 +127,6 @@ LiveCodingTest >> testStringOfSoundsForDirt [
 
 
 
-]
-
-{ #category : #tests }
-LiveCodingTest >> testStringWInWords [
-
-	self assert: 'the needs of the many' inWords equals: #('the' 'needs' 'of' 'the' 'many')
 ]
 
 { #category : #tests }
