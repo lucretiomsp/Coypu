@@ -7,7 +7,7 @@ https://github.com/lucretiomsp/phausto
 Class {
 	#name : #PerformerPhaust,
 	#superclass : #Performer,
-	#category : #'Coypu-Performance'
+	#category : #'Coypu-Performer'
 }
 
 { #category : #playing }

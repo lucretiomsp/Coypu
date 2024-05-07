@@ -4,7 +4,7 @@ Performer for  a generic OSC audio client on port: 57142
 Class {
 	#name : #PerformerLocal,
 	#superclass : #Performer,
-	#category : #'Coypu-Performance'
+	#category : #'Coypu-Performer'
 }
 
 { #category : #playing }

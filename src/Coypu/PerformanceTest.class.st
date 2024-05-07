@@ -5,7 +5,7 @@ Class {
 		'performance',
 		'performer'
 	],
-	#category : #'Coypu-Performance'
+	#category : #'Coypu-Tests'
 }
 
 { #category : #tests }

@@ -13,7 +13,7 @@ Class {
 		'color',
 		'border'
 	],
-	#category : #'Coypu-Performance'
+	#category : #'Coypu-Performer'
 }
 
 { #category : #accessing }

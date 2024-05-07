@@ -12,7 +12,7 @@ Class {
 		'freq',
 		'fourDaysAt120BPM'
 	],
-	#category : #'Coypu-Performance'
+	#category : #'Coypu-Performer'
 }
 
 { #category : #initialization }

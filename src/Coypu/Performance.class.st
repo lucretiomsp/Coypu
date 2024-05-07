@@ -126,23 +126,10 @@ Performance >> add: aSequencer channel: anIntegerBetween1And16 [
 
 { #category : #accessing }
 Performance >> at: key put: anObject [
-
 	"Set the value at key to be anObject.  If key is not found, create a
-	new entry for key and set is value to anObject. Answer anObject.
-	If a RsCanvas have been associated to the Performance add the visualisation of the sequencer to the RSCanvas"
+	new entry for key and set is value to anObject. Answer anObject."
 
-
-	super at: key put: anObject.
-
-	canvas isNotNil & anObject isSequencer ifTrue: [ 
-		(self rsGroupDictionary includesKey: key)
-			ifTrue: [ 
-				canvas removeShape: (rsGroupDictionary at: key) asShape.
-				anObject visualizeOn: canvas.
-				rsGroupDictionary at: key put: anObject visualGroup ]
-			ifFalse: [ 
-				anObject visualizeOn: canvas.
-				rsGroupDictionary at: key put: anObject visualGroup ] ]
+	super at: key put: anObject
 ]
 
 { #category : #'LiveCoding - Performance' }

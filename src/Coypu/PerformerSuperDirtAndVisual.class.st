@@ -5,7 +5,7 @@ Sends OSC mesages to SuperDirt port and to port 8000 to use for visual with Proc
 Class {
 	#name : #PerformerSuperDirtAndVisual,
 	#superclass : #Performer,
-	#category : #'Coypu-Performance'
+	#category : #'Coypu-Performer'
 }
 
 { #category : #playing }
