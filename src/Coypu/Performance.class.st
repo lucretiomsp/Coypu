@@ -8,10 +8,8 @@ Class {
 	#superclass : #Dictionary,
 	#type : #variable,
 	#instVars : [
-		'visualization',
 		'performer',
 		'canvas',
-		'rsGroupDictionary',
 		'freq',
 		'backup',
 		'bpm',
@@ -206,7 +204,8 @@ Performance >> initialize: aSize [
 
 	super initialize: aSize.
 	activeProcess := Process new terminate.
-	freq := 132 bpm.
+	self muteAll.
+	freq := 132 bpm
 ]
 
 { #category : #testing }
@@ -228,37 +227,24 @@ Performance >> length [
 
 { #category : #'muting and soloing' }
 Performance >> mute: aKeyOrAnArrayOfKeys [
-
 	"remove all the keys in the arrayOfKeys from the Performance or remove just a single key"
 
 	aKeyOrAnArrayOfKeys isArray
-		ifTrue: [ 
+		ifTrue: [
 		aKeyOrAnArrayOfKeys do: [ :i | self removeKey: i ifAbsent: [  ] ] ]
 		ifFalse: [ self removeKey: aKeyOrAnArrayOfKeys ].
-	"if the Performance has an associated canvas, it also removes the shapes group visualizing the key sequencer"
-	canvas isNotNil ifTrue: [ 
-		aKeyOrAnArrayOfKeys isArray
-			ifTrue: [ 
-				aKeyOrAnArrayOfKeys do: [ :i | 
-					canvas removeShape: (rsGroupDictionary at: i) asShape ] ]
-			ifFalse: [ 
-				canvas removeShape:
-					(rsGroupDictionary at: aKeyOrAnArrayOfKeys) asShape ]. canvas signalUpdate  ]
+
 ]
 
 { #category : #'muting and soloing' }
 Performance >> muteAll [
-
 	" remove all keys from the Performance"
 
 	| anArrayOfKeys |
-	backup := self asDictionary .
+	backup := self asDictionary.
 	self keysDo: [ :i | self removeKey: i ifAbsent: [ nil ] ].
 
-	[ 
-	canvas isNotNil ifTrue: [ 
-		anArrayOfKeys do: [ :i | 
-			canvas removeShape: (rsGroupDictionary at: i) asShape ] ] ] fork
+
 ]
 
 { #category : #'LiveCoding - satelliteEvent' }
