@@ -104,12 +104,6 @@ Integer >> dirtNoteToSpeed [
 ]
 
 { #category : #'*Coypu' }
-Integer >> downbeats [ 
-
- ^ ((1 to: self) collect: [ :i | (((i rem: 4) = 1)) asBit ]) asRhythm asSeq. 
-]
-
-{ #category : #'*Coypu' }
 Integer >> gahu [
 " create an array of self size of gahu (from Ewe people) rhytm pulses. Better if used with self = 8 x anInteger "
 | pattern |

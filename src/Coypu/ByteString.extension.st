@@ -63,6 +63,38 @@ ByteString >> asDirtNotes [
 ]
 
 { #category : #'*Coypu' }
+ByteString >> asDirtPureNotes [
+	" retruns just the note numbers parsed - tokens must be separated by string"
+
+	| seq tokens gates notesAStrings notesAsNumbers dirtString |
+	gates := ''.
+	tokens := self splitOn: ','.
+	dirtString := ''.
+	tokens do: [ :i |
+		(i includes: $*)
+			ifTrue: [ gates := gates , i multiplyStringsInString ]
+			ifFalse: [
+				(i includes: $/)
+					ifTrue: [ gates := gates , i withNRests ]
+					ifFalse: [ gates := gates , i ] ] ].
+
+	notesAStrings := (gates copyReplaceAll: '~' with: '')
+		                 findBetweenSubstrings: ' '.
+
+	notesAsNumbers := notesAStrings collect: [ :i |
+		                  i ~= ' ' ifTrue: [ i asInteger ] ].
+
+	notesAsNumbers do: [ :i |
+		dirtString := dirtString , i asString , ' ' ].
+
+	seq := gates asSeqGates asSeq.
+	seq dirtNotes: dirtString.
+	seq notes: notesAsNumbers asArray.
+
+	^ notesAsNumbers asArray .
+]
+
+{ #category : #'*Coypu' }
 ByteString >> asDirtSounds [
 
 	" parse a String into a Sequencer containing information to end to the SuperDirt synth for SuperCollider"
@@ -181,14 +213,20 @@ rhythm := ((( 1 to: (flat size)) collect: [ :i | (flat at: i ) digitValue ]) asR
 ]
 
 { #category : #'*Coypu' }
-ByteString >> hexBeat: anArrayOfNoteNumbers [ 
-" convert a string with an Hexadecimal number to the Kyma array corresponding to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex) , and with  anArrayOfNoteNumbers as Notes"
-|   strings flat |
+ByteString >> hexBeat: aStringOfNoteNumbers [
+	" convert a string with an Hexadecimal number to the Kyma array corresponding to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex) , and with  anArrayOfNoteNumbers as Notes"
 
-strings := (1 to: (self size)) collect: [ :i | 
-((self at: i) digitValue printStringBase: 2 length: 4 padded: true ) ].
-flat := strings flatCollect: [ :each | each ].
-^ ((( 1 to: (flat size)) collect: [ :i | (flat at: i ) digitValue ]) asRhythm ) and: anArrayOfNoteNumbers  .
+	| strings flat seq |
+	strings := (1 to: self size) collect: [ :i |
+		           (self at: i) digitValue
+			           printStringBase: 2
+			           length: 4
+			           padded: true ].
+	flat := strings flatCollect: [ :each | each ].
+	seq := ((1 to: flat size) collect: [ :i | (flat at: i) digitValue ])
+		       asRhythm asSeq.
+	seq notes: aStringOfNoteNumbers asDirtNotes.
+	^ seq
 ]
 
 { #category : #'*Coypu' }
