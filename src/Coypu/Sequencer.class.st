@@ -35,7 +35,7 @@ Class {
 	#classInstVars : [
 		'orbit'
 	],
-	#category : 'Coypu-Sequencers'
+	#category : #'Coypu-Sequencers'
 }
 
 { #category : #accessing }
@@ -110,13 +110,12 @@ Sequencer >> = anotherSequencer [
 	^ ((self notes = anotherSequencer notes) & (self gates = anotherSequencer gates) & (self durations = anotherSequencer durations) & (self extraParams = anotherSequencer extraParams))
 ]
 
-{ #category : #addNotesToGates }
-Sequencer >> > anArrayOfNotesOrANote [
+{ #category : #'LiveCoding - Performance' }
+Sequencer >> > aKeyInPerformance [
 
-	" change notes in the sequencer - polysemic binary version of notes:"
-   anArrayOfNotesOrANote isArray 
-		ifTrue: [ notes := anArrayOfNotesOrANote ] 
-		ifFalse: [ notes := Array new: self numberOfTrigs  withAll: anArrayOfNotesOrANote  ]
+"binary obscure polysemic alternative of to: methhod"
+
+self to: aKeyInPerformance 
 ]
 
 { #category : #adding }
@@ -337,9 +336,14 @@ Sequencer >> extraParams [
 ]
 
 { #category : #accessing }
-Sequencer >> extraParams: anObject [
+Sequencer >> extraParams: anArrayWithASymbolAndAnrrayOfValues [
 
-	extraParams := anObject
+
+|parameter value |
+parameter := anArrayWithASymbolAndAnrrayOfValues at: 1.
+value := anArrayWithASymbolAndAnrrayOfValues at: 2.
+
+	extraParams at: parameter put: value asDirtArray 
 ]
 
 { #category : #'Sequencer - transformation' }
