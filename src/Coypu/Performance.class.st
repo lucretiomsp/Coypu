@@ -16,7 +16,9 @@ Class {
 		'transportStep',
 		'activeProcess',
 		'dirtMIDIDevice',
-		'activeDSP'
+		'activeDSP',
+		'perfVisualizer',
+		'trackVisualizers'
 	],
 	#classInstVars : [
 		'uniqueInstance',
@@ -127,7 +129,11 @@ Performance >> at: key put: anObject [
 	"Set the value at key to be anObject.  If key is not found, create a
 	new entry for key and set is value to anObject. Answer anObject."
 
-	super at: key put: anObject
+	super at: key put: anObject.
+	self trackVisualizers
+		at: key
+		put: (MfPatternElement new display: anObject gates).
+		self perfVisualizer root addChild: (trackVisualizers at: key).
 ]
 
 { #category : #'LiveCoding - Performance' }
@@ -155,16 +161,6 @@ Performance >> bpm: aRateInSeconds [
 ]
 
 { #category : #accessing }
-Performance >> canvas [ 
-	^ canvas 
-]
-
-{ #category : #accessing }
-Performance >> canvas: aRSCanvas [
-	canvas := aRSCanvas 
-]
-
-{ #category : #accessing }
 Performance >> dirtMIDIDevice [
 
 	^ dirtMIDIDevice
@@ -180,12 +176,6 @@ Performance >> dirtMIDIDevice: aString [
 Performance >> freq [
 	"better to convert it to Float to avoid OSC sending issues"
 	^ freq asFloat
-]
-
-{ #category : #accessing }
-Performance >> freq1: anObject [
-
-	freq := anObject
 ]
 
 { #category : #accessing }
@@ -320,6 +310,20 @@ Performance >> pacaDance [
 
 		  "step is incrementing in any case"
 		  step := step + 1 ] ] forkAt: Processor timingPriority
+]
+
+{ #category : #accessing }
+Performance >> perfVisualizer [
+
+	^ perfVisualizer
+]
+
+{ #category : #accessing }
+Performance >> perfVisualizer: aPerfVisualizer [
+	"assing a perfVisualzier and initialize a new Dictionary for trackVisualziers"
+
+	perfVisualizer := aPerfVisualizer.
+	self trackVisualizers: Dictionary new.
 ]
 
 { #category : #accessing }
@@ -605,18 +609,6 @@ Performance >> restore [
 	p keysAndValuesRemove: [ :kp :vp | (p backup includesKey: kp) not ] 
 ]
 
-{ #category : #accessing }
-Performance >> rsGroupDictionary [
-
-	^ rsGroupDictionary
-]
-
-{ #category : #accessing }
-Performance >> rsGroupDictionary: anRSGroupDictionary [
-
-	rsGroupDictionary := anRSGroupDictionary
-]
-
 { #category : #'muting and soloing' }
 Performance >> solo: aKeyOrAnArrayOfKeys [
 
@@ -653,6 +645,18 @@ Performance >> swap: firstKey with: secondKey [
 ]
 
 { #category : #accessing }
+Performance >> trackVisualizers [
+
+	^ trackVisualizers
+]
+
+{ #category : #accessing }
+Performance >> trackVisualizers: aDictionary [
+
+	trackVisualizers := aDictionary
+]
+
+{ #category : #accessing }
 Performance >> transportStep [
 	^ transportStep
 ]
@@ -668,16 +672,4 @@ Performance >> unsolo: aKeyInPerformance [
 	"convenience method to unsolo a key in the performance"
 	
 	self restore
-]
-
-{ #category : #accessing }
-Performance >> visualization [
-
-	^ visualization
-]
-
-{ #category : #accessing }
-Performance >> visualization: anObject [
-
-	visualization := anObject
 ]

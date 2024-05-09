@@ -299,17 +299,6 @@ Integer >> rests [
 ]
 
 { #category : #'*Coypu' }
-Integer >> rumba [
-" create an array of self size of Cuban rumba rhytm pulses. Better if used with self = 16 x anInteger "
-| pattern |
-pattern := #(1 0 0 1 0 0 0 1 0 0 1 0 1 0 0 0 ).
-
-^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm asSeq.
-
-"implement shifting to the left"
-]
-
-{ #category : #'*Coypu' }
 Integer >> semibreves [
 " returns self number of semibrevesin the first position of the bars"
 | result |
