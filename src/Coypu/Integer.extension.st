@@ -1,49 +1,9 @@
 Extension { #name : #Integer }
 
 { #category : #'*Coypu' }
-Integer >> bomba [
-" create an array of self size of  puertorican Bomba rhytm pulses. Better if the receiever is a multiple of eight."
-| pattern |
-pattern := #(1 0 0 1 1 1 1 0 ).
-
-^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm asSeq.
-
-]
-
-{ #category : #'*Coypu' }
-Integer >> bossa [
-" create an array of self size of  bossanova rhytm pulses. Better if used with self = 16 x anInteger "
-| pattern |
-pattern := #(1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 ).
-
-^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm asSeq .
-
-"implement shifting to the left"
-]
-
-{ #category : #'*Coypu' }
 Integer >> bpm [
 "return the duration of 1/16th at self bpm"
 ^ ((60/  self) /4).
-]
-
-{ #category : #'*Coypu' }
-Integer >> breves [
-" returns self number of brevesin the first position of the bars"
-| result |
-result := (('80000000' pattern ) times: self).
-result durations: 32.
-^ result
-]
-
-{ #category : #'*Coypu' }
-Integer >> claveSon [
-" create an array of self size of  Cuban clave Son rhytm pulses. Better if the receiever is a multiple of 16."
-| pattern |
-pattern := #(1 0 0 1 0 0 1 0 0 0 1 0 1 0 0 0).
-
-^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm asSeq.
-
 ]
 
 { #category : #'*Coypu' }
@@ -119,12 +79,6 @@ Integer >> pattern [
 ]
 
 { #category : #'*Coypu' }
-Integer >> quavers [
-"creates an Array of aNumber of values (0,1) with 1 to the position corresponding to a rhtyhm of quavers (downbeat + upbeat)"
-	^ ((1 to: self) collect: [ :i | ((((i rem: 4) = 1)) | (((i rem: 4) = 3)) ) asBit ]) asRhythm asSeq .
-]
-
-{ #category : #'*Coypu' }
 Integer >> randomDiv: aDivision [
 "return an array of size=self random values in the range of 0,1 , with a subdivision of 1/aDivision steps with 2 decimal places"
 	| r array|
@@ -149,28 +103,6 @@ Integer >> randomInts: aNumber [
 floatsArray := (self randoms) * aNumber.
 result := floatsArray collect: [ :i | i rounded ].
 ^ result
-]
-
-{ #category : #'*Coypu' }
-Integer >> randomNotes: anArray [
-
-	"answer an Array of size=self with random note numbers between "
-
-	| max min range |
-	min := anArray at: 1.
-	max := anArray at: 2.
-	range := 1 + max - min.
-	^ (1 to: self) collect: [ :i | 
-		  (Random new nextInteger: range) + min - 1 ]
-]
-
-{ #category : #'*Coypu' }
-Integer >> randomNotesFrom: anArray [
-
-	"return an array of self size of random notes from anArray"
-
-	^ (1 to: self) collect: [ :i | 
-		  anArray at: (Random new nextInteger: anArray size) ]
 ]
 
 { #category : #'*Coypu' }
@@ -201,14 +133,6 @@ Integer >> randomSamplesFromFolder: aStringForAFolderOfSamples withProbability: 
 	folder := SuperDirt samplesFolder / aStringForAFolderOfSamples .
 	folderSize := folder asFileReference allChildren size. 
 	^ (self randomTrigsWithProbability: aProbability ) sound: aStringForAFolderOfSamples ; dirtNotes: (randIndex  randomInts: folderSize) .
-]
-
-{ #category : #'*Coypu' }
-Integer >> randomTrigs [
-"generates an Array of random 0s and 1s of size: aNumber"
-	| r |
-	r := Random new.
-	^ ((1 to: self) collect: [ :i | (r next ) rounded]) asRhythm asSeq .
 ]
 
 { #category : #'*Coypu' }
@@ -255,27 +179,6 @@ Integer >> randoms [
 ]
 
 { #category : #'*Coypu' }
-Integer >> rests [
-	" retuns a Sequencer of gates size = self with all zeros / to create long rests "
-^ (Array new: self withAll: 0) asRhythm asSeq .
-]
-
-{ #category : #'*Coypu' }
-Integer >> semibreves [
-" returns self number of semibrevesin the first position of the bars"
-| result |
-result := (('8000' hexBeat ) times: self) .
-result durations: 16.
-^ result
-]
-
-{ #category : #'*Coypu' }
-Integer >> semiquavers [ 
-
-^ (Array new: self withAll: 1) asRhythm asSeq.
-]
-
-{ #category : #'*Coypu' }
 Integer >> semitonesToSpeed [
 
  "Convert semitones to playback speed factor"
@@ -287,17 +190,6 @@ Integer >> semitonesToSpeed [
         semitoneFactor := baseFactor raisedTo: self.
 
         ^semitoneFactor.
-]
-
-{ #category : #'*Coypu' }
-Integer >> shiko [
-" create an array of self size of shiko (West-African / Caribbean) rhytm pulses. Better if used with self = 16 x anInteger "
-| pattern |
-pattern := #(1 0 0 0 1 0 1 0 0 0 1 0 1 0 0 0).
-
-^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm asSeq.
-
-"implement shifting to the left"
 ]
 
 { #category : #'*Coypu' }
@@ -381,27 +273,6 @@ Integer >> toSCAsGate: aDurationInSeconds note: aNoteNumber [
 ]
 
 { #category : #'*Coypu' }
-Integer >> tresillo [
-" create an array of self size of  tresillo rhytm pulses. Better if used with self = 8 x anInteger "
-| pattern newArray rhythm |
-
-pattern := #(1 0 0 1 0 0 1 0 ).
-
-newArray := (0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ].
-rhythm := Rhythm new: (newArray size).
-(1 to: (rhythm size)) do: [ :i | rhythm at: i put: (newArray  at: i) ].
-^ rhythm asSeq.
-
-"
-| pattern |
-pattern := #(1 0 0 1 0 0 1 0 ).
-
-^ (0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ].
-"
-"implement shifting to the left"
-]
-
-{ #category : #'*Coypu' }
 Integer >> trigs [
 	
 	" retuns a Sequencer of gates size = self with all ones - same as semiquavers"
@@ -417,21 +288,4 @@ pattern := #(1 0 1 0 1 0 1 0 0 1 0 1 0).
 ^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm asSeq.
 
 "implement shifting to the left"
-]
-
-{ #category : #'*Coypu' }
-Integer >> tumbao [
-" create an array of self size of  habanera/tumbao rhytm pulses. Better if the receiever is a multiple of eight."
-| pattern rhythm |
-pattern := #(1 0 0 1 1 0 1 0 ).
-
-rhythm := ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm asSeq.
-^ rhythm.
-
-]
-
-{ #category : #'*Coypu' }
-Integer >> upbeats [
-"creates an Array of size=self  of values (0,1) with 1 to the position corresponding to a 4/4 upbeat rhythm"
-	^ ((1 to: self) collect: [ :i | (((i rem: 4) = 3)) asBit ]) asRhythm asSeq.
 ]
