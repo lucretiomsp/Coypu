@@ -225,7 +225,7 @@ ByteString >> hexBeat: aStringOfNoteNumbers [
 	flat := strings flatCollect: [ :each | each ].
 	seq := ((1 to: flat size) collect: [ :i | (flat at: i) digitValue ])
 		       asRhythm asSeq.
-	seq notes: aStringOfNoteNumbers asDirtNotes.
+	seq notes: aStringOfNoteNumbers asDirtPureNotes.
 	^ seq
 ]
 
@@ -238,6 +238,15 @@ strings := (1 to: (self size)) collect: [ :i |
 ((self at: i) digitValue printStringBase: 2 length: 4 padded: true ) ].
 flat := strings flatCollect: [ :each | each ].
 ^ ((( 1 to: (flat size)) collect: [ :i | (flat at: i ) digitValue ]) asRhythm ) and: anArrayOfNoteNumbers and: anArrayOfDurations .
+]
+
+{ #category : #'*Coypu' }
+ByteString >> hexBeat: aStringOfNoteNumbers to: aKey [
+	"conveience method to avoid parenthesis !!! returns the Sequencer that has been created"
+| seq |
+	seq := (self hexBeat: aStringOfNoteNumbers) .
+	seq to: aKey.
+	^ seq
 ]
 
 { #category : #'*Coypu' }

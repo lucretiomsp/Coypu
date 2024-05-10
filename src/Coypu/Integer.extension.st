@@ -1,38 +1,6 @@
 Extension { #name : #Integer }
 
 { #category : #'*Coypu' }
-Integer >> adowa [
-" create an array of self size of  sikyi (by Ashanti people of Ghana) rhytm pulses. Better if the receiever is a multiple of 8."
-| pattern |
-pattern := #(0 0 0 1 0 1 0 1).
-
-^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm asSeq.
-
-]
-
-{ #category : #'*Coypu' }
-Integer >> aksak [
-" create an array of self size of Balcan pseudo aksak rhytm pulses. Better if used with self = 8 x anInteger "
-| pattern |
-pattern := #(1 0 1 0 0 0 1 0 0 0).
-
-^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm asSeq.
-
-"implement shifting to the left"
-]
-
-{ #category : #'*Coypu' }
-Integer >> banda [
-" create an array of self size of Banda (Haiti/Vodoo) rhytm pulses. Better if used with self = 8 x anInteger . it is the same rhythm played in the moribayasa rhythm among the Malinke people of Guinea and in Cuba it is called cinquillo"
-| pattern |
-pattern := #(1 0 1 1 0 1 1 0).
-
-^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm asSeq.
-
-"implement shifting to the left"
-]
-
-{ #category : #'*Coypu' }
 Integer >> bomba [
 " create an array of self size of  puertorican Bomba rhytm pulses. Better if the receiever is a multiple of eight."
 | pattern |
