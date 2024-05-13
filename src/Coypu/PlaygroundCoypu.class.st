@@ -3,13 +3,13 @@ Minimal Playground for programming music on-the fly.
 
 "
 Class {
-	#name : #Playground4LiveCoding,
+	#name : #PlaygroundCoypu,
 	#superclass : #StPlaygroundPagePresenter,
 	#category : #'Coypu-Playground'
 }
 
 { #category : #layout }
-Playground4LiveCoding class >> defaultLayout [
+PlaygroundCoypu class >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
 		  spacing: 4;
@@ -19,13 +19,13 @@ Playground4LiveCoding class >> defaultLayout [
 ]
 
 { #category : #accessing }
-Playground4LiveCoding class >> defaultTitle [
+PlaygroundCoypu class >> defaultTitle [
 
 	^ 'Programming music on-the-fly'
 ]
 
 { #category : #initialization }
-Playground4LiveCoding >> initializeWindow: aWindowPresenter [
+PlaygroundCoypu >> initializeWindow: aWindowPresenter [
 
 	super initializeWindow: aWindowPresenter.
 	
