@@ -130,10 +130,12 @@ Performance >> at: key put: anObject [
 	new entry for key and set is value to anObject. Answer anObject."
 
 	super at: key put: anObject.
-	self trackVisualizers
+	
+	"implement later tracks visualizers"
+	"self trackVisualizers
 		at: key
 		put: (MfPatternElement new display: anObject gates).
-		self perfVisualizer root addChild: (trackVisualizers at: key).
+		self perfVisualizer root addChild: (trackVisualizers at: key)."
 ]
 
 { #category : #'LiveCoding - Performance' }

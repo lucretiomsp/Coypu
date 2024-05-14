@@ -28,8 +28,8 @@ PlaygroundCoypu class >> defaultTitle [
 PlaygroundCoypu >> initializeWindow: aWindowPresenter [
 
 	super initializeWindow: aWindowPresenter.
-	
+
 	aWindowPresenter
-		title: 'PROGRAMMING MUSIC ON-THE-FLY';
+		title: 'COYPU';
 		initialExtent: self currentWorld width @ 700
 ]
