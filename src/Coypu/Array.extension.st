@@ -76,9 +76,8 @@ Array >> arp: anArrayOfIntervals [
 
 { #category : #'*Coypu' }
 Array >> asDirtArray [
-	"convenience method to send OSC messages to SuperDirt - the same message sent to a Number converts it into an array with just that number as element"
-
-	^ self
+"convenience method to send OSC messages to SuperDirt"
+^ self
 ]
 
 { #category : #'*Coypu' }
@@ -151,30 +150,21 @@ Array >> asSeq [
 ]
 
 { #category : #'*Coypu' }
-Array >> asSeries [
-
-"convenience method to create a series of integers incremented by 1"
-^ ((self at: 1) rounded to: (self at: 2) rounded) asArray
-
-
-
-
-
-]
-
-{ #category : #'*Coypu' }
 Array >> euclidean [
-
 	"generates an euclidean rhythm with (self at: 1) onsets and (self at: 2) pulses. 
 algorithm based on the Bresenham approach"
 
-	| onsets pulses slope result previous current |
+	| onsets pulses slope result previous current a b |
+	a := PerformanceRecorder uniqueInstance announcer.
+	b := RythmAnnouncement new.
+	b rythm: self asString , ' euclidean'.
+	a announce: b.
 	current := 0.
 	onsets := self at: 1.
 	pulses := self at: 2.
 	slope := onsets / pulses.
 	result := OrderedCollection new.
-	(0 to: pulses - 1) do: [ :i | 
+	(0 to: pulses - 1) do: [ :i |
 		current := (i * slope) asInteger.
 		current ~= previous
 			ifTrue: [ result add: 1 ]

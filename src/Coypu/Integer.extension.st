@@ -1,9 +1,110 @@
 Extension { #name : #Integer }
 
 { #category : #'*Coypu' }
+Integer >> adowa [
+	" create an array of self size of  sikyi (by Ashanti people of Ghana) rhytm pulses. Better if the receiever is a multiple of 8."
+
+	| pattern announcement |
+	announcement := RythmAnnouncement new.
+	announcement rythm: self asString , ' adowa'.
+	PerformanceRecorder uniqueInstance announce: announcement.
+	pattern := #( 0 0 0 1 0 1 0 1 ).
+
+	^ ((0 to: self - 1) collect: [ :i |
+		   pattern at: (i rem: pattern size) + 1 ]) asRhythm asSeq
+]
+
+{ #category : #'*Coypu' }
+Integer >> aksak [
+	" create an array of self size of Balcan pseudo aksak rhytm pulses. Better if used with self = 8 x anInteger "
+
+	| pattern announcement |
+	announcement  := RythmAnnouncement new.
+	announcement  rythm: self asString , ' aksak'.
+	PerformanceRecorder uniqueInstance announce: announcement.
+	pattern := #( 1 0 1 0 0 0 1 0 0 0 ).
+
+	^ ((0 to: self - 1) collect: [ :i |
+		   pattern at: (i rem: pattern size) + 1 ]) asRhythm asSeq
+
+	"implement shifting to the left"
+]
+
+{ #category : #'*Coypu' }
+Integer >> banda [
+	" create an array of self size of Banda (Haiti/Vodoo) rhytm pulses. Better if used with self = 8 x anInteger . it is the same rhythm played in the moribayasa rhythm among the Malinke people of Guinea and in Cuba it is called cinquillo"
+
+	| pattern announcement |
+	announcement := RythmAnnouncement new.
+	announcement rythm: self asString , ' banda'.
+	PerformanceRecorder uniqueInstance announce: announcement.
+	
+	
+	pattern := #( 1 0 1 1 0 1 1 0 ).
+
+	^ ((0 to: self - 1) collect: [ :i |
+		   pattern at: (i rem: pattern size) + 1 ]) asRhythm asSeq
+
+	"implement shifting to the left"
+]
+
+{ #category : #'*Coypu' }
+Integer >> bomba [
+	" create an array of self size of  puertorican Bomba rhytm pulses. Better if the receiever is a multiple of eight."
+
+	| pattern announcement |
+	announcement := RythmAnnouncement new.
+	announcement rythm: self asString , ' bomba'.
+	PerformanceRecorder uniqueInstance announce: announcement.
+	pattern := #( 1 0 0 1 1 1 1 0 ).
+
+	^ ((0 to: self - 1) collect: [ :i |
+		   pattern at: (i rem: pattern size) + 1 ]) asRhythm asSeq
+]
+
+{ #category : #'*Coypu' }
+Integer >> bossa [
+	" create an array of self size of  bossanova rhytm pulses. Better if used with self = 16 x anInteger "
+
+	| pattern announcement  |
+	announcement := RythmAnnouncement new.
+	announcement rythm: self asString , ' bossa'.
+		PerformanceRecorder uniqueInstance announce: announcement.
+	pattern := #( 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 ).
+
+	^ ((0 to: self - 1) collect: [ :i |
+		   pattern at: (i rem: pattern size) + 1 ]) asRhythm asSeq
+
+	"implement shifting to the left"
+]
+
+{ #category : #'*Coypu' }
 Integer >> bpm [
 "return the duration of 1/16th at self bpm"
 ^ ((60/  self) /4).
+]
+
+{ #category : #'*Coypu' }
+Integer >> breves [
+" returns self number of brevesin the first position of the bars"
+| result |
+result := (('80000000' pattern ) times: self).
+result durations: 32.
+^ result
+]
+
+{ #category : #'*Coypu' }
+Integer >> claveSon [
+	" create an array of self size of  Cuban clave Son rhytm pulses. Better if the receiever is a multiple of 16."
+
+	| pattern announcement |
+	announcement  := RythmAnnouncement new.
+	announcement rythm: self asString , ' claveson'.
+		PerformanceRecorder uniqueInstance announce: announcement.
+	pattern := #( 1 0 0 1 0 0 1 0 0 0 1 0 1 0 0 0 ).
+
+	^ ((0 to: self - 1) collect: [ :i |
+		   pattern at: (i rem: pattern size) + 1 ]) asRhythm asSeq
 ]
 
 { #category : #'*Coypu' }
@@ -32,14 +133,30 @@ Integer >> dirtNoteToSpeed [
 ]
 
 { #category : #'*Coypu' }
+Integer >> downbeats [
+
+	| announcement |
+	announcement  := RythmAnnouncement new.
+	announcement rythm: self asString , ' downbeats'.
+	PerformanceRecorder uniqueInstance announce: announcement.
+	^ ((1 to: self) collect: [ :i | ((i rem: 4) = 1) asBit ]) asRhythm
+		  asSeq
+]
+
+{ #category : #'*Coypu' }
 Integer >> gahu [
-" create an array of self size of gahu (from Ewe people) rhytm pulses. Better if used with self = 8 x anInteger "
-| pattern |
-pattern := #(1 0 0 1 0 0 1 0 0 0 1 0 0 0 1 0 ).
+	" create an array of self size of gahu (from Ewe people) rhytm pulses. Better if used with self = 8 x anInteger "
 
-^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm asSeq.
+	| pattern announcement |
+	announcement  := RythmAnnouncement new.
+	announcement  rythm: self asString , ' gahu'.
+		PerformanceRecorder uniqueInstance announce: announcement.
+	pattern := #( 1 0 0 1 0 0 1 0 0 0 1 0 0 0 1 0 ).
 
-"implement shifting to the left"
+	^ ((0 to: self - 1) collect: [ :i |
+		   pattern at: (i rem: pattern size) + 1 ]) asRhythm asSeq
+
+	"implement shifting to the left"
 ]
 
 { #category : #'*Coypu' }
@@ -79,6 +196,18 @@ Integer >> pattern [
 ]
 
 { #category : #'*Coypu' }
+Integer >> quavers [
+	"creates an Array of aNumber of values (0,1) with 1 to the position corresponding to a rhtyhm of quavers (downbeat + upbeat)"
+
+	| announcement |
+	announcement := RythmAnnouncement new.
+	announcement  rythm: self asString , ' quavers'.
+		PerformanceRecorder uniqueInstance announce: announcement.
+	^ ((1 to: self) collect: [ :i |
+		   ((i rem: 4) = 1 | ((i rem: 4) = 3)) asBit ]) asRhythm asSeq
+]
+
+{ #category : #'*Coypu' }
 Integer >> randomDiv: aDivision [
 "return an array of size=self random values in the range of 0,1 , with a subdivision of 1/aDivision steps with 2 decimal places"
 	| r array|
@@ -103,6 +232,28 @@ Integer >> randomInts: aNumber [
 floatsArray := (self randoms) * aNumber.
 result := floatsArray collect: [ :i | i rounded ].
 ^ result
+]
+
+{ #category : #'*Coypu' }
+Integer >> randomNotes: anArray [
+
+	"answer an Array of size=self with random note numbers between "
+
+	| max min range |
+	min := anArray at: 1.
+	max := anArray at: 2.
+	range := 1 + max - min.
+	^ (1 to: self) collect: [ :i | 
+		  (Random new nextInteger: range) + min - 1 ]
+]
+
+{ #category : #'*Coypu' }
+Integer >> randomNotesFrom: anArray [
+
+	"return an array of self size of random notes from anArray"
+
+	^ (1 to: self) collect: [ :i | 
+		  anArray at: (Random new nextInteger: anArray size) ]
 ]
 
 { #category : #'*Coypu' }
@@ -136,16 +287,33 @@ Integer >> randomSamplesFromFolder: aStringForAFolderOfSamples withProbability: 
 ]
 
 { #category : #'*Coypu' }
-Integer >> randomTrigsWithProbability: anIntegerProbability [
-"generates an Array of random 0s and 1s of size: aNumber with a probability of having a trig of anIntegerProbability "
-	| r rytm|
-	rytm:= Array new: self.
-	r := Random new.
-	( 1 to: self) do: [ :i| (r next) < (anIntegerProbability / 100) 
-	ifTrue: [ rytm at: i put: 1 ]	ifFalse: [ rytm at: i put: 0 ]
-		 ].
+Integer >> randomTrigs [
+	"generates an Array of random 0s and 1s of size: aNumber"
 
-^ rytm asRhythm asSeq
+	| r announcement |
+	announcement := RythmAnnouncement new.
+	announcement rythm: self asString , 'randomTrigs'.
+		PerformanceRecorder uniqueInstance announce: announcement.
+	r := Random new.
+	^ ((1 to: self) collect: [ :i | r next rounded ]) asRhythm asSeq
+]
+
+{ #category : #'*Coypu' }
+Integer >> randomTrigsWithProbability: anIntegerProbability [
+	"generates an Array of random 0s and 1s of size: aNumber with a probability of having a trig of anIntegerProbability "
+
+	| r rytm announcement |.
+	announcement  := RythmAnnouncement new.
+	announcement  rythm: self asString , ' randomsTrigsWithProbability'.
+	PerformanceRecorder uniqueInstance announce: announcement.
+	rytm := Array new: self.
+	r := Random new.
+	(1 to: self) do: [ :i |
+		r next < (anIntegerProbability / 100)
+			ifTrue: [ rytm at: i put: 1 ]
+			ifFalse: [ rytm at: i put: 0 ] ].
+
+	^ rytm asRhythm asSeq
 ]
 
 { #category : #'*Coypu' }
@@ -179,6 +347,57 @@ Integer >> randoms [
 ]
 
 { #category : #'*Coypu' }
+Integer >> rests [
+	" retuns a Sequencer of gates size = self with all zeros / to create long rests "
+
+	| announcement|
+	announcement  := RythmAnnouncement new.
+	announcement  rythm: self asString , ' rests'.
+		PerformanceRecorder uniqueInstance announce: announcement.
+	^ (Array new: self withAll: 0) asRhythm asSeq
+]
+
+{ #category : #'*Coypu' }
+Integer >> rumba [
+	" create an array of self size of Cuban rumba rhytm pulses. Better if used with self = 16 x anInteger "
+
+	| pattern announcement|
+	announcement := RythmAnnouncement new.
+	announcement rythm: self asString , ' rumba'.
+		PerformanceRecorder uniqueInstance announce: announcement.
+	pattern := #( 1 0 0 1 0 0 0 1 0 0 1 0 1 0 0 0 ).
+
+	^ ((0 to: self - 1) collect: [ :i |
+		   pattern at: (i rem: pattern size) + 1 ]) asRhythm asSeq
+
+	"implement shifting to the left"
+]
+
+{ #category : #'*Coypu' }
+Integer >> semibreves [
+	" returns self number of semibrevesin the first position of the bars"
+
+	| result announcement|
+	announcement := RythmAnnouncement new.
+	announcement rythm: self asString , ' semibreves'.
+		PerformanceRecorder uniqueInstance announce: announcement.
+	result := '8000' hexBeat times: self.
+	result durations: 16.
+	^ result
+]
+
+{ #category : #'*Coypu' }
+Integer >> semiquavers [
+
+	| announcement|
+	announcement := RythmAnnouncement new.
+	announcement rythm: self asString , ' semiquavers'.
+		PerformanceRecorder uniqueInstance announce: announcement.
+
+	^ (Array new: self withAll: 1) asRhythm asSeq
+]
+
+{ #category : #'*Coypu' }
 Integer >> semitonesToSpeed [
 
  "Convert semitones to playback speed factor"
@@ -193,24 +412,49 @@ Integer >> semitonesToSpeed [
 ]
 
 { #category : #'*Coypu' }
+Integer >> shiko [
+	" create an array of self size of shiko (West-African / Caribbean) rhytm pulses. Better if used with self = 16 x anInteger "
+
+	| pattern announcement|
+	announcement := RythmAnnouncement new.
+	announcement rythm: self asString , ' shiko'.
+		PerformanceRecorder uniqueInstance announce: announcement.
+	pattern := #( 1 0 0 0 1 0 1 0 0 0 1 0 1 0 0 0 ).
+
+	^ ((0 to: self - 1) collect: [ :i |
+		   pattern at: (i rem: pattern size) + 1 ]) asRhythm asSeq
+
+	"implement shifting to the left"
+]
+
+{ #category : #'*Coypu' }
 Integer >> sikyi [
-" create an array of self size of  sikyi (by Ashanti people of Ghana) rhytm pulses. Better if the receiever is a multiple of 8."
-| pattern |
-pattern := #(0 0 0 1 0 1 0 1).
+	" create an array of self size of  sikyi (by Ashanti people of Ghana) rhytm pulses. Better if the receiever is a multiple of 8."
 
-^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm asSeq.
+	| pattern announcement |
+	announcement := RythmAnnouncement new.
+	announcement rythm: self asString , ' sikyi'.
+			PerformanceRecorder uniqueInstance announce: announcement.
+	pattern := #( 0 0 0 1 0 1 0 1 ).
 
+	^ ((0 to: self - 1) collect: [ :i |
+		   pattern at: (i rem: pattern size) + 1 ]) asRhythm asSeq
 ]
 
 { #category : #'*Coypu' }
 Integer >> soukous [
-" create an array of self size of Central Africa soukous rhytm pulses. Better if used with self = 8 x anInteger "
-| pattern |
-pattern := #(1 0 0 1 0 0 1 0 0 0 1 1 0 0 0 0 ).
+	" create an array of self size of Central Africa soukous rhytm pulses. Better if used with self = 8 x anInteger "
 
-^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm asSeq.
+	| pattern announcement |
+	announcement := RythmAnnouncement new.
+	announcement rythm: self asString , ' soukous'.
+		PerformanceRecorder uniqueInstance announce: announcement.
+	pattern := #( 1 0 0 1 0 0 1 0 0 0 1 1 0 0 0 0 ).
 
-"implement shifting to the left"
+	^ ((0 to: self - 1) collect: [ :i |
+		   pattern at: (i rem: pattern size) + 1 ]) asRhythm asSeq
+
+	"implement shifting to the left"
 ]
 
 { #category : #'*Coypu' }
@@ -273,19 +517,82 @@ Integer >> toSCAsGate: aDurationInSeconds note: aNoteNumber [
 ]
 
 { #category : #'*Coypu' }
+Integer >> tresillo [
+	" create an array of self size of  tresillo rhytm pulses. Better if used with self = 8 x anInteger "
+
+	| pattern newArray rhythm announcement|
+	announcement := RythmAnnouncement new.
+	announcement rythm: self asString , ' tresillo'.
+		PerformanceRecorder uniqueInstance announce: announcement.
+
+	pattern := #( 1 0 0 1 0 0 1 0 ).
+
+	newArray := (0 to: self - 1) collect: [ :i |
+		            pattern at: (i rem: pattern size) + 1 ].
+	rhythm := Rhythm new: newArray size.
+	(1 to: rhythm size) do: [ :i | rhythm at: i put: (newArray at: i) ].
+	^ rhythm asSeq
+
+	"
+| pattern |
+pattern := #(1 0 0 1 0 0 1 0 ).
+
+^ (0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ].
+"
+	"implement shifting to the left"
+]
+
+{ #category : #'*Coypu' }
 Integer >> trigs [
-	
+
+	| announcement |
+	announcement := RythmAnnouncement new.
+	announcement rythm: self asString , ' trigs'.
+	PerformanceRecorder uniqueInstance announce: announcement.
 	" retuns a Sequencer of gates size = self with all ones - same as semiquavers"
-^ (Array new: self withAll: 1) asRhythm asSeq.
+	^ (Array new: self withAll: 1) asRhythm asSeq
 ]
 
 { #category : #'*Coypu' }
 Integer >> trueAksak [
-" create an array of self size of Balcan aksak rhytm pulses. Better if used with self = 13 x anInteger "
-| pattern |
-pattern := #(1 0 1 0 1 0 1 0 0 1 0 1 0).
+	" create an array of self size of Balcan aksak rhytm pulses. Better if used with self = 13 x anInteger "
 
-^ ((0 to: (self -1) ) collect: [ :i | pattern at: ((i rem: pattern size) + 1) ]) asRhythm asSeq.
+	| pattern announcement|
+	announcement := RythmAnnouncement new.
+	announcement rythm: self asString , ' trueAksak'.
+	PerformanceRecorder uniqueInstance announce: announcement.
+	pattern := #( 1 0 1 0 1 0 1 0 0 1 0 1 0 ).
 
-"implement shifting to the left"
+	^ ((0 to: self - 1) collect: [ :i |
+		   pattern at: (i rem: pattern size) + 1 ]) asRhythm asSeq
+
+	"implement shifting to the left"
+]
+
+{ #category : #'*Coypu' }
+Integer >> tumbao [
+	" create an array of self size of  habanera/tumbao rhytm pulses. Better if the receiever is a multiple of eight."
+
+	| announcement pattern rhythm |
+	announcement := RythmAnnouncement new.
+	announcement rythm: self asString , ' tumbao'.
+	PerformanceRecorder uniqueInstance announce: announcement.
+	pattern := #( 1 0 0 1 1 0 1 0 ).
+
+	rhythm := ((0 to: self - 1) collect: [ :i |
+		           pattern at: (i rem: pattern size) + 1 ]) asRhythm asSeq.
+	^ rhythm
+]
+
+{ #category : #'*Coypu' }
+Integer >> upbeats [
+	"creates an Array of size=self  of values (0,1) with 1 to the position corresponding to a 4/4 upbeat rhythm"
+
+	| announcement |
+	announcement := RythmAnnouncement new.
+	announcement rythm: self asString , ' upbeats'.
+	PerformanceRecorder uniqueInstance announce: announcement..
+
+	^ ((1 to: self) collect: [ :i | ((i rem: 4) = 3) asBit ]) asRhythm
+		  asSeq
 ]

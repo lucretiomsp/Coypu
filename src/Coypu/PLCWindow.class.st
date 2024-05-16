@@ -9,3 +9,8 @@ PLCWindow >> defaultColor [
 
 	^ Color red
 ]
+
+{ #category : #initialization }
+PLCWindow >> initialize [ 
+super initialize 
+]

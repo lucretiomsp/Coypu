@@ -36,37 +36,10 @@ ByteString >> asDirtArray [
 ByteString >> asDirtNotes [
 	" returns a sequencer containing a trig for each integer and a rest for whatever other character and with the notes coresponding to the integeres inside the string - tokens must be separated by string"
 
-	| seq tokens gates notesAStrings notesAsNumbers dirtString |
-	gates := ''.
-	tokens := self splitOn: ','.
-	dirtString := ''.
-	tokens do: [ :i |
-		(i includes: $*)
-			ifTrue: [ gates := gates , i multiplyStringsInString ]
-			ifFalse: [
-				(i includes: $/)
-					ifTrue: [ gates := gates , i withNRests ]
-					ifFalse: [ gates := gates , i ] ] ].
-
-	notesAStrings := (gates copyReplaceAll: '~' with: '') findBetweenSubstrings: ' '.
-
-	notesAsNumbers := notesAStrings collect: [ :i | i ~= ' ' ifTrue: [ i asInteger ] ].
-
-	notesAsNumbers do: [ :i |
-		dirtString := dirtString , i asString , ' ' ].
-
-	seq := gates asSeqGates asSeq.
-	seq dirtNotes: dirtString.
-	seq notes: notesAsNumbers asArray.
-
-	^ seq
-]
-
-{ #category : #'*Coypu' }
-ByteString >> asDirtPureNotes [
-	" retruns just the note numbers parsed - tokens must be separated by string"
-
-	| seq tokens gates notesAStrings notesAsNumbers dirtString |
+	| seq tokens gates notesAStrings notesAsNumbers dirtString announcement|
+	announcement := RythmAnnouncement new.
+	announcement rythm: '''' , self asString , ''' asDirtNotes'.
+	PerformanceRecorder uniqueInstance announce: announcement.
 	gates := ''.
 	tokens := self splitOn: ','.
 	dirtString := ''.
@@ -91,35 +64,36 @@ ByteString >> asDirtPureNotes [
 	seq dirtNotes: dirtString.
 	seq notes: notesAsNumbers asArray.
 
-	^ notesAsNumbers asArray .
+	^ seq
 ]
 
 { #category : #'*Coypu' }
 ByteString >> asDirtSounds [
-
 	" parse a String into a Sequencer containing information to end to the SuperDirt synth for SuperCollider"
 
+	| seq tokens gates soundsAsStrings announcement |
+	announcement := RythmAnnouncement new.
+	announcement rythm: '''' , self asString , ''' asDirtSounds'.
+		PerformanceRecorder uniqueInstance announce: announcement.
+	gates := ''.
+	tokens := self splitOn: ','.
+	tokens do: [ :i |
+		(i includes: $*)
+			ifTrue: [ gates := gates , i multiplyStringsInString ]
+			ifFalse: [
+				(i includes: $/)
+					ifTrue: [ gates := gates , i withNRests ]
+					ifFalse: [ gates := gates , i ] ] ].
+
+	soundsAsStrings := gates copyReplaceAll: '~' with: ''.
 
 
 
 
-| seq tokens gates soundsAsStrings |
+	seq := gates asSeqGates asSeq.
+	seq sound: soundsAsStrings.
 
-gates := ''.
-tokens := self splitOn: ','.
-tokens do: [ :i | (i  includes: $* ) ifTrue: [gates := gates,  i multiplyStringsInString ] ifFalse: [(i includes: $/) ifTrue: [gates := gates,  i withNRests ]
-	ifFalse:  [gates := gates,  i]
-	]].
-
-soundsAsStrings := (gates copyReplaceAll: '~' with: '') . 
-
-
-
-
-seq := gates asSeqGates  asSeq.
-seq sound: soundsAsStrings  .
-
-^ seq
+	^ seq
 ]
 
 { #category : #'*Coypu' }
@@ -201,52 +175,61 @@ ByteString >> every: anInteger [
 
 { #category : #'*Coypu' }
 ByteString >> hexBeat [
+	" convert a string with an Hexadecimal number to the Kyma array correspondong to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex)"
 
-" convert a string with an Hexadecimal number to the Kyma array correspondong to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex)"
-|   strings flat rhythm|
+	| strings flat rhythm announcement|
+	thisContext sender selector asString = 'semibreves' ifFalse: [
+		announcement := RythmAnnouncement new.
+		announcement rythm: '''' , self asString , ''' hexBeat'.
+			PerformanceRecorder uniqueInstance announce: announcement.].
 
-strings := (1 to: (self size)) collect: [ :i | 
-((self at: i) digitValue printStringBase: 2 length: 4 padded: true ) ].
-flat := strings flatCollect: [ :each | each ].
-rhythm := ((( 1 to: (flat size)) collect: [ :i | (flat at: i ) digitValue ]) asRhythm ).
-^ rhythm asSeq.
-]
-
-{ #category : #'*Coypu' }
-ByteString >> hexBeat: aStringOfNoteNumbers [
-	" convert a string with an Hexadecimal number to the Kyma array corresponding to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex) , and with  anArrayOfNoteNumbers as Notes"
-
-	| strings flat seq |
 	strings := (1 to: self size) collect: [ :i |
 		           (self at: i) digitValue
 			           printStringBase: 2
 			           length: 4
 			           padded: true ].
 	flat := strings flatCollect: [ :each | each ].
-	seq := ((1 to: flat size) collect: [ :i | (flat at: i) digitValue ])
-		       asRhythm asSeq.
-	seq notes: aStringOfNoteNumbers asDirtPureNotes.
-	^ seq
+	rhythm := ((1 to: flat size) collect: [ :i | (flat at: i) digitValue ])
+		          asRhythm.
+	^ rhythm asSeq
+]
+
+{ #category : #'*Coypu' }
+ByteString >> hexBeat: anArrayOfNoteNumbers [
+	" convert a string with an Hexadecimal number to the Kyma array corresponding to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex) , and with  anArrayOfNoteNumbers as Notes"
+
+	| strings flat announcement|
+	announcement := RythmAnnouncement new.
+	announcement rythm: self asString , ' hexBeat'.
+		PerformanceRecorder uniqueInstance announce: announcement.
+
+	strings := (1 to: self size) collect: [ :i |
+		           (self at: i) digitValue
+			           printStringBase: 2
+			           length: 4
+			           padded: true ].
+	flat := strings flatCollect: [ :each | each ].
+	^ ((1 to: flat size) collect: [ :i | (flat at: i) digitValue ])
+		  asRhythm and: anArrayOfNoteNumbers
 ]
 
 { #category : #'*Coypu' }
 ByteString >> hexBeat: anArrayOfNoteNumbers dur: anArrayOfDurations [
-" convert a string with an Hexadecimal number to the Kyma array corresponding to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex) , and with  anArrayOfNoteNumbers as Notes and anArrayOfDurations as Durations"
-|   strings flat |
+	" convert a string with an Hexadecimal number to the Kyma array corresponding to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex) , and with  anArrayOfNoteNumbers as Notes and anArrayOfDurations as Durations"
 
-strings := (1 to: (self size)) collect: [ :i | 
-((self at: i) digitValue printStringBase: 2 length: 4 padded: true ) ].
-flat := strings flatCollect: [ :each | each ].
-^ ((( 1 to: (flat size)) collect: [ :i | (flat at: i ) digitValue ]) asRhythm ) and: anArrayOfNoteNumbers and: anArrayOfDurations .
-]
+	| strings flat announcement |
+	announcement := RythmAnnouncement new.
+	announcement rythm: self asString , ' hexBeat'.
+		PerformanceRecorder uniqueInstance announce: announcement.
 
-{ #category : #'*Coypu' }
-ByteString >> hexBeat: aStringOfNoteNumbers to: aKey [
-	"conveience method to avoid parenthesis !!! returns the Sequencer that has been created"
-| seq |
-	seq := (self hexBeat: aStringOfNoteNumbers) .
-	seq to: aKey.
-	^ seq
+	strings := (1 to: self size) collect: [ :i |
+		           (self at: i) digitValue
+			           printStringBase: 2
+			           length: 4
+			           padded: true ].
+	flat := strings flatCollect: [ :each | each ].
+	^ ((1 to: flat size) collect: [ :i | (flat at: i) digitValue ])
+		  asRhythm and: anArrayOfNoteNumbers and: anArrayOfDurations
 ]
 
 { #category : #'*Coypu' }
@@ -339,47 +322,72 @@ message := OSCMessage for: { '/dirt/play' . 's' . sound . 'n' . aNote . 'speed' 
 
 { #category : #'*Coypu' }
 ByteString >> parseChord [
-"chords can be xpressed both with letteres or with MIDI NoteNumbers"
 	|root chord notes|
 	root := (self findBetweenSubstrings: '-') at: 1.
 	chord :=(self findBetweenSubstrings: '-') at: 2.
 	notes := Array new: 11.
 	notes := #('c' 'c#' 'd' 'd#' 'e' 'f' 'f#' 'g#' 'a' 'a#' 'b').
-	root asInteger ifNotNil: [ ^ (Chord list at: chord asLowercase  asSymbol) + root asInteger ] ifNil:
-		[^ (Chord list at: chord asLowercase  asSymbol) + (notes indexOf: root asLowercase  ) - 1].
+		^ (Chord list at: chord asLowercase  asSymbol) + (notes indexOf: root asLowercase  ) - 1.
 ]
 
 { #category : #'*Coypu' }
-ByteString >> pattern [ 
-" convert a string with an Hexadecimal number to the Kyma array correspondong to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex)"
-|   strings flat |
+ByteString >> pattern [
+	" convert a string with an Hexadecimal number to the Kyma array corresponding to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex)"
 
-strings := (1 to: (self size)) collect: [ :i | 
-((self at: i) digitValue printStringBase: 2 length: 4 padded: true ) ].
-flat := strings flatCollect: [ :each | each ].
-^ ((( 1 to: (flat size)) collect: [ :i | (flat at: i ) digitValue ]) asRhythm ) asSeq.
+	| strings flat a b |
+	a := PerformanceRecorder uniqueInstance announcer.
+	b := RythmAnnouncement new.
+	b rythm: self asString , ' pattern'.
+	a announce: b.
+
+	strings := (1 to: self size) collect: [ :i |
+		           (self at: i) digitValue
+			           printStringBase: 2
+			           length: 4
+			           padded: true ].
+	flat := strings flatCollect: [ :each | each ].
+	^ ((1 to: flat size) collect: [ :i | (flat at: i) digitValue ])
+		  asRhythm asSeq
 ]
 
 { #category : #'*Coypu' }
-ByteString >> pattern: anArrayOfNoteNumbers [ 
-" convert a string with an Hexadecimal number to the Kyma array corresponding to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex) , and with  anArrayOfNoteNumbers as Notes"
-|   strings flat |
+ByteString >> pattern: anArrayOfNoteNumbers [
+	" convert a string with an Hexadecimal number to the Kyma array corresponding to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex) , and with  anArrayOfNoteNumbers as Notes"
 
-strings := (1 to: (self size)) collect: [ :i | 
-((self at: i) digitValue printStringBase: 2 length: 4 padded: true ) ].
-flat := strings flatCollect: [ :each | each ].
-^ ((( 1 to: (flat size)) collect: [ :i | (flat at: i ) digitValue ]) asRhythm ) and: anArrayOfNoteNumbers  .
+	| strings flat a b |
+	a := PerformanceRecorder uniqueInstance announcer.
+	b := RythmAnnouncement new.
+	b rythm: self asString , ' pattern'.
+	a announce: b.
+
+	strings := (1 to: self size) collect: [ :i |
+		           (self at: i) digitValue
+			           printStringBase: 2
+			           length: 4
+			           padded: true ].
+	flat := strings flatCollect: [ :each | each ].
+	^ ((1 to: flat size) collect: [ :i | (flat at: i) digitValue ])
+		  asRhythm and: anArrayOfNoteNumbers
 ]
 
 { #category : #'*Coypu' }
 ByteString >> pattern: anArrayOfNoteNumbers and: anArrayOfDurations [
-" convert a string with an Hexadecimal number to the Kyma array corresponding to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex) , and with  anArrayOfNoteNumbers as Notes and anArrayOfDurations as Durations"
-|   strings flat |
+	" convert a string with an Hexadecimal number to the Kyma array corresponding to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex) , and with  anArrayOfNoteNumbers as Notes and anArrayOfDurations as Durations"
 
-strings := (1 to: (self size)) collect: [ :i | 
-((self at: i) digitValue printStringBase: 2 length: 4 padded: true ) ].
-flat := strings flatCollect: [ :each | each ].
-^ ((( 1 to: (flat size)) collect: [ :i | (flat at: i ) digitValue ]) asRhythm ) and: anArrayOfNoteNumbers and: anArrayOfDurations .
+	| strings flat a b |
+	a := PerformanceRecorder uniqueInstance announcer.
+	b := RythmAnnouncement new.
+	b rythm: self asString , ' pattern'.
+	a announce: b.
+
+	strings := (1 to: self size) collect: [ :i |
+		           (self at: i) digitValue
+			           printStringBase: 2
+			           length: 4
+			           padded: true ].
+	flat := strings flatCollect: [ :each | each ].
+	^ ((1 to: flat size) collect: [ :i | (flat at: i) digitValue ])
+		  asRhythm and: anArrayOfNoteNumbers and: anArrayOfDurations
 ]
 
 { #category : #'*Coypu' }
@@ -525,24 +533,6 @@ ByteString >> toKymaAsTrig [
 			   vcslabel.
 			   1.0 }) sendToAddressString: PacaAddress address port: 8000.
 	  (Delay forSeconds: 0.01) wait.
-	  (OSCMessage for: { 
-			   vcslabel.
-			   0.0 }) sendToAddressString: PacaAddress address port: 8000 ] fork
-]
-
-{ #category : #'*Coypu' }
-ByteString >> toKymaAsTrigWithDuration: aDurationInSeconds [
-
-	" send an OSC message acting as a 10ms dutyCycle trigger"
-
-	| vcslabel |
-	"	pacaAddress := NetNameResolver stringFromAddress: (NetNameResolver 	addressForName:'beslime-691.local'). "
-	vcslabel := '/vcs/' , self , '/1'.
-	^ [ 
-	  (OSCMessage for: { 
-			   vcslabel.
-			   1.0 }) sendToAddressString: PacaAddress address port: 8000.
-	  (Delay forSeconds: aDurationInSeconds ) wait.
 	  (OSCMessage for: { 
 			   vcslabel.
 			   0.0 }) sendToAddressString: PacaAddress address port: 8000 ] fork

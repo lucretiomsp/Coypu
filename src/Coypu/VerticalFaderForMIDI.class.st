@@ -58,49 +58,43 @@ VerticalFaderForMIDI class >> newWithCC: aCCNumber forSender: aMIDISender channe
 
 { #category : #accessing }
 VerticalFaderForMIDI >> ccNumber [
-
-	^ ccNumber 
+^ ccNumber 
 ]
 
 { #category : #accessing }
 VerticalFaderForMIDI >> ccNumber: aCCNumber [
 
-	ccNumber := aCCNumber
+ccNumber := aCCNumber .
 ]
 
 { #category : #accessing }
 VerticalFaderForMIDI >> faderLabel [
-
-	^ faderLabel 
+^ faderLabel 
 ]
 
 { #category : #accessing }
 VerticalFaderForMIDI >> faderLabel: aString [
-
-	faderLabel := aString
+faderLabel := aString
 ]
 
 { #category : #accessing }
 VerticalFaderForMIDI >> midiChannel [ 
-
-	^ midiChannel 
+^ midiChannel 
 ]
 
 { #category : #accessing }
 VerticalFaderForMIDI >> midiChannel: aChannelNumber [ 
-	midiChannel := aChannelNumber 
+midiChannel := aChannelNumber 
 ]
 
 { #category : #accessing }
 VerticalFaderForMIDI >> midiSender [
-
-	^ midiSender 
+^ midiSender 
 ]
 
 { #category : #accessing }
 VerticalFaderForMIDI >> midiSender: aMIDISender [
-
-	midiSender  := aMIDISender
+midiSender  := aMIDISender .
 ]
 
 { #category : #'event handling' }
@@ -123,7 +117,7 @@ VerticalFaderForMIDI >> mouseMove: anEvent [
 				sendCC: ccNumber
 				withValue: mappedY asInteger
 				onChannel: midiChannel ]
-
+		ifFalse: [ "for debug" nil ]
 ]
 
 { #category : #accessing }

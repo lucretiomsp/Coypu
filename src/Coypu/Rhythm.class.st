@@ -43,22 +43,22 @@ Rhythm class >> random: aNumber [
 	^ (1 to: aNumber) collect: [ :i | (r next ) printShowingDecimalPlaces: 2].
 ]
 
-{ #category : #compose }
+{ #category : #'bit manipulation' }
 Rhythm >> >> anArray [
-	" same as and: anArray, but rewritten to test precedence improvement"
-	"returns Sequencer with default note 60nn and default durations 1/16th and noteIndex = 0"
-	
-	^ (Sequencer with: self with: anArray with: #(0.125) with: 0 )
+" same as and: anArray, but rewritten to test precedence improvement"
+"returns Sequencer with default note 60nn and default durations 1/16th and noteIndex = 0"
+^ (Sequencer with: self with: anArray with: #(0.125) with: 0 )
 ]
 
-{ #category : #compose }
+{ #category : #controlling }
 Rhythm >> and: anArray [
-	"returns Sequencer with default note 60nn and default durations 1/16th and noteIndex = 0"
-	^ (Sequencer with: self with: anArray with: #(0.125) with: 0 )
+"returns Sequencer with default note 60nn and default durations 1/16th and noteIndex = 0"
+^ (Sequencer with: self with: anArray with: #(0.125) with: 0 )
 ]
 
-{ #category : #compose }
+{ #category : #'as yet unclassified' }
 Rhythm >> and: anArrayOfNotes and: anArrayOfDurations [
+
 	"returns Sequencer with default note 60nn and default durations 1/16th"
 
 	^ Sequencer new gates: self ; notes: anArrayOfNotes; durations: anArrayOfDurations
@@ -66,12 +66,11 @@ Rhythm >> and: anArrayOfNotes and: anArrayOfDurations [
 
 { #category : #converting }
 Rhythm >> asDirtArray [ 
-	"convert Rhythm into an Array"
-	
-	| array |
-	array := Array new: self size.
-	( 1 to: self size) do: [ :i | array at: i put: (self at: i)].
-	^ array
+"convert Rhythm into an Array"
+| array |
+array := Array new: (self size).
+( 1 to: (self size)) do:[:i | array at: i put: (self at: i)].
+^ array
 ]
 
 { #category : #'sequencer creation' }
@@ -82,14 +81,11 @@ Rhythm >> notes: anArray [
 
 { #category : #accessing }
 Rhythm >> offset: aNumber [
-	"offset the rhythm by aNumber of 'steps' wrapping it around its size"
-	| newRhythm |
-	newRhythm := Rhythm new: self size.
-	0 to: ((self size) - 1) do: [ :i | 
-			newRhythm 
-				at: ((i + aNumber) modulo: self size) 
-				put: (self at: i + 1)].
-	^ newRhythm
+"offset the rhythm by aNumber of 'steps' wrapping it around its size"
+| newRhythm |
+newRhythm := Rhythm new: (self size).
+0 to: ((self size) - 1) do: [ :i | newRhythm at: ((i + aNumber) modulo: (self size)) put: (self at: i + 1)].
+^ newRhythm .
 
 ]
 
@@ -99,7 +95,7 @@ Rhythm >> printOn: aStream [
 	aStream print: self asDirtArray 
 ]
 
-{ #category : #random }
+{ #category : #'as yet unclassified' }
 Rhythm >> randomInts: anArrayWithRangeAndMin [
 
 	"return an array of self size with random integers with range [anArrayWithRangeAndMin at: 1 +  anArrayWithRangeAndMin at: 2]"
@@ -113,7 +109,7 @@ Rhythm >> randomInts: anArrayWithRangeAndMin [
 	^ Sequencer new gates: self; notes: result
 ]
 
-{ #category : #random }
+{ #category : #'as yet unclassified' }
 Rhythm >> randomNotesFrom: anArray [
 
 	"return an array of self size of random notes from anArray"
@@ -125,7 +121,7 @@ Rhythm >> randomNotesFrom: anArray [
 	^ Sequencer new notes: self; gates: result
 ]
 
-{ #category : #random }
+{ #category : #'as yet unclassified' }
 Rhythm >> randomNotesFrom: anArray octaves: aNumber [
 
 	"return an array of self size of a random note from anArray + a random octave between 0 and aNumber"
