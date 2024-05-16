@@ -158,6 +158,13 @@ Sequencer >> bpq: aFloatOrAnArray [
 		put:  aFloatOrAnArray asDirtArray
 ]
 
+{ #category : #'LiveCoding-Kyma' }
+Sequencer >> bw: aNumberOrAnArray [
+	"set the bandwidth (bw) to  a collection of value in array or to to the numbe"
+
+	self extra: #bw values: aNumberOrAnArray asDirtArray
+]
+
 { #category : #'LiveCoding  - SuperDirt' }
 Sequencer >> ccn: anIntOrAnArray ccv: anotherIntOrArray [
 	" add a cc value/array of values to a cc number - to use with MIDI"
@@ -186,6 +193,13 @@ Sequencer >> chords: aStringWithOneOrMoreChords octave: anIntegerOrAnArray [
 	seqChords := arrayOfChords + (anIntegerOrAnArray * 12).
    ^ self asPolySeq
 	
+]
+
+{ #category : #'LiveCoding-Kyma' }
+Sequencer >> cutoff: aNumberOrAnArray [
+	"set the cutoff to a collection of value in array or to to the numbe"
+
+	self extra: #cutoff  values: aNumberOrAnArray asDirtArray
 ]
 
 { #category : #'sequencer - cycles' }
@@ -321,6 +335,13 @@ Sequencer >> durationsSize [
 ]
 
 { #category : #'LiveCoding-Kyma' }
+Sequencer >> duty: aNumberOrAnArray [
+	"set the duty cycle to a collection of value in array or to to the numbe"
+
+	self extra: #Duty values: aNumberOrAnArray asDirtArray 
+]
+
+{ #category : #'LiveCoding-Kyma' }
 Sequencer >> extra: aSymbol values: aNumberorAnArray [
 
 "stores extra values to control synths parameters on Kyma"
@@ -413,7 +434,7 @@ Sequencer >> index [
 	^ self extra1 at: 2
 ]
 
-{ #category : #accessing }
+{ #category : #'LiveCoding-Kyma' }
 Sequencer >> index: aStringWithIndexes [
 	"convenience method to avoid extra typing when we want to modify the index , i.e. the sample number of a sample player"
 
@@ -482,6 +503,27 @@ Sequencer >> kymaMessage [
 Sequencer >> kymaMessage: anObject [
 
 	kymaMessage := anObject
+]
+
+{ #category : #'LiveCoding-Kyma' }
+Sequencer >> level: aNumberOrAnArray [
+	"set the level to  a collection of value in array or to to the numbe"
+
+	self extra: #level values: aNumberOrAnArray asDirtArray
+]
+
+{ #category : #'LiveCoding-Kyma' }
+Sequencer >> lfoAmount: aNumberOrAnArray [
+	"set the lfoAmount to a collection of value in array or to to the numbe"
+
+	self extra: #lfoAmount values: aNumberOrAnArray asDirtArray
+]
+
+{ #category : #'LiveCoding-Kyma' }
+Sequencer >> lfoFreq: aNumberOrAnArray [
+	"set the dlfo frequency to a collection of value in array or to to the numbe"
+
+	self extra: #lfoFreq values: aNumberOrAnArray asDirtArray
 ]
 
 { #category : #'LiveCoding  - SuperDirt' }
@@ -924,6 +966,13 @@ Sequencer >> randomSamplesFromFolder: aStringForAFolderOfSamples [
 	self sound: aStringForAFolderOfSamples ; dirtNotes: (randIndex  randomInts: folderSize) .
 ]
 
+{ #category : #'LiveCoding-Kyma' }
+Sequencer >> ratio: aNumberOrAnArray [
+	"set the ratio to a collection of value in array or to to the numbe"
+
+	self extra: #lfoFreq values: aNumberOrAnArray asDirtArray
+]
+
 { #category : #'LiveCoding  - SuperDirt' }
 Sequencer >> rel: aFloatOrAnArray [
 	" add release ASR envelope pattern to the Sequencer"
@@ -1264,4 +1313,11 @@ Sequencer >> withRandomNotesMin: anInteger max: anotherInteger [
 		            (Random new nextInteger: anotherInteger - anInteger)
 		            + anInteger ].
 	^ self notes: newNotes
+]
+
+{ #category : #'LiveCoding-Kyma' }
+Sequencer >> x: aNumberOrAnArray [
+	"set the x to  a collection of value in array or to to the numbe"
+
+	self extra: #x values: aNumberOrAnArray asDirtArray
 ]
