@@ -287,8 +287,15 @@ PerformanceRecorder >> performer: aPerformer [
 		send: #lastDirtNotes:
 		to: savedPerformance;
 		when: DelayAnnouncement send: #appliesDelay: to: savedPerformance.
-
+	savedPerformance add: (RecordedOrderCommand new order:
+			 'performer: ' , aPerformer asString allButFirst , ' new .').
 	Performance uniqueInstance performer: aPerformer
+]
+
+{ #category : #accessing }
+PerformanceRecorder >> performer: aPerformer atTime: aDelay [
+	(Delay forSeconds: aDelay) wait.
+self performer: aPerformer 
 ]
 
 { #category : #playing }

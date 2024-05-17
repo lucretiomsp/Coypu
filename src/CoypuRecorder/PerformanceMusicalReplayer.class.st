@@ -38,9 +38,14 @@ PerformanceMusicalReplayer >> getScript: aSavedPerformance [
 	aSavedPerformance scriptWithDelayTimeForReplayer: self
 ]
 
+{ #category : #initialization }
+PerformanceMusicalReplayer >> initialize [
+super initialize
+	"stop := false"
+]
+
 { #category : #action }
 PerformanceMusicalReplayer >> replayWithoutPlayground [
-	"replay the performance in performanceScript WITHOUT opening a playground"
 
 	performanceScript do: [ :each | Object readFromString: each ]
 ]

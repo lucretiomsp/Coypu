@@ -490,9 +490,12 @@ Sequencer >> index [
 	^ (self extra1 at: 2)
 ]
 
-{ #category : #'LiveCoding - sequencer' }
-Sequencer >> index: anArrayOfIndexes [ 
-	self extra1: #Index values: anArrayOfIndexes 
+{ #category : #'LiveCoding-Kyma' }
+Sequencer >> index: aStringWithIndexes [
+	"convenience method to avoid extra typing when we want to modify the index , i.e. the sample number of a sample player"
+
+	self extraParams:
+		(Array with: #Index with: aStringWithIndexes asDirtPureNotes )
 ]
 
 { #category : #'LiveCoding - Performance' }

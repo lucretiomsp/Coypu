@@ -136,11 +136,11 @@ SavedPerformance >> getCommandTime: aString [
 ]
 
 { #category : #accessing }
-SavedPerformance >> header: 	aScript [
+SavedPerformance >> header: aScript [
+
 	aScript
-		addFirst: 'p performer: PerformerSuperDirt new.' , String cr;
-		addFirst: 'p := PerformanceRecorder uniqueInstance.'.
-	^aScript 
+		addFirst: 'p := PerformanceRecorder uniqueInstance.', String cr.
+	^ aScript
 ]
 
 { #category : #adding }

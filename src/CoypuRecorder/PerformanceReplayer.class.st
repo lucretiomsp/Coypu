@@ -103,6 +103,24 @@ PerformanceReplayer >> writeScriptInStonFile: aNameFile [
 ]
 
 { #category : #'read/write usage' }
+PerformanceReplayer >> writeScriptInStonFile: aNameFile filePath: aFilePath [
+	"write the performanceScript in a new ston file in the following path  home/Documents/PerformanceScripts/DateOfTheDay as aNameFile.ston"
+
+	| x script stream |
+	x := aFilePath .
+
+
+	script := (x / aNameFile , 'ston') asFileReference.
+	script asFileReference isFile ifTrue: [
+		script := x / (x nextNameFor: aNameFile extension: 'ston') ].
+	script := script asFileReference.
+	stream := script writeStream.
+
+	STON put: performanceScript asArray asJsonOnStreamPretty: stream.
+	stream close
+]
+
+{ #category : #'read/write usage' }
 PerformanceReplayer >> writeScriptInTxtFile [
 	"write the performanceScript in a TxtFile"
 
