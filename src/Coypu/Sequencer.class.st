@@ -136,6 +136,13 @@ Sequencer >> allNotes: anInteger [
 	self notes: newNotes.
 ]
 
+{ #category : #'LiveCoding-Kyma' }
+Sequencer >> amount: aNumberOrAnArray [
+	"set the amount to a collection of value in array or to to the numbe"
+
+	self extra: #amount values: aNumberOrAnArray asDirtArray
+]
+
 { #category : #converting }
 Sequencer >> asPolySeq [
 	
@@ -634,16 +641,16 @@ Sequencer >> notes1: anObject [
 ]
 
 { #category : #modifying }
-Sequencer >> notes: anArrayOfNotesOrANote [
-
+Sequencer >> notes: anArrayOfNotesOrANoteorAstring [
 	" change notes in the sequencer"
 
-	anArrayOfNotesOrANote isArray
-		ifTrue: [ notes := anArrayOfNotesOrANote ]
-		ifFalse: [ 
-			notes := Array
+	anArrayOfNotesOrANoteorAstring isArray
+		ifTrue: [ notes := anArrayOfNotesOrANoteorAstring ]
+		ifFalse: [
+			anArrayOfNotesOrANoteorAstring isByteString ifTrue: [ notes := anArrayOfNotesOrANoteorAstring asDirtPureNotes  ] ifFalse: 
+		[  	notes := Array
 				         new: self numberOfTrigs
-				         withAll: anArrayOfNotesOrANote ]
+				         withAll: anArrayOfNotesOrANoteorAstring]]
 ]
 
 { #category : #'as yet unclassified' }
