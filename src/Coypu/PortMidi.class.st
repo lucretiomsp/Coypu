@@ -90,12 +90,12 @@ PortMidi class >> writeShortOn: aPointerToAStream for: aPmMessage [
 
 { #category : #'as yet unclassified' }
 PortMidi >> close: aMIDIStream [
-	^ self ffiCall: #(PmError Pm_Close(void* aMIDIStream))
+^ self ffiCall: #(PmError Pm_Close(void* aMIDIStream))
 ]
 
 { #category : #'accessing - devices' }
 PortMidi >> countDevices [
-	^ self ffiCall: #(int Pm_CountDevices()) 
+^ self ffiCall: #(int Pm_CountDevices()) 
 ]
 
 { #category : #ioManagement }
@@ -110,13 +110,13 @@ PortMidi >> createNewPointerForStreamWithType: pointerType [
 { #category : #'as yet unclassified' }
 PortMidi >> createOutStream [
 
-	outStream  := self class createNewPointerForStreamWithType: 'void**'.
-	^ outStream 
+outStream  := self class createNewPointerForStreamWithType: 'void**'.
+^ outStream 
 ]
 
 { #category : #'accessing - devices' }
 PortMidi >> getDeviceInfo: aDeviceID [
-	^ self ffiCall: #(PmDeviceInfo * Pm_GetDeviceInfo (int aDeviceID)) 
+^ self ffiCall: #(PmDeviceInfo * Pm_GetDeviceInfo (int aDeviceID)) 
 ]
 
 { #category : #'accessing - devices' }
@@ -133,7 +133,7 @@ PortMidi >> getDeviceNameid: aDeviceID [
 
 { #category : #initialization }
 PortMidi >> initialize [ 
-	outStream  := 99.
+outStream  := 99.
 ]
 
 { #category : #'accessing - platform' }
@@ -144,63 +144,63 @@ PortMidi >> macModuleName [
 
 { #category : #'as yet unclassified' }
 PortMidi >> message: status and: data1 and: data2 [
-	
-	| result|
-	result := (((data2 bitShift: 16) bitAnd: 16rFF0000) bitOr: ((data1 bitShift: 8) bitAnd: 16rFF00)) 
+| result|
+
+result := (((data2 bitShift: 16) bitAnd: 16rFF0000) bitOr: ((data1 bitShift: 8) bitAnd: 16rFF00)) 
           bitOr: (status bitAnd: 16rFF).
-	^ result
+^ result
 ]
 
 { #category : #'as yet unclassified' }
 PortMidi >> openOutput: aDeviceIntID [ 
-	self ffiCall: 
+self ffiCall: 
 #(PmError Pm_OpenOutput #(void ** outStream, int aDeviceIntID, NULL, int 0, NULL, NULL, int 0))
 ]
 
 { #category : #'as yet unclassified' }
 PortMidi >> openOutput: aDeviceIntID on: aPortMidiStream [
-	self ffiCall: 
+self ffiCall: 
 #(PmError Pm_OpenOutput #(void ** aPortMidiStream, int aDeviceIntID, NULL, int 0, NULL, NULL, int 0))
 ]
 
 { #category : #'as yet unclassified' }
 PortMidi >> outStream [ 
-	^ outStream
+^ outStream .
 ]
 
 { #category : #'as yet unclassified' }
 PortMidi >> playNote: aNoteNumber onChannel: aMIDIChannel [
-	" play aNoteNumber on channel aChannel for a standard duration of 250 ms"
-	| noteOn noteOff channel|
-	channel := aMIDIChannel -1.
-	noteOn := self message: 144 + aMIDIChannel and: aNoteNumber  and: 100.
-	noteOff := self message: 128 + aMIDIChannel and: aNoteNumber  and: 100.
+" play aNoteNumber on channel aChannel for a standard duration of 250 ms"
+| noteOn noteOff channel|
+channel := aMIDIChannel -1.
+noteOn := self message: 144 + aMIDIChannel and: aNoteNumber  and: 100.
+noteOff := self message: 128 + aMIDIChannel and: aNoteNumber  and: 100.
 
 
 ]
 
 { #category : #'as yet unclassified' }
 PortMidi >> pm_Initialize [
-	self ffiCall: #(PmError Pm_Initialize ()) 
+self ffiCall: #(PmError Pm_Initialize ()) 
 ]
 
 { #category : #'as yet unclassified' }
 PortMidi >> start [
-	^ self ffiCall:  #(PtError Pt_Start(int 1, NULL, NULL))
+^ self ffiCall:  #(PtError Pt_Start(int 1, NULL, NULL))
 ]
 
 { #category : #'as yet unclassified' }
 PortMidi >> terminate [
-	^ self ffiCall: #(PmError Pm_Terminate()) 
+^ self ffiCall: #(PmError Pm_Terminate()) 
 ]
 
 { #category : #writing }
 PortMidi >> writeOn: aPointerToStream event: aBuffer length: aLength [
-	^ self ffiCall: #(PmError Pm_Write(void * aPointerToStream, PmEvent* aBuffer, int aLength))
+^ self ffiCall: #(PmError Pm_Write(void * aPointerToStream, PmEvent* aBuffer, int aLength))
 ]
 
 { #category : #'as yet unclassified' }
 PortMidi >> writeShortOn: aPointerToAStream for: aPmMessage [
-	"messages is sent out immediately, so timestamp is 0"
-	^ self ffiCall: #(PmError Pm_WriteShort (void *aPointerToAStream, int -1, int aPmMessage))
+"messages is sent out immediately, so timestamp is 0"
+^ self ffiCall: #(PmError Pm_WriteShort (void *aPointerToAStream, int -1, int aPmMessage))
 ]

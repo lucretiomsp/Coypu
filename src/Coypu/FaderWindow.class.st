@@ -4,7 +4,7 @@ Class {
 	#category : #'Coypu-GUI'
 }
 
-{ #category : #accessing }
+{ #category : #'as yet unclassified' }
 FaderWindow class >> countFadersInWorld [
 
 	| fadersInWorld  |

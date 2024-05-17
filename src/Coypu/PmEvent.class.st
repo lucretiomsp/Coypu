@@ -20,7 +20,7 @@ int timestamp;
 { #category : #'accessing - structure variables' }
 PmEvent >> message [
 	"This method was automatically generated"
-	^ handle signedLongAt: OFFSET_MESSAGE
+	^handle signedLongAt: OFFSET_MESSAGE
 ]
 
 { #category : #'accessing - structure variables' }

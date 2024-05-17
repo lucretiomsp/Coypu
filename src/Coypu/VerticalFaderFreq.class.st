@@ -9,19 +9,17 @@ Class {
 
 { #category : #initialization }
 VerticalFaderFreq >> initialize [ 
+super initialize .
+destination := 'BPM'.
+minValue := 55.
+maxValue := 190.
 
-	super initialize.
-	destination := 'BPM'.
-	minValue := 55.
-	maxValue := 190.
-
-	"cursor postion should be at the current freq"
+"cursor postion should be at the current freq"
 ]
 
-{ #category : #'event handling' }
+{ #category : #'as yet unclassified' }
 VerticalFaderFreq >> mouseMove: anEvent [
-	" the VerticalFaderForSuperDirt modify the contents of the Sequencer in Performance named as destination"
-
+" the VerticalFaderForSuperDirt modify the contents of the Sequencer in Performance named as destination"
 	| newLocation mappedY cursorY faderBottom range faderTop |
 	range := maxValue - minValue.
    

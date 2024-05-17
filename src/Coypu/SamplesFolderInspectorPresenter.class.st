@@ -4,7 +4,7 @@ Class {
 	#category : #'Coypu-SuperDirt'
 }
 
-{ #category : #inspect }
+{ #category : #'as yet unclassified' }
 SamplesFolderInspectorPresenter >> sampleDirectories [
 
 	<inspectorPresentationOrder:0 title:'Sample directories' >

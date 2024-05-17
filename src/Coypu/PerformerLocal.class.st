@@ -4,12 +4,12 @@ Performer for  a generic OSC audio client on port: 57142
 Class {
 	#name : #PerformerLocal,
 	#superclass : #Performer,
-	#category : #'Coypu-Performer'
+	#category : #'Coypu-Performance'
 }
 
 { #category : #playing }
 PerformerLocal >> play [
-	self playLocalSequenceAt:  132 bpm for: fourDaysAt120BPM  
+self playLocalSequenceAt:  132 bpm for: fourDaysAt120BPM  
 ]
 
 { #category : #accessing }

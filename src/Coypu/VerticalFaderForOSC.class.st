@@ -44,12 +44,12 @@ parsedString := aStringWithADestinationAndAParameter findBetweenSubstrings: ' '.
 
 { #category : #accessing }
 VerticalFaderForOSC >> destination [ 
-	^ destination 
+^ destination 
 ]
 
 { #category : #accessing }
 VerticalFaderForOSC >> destination: aDestination [
-	destination  := aDestination
+destination  := aDestination
 ]
 
 { #category : #'event handling' }
@@ -69,14 +69,15 @@ VerticalFaderForOSC >> mouseMove: anEvent [
 			mappedY := (((cursorY min: faderBottom) - faderBottom) abs min:
 				            self extent y) / self extent y * range + minValue.
 			mappedY toLocal: faderAddress ]
+		ifFalse: [ "for debug" nil ]
 ]
 
 { #category : #accessing }
 VerticalFaderForOSC >> parameter [ 
-	^ parameter 
+^ parameter 
 ]
 
 { #category : #accessing }
 VerticalFaderForOSC >> parameter: aParameter [
-	parameter := aParameter
+parameter := aParameter
 ]

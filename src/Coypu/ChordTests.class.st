@@ -7,10 +7,12 @@ Class {
 { #category : #tests }
 ChordTests >> testChordsToArrays [
 
-	| result |
-	result := #( #( 0 3 7 ) #( 2 6 9 ) ).
+| result | 
+result := #( #(0 3 7) #(2 6 9) ).
 
-	self assert: 'C-minor D-major' chordsToArrays asArray equals: result
+self assert: 'C-minor D-major' chordsToArrays asArray equals: result 
+
+
 ]
 
 { #category : #tests }

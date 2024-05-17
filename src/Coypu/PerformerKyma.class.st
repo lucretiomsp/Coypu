@@ -4,7 +4,7 @@ Performer for  Symbolic Sound Kyma
 Class {
 	#name : #PerformerKyma,
 	#superclass : #Performer,
-	#category : #'Coypu-Performer'
+	#category : #'Coypu-Performance'
 }
 
 { #category : #playing }
@@ -12,7 +12,7 @@ PerformerKyma >> play [
 self playKymaSequencFor: fourDaysAt120BPM 
 ]
 
-{ #category : #playing }
+{ #category : #'as yet unclassified' }
 PerformerKyma >> playFor: aNumberOfSteps [
 	"with this method you can chane the Performance speed in real time! "
 
@@ -24,6 +24,7 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 	performance resetAllSequencers. "reset all the sequencers"
 	bpm := 60 / (performance freq * 4) bpm toKyma: 'BPM'.
 
+
 	performance bpm: bpm.
 	performance transportStep: 0.
 	performance activeProcess: ([
@@ -33,7 +34,6 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 			 [
 			 
 			 performance valuesDo: [ :seq |
-				
 				 (seq gates wrap: performance transportStep) = 1
 					 ifTrue: [
 						 seq playFullKymaEventAt: seq noteIndex.
@@ -46,7 +46,7 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 			 Processor timingPriority)
 ]
 
-{ #category : #playing }
+{ #category : #'as yet unclassified' }
 PerformerKyma >> playForOld: aNumberOfSteps [
 
 "with this method you can chane the Performance speed in real time! "
@@ -124,7 +124,7 @@ performance  activeProcess: ([
 		  step := step + 1 ] ] forkAt: Processor timingPriority)
 ]
 
-{ #category : #playing }
+{ #category : #'as yet unclassified' }
 PerformerKyma >> playKymaSequencFor: aNumberOfSteps [
 
 "with this method you can chane the Performance speed in real time! "

@@ -142,6 +142,13 @@ self list keysDo:  [ :i | i traceCr ].
 Transcript open.
 ]
 
+{ #category : #initialization }
+Chord >> initialize [ 
+super initialize .
+
+
+]
+
 { #category : #generating }
 Chord >> randomize: aNumber [
 	
@@ -159,7 +166,9 @@ Chord >> randomize: aNumber range: aRange [
 	r := Random new.
 	s := self size.
 	
-	^ (1 to: aNumber) collect: [ :i | (self at: (r nextInteger: s)) + ((r nextInteger: aRange) * ((r nextInteger: 2) -2) )].
+
+	
+	^ (1 to: aNumber) collect: [ :i | (self at: (r nextInt: s)) + ((r nextInt: aRange) * ((r nextInt: 2) -2) )].
 ]
 
 { #category : #generating }
@@ -168,7 +177,10 @@ Chord >> randomize: aNumber range: aRange root: aRoot [
 	| r  s|
 	r := Random new.
 	s := self size.
-	^ (1 to: aNumber) collect: [ :i | ((self at: (r nextInteger: s)) + ((r nextInteger: aRange) * ((r nextInteger: 2) -2) )) + aRoot].
+	
+
+	
+	^ (1 to: aNumber) collect: [ :i | ((self at: (r nextInt: s)) + ((r nextInt: aRange) * ((r nextInt: 2) -2) )) + aRoot].
 ]
 
 { #category : #generating }
@@ -177,8 +189,10 @@ Chord >> randomize: aNumber range: aRange withRoot: aRoot [
 	| r  s|
 	r := Random new.
 	s := self size.
+	
 
-	^ (1 to: aNumber) collect: [ :i | ((self at: (r nextInteger: s)) + ((r nextInteger: aRange) * ((r nextInteger: 2) -2) )) + aRoot].
+	
+	^ (1 to: aNumber) collect: [ :i | ((self at: (r nextInt: s)) + ((r nextInt: aRange) * ((r nextInt: 2) -2) )) + aRoot].
 ]
 
 { #category : #generating }
@@ -193,7 +207,6 @@ Chord >> randomize: aNumber withRoot: aRoot [
 
 { #category : #accessing }
 Chord >> root: aNumber [
-	"return a Chord with aNumber nn as root"
-
-	^ (self + aNumber)
+" return a Chord with aNumber nn as root"
+^ (self + aNumber).
 ]
