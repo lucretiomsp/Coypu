@@ -58,15 +58,14 @@ d add: self -> anArray.
 ]
 
 { #category : #'*Coypu' }
-ByteSymbol >> indexes: anArrayOfIndexes [
-
+ByteSymbol >> indexes: aStringOfIndexes [
 	"change the sample indexes of a seuquencer in a performance at self key"
 
 	| p |
 	p := Performance uniqueInstance.
-	(p at: self) extra1: { 
-			#Index.
-			anArrayOfIndexes }
+	(p at: self) extra: 
+			#Index
+			values: aStringOfIndexes asDirtPureNotes  
 ]
 
 { #category : #'*Coypu' }
