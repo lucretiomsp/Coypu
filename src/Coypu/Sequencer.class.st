@@ -93,15 +93,12 @@ Sequencer >> , anotherSequencer [
 ]
 
 { #category : #comparing }
-Sequencer >> < anotherArray [
+Sequencer >> < aStringOfNotesOrAnaArrayIfNotes [
+	"same as notes but binary!"
 
-	"same as extra1 but binary!"
 
-	" add array of  extravalues to the Sequencer
-the first element of the array should be a string - for example 'Index'' - the second element o the array should be an array of numbers - for xample #( 1 2 3)
-"
 
-	^ self extra1: anotherArray 
+	^ self notes: aStringOfNotesOrAnaArrayIfNotes 
 ]
 
 { #category : #comparing }
@@ -977,7 +974,7 @@ Sequencer >> randomSamplesFromFolder: aStringForAFolderOfSamples [
 Sequencer >> ratio: aNumberOrAnArray [
 	"set the ratio to a collection of value in array or to to the numbe"
 
-	self extra: #lfoFreq values: aNumberOrAnArray asDirtArray
+	self extra: #ratio values: aNumberOrAnArray asDirtArray
 ]
 
 { #category : #'LiveCoding  - SuperDirt' }
