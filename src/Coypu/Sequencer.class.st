@@ -30,7 +30,8 @@ Class {
 		'isPoly',
 		'phaustGateDestination',
 		'phaustNoteDestination',
-		'kymaMessage'
+		'kymaMessage',
+		'transportStep'
 	],
 	#classInstVars : [
 		'orbit'
@@ -432,6 +433,12 @@ Sequencer >> hold: aFloatOrAnArray [
 		put:  aFloatOrAnArray   asDirtArray
 ]
 
+{ #category : #'LiveCoding - sequencer' }
+Sequencer >> incrementTransportStep [ 
+
+self transportStep: self transportStep + 1.
+]
+
 { #category : #'accessing - sequencer' }
 Sequencer >> index [
 
@@ -456,19 +463,19 @@ Sequencer >> index: anArrayOfIndexes to: aKeyInPerformance [
 ]
 
 { #category : #initialization }
-Sequencer >> initialize [ 
+Sequencer >> initialize [
 
 	super initialize.
 	isPoly := false.
 	dirtMessage := Dictionary new.
-
-	dirtMessage  at: 'cps' put: Performance uniqueInstance freq * 4.
+   transportStep := 0.
+	dirtMessage at: 'cps' put: Performance uniqueInstance freq * 4.
 	"superdirt orbits are 12"
 	self class orbit: self class orbit + 1.
 	orbit := self class orbit.
-	
+
 	"for Kyma"
-	extraParams := Dictionary new.
+	extraParams := Dictionary new
 
 	"dirtMessage addAll: { '_id' -> 1 . 'cps' -> 0.56 .  'orbit' -> 0 }"
 ]
@@ -1213,6 +1220,18 @@ Sequencer >> trace [
 	gates traceCr .
 	notes traceCr.
 	durations traceCr.
+]
+
+{ #category : #accessing }
+Sequencer >> transportStep [
+
+	^ transportStep
+]
+
+{ #category : #accessing }
+Sequencer >> transportStep: anObject [
+
+	transportStep := anObject
 ]
 
 { #category : #modifying }

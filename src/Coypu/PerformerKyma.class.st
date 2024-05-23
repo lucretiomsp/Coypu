@@ -22,6 +22,7 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 	| bpm |
 	'x' asPacaAddress. "if PacaAddress is not stored yet"
 	performance resetAllSequencers. "reset all the sequencers"
+
 	bpm := 60 / (performance freq * 4) bpm toKyma: 'BPM'.
 
 	performance bpm: bpm.
@@ -31,17 +32,17 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 			 (Delay forSeconds: performance freq) wait.
 			 "sequencers scan"
 			 [
-			 
 			 performance valuesDo: [ :seq |
-				
 				 (seq gates wrap: performance transportStep) = 1
 					 ifTrue: [
 						 seq playFullKymaEventAt: seq noteIndex.
 						 "increment note Index"
 						 seq noteIndex: seq noteIndex + 1 ]
-					 ifFalse: [ nil ] ] ] forkAt: Processor timingPriority.
+					 ifFalse: [ "performance transportStep" nil ] ] ] forkAt:
+				 Processor timingPriority.
 
 			 "step is incremented anyway"
+
 			 performance incrementTransportStep ] ] forkAt:
 			 Processor timingPriority)
 ]
