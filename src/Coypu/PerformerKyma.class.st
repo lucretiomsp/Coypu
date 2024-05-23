@@ -33,6 +33,7 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 			 "sequencers scan"
 			 [
 			 performance valuesDo: [ :seq |
+				
 				 (seq gates wrap: performance transportStep) = 1
 					 ifTrue: [
 						 seq playFullKymaEventAt: seq noteIndex.
