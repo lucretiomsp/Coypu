@@ -5,7 +5,7 @@ Class {
 	#name : #SequencerMono,
 	#superclass : #Sequencer,
 	#type : #variable,
-	#category : 'Coypu-Sequencers'
+	#category : #'Coypu-Sequencers'
 }
 
 { #category : #arithmetic }
@@ -158,18 +158,25 @@ SequencerMono >> playMIDIEventAt: anIndex [
 SequencerMono >> playPhaustEventAt: anIndex [
 	"sends a message to Phausto / the DSP api must be written in a sensible way "
 
-	| dur stepDuration dsp |
-	dsp := Performance uniqueInstance activeDSP.
+	| dur stepDuration assignedDsp |
+	assignedDsp := Performance uniqueInstance activeDSP.
 	stepDuration := Performance uniqueInstance freq.
 
 	" please use also duration for gate !!! - future implementation"
 	dur := self durations asDirtArray wrap: anIndex.
-	
-	dsp
-		setValue: (self notes wrap: anIndex)
+
+	self extraParams keysAndValuesDo: [ :k :v |
+		assignedDsp
+			setValue: (v wrap: anIndex)
+			parameter: self seqKey , k asString ].
+
+	assignedDsp
+		setValue: (self notes wrap: anIndex) midiNoteToFreq "convert note Number to Frequency"
 		parameter: self phaustNoteDestination.
 	"as in early sequencers, standard gate time is 80% of duration"
-	dsp trig: self phaustGateDestination for: dur * stepDuration * 0.8.
+	assignedDsp
+		trig: self phaustGateDestination
+		for: dur * stepDuration * 0.8.
 
 	^ true
 ]
