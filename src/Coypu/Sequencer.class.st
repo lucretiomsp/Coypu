@@ -541,7 +541,7 @@ Sequencer >> level: aNumberOrAnArray [
 Sequencer >> lfoAmount: aNumberOrAnArray [
 	"set the lfoAmount to a collection of value in array or to to the numbe"
 
-	self extra: #lfoAmount values: aNumberOrAnArray asDirtArray
+	self extra: #LfoAmount values: aNumberOrAnArray asDirtArray
 ]
 
 { #category : #'LiveCoding-ExtraParams' }
