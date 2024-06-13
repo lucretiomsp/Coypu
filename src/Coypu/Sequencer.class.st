@@ -219,6 +219,13 @@ Sequencer >> cycleDurations: anArrayOfFractions [
 	cycleDurations := anArrayOfFractions 
 ]
 
+{ #category : #'LiveCoding-ExtraParams' }
+Sequencer >> decay: aNumberOrAnArray [
+	"set the decay to a collection of value in array or to to the numbe"
+
+	self extra: #Decay values: aNumberOrAnArray asDirtArray
+]
+
 { #category : #'LiveCoding  - SuperDirt' }
 Sequencer >> delay: aFloatOrAnArray [
 	" add delay wet/dry pattern to the Sequencer"
@@ -617,11 +624,11 @@ Sequencer >> midiChannel: anIntegerBetween1And16 [
 ]
 
 { #category : #'LiveCoding-ExtraParams' }
-Sequencer >> modIndex: aStringWithIndexes [
-	"convenience method to avoid extra typing when we want to modify the modulationIndex , i.e. the sample number of a sample player"
+Sequencer >> modIndex: aNumberOrAnArray [
+	"convenience method to avoid extra typing when we want to modify the modulationIndex"
 
 	self extraParams:
-		(Array with: #ModIndex with: aStringWithIndexes asDirtPureNotes)
+		(Array with: #ModIndex with: aNumberOrAnArray asDirtArray)
 ]
 
 { #category : #'LiveCoding-ExtraParams' }
@@ -630,6 +637,14 @@ Sequencer >> modPitch: aStringWithIndexes [
 
 	self extraParams:
 		(Array with: #ModPitch with: aStringWithIndexes asDirtPureNotes)
+]
+
+{ #category : #'LiveCoding-ExtraParams' }
+Sequencer >> mode: aNumberOrAnArray [
+	"convenience method to avoid extra typing when we want to modify the mode parameter, that usually correspond to chords mode "
+
+	self extraParams:
+		(Array with: #Mode with: aNumberOrAnArray asDirtArray)
 ]
 
 { #category : #accessing }
