@@ -655,7 +655,7 @@ Sequencer >> notes: anArrayOfNotesOrANoteorAstring [
 	" change notes in the sequencer"
 
 	| announcement |
-	thisContext sender selector traceCr = 'notes:' ifTrue: [
+	thisContext sender selector = 'notes:' ifTrue: [
 		announcement := NotesAnnouncement new notes:
 			                ' notes: '
 			                , anArrayOfNotesOrANoteorAstring asString.
