@@ -33,40 +33,42 @@ Internal Representation and Key Implementation Points.
 
 "
 Class {
-	#name : #RecordedInstructionCommand,
-	#superclass : #RecordedCommand,
-	#type : #variable,
+	#name : 'RecordedInstructionCommand',
+	#superclass : 'RecordedCommand',
+	#type : 'variable',
 	#instVars : [
 		'order'
 	],
-	#category : #'CoypuRecorder-RecordedCommand'
+	#category : 'CoypuRecorder-RecordedCommand',
+	#package : 'CoypuRecorder',
+	#tag : 'RecordedCommand'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 RecordedInstructionCommand >> isRecordedInstructionCommand [
 
 	^ true
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 RecordedInstructionCommand >> isRecordedInstrumentCommand [
 
 	^ false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RecordedInstructionCommand >> order [
 
 	^order
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RecordedInstructionCommand >> order: anOrder [
 
 order := anOrder
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 RecordedInstructionCommand >> print [
 "Print the command into the same way it has been used in the original performance"
 	| p |

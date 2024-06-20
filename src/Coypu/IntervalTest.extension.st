@@ -1,6 +1,6 @@
-Extension { #name : #IntervalTest }
+Extension { #name : 'IntervalTest' }
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 IntervalTest >> testMapTo [
 
 	self assert: ((0 to: 10) map: 1 to: (10 to: 20)) equals: 11.

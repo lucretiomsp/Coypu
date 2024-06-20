@@ -16,21 +16,23 @@ DelayAnnouncement new.
 
 "
 Class {
-	#name : #DelayAnnouncement,
-	#superclass : #Announcement,
+	#name : 'DelayAnnouncement',
+	#superclass : 'Announcement',
 	#instVars : [
 		'delay'
 	],
-	#category : #'CoypuRecorder-Announcements'
+	#category : 'CoypuRecorder-Announcements',
+	#package : 'CoypuRecorder',
+	#tag : 'Announcements'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DelayAnnouncement >> delay [
 
 ^delay
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DelayAnnouncement >> delay: anInteger [
 
 	delay := anInteger

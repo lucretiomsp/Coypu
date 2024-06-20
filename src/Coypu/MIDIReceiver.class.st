@@ -3,26 +3,28 @@ MIDIReceiver
 Use the MIDIReceiever to receive MIDI events.
 "
 Class {
-	#name : #MIDIReceiver,
-	#superclass : #Object,
+	#name : 'MIDIReceiver',
+	#superclass : 'Object',
 	#instVars : [
 		'midiIn',
 		'defaultInput'
 	],
-	#category : #'Coypu-MIDI'
+	#category : 'Coypu-MIDI',
+	#package : 'Coypu',
+	#tag : 'MIDI'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MIDIReceiver >> defaultInput [
 ^ defaultInput 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MIDIReceiver >> defaultInput: anInput [
 	defaultInput := anInput.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MIDIReceiver >> initialize [
 	| instance |
 	instance := PortMidiLibrary uniqueInstance.
@@ -31,18 +33,18 @@ MIDIReceiver >> initialize [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MIDIReceiver >> midiInput [
 ^ midiIn 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MIDIReceiver >> midiInput: anInputStream [
 	"Sets a new MidiInput stream that is used to read incoming notes."
 	midiIn := anInputStream
 ]
 
-{ #category : #outputManagement }
+{ #category : 'outputManagement' }
 MIDIReceiver >> openMidiInputWithDevice: aDeviceID [
 	"Opens a new MidiOUT Stream with output device id aDeviceID to play notes."
 	^ (aDeviceID = -1) ifFalse: 
@@ -57,7 +59,7 @@ MIDIReceiver >> openMidiInputWithDevice: aDeviceID [
 													
 ]
 
-{ #category : #outputManagement }
+{ #category : 'outputManagement' }
 MIDIReceiver >> openWithDevice: aDeviceID [
 	"Opens a new MidiOUT Stream with output device id aDeviceID to play notes."
 
@@ -74,12 +76,12 @@ MIDIReceiver >> openWithDevice: aDeviceID [
 		  ifTrue: [ ^ -1 ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MIDIReceiver >> readInBuffer: buffer withSize: bufferSize [
 	"Calls the PortMidi C library method that read bufferSize MIDI message on aStream and stores it in buffer."
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MIDIReceiver >> readIncomingMessageSize: aNumberOfEvents [
 
 	| instance buffer |
@@ -95,7 +97,7 @@ MIDIReceiver >> readIncomingMessageSize: aNumberOfEvents [
 		fork
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MIDIReceiver >> traceIncomingMessage [
 
 	| instance buffer proc |
@@ -115,7 +117,7 @@ MIDIReceiver >> traceIncomingMessage [
 	^ proc
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MIDIReceiver >> trig: aDsp [
 
 	| instance buffer proc |

@@ -16,21 +16,23 @@ RythmAnnouncement new.
 ```
 "
 Class {
-	#name : #RhythmAnnouncement,
-	#superclass : #Announcement,
+	#name : 'RhythmAnnouncement',
+	#superclass : 'Announcement',
 	#instVars : [
 		'rythm'
 	],
-	#category : #'CoypuRecorder-Announcements'
+	#category : 'CoypuRecorder-Announcements',
+	#package : 'CoypuRecorder',
+	#tag : 'Announcements'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RhythmAnnouncement >> rhythm [
 
 	^ rythm
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RhythmAnnouncement >> rhythm: aRythm [
 
 	rythm := aRythm

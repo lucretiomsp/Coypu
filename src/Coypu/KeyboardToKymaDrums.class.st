@@ -2,17 +2,19 @@
 Experimental class to control Kyma gates from tehe Keyboard, typing inside a window
 "
 Class {
-	#name : #KeyboardToKymaDrums,
-	#superclass : #SimpleSwitchMorph,
+	#name : 'KeyboardToKymaDrums',
+	#superclass : 'SimpleSwitchMorph',
 	#instVars : [
 		'arrayOfAddresses',
 		'isHandlingKeyDown',
 		'keysDictionary'
 	],
-	#category : #'Coypu-KeyboardControl'
+	#category : 'Coypu-KeyboardControl',
+	#package : 'Coypu',
+	#tag : 'KeyboardControl'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 KeyboardToKymaDrums class >> newWithAddresses: anArrayofAddresses [
 
 	| labels |
@@ -25,18 +27,18 @@ KeyboardToKymaDrums class >> newWithAddresses: anArrayofAddresses [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 KeyboardToKymaDrums >> arrayOfAddresses [
 ^ arrayOfAddresses 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 KeyboardToKymaDrums >> arrayOfAddresses: anArrayOfAddresses [
 "set the array of addresses to control drums via OSC"
 arrayOfAddresses := anArrayOfAddresses 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 KeyboardToKymaDrums >> createKeyDictionary [
 
 keysDictionary := Dictionary new.
@@ -53,26 +55,26 @@ keysDictionary at: $k put: 8.
 ^ keysDictionary
 ]
 
-{ #category : #'event handling' }
+{ #category : 'event handling' }
 KeyboardToKymaDrums >> handlesKeyDown: anEvent [
 
 ^ true
 
 ]
 
-{ #category : #'event handling' }
+{ #category : 'event handling' }
 KeyboardToKymaDrums >> handlesKeyUp: anEvent [
 
 ^ true
 
 ]
 
-{ #category : #'event handling' }
+{ #category : 'event handling' }
 KeyboardToKymaDrums >> handlesMouseDown: anEvent [
 ^ true
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 KeyboardToKymaDrums >> initialize [ 
 super initialize .
 "not handling keydon if not clicked"
@@ -81,7 +83,7 @@ isHandlingKeyDown := false.
 self createKeyDictionary .
 ]
 
-{ #category : #'event handling' }
+{ #category : 'event handling' }
 KeyboardToKymaDrums >> keyDown: anEvent [
 
 
@@ -96,7 +98,7 @@ ifFalse:[nil]
 
 ]
 
-{ #category : #'event handling' }
+{ #category : 'event handling' }
 KeyboardToKymaDrums >> keyUp: anEvent [
 
 
@@ -111,12 +113,12 @@ ifFalse:[nil]
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 KeyboardToKymaDrums >> keysDictionary [
 ^ keysDictionary .
 ]
 
-{ #category : #'event handling' }
+{ #category : 'event handling' }
 KeyboardToKymaDrums >> mouseDown: anEvent [
 super mouseDown: anEvent.
 

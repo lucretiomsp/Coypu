@@ -2,12 +2,14 @@
 VerticalFader to slow down or speed up the Performance speed
 "
 Class {
-	#name : #VerticalFaderFreq,
-	#superclass : #VerticalFader,
-	#category : #'Coypu-GUI'
+	#name : 'VerticalFaderFreq',
+	#superclass : 'VerticalFader',
+	#category : 'Coypu-GUI',
+	#package : 'Coypu',
+	#tag : 'GUI'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 VerticalFaderFreq >> initialize [ 
 
 	super initialize.
@@ -18,7 +20,7 @@ VerticalFaderFreq >> initialize [
 	"cursor postion should be at the current freq"
 ]
 
-{ #category : #'event handling' }
+{ #category : 'event handling' }
 VerticalFaderFreq >> mouseMove: anEvent [
 	" the VerticalFaderForSuperDirt modify the contents of the Sequencer in Performance named as destination"
 

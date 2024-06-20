@@ -1,18 +1,18 @@
-Extension { #name : #Random }
+Extension { #name : 'Random' }
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Random >> nextIntFromZero: anInteger [
 "returns a new random number in the range [0 aNumber]"
 ^ (self nextInt: (anInteger + 1)) -1.
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Random >> nextTrig [
 "return 0 or 1 randomly"
 ^ self next rounded.
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Random >> sign [ 
 "return 1 or -1 "
 	| condition  |

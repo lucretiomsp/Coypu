@@ -2,15 +2,17 @@
 Play the slound on SuperDirt with the computer keyboard
 "
 Class {
-	#name : #KeyboardToSuperDirt,
-	#superclass : #KeyboardToOSC,
+	#name : 'KeyboardToSuperDirt',
+	#superclass : 'KeyboardToOSC',
 	#instVars : [
 		'sound'
 	],
-	#category : #'Coypu-KeyboardControl'
+	#category : 'Coypu-KeyboardControl',
+	#package : 'Coypu',
+	#tag : 'KeyboardControl'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 KeyboardToSuperDirt class >> new: aStringWithASound [
 
 	^ (self new) 
@@ -22,7 +24,7 @@ KeyboardToSuperDirt class >> new: aStringWithASound [
 		yourself
 ]
 
-{ #category : #'event handling' }
+{ #category : 'event handling' }
 KeyboardToSuperDirt >> keyDown: anEvent [
 
 	| bundle |
@@ -33,13 +35,13 @@ KeyboardToSuperDirt >> keyDown: anEvent [
 	((key ~= -1) & isHandlingKeyDown) ifTrue: [  bundle sendToAddressString: '127.0.0.1' port: 57120]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 KeyboardToSuperDirt >> sound [
 
 	^ sound
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 KeyboardToSuperDirt >> sound: anObject [
 
 	sound := anObject

@@ -26,40 +26,43 @@
 ```
 "
 Class {
-	#name : #PerformanceMusicalReplayer,
-	#superclass : #PerformanceReplayer,
-	#type : #variable,
-	#category : #'CoypuRecorder-Replayer'
+	#name : 'PerformanceMusicalReplayer',
+	#superclass : 'PerformanceReplayer',
+	#type : 'variable',
+	#category : 'CoypuRecorder-Replayer',
+	#package : 'CoypuRecorder',
+	#tag : 'Replayer'
 }
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PerformanceMusicalReplayer >> getScript: aSavedPerformance [
 "Visit a savedPerformance to get a script that can be replayed"
 	aSavedPerformance scriptWithDelayTimeForReplayer: self
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PerformanceMusicalReplayer >> initialize [
 super initialize
 	"stop := false"
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PerformanceMusicalReplayer >> replayWithoutPlayground [
 |x|
-x := ''.
-	performanceScript do: [ :each | 
-		Object readFromString: each].
+
+x :=	String streamContents: [:s | 
+		performanceScript  do: [:each | s nextPutAll: each asString]].
 	
+Object readFromString: x.
 ]
 
-{ #category : #'read/write usage' }
+{ #category : 'read/write usage' }
 PerformanceMusicalReplayer >> writeScriptInStonFile [
 "Write the contents of performanceScript in a stonFile"
 	self writeScriptInStonFile: 'ReplayablePerformance'
 ]
 
-{ #category : #'read/write usage' }
+{ #category : 'read/write usage' }
 PerformanceMusicalReplayer >> writeScriptInTxtFile [
 "write the contents of a performanceScript in a TxtFile"
 	self writeScriptInTxtFile: 'ReplayablePerformance'

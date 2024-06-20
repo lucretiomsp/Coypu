@@ -19,39 +19,41 @@ Visit a savedPerformance.
 
 "
 Class {
-	#name : #PerformanceReplayer,
-	#superclass : #Object,
+	#name : 'PerformanceReplayer',
+	#superclass : 'Object',
 	#instVars : [
 		'performanceScript'
 	],
-	#category : #'CoypuRecorder-Replayer'
+	#category : 'CoypuRecorder-Replayer',
+	#package : 'CoypuRecorder',
+	#tag : 'Replayer'
 }
 
-{ #category : #'read/write usage' }
+{ #category : 'read/write usage' }
 PerformanceReplayer >> displayInTranscript [
 "Display the script of the performance in the transcript"
 	performanceScript do: [ :each | each traceCr ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PerformanceReplayer >> getScript: aSavedPerformance [
 "Visit a SavedPerformance to get a performanceScript"
 	^ self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceReplayer >> performanceScript [
 
 ^	performanceScript 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceReplayer >> performanceScript: anOrderedCollection [
 
 	performanceScript := anOrderedCollection
 ]
 
-{ #category : #'read/write usage' }
+{ #category : 'read/write usage' }
 PerformanceReplayer >> readScriptFromStonFile: aPathToAFile [
 " read a performanceScript from a aPathToAFile file and put it in performanceScript"
 	| stream |
@@ -59,7 +61,7 @@ PerformanceReplayer >> readScriptFromStonFile: aPathToAFile [
 	self performanceScript: (STON fromStream: stream)
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PerformanceReplayer >> replay [
 	"Write the performanceScript script in the playground"
 
@@ -76,13 +78,13 @@ PerformanceReplayer >> replay [
 	^ StPlayground openContents: content
 ]
 
-{ #category : #'read/write usage' }
+{ #category : 'read/write usage' }
 PerformanceReplayer >> writeScriptInStonFile [
 "write the performanceScript in a stonFile"
 	^ self subclassResponsibility
 ]
 
-{ #category : #'read/write usage' }
+{ #category : 'read/write usage' }
 PerformanceReplayer >> writeScriptInStonFile: aNameFile [
 "write the performanceScript in a new ston file in the following path  home/Documents/PerformanceScripts/DateOfTheDay as aNameFile.ston"
 	| x script stream |
@@ -102,7 +104,7 @@ PerformanceReplayer >> writeScriptInStonFile: aNameFile [
 	stream close
 ]
 
-{ #category : #'read/write usage' }
+{ #category : 'read/write usage' }
 PerformanceReplayer >> writeScriptInStonFile: aNameFile filePath: aFilePath [
 	"write the performanceScript in a new ston file in the following path  home/Documents/PerformanceScripts/DateOfTheDay as aNameFile.ston"
 
@@ -120,14 +122,14 @@ PerformanceReplayer >> writeScriptInStonFile: aNameFile filePath: aFilePath [
 	stream close
 ]
 
-{ #category : #'read/write usage' }
+{ #category : 'read/write usage' }
 PerformanceReplayer >> writeScriptInTxtFile [
 	"write the performanceScript in a TxtFile"
 
 	^ self subclassResponsibility
 ]
 
-{ #category : #'read/write usage' }
+{ #category : 'read/write usage' }
 PerformanceReplayer >> writeScriptInTxtFile: aNameFile [
 	"write the performanceScript in a new txt file in the following path  home/Documents/PerformanceScripts/DateOfTheDay as aNameFile.txt"
 	| x script stream |

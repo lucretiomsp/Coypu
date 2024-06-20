@@ -1,15 +1,17 @@
 Class {
-	#name : #PerformanceReplayerTest,
-	#superclass : #TestCase,
+	#name : 'PerformanceReplayerTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'performanceRecorder',
 		'replayer',
 		'securePerformance'
 	],
-	#category : #'CoypuRecorder-Tests-Tests'
+	#category : 'CoypuRecorder-Tests-Tests',
+	#package : 'CoypuRecorder-Tests',
+	#tag : 'Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceReplayerTest >> filePath [
 
 	| x |
@@ -18,7 +20,7 @@ PerformanceReplayerTest >> filePath [
 	^ x
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PerformanceReplayerTest >> setUp [
 
 	super setUp.
@@ -36,7 +38,7 @@ PerformanceReplayerTest >> setUp [
 		
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceReplayerTest >> testReadScriptStonFile [
 
 	| x oldPerformanceScript |
@@ -61,7 +63,7 @@ PerformanceReplayerTest >> testReadScriptStonFile [
 		(x / 'ReplayablePerformanceTest.ston') ensureDelete ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceReplayerTest >> testReadScriptStonFileWithSureSavedPerformance [
 
 	| x oldPerformanceScript |
@@ -84,7 +86,7 @@ PerformanceReplayerTest >> testReadScriptStonFileWithSureSavedPerformance [
 		(x / 'ReplayablePerformanceTest.ston') ensureDelete ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceReplayerTest >> testReplaySameAsOriginal [
 
 	| performance replayedPerformance |
@@ -111,7 +113,7 @@ PerformanceReplayerTest >> testReplaySameAsOriginal [
 		do: [ :perf1 :perf2 | self assert: perf1 equals: perf2 ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceReplayerTest >> testReplaySameAsOriginalWithSureSavedPerformance [
 
 	| performance replayedPerformance |
@@ -137,7 +139,7 @@ PerformanceReplayerTest >> testReplaySameAsOriginalWithSureSavedPerformance [
 		do: [ :perf1 :perf2 | self assert: perf1 equals: perf2 ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceReplayerTest >> testWriteScriptStonFile [
 
 	| x oldPerformanceScript stream |
@@ -165,7 +167,7 @@ PerformanceReplayerTest >> testWriteScriptStonFile [
 		(x / 'ReplayablePerformanceTest.ston') ensureDelete ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceReplayerTest >> testWriteScriptStonFileWhenNameIsTaken [
 
 	| x |

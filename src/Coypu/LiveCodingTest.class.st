@@ -1,16 +1,18 @@
 Class {
-	#name : #LiveCodingTest,
-	#superclass : #TestCase,
-	#category : #'Coypu-Tests'
+	#name : 'LiveCodingTest',
+	#superclass : 'TestCase',
+	#category : 'Coypu-Tests',
+	#package : 'Coypu',
+	#tag : 'Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 LiveCodingTest >> testArrayAsSeries [
 
 	self assert: #(48 60) asSeries equals: (48 to: 60) asArray
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 LiveCodingTest >> testArrayIntoScale [
 
 	| indexes newNotes |
@@ -22,7 +24,7 @@ LiveCodingTest >> testArrayIntoScale [
 		equals: #( 59 0 60 61 62 63 64 65 66 67 68 69 79)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 LiveCodingTest >> testArrayWrap [
 
 	| array |
@@ -30,7 +32,7 @@ LiveCodingTest >> testArrayWrap [
 	self assert: (array wrap: 11) equals: 1
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 LiveCodingTest >> testFullScale [
 
 	| result |
@@ -38,19 +40,19 @@ LiveCodingTest >> testFullScale [
 	self assert: result equals: (0 to: 127) asArray
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 LiveCodingTest >> testMultiplyCharacter [
 
 	self assert: $h*3 equals: 'h h h'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 LiveCodingTest >> testMultiplyString [
 
 	self assert: 'h'*3 equals: 'h h h'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 LiveCodingTest >> testSawtoothTable [
 
 | array result increment|.
@@ -61,7 +63,7 @@ result := 4 bars saw.
 self assert: array equals: result.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 LiveCodingTest >> testStringAsDirtNotes [
 
 
@@ -81,13 +83,13 @@ self assert: case gates equals: #(1 1 1 1 0 1 0 1 0)
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 LiveCodingTest >> testStringEveryInt [
 
 	self assert: 'bd' / 8 equals: 'bd ~ ~ ~ ~ ~ ~ ~'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 LiveCodingTest >> testStringForDirt [
 
 	| string gates seq soundsPattern samplesIndex |
@@ -102,13 +104,13 @@ self assert: seq gates equals: gates.
 	self assert: seq samplesIndex equals: samplesIndex
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 LiveCodingTest >> testStringInWords [
 
 	self assert: 'the needs of the many' inWords equals: #('the' 'needs' 'of' 'the' 'many') asOrderedCollection 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 LiveCodingTest >> testStringOfSoundsForDirt [
 
 	| case |
@@ -129,7 +131,7 @@ LiveCodingTest >> testStringOfSoundsForDirt [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 LiveCodingTest >> testTriangleTable [
 
 	| array up down result |

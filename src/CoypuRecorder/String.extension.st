@@ -1,6 +1,6 @@
-Extension { #name : #String }
+Extension { #name : 'String' }
 
-{ #category : #'*CoypuRecorder' }
+{ #category : '*CoypuRecorder' }
 String >> suffixeNumber [
 "return the right suffixe between th and rd "
 	| suffixe |

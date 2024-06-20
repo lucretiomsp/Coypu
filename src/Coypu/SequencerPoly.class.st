@@ -2,23 +2,25 @@
 Polyphonic Sequencer
 "
 Class {
-	#name : #SequencerPoly,
-	#superclass : #Sequencer,
-	#type : #variable,
-	#category : 'Coypu-Sequencers'
+	#name : 'SequencerPoly',
+	#superclass : 'Sequencer',
+	#type : 'variable',
+	#category : 'Coypu-Sequencers',
+	#package : 'Coypu',
+	#tag : 'Sequencers'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 SequencerPoly >> asPolySeq [ 
 	^ self
 ]
 
-{ #category : #'LiveCoding - sequencer' }
+{ #category : 'LiveCoding - sequencer' }
 SequencerPoly >> isPolySeq [ 
 	^ true
 ]
 
-{ #category : #'LiveCoding  - SuperDirt' }
+{ #category : 'LiveCoding  - SuperDirt' }
 SequencerPoly >> playFullDirtEventAt: anIndex [
 
 	"sends a mesaage to SuperDirt with all the desired OSC arguments and values" 
@@ -44,7 +46,7 @@ SequencerPoly >> playFullDirtEventAt: anIndex [
 	^ true 
 ]
 
-{ #category : #'LiveCoding-Kyma' }
+{ #category : 'LiveCoding-Kyma' }
 SequencerPoly >> playFullKymaEventAt: anIndex [
 	"sends a mesaage to SuperDirt with all the desired OSC arguments and values"
 

@@ -1,7 +1,7 @@
 Class {
-	#name : #PerformanceWithoutSound,
-	#superclass : #Dictionary,
-	#type : #variable,
+	#name : 'PerformanceWithoutSound',
+	#superclass : 'Dictionary',
+	#type : 'variable',
 	#instVars : [
 		'visualization',
 		'performer',
@@ -19,10 +19,12 @@ Class {
 		'uniqueInstance',
 		'orbit'
 	],
-	#category : #'CoypuRecorder-Performance'
+	#category : 'CoypuRecorder-Performance',
+	#package : 'CoypuRecorder',
+	#tag : 'Performance'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 PerformanceWithoutSound class >> basic [
 
 	^ self new
@@ -30,32 +32,32 @@ PerformanceWithoutSound class >> basic [
 		  yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PerformanceWithoutSound class >> new [ 
 
 ^ Error new signal: 'Performance is a singleton -- Use unique instance instead'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceWithoutSound class >> orbit [
 
 	^ orbit
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceWithoutSound class >> orbit: anInteger [
 
 	orbit := anInteger % 12
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PerformanceWithoutSound class >> uniqueInstance [
 
 	self orbit: 0.
 	^ uniqueInstance ifNil: [ uniqueInstance := super new ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 PerformanceWithoutSound class >> withCanvas: aRSCanvas [
 
 	^ self new
@@ -64,7 +66,7 @@ PerformanceWithoutSound class >> withCanvas: aRSCanvas [
 		  rsGroupDictionary: Dictionary new
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 PerformanceWithoutSound class >> withCircles [
 
 	^ self new
@@ -72,7 +74,7 @@ PerformanceWithoutSound class >> withCircles [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 PerformanceWithoutSound >> Dictionary [  Variable or expression expected -><< #Performance
 	layout: VariableLayout;
 	slots: {
@@ -90,35 +92,35 @@ PerformanceWithoutSound >> Dictionary [  Variable or expression expected -><< #P
 	package: 'LiveCoding'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceWithoutSound >> activeDSP [
 ^ activeDSP 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceWithoutSound >> activeDSP: aDSP [
 activeDSP := aDSP
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceWithoutSound >> activeProcess [
 
 	^ activeProcess
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceWithoutSound >> activeProcess: anObject [
 
 	activeProcess := anObject
 ]
 
-{ #category : #'performance  - adding' }
+{ #category : 'performance  - adding' }
 PerformanceWithoutSound >> add: aSequencer channel: anIntegerBetween1And16 [
 
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceWithoutSound >> at: key put: anObject [
 
 	"Set the value at key to be anObject.  If key is not found, create a
@@ -139,89 +141,89 @@ PerformanceWithoutSound >> at: key put: anObject [
 				rsGroupDictionary at: key put: anObject visualGroup ] ]
 ]
 
-{ #category : #'LiveCoding - Performance' }
+{ #category : 'LiveCoding - Performance' }
 PerformanceWithoutSound >> backup [
 
 	
 	^ backup
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceWithoutSound >> backup: anObject [
 
 	backup := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceWithoutSound >> bpm [
 
 	^ bpm
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceWithoutSound >> bpm: aRateInSeconds [
 	bpm := 60 / 4 / (aRateInSeconds ).
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceWithoutSound >> canvas [ 
 ^ canvas 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceWithoutSound >> canvas: aRSCanvas [
 canvas := aRSCanvas 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceWithoutSound >> dirtMIDIDevice [
 
 	^ dirtMIDIDevice
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceWithoutSound >> dirtMIDIDevice: aString [
 "select a SuperDirt MIDI device for the Performance"
 	dirtMIDIDevice := aString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceWithoutSound >> freq [
 "better to convert it to Float to avoid OSC sending issues"
 ^ freq asFloat
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceWithoutSound >> freq1: anObject [
 
 	freq := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceWithoutSound >> freq: aDurationInSeconds [
 	"use for playback speed"
 	freq := aDurationInSeconds asFloat
 ]
 
-{ #category : #'LiveCoding - Performance' }
+{ #category : 'LiveCoding - Performance' }
 PerformanceWithoutSound >> incrementTransportStep [
 	transportStep := transportStep + 1.
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PerformanceWithoutSound >> initialize: aSize [
 super initialize: aSize.
 activeProcess := Process new terminate.
 freq := 132 bpm.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PerformanceWithoutSound >> isPerformance [
 
 ^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceWithoutSound >> length [
 "return the number of steps of the largest array contained in the performance values"
 | valuesSizes maxLength |
@@ -230,7 +232,7 @@ maxLength := valuesSizes inject: 0 into: [ :a :c | (a > c) ifTrue: [ a ] ifFalse
 ^ maxLength 
 ]
 
-{ #category : #'muting and soloing' }
+{ #category : 'muting and soloing' }
 PerformanceWithoutSound >> mute: aKeyOrAnArrayOfKeys [
 
 	"remove all the keys in the arrayOfKeys from the Performance or remove just a single key"
@@ -250,7 +252,7 @@ PerformanceWithoutSound >> mute: aKeyOrAnArrayOfKeys [
 					(rsGroupDictionary at: aKeyOrAnArrayOfKeys) asShape ]. canvas signalUpdate  ]
 ]
 
-{ #category : #'muting and soloing' }
+{ #category : 'muting and soloing' }
 PerformanceWithoutSound >> muteAll [
 
 	" remove all keys from the Performance"
@@ -265,7 +267,7 @@ PerformanceWithoutSound >> muteAll [
 			canvas removeShape: (rsGroupDictionary at: i) asShape ] ] ] fork
 ]
 
-{ #category : #'LiveCoding - satelliteEvent' }
+{ #category : 'LiveCoding - satelliteEvent' }
 PerformanceWithoutSound >> pacaDance [
 
 	"convenience method created for the ICLC2023 performance - it just play the performance at 132 bpm for 4096 bars"
@@ -344,13 +346,13 @@ PerformanceWithoutSound >> pacaDance [
 		  step := step + 1 ] ] forkAt: Processor timingPriority
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceWithoutSound >> performer [
 
 	^ performer
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceWithoutSound >> performer: aPerformer [
 "choose a Performer for the Performance"
 " to be safe, it clear the performance"
@@ -359,7 +361,7 @@ performer := aPerformer.
 Performance uniqueInstance muteAll.
 ]
 
-{ #category : #playing }
+{ #category : 'playing' }
 PerformanceWithoutSound >> play [
 	""" reset all the Sequencers""
 
@@ -372,7 +374,7 @@ PerformanceWithoutSound >> play [
 			ifFalse: [  ] ]"
 ]
 
-{ #category : #playing }
+{ #category : 'playing' }
 PerformanceWithoutSound >> playFor: aNumberOfSteps [
 	""" reset all the Sequencers""
 
@@ -384,7 +386,7 @@ PerformanceWithoutSound >> playFor: aNumberOfSteps [
 		ifFalse: [  ]"
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 PerformanceWithoutSound >> playKymaSequencFor: aNumberOfSteps [
 
 "with this method you can chane the Performance speed in real time! "
@@ -463,7 +465,7 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 		  step := step + 1 ] ] forkAt: Processor timingPriority
 ]
 
-{ #category : #playing }
+{ #category : 'playing' }
 PerformanceWithoutSound >> playKymaSequenceAt: aRateInSeconds for: aNumberOfSteps [
 
 	" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
@@ -541,7 +543,7 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 		  step := step + 1 ] ] forkAt: Processor timingPriority
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 PerformanceWithoutSound >> playLocalSequenceAt: aRateInSeconds for: aNumberOfSteps [
 
 	" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
@@ -594,14 +596,14 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 		  step := step + 1 ] ] forkAt: Processor timingPriority
 ]
 
-{ #category : #removing }
+{ #category : 'removing' }
 PerformanceWithoutSound >> remove: aKey [
 "shorter version of removeKey:"
 
 self removeKey: aKey ifAbsent: [  ] 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PerformanceWithoutSound >> resetAllSequencers [
 	"reset noteIndex fro all the sequencers in the Performance. "
 
@@ -611,7 +613,7 @@ PerformanceWithoutSound >> resetAllSequencers [
 			ifFalse: [ nil ] ]
 ]
 
-{ #category : #'LiveCoding - Performance' }
+{ #category : 'LiveCoding - Performance' }
 PerformanceWithoutSound >> restore [
 
 	"restore what the performance was before receiveing messages muteAll or solo"
@@ -623,19 +625,19 @@ PerformanceWithoutSound >> restore [
 	p keysAndValuesRemove: [ :kp :vp | (p backup includesKey: kp) not ] 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceWithoutSound >> rsGroupDictionary [
 
 	^ rsGroupDictionary
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceWithoutSound >> rsGroupDictionary: anRSGroupDictionary [
 
 	rsGroupDictionary := anRSGroupDictionary
 ]
 
-{ #category : #'muting and soloing' }
+{ #category : 'muting and soloing' }
 PerformanceWithoutSound >> solo: aKeyOrAnArrayOfKeys [
 
 	" remove all keys from the Performance except aKey or anArrayOfKeys"
@@ -656,12 +658,12 @@ PerformanceWithoutSound >> solo: aKeyOrAnArrayOfKeys [
 				keys ~= aKeyOrAnArrayOfKeys ] ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceWithoutSound >> stop [
 	self activeProcess terminate
 ]
 
-{ #category : #modifying }
+{ #category : 'modifying' }
 PerformanceWithoutSound >> swap: firstKey with: secondKey [
 "swap the values of two perfromance keys"
 	| tempValue |
@@ -670,31 +672,31 @@ PerformanceWithoutSound >> swap: firstKey with: secondKey [
 	self at: secondKey put: tempValue
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceWithoutSound >> transportStep [
 	^ transportStep
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceWithoutSound >> transportStep: anInteger [
 
 	transportStep := anInteger 
 ]
 
-{ #category : #'LiveCoding - Performance' }
+{ #category : 'LiveCoding - Performance' }
 PerformanceWithoutSound >> unsolo: aKeyInPerformance [
 	"convenience method to unsolo a key in the performance"
 	
 self restore
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceWithoutSound >> visualization [
 
 	^ visualization
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceWithoutSound >> visualization: anObject [
 
 	visualization := anObject

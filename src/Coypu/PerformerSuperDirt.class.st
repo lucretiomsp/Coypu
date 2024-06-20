@@ -2,18 +2,20 @@
 Peformer to play the Performance on the SuperDirt audio engine for SuperCollider.
 "
 Class {
-	#name : #PerformerSuperDirt,
-	#superclass : #Performer,
-	#category : #'Coypu-Performer'
+	#name : 'PerformerSuperDirt',
+	#superclass : 'Performer',
+	#category : 'Coypu-Performer',
+	#package : 'Coypu',
+	#tag : 'Performer'
 }
 
-{ #category : #playing }
+{ #category : 'playing' }
 PerformerSuperDirt >> play [
 	"play the performance for almost 4 days at 120 bpm"
 	self playDirtFor: fourDaysAt120BPM 
 ]
 
-{ #category : #playing }
+{ #category : 'playing' }
 PerformerSuperDirt >> playDirt [
 
 	"play the performance to SuperDIrt/SuperCollider audio engine - default freq is 132 bpm 
@@ -43,7 +45,7 @@ PerformerSuperDirt >> playDirt [
 
 ]
 
-{ #category : #playing }
+{ #category : 'playing' }
 PerformerSuperDirt >> playDirtFor: aNumberOfSteps [
 
 	"play the performance to SuperDIrt/SuperCollider audio engine - default freq is 132 bpm 
@@ -73,7 +75,7 @@ PerformerSuperDirt >> playDirtFor: aNumberOfSteps [
 	
 ]
 
-{ #category : #playing }
+{ #category : 'playing' }
 PerformerSuperDirt >> playFor: aNumberOfSteps [
 	"play the performance to SuperDIrt/SuperCollider audio engine - default freq is 132 bpm 
 	Performance speed can be changed with p freq: a bpm"

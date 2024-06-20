@@ -1,6 +1,6 @@
-Extension { #name : #BlockClosure }
+Extension { #name : 'BlockClosure' }
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 BlockClosure >> loopFor: aNumber [
 
 ^ [aNumber timesRepeat:   self ] fork.

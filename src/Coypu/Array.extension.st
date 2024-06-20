@@ -1,6 +1,6 @@
-Extension { #name : #Array }
+Extension { #name : 'Array' }
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Array >> * aNumber [
 "returns an Array with all the elements of self multiplicated for aNumber"
 
@@ -9,7 +9,7 @@ result := ( 1to: (self size)) collect: [ :i | (self at: i) * aNumber ].
 ^ result
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Array >> + aNumber [ 
 " sum aNumber to each element of the array"
 | result |
@@ -17,7 +17,7 @@ result := (1 to: (self size)) collect: [ :i | (self at: i ) + aNumber ].
 ^ result
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Array >> - aNumber [ 
 " sum aNumber to each element of the array"
 | result |
@@ -25,13 +25,13 @@ result := (1 to: (self size)) collect: [ :i | (self at: i ) - aNumber ].
 ^ result
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Array >> > aString [
 "experimental"
 Transcript show: aString; open.
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Array >> @ anArrayWithARootNoteAndAnOctave [
 
 	| x anIntegerRoot anIntegerOctave |
@@ -43,19 +43,19 @@ Array >> @ anArrayWithARootNoteAndAnOctave [
 	^ x
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Array >> and: anArray [
 
 ^ Sequencer with: self with: anArray
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Array >> and: anArray and: anotherArray [
 
 ^ Sequencer with: self with: anArray with: anotherArray 
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Array >> arp: anArrayOfIntervals [
 
 	"STILL NOT AT ITS BEST"
@@ -74,14 +74,14 @@ Array >> arp: anArrayOfIntervals [
 	^ finalResult asDirtArray
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Array >> asDirtArray [
 	"convenience method to send OSC messages to SuperDirt - the same message sent to a Number converts it into an array with just that number as element"
 
 	^ self
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Array >> asMonoSeq [
 
 	"returns Sequencer with default note 60nn and default durations 1/16th and noteIndex = 0"
@@ -99,7 +99,7 @@ Array >> asMonoSeq [
 
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Array >> asNotes [
 	"convert an array of MIDI note numbers into a Sequencer where 0 corresponds to rests"
 
@@ -124,7 +124,7 @@ Array >> asNotes [
 	^ seq
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Array >> asRhythm [
 " convert Array into a Rhythm"
 | rhythm |
@@ -133,7 +133,7 @@ rhythm := Rhythm new: (self size).
 ^ rhythm
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Array >> asSeq [
 	"returns Sequencer with default note 60nn and default durations = self size / numberOfTrigs and noteIndex = 0"
 
@@ -150,7 +150,7 @@ Array >> asSeq [
 	^ seq
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Array >> asSeries [
 
 "convenience method to create a series of integers incremented by 1"
@@ -162,7 +162,7 @@ Array >> asSeries [
 
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Array >> euclidean [
 	"generates an euclidean rhythm with (self at: 1) onsets and (self at: 2) pulses. 
 algorithm based on the Bresenham approach"
@@ -185,7 +185,7 @@ algorithm based on the Bresenham approach"
 	^ result asDirtArray asRhythm asSeq
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Array >> fullScale [
 
 "expands a Scale into the full MIDI keyboard range"
@@ -197,7 +197,7 @@ Array >> fullScale [
 	^ x
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Array >> innestedWithTrigs: anotherArray [
 " add trigs in self if anotherArray has trigs at indexes where self have not"
 (1 to: (self size)) do: [ :i  |  self at: i put: (1 min: ((self at: i) + (anotherArray at: i)))].
@@ -205,7 +205,7 @@ Array >> innestedWithTrigs: anotherArray [
 ^ self
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Array >> into: anotherArray [
 
 	"return a new array with anotherArray at the desired indexes; if the index is out of bound, the last element of another array is collected.
@@ -214,13 +214,13 @@ Array >> into: anotherArray [
 	^ self collect: [ :i | i~= 0 ifTrue: [   anotherArray at: (i min: anotherArray size) ] ifFalse: [0]]
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Array >> isSequencer [
 
 	^ false
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Array >> numberOfGates [ 
 "return number of elements in the array that are greater than 0"
 | result size |
@@ -229,7 +229,7 @@ size := result size.
 ^ size
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Array >> of: anotherArray [
 " economic implementation of self collect: [:i | anotherArray at: i]"
 | result |
@@ -237,7 +237,7 @@ result := self collect: [ :i | anotherArray  at: i ].
 ^ result
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Array >> offset: aNumber [
 "offset the rhythm by aNumber of 'steps' wrapping it around its size"
 | newArray |
@@ -247,7 +247,7 @@ newArray := self class new: (self size).
 
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Array >> randomOctaves: anInteger [
 
 	| newArray |
@@ -257,7 +257,7 @@ Array >> randomOctaves: anInteger [
 	^ newArray
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Array >> root: anIntegerRoot octaves: anIntegerOctave [
 | x |
 x := OrderedCollection new.
@@ -266,7 +266,7 @@ x := OrderedCollection new.
 
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Array >> times: aNumber [
 "returns an Array containing aNumber repetition of self"
 
@@ -277,13 +277,13 @@ newArray := Array new: newSize.
 ^ newArray
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Array >> to: aPerformance at: aKey [
 
 aPerformance add: aKey -> self
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Array >> toKyma: aString [
 	"sends and array of oscmessages with the values of the array to the vcs labels with array indexes"
 	
@@ -298,7 +298,7 @@ Array >> toKyma: aString [
 	
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Array >> trigs [
 
 	"return the number of trigs (value  = 1),  of the array"
@@ -312,7 +312,7 @@ Array >> trigs [
 	^ result
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Array >> wrap: anInteger [
 
 	"inspire by Cmajor language wrap<int> always wrap the index of the array to the array size"
