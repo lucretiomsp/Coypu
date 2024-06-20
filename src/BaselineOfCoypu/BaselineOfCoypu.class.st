@@ -22,8 +22,5 @@ BaselineOfCoypu >> baseline: spec [
 		package:'CoypuRecorder' with: [ spec requires: 'Coypu' ];
 						package: 'CoypuRecorder-Tests'
 				with: [ spec requires: #( 'CoypuRecorder' ) ];
-		package: 'mooflod' with: [ spec requires: 'Toplo' ].
-
-		"Groups"
-		spec group: 'default' with: #( 'Coypu' ) ]
+		package: 'Mooflod' with: [ spec requires: 'Toplo' ]]
 ]
