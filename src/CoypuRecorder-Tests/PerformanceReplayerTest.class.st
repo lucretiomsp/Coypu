@@ -24,8 +24,8 @@ PerformanceReplayerTest >> filePath [
 PerformanceReplayerTest >> setUp [
 
 	super setUp.
-		performanceRecorder uniqueInstance displayVisualizer: false.
 	performanceRecorder := PerformanceRecorder uniqueInstance.
+	performanceRecorder displayVisualizer: false.
 	performanceRecorder performer: PerformerSuperDirt new.
 	replayer := PerformanceMusicalReplayer new.
 	securePerformance := SavedPerformance new.
