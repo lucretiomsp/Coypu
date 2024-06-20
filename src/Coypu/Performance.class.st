@@ -380,6 +380,10 @@ Performance >> play [
 Performance >> playFor: aNumberOfSteps [
 	" reset all the Sequencers"
 
+	"just on performance at once"
+	self activeProcess isTerminated ifTrue: [
+		self performer playFor: aNumberOfSteps ].
+	
 	stepVisualizer := MfPerformanceStepsDisplayer new.
 	stepVisualizer addSteps: self transportStep.
 	stepVisualizer initializeAnimation: self freq.
@@ -387,9 +391,7 @@ Performance >> playFor: aNumberOfSteps [
 	visualizer initAnimation: aNumberOfSteps / 9.
 	self resetAllSequencers.
 
-	"just on performance at once"
-	self activeProcess isTerminated ifTrue: [
-		self performer playFor: aNumberOfSteps ]
+
 ]
 
 { #category : #'as yet unclassified' }
@@ -687,7 +689,6 @@ Performance >> transportStep [
 
 { #category : #accessing }
 Performance >> transportStep: anInteger [
-
 	transportStep := anInteger 
 ]
 

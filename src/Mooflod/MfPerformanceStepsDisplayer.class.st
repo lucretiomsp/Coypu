@@ -29,7 +29,7 @@ MfPerformanceStepsDisplayer class >> exampleNbSteps [
 
 { #category : #adding }
 MfPerformanceStepsDisplayer >> addSteps: aNbOfSteps [
-	(aNbOfSteps between: 1 and: 30000) ifTrue: [  	nbSteps := aNbOfSteps.
+	(aNbOfSteps between: 0 and: 30000) ifTrue: [  	nbSteps := aNbOfSteps.
 	self initializeStepsLabel]
 
 ]
