@@ -24,18 +24,19 @@ PerformanceReplayerTest >> filePath [
 PerformanceReplayerTest >> setUp [
 
 	super setUp.
+		performanceRecorder uniqueInstance displayVisualizer: false.
 	performanceRecorder := PerformanceRecorder uniqueInstance.
 	performanceRecorder performer: PerformerSuperDirt new.
 	replayer := PerformanceMusicalReplayer new.
 	securePerformance := SavedPerformance new.
 	securePerformance
-	add: (RecordedInstructionCommand new order: 'performer:  PerformerSuperDirt new.');
-	 add: (RecordedInstructionCommand new order: 'freq: 138 bpm.');
-	 add: (RecordedInstrumentCommand new
-	 rhythm: '16 upbeats';
-	 symbol: 'bd' );
-	 add: (RecordedInstructionCommand new order: 'playFor: 16 bars.')
-		
+		add: (RecordedInstructionCommand new order:
+					 'performer:  PerformerSuperDirt new.');
+		add: (RecordedInstructionCommand new order: 'freq: 138 bpm.');
+		add: (RecordedInstrumentCommand new
+				 rhythm: '16 upbeats';
+				 symbol: 'bd');
+		add: (RecordedInstructionCommand new order: 'playFor: 16 bars.')
 ]
 
 { #category : 'tests' }

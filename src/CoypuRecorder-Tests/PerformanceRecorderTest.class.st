@@ -19,8 +19,9 @@ PerformanceRecorderTest >> commands [
 PerformanceRecorderTest >> setUp [
 
 	super setUp.
+	performanceRecorder uniqueInstance displayVisualizer: false.
 	performanceRecorder := PerformanceRecorder uniqueInstance.
-	performanceRecorder performer: PerformerSuperDirt  new
+	performanceRecorder performer: PerformerSuperDirt new
 ]
 
 { #category : 'tests' }
