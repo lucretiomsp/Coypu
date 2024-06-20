@@ -1204,6 +1204,9 @@ Sequencer >> to: aSymbol [
 	" assign sequencer to the performance at aSymbol. if a sound for SuperDirt is not specified, the symbol is used for sound name"
 
 	| announcement |
+	    Performance uniqueInstance visualizer addInstrument: aSymbol.
+    Performance uniqueInstance visualizer square initializeAnimation:
+        Performance uniqueInstance freq * 4.
 	self noteIndex: 1.
 	self seqKey: aSymbol asString.
 	announcement := (self notesSize > 4 and: [

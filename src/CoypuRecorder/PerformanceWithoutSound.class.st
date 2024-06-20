@@ -1,36 +1,29 @@
-"
-A performance is a Dictionary subclass used for live coding package.
-
-
-"
 Class {
-	#name : #Performance,
+	#name : #PerformanceWithoutSound,
 	#superclass : #Dictionary,
 	#type : #variable,
 	#instVars : [
-		'visualizer',
-		'stepVisualizer',
+		'visualization',
 		'performer',
 		'canvas',
+		'rsGroupDictionary',
 		'freq',
 		'backup',
 		'bpm',
 		'transportStep',
 		'activeProcess',
 		'dirtMIDIDevice',
-		'activeDSP',
-		'perfVisualizer',
-		'trackVisualizers'
+		'activeDSP'
 	],
 	#classInstVars : [
 		'uniqueInstance',
 		'orbit'
 	],
-	#category : #'Coypu-Performance'
+	#category : #'CoypuRecorder-Performance'
 }
 
 { #category : #'as yet unclassified' }
-Performance class >> basic [
+PerformanceWithoutSound class >> basic [
 
 	^ self new
 		  visualization: NoneVisualization new;
@@ -38,33 +31,32 @@ Performance class >> basic [
 ]
 
 { #category : #'instance creation' }
-Performance class >> new [ 
+PerformanceWithoutSound class >> new [ 
 
 ^ Error new signal: 'Performance is a singleton -- Use unique instance instead'
 ]
 
 { #category : #accessing }
-Performance class >> orbit [
+PerformanceWithoutSound class >> orbit [
 
 	^ orbit
 ]
 
 { #category : #accessing }
-Performance class >> orbit: anInteger [
+PerformanceWithoutSound class >> orbit: anInteger [
 
 	orbit := anInteger % 12
 ]
 
 { #category : #'instance creation' }
-Performance class >> uniqueInstance [
+PerformanceWithoutSound class >> uniqueInstance [
 
 	self orbit: 0.
-	PerformanceRecorder uniqueInstance.
 	^ uniqueInstance ifNil: [ uniqueInstance := super new ]
 ]
 
 { #category : #'as yet unclassified' }
-Performance class >> withCanvas: aRSCanvas [
+PerformanceWithoutSound class >> withCanvas: aRSCanvas [
 
 	^ self new
 		  canvas: aRSCanvas;
@@ -73,7 +65,7 @@ Performance class >> withCanvas: aRSCanvas [
 ]
 
 { #category : #'as yet unclassified' }
-Performance class >> withCircles [
+PerformanceWithoutSound class >> withCircles [
 
 	^ self new
 		  visualization: CircleVisualization new;
@@ -81,7 +73,7 @@ Performance class >> withCircles [
 ]
 
 { #category : #'as yet unclassified' }
-Performance >> Dictionary [  Variable or expression expected -><< #Performance
+PerformanceWithoutSound >> Dictionary [  Variable or expression expected -><< #Performance
 	layout: VariableLayout;
 	slots: {
 			 #visualization .
@@ -99,169 +91,187 @@ Performance >> Dictionary [  Variable or expression expected -><< #Performance
 ]
 
 { #category : #accessing }
-Performance >> activeDSP [
-	^ activeDSP 
+PerformanceWithoutSound >> activeDSP [
+^ activeDSP 
 ]
 
 { #category : #accessing }
-Performance >> activeDSP: aDSP [
-	activeDSP := aDSP
+PerformanceWithoutSound >> activeDSP: aDSP [
+activeDSP := aDSP
 ]
 
 { #category : #accessing }
-Performance >> activeProcess [
+PerformanceWithoutSound >> activeProcess [
 
 	^ activeProcess
 ]
 
 { #category : #accessing }
-Performance >> activeProcess: anObject [
+PerformanceWithoutSound >> activeProcess: anObject [
 
 	activeProcess := anObject
 ]
 
 { #category : #'performance  - adding' }
-Performance >> add: aSequencer channel: anIntegerBetween1And16 [
+PerformanceWithoutSound >> add: aSequencer channel: anIntegerBetween1And16 [
 
-	aSequencer midiChannel: anIntegerBetween1And16. 
-	super add: aSequencer.
+
 ]
 
 { #category : #accessing }
-Performance >> at: key put: anObject [
+PerformanceWithoutSound >> at: key put: anObject [
+
 	"Set the value at key to be anObject.  If key is not found, create a
-	new entry for key and set is value to anObject. Answer anObject."
+	new entry for key and set is value to anObject. Answer anObject.
+	If a RsCanvas have been associated to the Performance add the visualisation of the sequencer to the RSCanvas"
+
 
 	super at: key put: anObject.
-	
-	"implement later tracks visualizers"
-	"self trackVisualizers
-		at: key
-		put: (MfPatternElement new display: anObject gates).
-		self perfVisualizer root addChild: (trackVisualizers at: key)."
+
+	canvas isNotNil & anObject isSequencer ifTrue: [ 
+		(self rsGroupDictionary includesKey: key)
+			ifTrue: [ 
+				canvas removeShape: (rsGroupDictionary at: key) asShape.
+				anObject visualizeOn: canvas.
+				rsGroupDictionary at: key put: anObject visualGroup ]
+			ifFalse: [ 
+				anObject visualizeOn: canvas.
+				rsGroupDictionary at: key put: anObject visualGroup ] ]
 ]
 
 { #category : #'LiveCoding - Performance' }
-Performance >> backup [
+PerformanceWithoutSound >> backup [
 
 	
 	^ backup
 ]
 
 { #category : #accessing }
-Performance >> backup: anObject [
+PerformanceWithoutSound >> backup: anObject [
 
 	backup := anObject
 ]
 
 { #category : #accessing }
-Performance >> bpm [
+PerformanceWithoutSound >> bpm [
 
 	^ bpm
 ]
 
 { #category : #accessing }
-Performance >> bpm: aRateInSeconds [
+PerformanceWithoutSound >> bpm: aRateInSeconds [
 	bpm := 60 / 4 / (aRateInSeconds ).
 ]
 
 { #category : #accessing }
-Performance >> dirtMIDIDevice [
+PerformanceWithoutSound >> canvas [ 
+^ canvas 
+]
+
+{ #category : #accessing }
+PerformanceWithoutSound >> canvas: aRSCanvas [
+canvas := aRSCanvas 
+]
+
+{ #category : #accessing }
+PerformanceWithoutSound >> dirtMIDIDevice [
 
 	^ dirtMIDIDevice
 ]
 
 { #category : #accessing }
-Performance >> dirtMIDIDevice: aString [
-	"select a SuperDirt MIDI device for the Performance"
+PerformanceWithoutSound >> dirtMIDIDevice: aString [
+"select a SuperDirt MIDI device for the Performance"
 	dirtMIDIDevice := aString
 ]
 
 { #category : #accessing }
-Performance >> freq [
-	"better to convert it to Float to avoid OSC sending issues"
-	^ freq asFloat
+PerformanceWithoutSound >> freq [
+"better to convert it to Float to avoid OSC sending issues"
+^ freq asFloat
 ]
 
 { #category : #accessing }
-Performance >> freq: aDurationInSeconds [
+PerformanceWithoutSound >> freq1: anObject [
+
+	freq := anObject
+]
+
+{ #category : #accessing }
+PerformanceWithoutSound >> freq: aDurationInSeconds [
 	"use for playback speed"
-visualizer := MfVisualizerElement new level: 2.
 	freq := aDurationInSeconds asFloat
 ]
 
 { #category : #'LiveCoding - Performance' }
-Performance >> incrementTransportStep [
+PerformanceWithoutSound >> incrementTransportStep [
 	transportStep := transportStep + 1.
 ]
 
 { #category : #initialization }
-Performance >> initialize: aSize [
-
-	super initialize: aSize.
-	activeProcess := Process new terminate.
-	self muteAll.
-	freq := 132 bpm
+PerformanceWithoutSound >> initialize: aSize [
+super initialize: aSize.
+activeProcess := Process new terminate.
+freq := 132 bpm.
 ]
 
 { #category : #testing }
-Performance >> isPerformance [
+PerformanceWithoutSound >> isPerformance [
 
-	^ true
+^ true
 ]
 
 { #category : #accessing }
-Performance >> length [
-	"return the number of steps of the largest array contained in the performance values"
-
-	| valuesSizes maxLength |
-	valuesSizes := (1 to: self values size) collect: [ :i |
-		               ((self values at: i) at: 1) size ].
-	maxLength := valuesSizes inject: 0 into: [ :a :c | a max: c ].
-	^ maxLength
+PerformanceWithoutSound >> length [
+"return the number of steps of the largest array contained in the performance values"
+| valuesSizes maxLength |
+valuesSizes := (1 to: (self values size)) collect: [ :i | ((self values at: i) at: 1 )size ].
+maxLength := valuesSizes inject: 0 into: [ :a :c | (a > c) ifTrue: [ a ] ifFalse: [ c ] ].
+^ maxLength 
 ]
 
 { #category : #'muting and soloing' }
-Performance >> mute: aKeyOrAnArrayOfKeys [
+PerformanceWithoutSound >> mute: aKeyOrAnArrayOfKeys [
+
 	"remove all the keys in the arrayOfKeys from the Performance or remove just a single key"
 
 	aKeyOrAnArrayOfKeys isArray
-		ifTrue: [
+		ifTrue: [ 
 		aKeyOrAnArrayOfKeys do: [ :i | self removeKey: i ifAbsent: [  ] ] ]
 		ifFalse: [ self removeKey: aKeyOrAnArrayOfKeys ].
-
+	"if the Performance has an associated canvas, it also removes the shapes group visualizing the key sequencer"
+	canvas isNotNil ifTrue: [ 
+		aKeyOrAnArrayOfKeys isArray
+			ifTrue: [ 
+				aKeyOrAnArrayOfKeys do: [ :i | 
+					canvas removeShape: (rsGroupDictionary at: i) asShape ] ]
+			ifFalse: [ 
+				canvas removeShape:
+					(rsGroupDictionary at: aKeyOrAnArrayOfKeys) asShape ]. canvas signalUpdate  ]
 ]
 
 { #category : #'muting and soloing' }
-Performance >> muteAll [
+PerformanceWithoutSound >> muteAll [
+
 	" remove all keys from the Performance"
 
 	| anArrayOfKeys |
-	backup := self asDictionary.
+	backup := self asDictionary .
 	self keysDo: [ :i | self removeKey: i ifAbsent: [ nil ] ].
 
-
-]
-
-{ #category : #accessing }
-Performance >> openVisualizers [
-
-	| space |
-	space := BlSpace new.
-	space root layout: BlFlowLayout horizontal.
-	space root addChild: stepVisualizer.
-	space root addChild: visualizer.
-	space root childrenDo: [ :child | child margin: (BlInsets all: 10) ].
-	space toTheme: MfMooflodTheme new.
-	space show
+	[ 
+	canvas isNotNil ifTrue: [ 
+		anArrayOfKeys do: [ :i | 
+			canvas removeShape: (rsGroupDictionary at: i) asShape ] ] ] fork
 ]
 
 { #category : #'LiveCoding - satelliteEvent' }
-Performance >> pacaDance [
+PerformanceWithoutSound >> pacaDance [
 
 	"convenience method created for the ICLC2023 performance - it just play the performance at 132 bpm for 4096 bars"
 
-	| aRateInSeconds aNumberOfSteps step beatInSeconds gateTime |
+	
+	| aRateInSeconds aNumberOfSteps step bpm beatInSeconds gateTime |
 	aRateInSeconds := 132 bpm.
 	aNumberOfSteps := 4096 bars.
 	'x' asPacaAddress. "if PacaAddress is not stored yet"
@@ -303,21 +313,24 @@ Performance >> pacaDance [
 								  ifTrue: [ 
 									  (value durations at:
 										   (value noteIndex modulo: value durationsSize)) toKyma:
-										  key asString , 'Duration' ].
+										  key asString , 'Duration' ]
+								  ifFalse: [ nil ].
 
 							  "experimental, for extra control parameter"
 							  value extra1 notNil
 								  ifTrue: [ 
 									  ((value extra1 at: 2) at:
 										   (value noteIndex modulo: value extra1Size)) toKyma:
-										  key asString , (value extra1 at: 1) ].
+										  key asString , (value extra1 at: 1) ]
+								  ifFalse: [ nil ].
 
 							  "new experimental, for second extra control"
 							  value extra2 notNil
 								  ifTrue: [ 
 									  ((value extra2 at: 2) at:
 										   (value noteIndex modulo: value extra2Size)) toKyma:
-										  key asString , (value extra2 at: 1) ].
+										  key asString , (value extra2 at: 1) ]
+								  ifFalse: [ nil ].
 
 
 							  value noteIndex: value noteIndex + 1
@@ -332,74 +345,53 @@ Performance >> pacaDance [
 ]
 
 { #category : #accessing }
-Performance >> perfVisualizer [
-
-	^ perfVisualizer
-]
-
-{ #category : #accessing }
-Performance >> perfVisualizer: aPerfVisualizer [
-	"assing a perfVisualzier and initialize a new Dictionary for trackVisualziers"
-
-	perfVisualizer := aPerfVisualizer.
-	self trackVisualizers: Dictionary new.
-]
-
-{ #category : #accessing }
-Performance >> performer [
+PerformanceWithoutSound >> performer [
 
 	^ performer
 ]
 
 { #category : #accessing }
-Performance >> performer: aPerformer [
+PerformanceWithoutSound >> performer: aPerformer [
 "choose a Performer for the Performance"
 " to be safe, it clear the performance"
-	Performance uniqueInstance muteAll.
-	performer := aPerformer. 
-	Performance uniqueInstance muteAll.
+Performance uniqueInstance muteAll.
+performer := aPerformer. 
+Performance uniqueInstance muteAll.
 ]
 
 { #category : #playing }
-Performance >> play [
-	" reset all the Sequencers"
+PerformanceWithoutSound >> play [
+	""" reset all the Sequencers""
+
 	self resetAllSequencers.
 
-	"just on performance at once"
-	self activeProcess  
-		ifNil:  [ self performer play ] 
-		ifNotNil: [ (self activeProcess isTerminated )
-							 ifTrue: [ self performer play ] ]
-.
-
-
-	
+	""just on performance at once""
+	self activeProcess ifNil: [ self performer play ] ifNotNil: [
+		self activeProcess isTerminated
+			ifTrue: [ self performer play ]
+			ifFalse: [  ] ]"
 ]
 
 { #category : #playing }
-Performance >> playFor: aNumberOfSteps [
-	" reset all the Sequencers"
+PerformanceWithoutSound >> playFor: aNumberOfSteps [
+	""" reset all the Sequencers""
 
-	stepVisualizer := MfPerformanceStepsDisplayer new.
-	stepVisualizer addSteps: self transportStep.
-	stepVisualizer initializeAnimation: self freq.
-	self openVisualizers.
-	visualizer initAnimation: aNumberOfSteps / 9.
 	self resetAllSequencers.
 
-	"just on performance at once"
-	self activeProcess isTerminated ifTrue: [
-		self performer playFor: aNumberOfSteps ]
+	""just on performance at once""
+	self activeProcess isTerminated
+		ifTrue: [ self performer playFor: aNumberOfSteps ]
+		ifFalse: [  ]"
 ]
 
 { #category : #'as yet unclassified' }
-Performance >> playKymaSequencFor: aNumberOfSteps [
+PerformanceWithoutSound >> playKymaSequencFor: aNumberOfSteps [
 
 "with this method you can chane the Performance speed in real time! "
 	" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
 an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 
-	| step beatInSeconds gateTime |
+	| step bpm beatInSeconds gateTime |
 	'x' asPacaAddress. "if PacaAddress is not stored yet"
 	self resetAllSequencers. "reset all the sequencers"
 	"as in early hardware sequencers, default gatetime is 80% of the step duration"
@@ -472,12 +464,12 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 ]
 
 { #category : #playing }
-Performance >> playKymaSequenceAt: aRateInSeconds for: aNumberOfSteps [
+PerformanceWithoutSound >> playKymaSequenceAt: aRateInSeconds for: aNumberOfSteps [
 
 	" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
 an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 
-	| step beatInSeconds gateTime |
+	| step bpm beatInSeconds gateTime |
 	'x' asPacaAddress. "if PacaAddress is not stored yet"
 	self resetAllSequencers. "reset all the sequencers"
 	"as in early hardware sequencers, default gatetime is 80% of the step duration"
@@ -550,14 +542,14 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 ]
 
 { #category : #'as yet unclassified' }
-Performance >> playLocalSequenceAt: aRateInSeconds for: aNumberOfSteps [
+PerformanceWithoutSound >> playLocalSequenceAt: aRateInSeconds for: aNumberOfSteps [
 
 	" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
 an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 
 	"if the value in the dictionay is a Sequencer, an OSC message is sent to the key as OSC address with two arguments, one for the gate, and one for the note. the gate stays at 1 for the duration selected."
 
-	| step beatInSeconds gateTime |
+	| step bpm beatInSeconds gateTime |
 	bpm := 60 / (aRateInSeconds * 4).
 	gateTime := aRateInSeconds * 0.8.
 	beatInSeconds := aRateInSeconds * 4.
@@ -603,23 +595,24 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 ]
 
 { #category : #removing }
-Performance >> remove: aKey [
-	"shorter version of removeKey:"
+PerformanceWithoutSound >> remove: aKey [
+"shorter version of removeKey:"
 
-	self removeKey: aKey ifAbsent: [  ] 
+self removeKey: aKey ifAbsent: [  ] 
 ]
 
 { #category : #initialization }
-Performance >> resetAllSequencers [
+PerformanceWithoutSound >> resetAllSequencers [
 	"reset noteIndex fro all the sequencers in the Performance. "
 
 	self keysAndValuesDo: [ :key :value |
 		value isSequencer
-			ifTrue: [ value noteIndex: 1 ] ]
+			ifTrue: [ value noteIndex: 1 ]
+			ifFalse: [ nil ] ]
 ]
 
 { #category : #'LiveCoding - Performance' }
-Performance >> restore [
+PerformanceWithoutSound >> restore [
 
 	"restore what the performance was before receiveing messages muteAll or solo"
 
@@ -630,8 +623,20 @@ Performance >> restore [
 	p keysAndValuesRemove: [ :kp :vp | (p backup includesKey: kp) not ] 
 ]
 
+{ #category : #accessing }
+PerformanceWithoutSound >> rsGroupDictionary [
+
+	^ rsGroupDictionary
+]
+
+{ #category : #accessing }
+PerformanceWithoutSound >> rsGroupDictionary: anRSGroupDictionary [
+
+	rsGroupDictionary := anRSGroupDictionary
+]
+
 { #category : #'muting and soloing' }
-Performance >> solo: aKeyOrAnArrayOfKeys [
+PerformanceWithoutSound >> solo: aKeyOrAnArrayOfKeys [
 
 	" remove all keys from the Performance except aKey or anArrayOfKeys"
 
@@ -652,15 +657,12 @@ Performance >> solo: aKeyOrAnArrayOfKeys [
 ]
 
 { #category : #accessing }
-Performance >> stop [
-
-	visualizer cleanVisualizer.
-	stepVisualizer animationIsRunning: false.
+PerformanceWithoutSound >> stop [
 	self activeProcess terminate
 ]
 
 { #category : #modifying }
-Performance >> swap: firstKey with: secondKey [
+PerformanceWithoutSound >> swap: firstKey with: secondKey [
 "swap the values of two perfromance keys"
 	| tempValue |
 	tempValue := self at: firstKey.
@@ -669,36 +671,31 @@ Performance >> swap: firstKey with: secondKey [
 ]
 
 { #category : #accessing }
-Performance >> trackVisualizers [
-
-	^ trackVisualizers
-]
-
-{ #category : #accessing }
-Performance >> trackVisualizers: aDictionary [
-
-	trackVisualizers := aDictionary
-]
-
-{ #category : #accessing }
-Performance >> transportStep [
+PerformanceWithoutSound >> transportStep [
 	^ transportStep
 ]
 
 { #category : #accessing }
-Performance >> transportStep: anInteger [
+PerformanceWithoutSound >> transportStep: anInteger [
 
 	transportStep := anInteger 
 ]
 
 { #category : #'LiveCoding - Performance' }
-Performance >> unsolo: aKeyInPerformance [
+PerformanceWithoutSound >> unsolo: aKeyInPerformance [
 	"convenience method to unsolo a key in the performance"
 	
-	self restore
+self restore
 ]
 
 { #category : #accessing }
-Performance >> visualizer [
-	^visualizer 
+PerformanceWithoutSound >> visualization [
+
+	^ visualization
+]
+
+{ #category : #accessing }
+PerformanceWithoutSound >> visualization: anObject [
+
+	visualization := anObject
 ]
