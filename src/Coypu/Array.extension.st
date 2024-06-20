@@ -164,17 +164,18 @@ Array >> asSeries [
 
 { #category : #'*Coypu' }
 Array >> euclidean [
-
 	"generates an euclidean rhythm with (self at: 1) onsets and (self at: 2) pulses. 
 algorithm based on the Bresenham approach"
 
-	| onsets pulses slope result previous current |
+	| onsets pulses slope result previous current announcement |
+	announcement := RhythmAnnouncement new rhythm: self asString , ' euclidean'.
+	PerformanceRecorder uniqueInstance announce: announcement.
 	current := 0.
 	onsets := self at: 1.
 	pulses := self at: 2.
 	slope := onsets / pulses.
 	result := OrderedCollection new.
-	(0 to: pulses - 1) do: [ :i | 
+	(0 to: pulses - 1) do: [ :i |
 		current := (i * slope) asInteger.
 		current ~= previous
 			ifTrue: [ result add: 1 ]

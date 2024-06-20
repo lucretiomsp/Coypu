@@ -57,6 +57,7 @@ Performance class >> orbit: anInteger [
 Performance class >> uniqueInstance [
 
 	self orbit: 0.
+	PerformanceRecorder uniqueInstance.
 	^ uniqueInstance ifNil: [ uniqueInstance := super new ]
 ]
 

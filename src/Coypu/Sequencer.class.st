@@ -134,11 +134,11 @@ Sequencer >> allNotes: anInteger [
 	self notes: newNotes.
 ]
 
-{ #category : #'LiveCoding-ExtraParams' }
+{ #category : #'LiveCoding-Kyma' }
 Sequencer >> amount: aNumberOrAnArray [
 	"set the amount to a collection of value in array or to to the numbe"
 
-	self extra: #Amount values: aNumberOrAnArray asDirtArray
+	self extra: #amount values: aNumberOrAnArray asDirtArray
 ]
 
 { #category : #converting }
@@ -163,7 +163,7 @@ Sequencer >> bpq: aFloatOrAnArray [
 		put:  aFloatOrAnArray asDirtArray
 ]
 
-{ #category : #'LiveCoding-ExtraParams' }
+{ #category : #'LiveCoding-Kyma' }
 Sequencer >> bw: aNumberOrAnArray [
 	"set the bandwidth (bw) to  a collection of value in array or to to the numbe"
 
@@ -200,11 +200,11 @@ Sequencer >> chords: aStringWithOneOrMoreChords octave: anIntegerOrAnArray [
 	
 ]
 
-{ #category : #'LiveCoding-ExtraParams' }
+{ #category : #'LiveCoding-Kyma' }
 Sequencer >> cutoff: aNumberOrAnArray [
 	"set the cutoff to a collection of value in array or to to the numbe"
 
-	self extra: #Cutoff values: aNumberOrAnArray asDirtArray
+	self extra: #cutoff  values: aNumberOrAnArray asDirtArray
 ]
 
 { #category : #'sequencer - cycles' }
@@ -217,13 +217,6 @@ Sequencer >> cycleDurations [
 Sequencer >> cycleDurations: anArrayOfFractions [
 
 	cycleDurations := anArrayOfFractions 
-]
-
-{ #category : #'LiveCoding-ExtraParams' }
-Sequencer >> decay: aNumberOrAnArray [
-	"set the decay to a collection of value in array or to to the numbe"
-
-	self extra: #Decay values: aNumberOrAnArray asDirtArray
 ]
 
 { #category : #'LiveCoding  - SuperDirt' }
@@ -298,13 +291,17 @@ Sequencer >> dirtMessage: anArrayOfAssociationForSuperDirt [
 Sequencer >> dirtNotes: aStringWithNotes [
 	"add into a Sequencer anotes from a String in which numbers can be multiplicated"
 
-	| tokens dNotes arrayOfNotes |
+	| tokens dNotes arrayOfNotes announcement |
+	thisContext sender selector asString = 'asDirtNotes' ifFalse:[ 
+	announcement := DirtNotesAnnouncement new.
+	announcement newDirtNotes: aStringWithNotes.
+	PerformanceRecorder uniqueInstance announce: announcement].
 	tokens := aStringWithNotes splitOn: ','.
 	dNotes := ' '.
 	tokens do: [ :i |
 		(i includes: $*)
 			ifTrue: [ dNotes := dNotes , i multiplyStringsInString ]
-			ifFalse: [  dNotes := dNotes , i  ] ].
+			ifFalse: [ dNotes := dNotes , i ] ].
 
 	arrayOfNotes := (dNotes findBetweenSubstrings: '  ') collect: [ :each |
 		                each asNumber ].
@@ -320,13 +317,6 @@ Sequencer >> djf: aFloatOrAnArray [
 	self dirtMessage 
 		at: 'djf' 
 		put:  aFloatOrAnArray asDirtArray
-]
-
-{ #category : #'LiveCoding-ExtraParams' }
-Sequencer >> drive: aNumberOrAnArray [
-	"set the drive to a collection of value in array or to to the numbe"
-
-	self extra: #Drive values: aNumberOrAnArray asDirtArray
 ]
 
 { #category : #accessing }
@@ -353,14 +343,14 @@ Sequencer >> durationsSize [
 	^ durations size
 ]
 
-{ #category : #'LiveCoding-ExtraParams' }
+{ #category : #'LiveCoding-Kyma' }
 Sequencer >> duty: aNumberOrAnArray [
 	"set the duty cycle to a collection of value in array or to to the numbe"
 
 	self extra: #Duty values: aNumberOrAnArray asDirtArray 
 ]
 
-{ #category : #'LiveCoding-ExtraParams' }
+{ #category : #'LiveCoding-Kyma' }
 Sequencer >> extra: aSymbol values: aNumberorAnArray [
 
 "stores extra values to control synths parameters on Kyma"
@@ -459,7 +449,7 @@ Sequencer >> index [
 	^ self extra1 at: 2
 ]
 
-{ #category : #'LiveCoding-ExtraParams' }
+{ #category : #'LiveCoding-Kyma' }
 Sequencer >> index: aStringWithIndexes [
 	"convenience method to avoid extra typing when we want to modify the index , i.e. the sample number of a sample player"
 
@@ -530,21 +520,21 @@ Sequencer >> kymaMessage: anObject [
 	kymaMessage := anObject
 ]
 
-{ #category : #'LiveCoding-ExtraParams' }
+{ #category : #'LiveCoding-Kyma' }
 Sequencer >> level: aNumberOrAnArray [
 	"set the level to  a collection of value in array or to to the numbe"
 
-	self extra: #Level values: aNumberOrAnArray asDirtArray
+	self extra: #level values: aNumberOrAnArray asDirtArray
 ]
 
-{ #category : #'LiveCoding-ExtraParams' }
+{ #category : #'LiveCoding-Kyma' }
 Sequencer >> lfoAmount: aNumberOrAnArray [
 	"set the lfoAmount to a collection of value in array or to to the numbe"
 
-	self extra: #LfoAmount values: aNumberOrAnArray asDirtArray
+	self extra: #lfoAmount values: aNumberOrAnArray asDirtArray
 ]
 
-{ #category : #'LiveCoding-ExtraParams' }
+{ #category : #'LiveCoding-Kyma' }
 Sequencer >> lfoFreq: aNumberOrAnArray [
 	"set the dlfo frequency to a collection of value in array or to to the numbe"
 
@@ -623,30 +613,6 @@ Sequencer >> midiChannel: anIntegerBetween1And16 [
 	midiChannel := anIntegerBetween1And16 
 ]
 
-{ #category : #'LiveCoding-ExtraParams' }
-Sequencer >> modIndex: aNumberOrAnArray [
-	"convenience method to avoid extra typing when we want to modify the modulationIndex"
-
-	self extraParams:
-		(Array with: #ModIndex with: aNumberOrAnArray asDirtArray)
-]
-
-{ #category : #'LiveCoding-ExtraParams' }
-Sequencer >> modPitch: aStringWithIndexes [
-	"convenience method to avoid extra typing when we want to modify the modulationPitch , i.e. the sample number of a sample player"
-
-	self extraParams:
-		(Array with: #ModPitch with: aStringWithIndexes asDirtPureNotes)
-]
-
-{ #category : #'LiveCoding-ExtraParams' }
-Sequencer >> mode: aNumberOrAnArray [
-	"convenience method to avoid extra typing when we want to modify the mode parameter, that usually correspond to chords mode "
-
-	self extraParams:
-		(Array with: #Mode with: aNumberOrAnArray asDirtArray)
-]
-
 { #category : #accessing }
 Sequencer >> note [
 
@@ -686,13 +652,22 @@ Sequencer >> notes1: anObject [
 Sequencer >> notes: anArrayOfNotesOrANoteorAstring [
 	" change notes in the sequencer"
 
+	| announcement |
+	thisContext sender selector traceCr = 'notes:' ifTrue: [
+		announcement := NotesAnnouncement new notes:
+			                ' notes: '
+			                , anArrayOfNotesOrANoteorAstring asString.
+		PerformanceRecorder uniqueInstance announce: announcement ].
+
 	anArrayOfNotesOrANoteorAstring isArray
 		ifTrue: [ notes := anArrayOfNotesOrANoteorAstring ]
 		ifFalse: [
-			anArrayOfNotesOrANoteorAstring isByteString ifTrue: [ notes := anArrayOfNotesOrANoteorAstring asDirtPureNotes  ] ifFalse: 
-		[  	notes := Array
-				         new: self numberOfTrigs
-				         withAll: anArrayOfNotesOrANoteorAstring]]
+			anArrayOfNotesOrANoteorAstring isByteString
+				ifTrue: [ notes := anArrayOfNotesOrANoteorAstring asDirtPureNotes ]
+				ifFalse: [
+					notes := Array
+						         new: self numberOfTrigs
+						         withAll: anArrayOfNotesOrANoteorAstring ] ]
 ]
 
 { #category : #'as yet unclassified' }
@@ -1015,11 +990,11 @@ Sequencer >> randomSamplesFromFolder: aStringForAFolderOfSamples [
 	self sound: aStringForAFolderOfSamples ; dirtNotes: (randIndex  randomInts: folderSize) .
 ]
 
-{ #category : #'LiveCoding-ExtraParams' }
+{ #category : #'LiveCoding-Kyma' }
 Sequencer >> ratio: aNumberOrAnArray [
 	"set the ratio to a collection of value in array or to to the numbe"
 
-	self extra: #Ratio values: aNumberOrAnArray asDirtArray
+	self extra: #ratio values: aNumberOrAnArray asDirtArray
 ]
 
 { #category : #'LiveCoding  - SuperDirt' }
@@ -1227,9 +1202,17 @@ Sequencer >> times: anInteger [
 { #category : #'LiveCoding - Performance' }
 Sequencer >> to: aSymbol [
 	" assign sequencer to the performance at aSymbol. if a sound for SuperDirt is not specified, the symbol is used for sound name"
-   
-   self noteIndex: 1.
+
+	| announcement |
+	self noteIndex: 1.
 	self seqKey: aSymbol asString.
+	announcement := (self notesSize > 4 and: [
+		                 (self notes at: 1) = 60 and: [
+			                 (self notes at: 5) = 60 ] ])
+		                ifTrue: [ DoubleRhythmAnnouncement new ]
+		                ifFalse: [ SymbolAnnouncement new ].
+	announcement symbol: self seqKey.
+	PerformanceRecorder uniqueInstance announce: announcement.
 
 	"For SuperDirt"
 	self dirtMessage at: '_id' put: self seqKey.
@@ -1383,7 +1366,7 @@ Sequencer >> withRandomNotesMin: anInteger max: anotherInteger [
 	^ self notes: newNotes
 ]
 
-{ #category : #'LiveCoding-ExtraParams' }
+{ #category : #'LiveCoding-Kyma' }
 Sequencer >> x: aNumberOrAnArray [
 	"set the x to  a collection of value in array or to to the numbe"
 

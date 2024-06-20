@@ -36,37 +36,11 @@ ByteString >> asDirtArray [
 ByteString >> asDirtNotes [
 	" returns a sequencer containing a trig for each integer and a rest for whatever other character and with the notes coresponding to the integeres inside the string - tokens must be separated by string"
 
-	| seq tokens gates notesAStrings notesAsNumbers dirtString |
-	gates := ''.
-	tokens := self splitOn: ','.
-	dirtString := ''.
-	tokens do: [ :i |
-		(i includes: $*)
-			ifTrue: [ gates := gates , i multiplyStringsInString ]
-			ifFalse: [
-				(i includes: $/)
-					ifTrue: [ gates := gates , i withNRests ]
-					ifFalse: [ gates := gates , i ] ] ].
-
-	notesAStrings := (gates copyReplaceAll: '~' with: '') findBetweenSubstrings: ' '.
-
-	notesAsNumbers := notesAStrings collect: [ :i | i ~= ' ' ifTrue: [ i asInteger ] ].
-
-	notesAsNumbers do: [ :i |
-		dirtString := dirtString , i asString , ' ' ].
-
-	seq := gates asSeqGates asSeq.
-	seq dirtNotes: dirtString.
-	seq notes: notesAsNumbers asArray.
-
-	^ seq
-]
-
-{ #category : #'*Coypu' }
-ByteString >> asDirtPureNotes [
-	" retruns just the note numbers parsed - tokens must be separated by string"
-
-	| seq tokens gates notesAStrings notesAsNumbers dirtString |
+	| seq tokens gates notesAStrings notesAsNumbers dirtString announcement|
+	announcement := RhythmAnnouncement new.
+	announcement rhythm: '''' , self asString , ''' asDirtNotes'.
+	PerformanceRecorder uniqueInstance announce: announcement.
+	
 	gates := ''.
 	tokens := self splitOn: ','.
 	dirtString := ''.
@@ -91,7 +65,43 @@ ByteString >> asDirtPureNotes [
 	seq dirtNotes: dirtString.
 	seq notes: notesAsNumbers asArray.
 
-	^ notesAsNumbers asArray .
+	^ seq
+]
+
+{ #category : #'*Coypu' }
+ByteString >> asDirtPureNotes [
+	" retruns just the note numbers parsed - tokens must be separated by string"
+
+	| seq tokens gates notesAStrings notesAsNumbers dirtString announcement |
+	thisContext sender selector asString = 'hexBeat:' ifFalse:[
+	announcement := RhythmAnnouncement new.
+	announcement rhythm: '''' , self asString , ''' asDirtPureNotes'.
+	PerformanceRecorder uniqueInstance announce: announcement].
+	gates := ''.
+	tokens := self splitOn: ','.
+	dirtString := ''.
+	tokens do: [ :i |
+		(i includes: $*)
+			ifTrue: [ gates := gates , i multiplyStringsInString ]
+			ifFalse: [
+				(i includes: $/)
+					ifTrue: [ gates := gates , i withNRests ]
+					ifFalse: [ gates := gates , i ] ] ].
+
+	notesAStrings := (gates copyReplaceAll: '~' with: '')
+		                 findBetweenSubstrings: ' '.
+
+	notesAsNumbers := notesAStrings collect: [ :i |
+		                  i ~= ' ' ifTrue: [ i asInteger ] ].
+
+	notesAsNumbers do: [ :i |
+		dirtString := dirtString , i asString , ' ' ].
+
+	seq := gates asSeqGates asSeq.
+	seq dirtNotes: dirtString.
+	seq notes: notesAsNumbers asArray.
+
+	^ notesAsNumbers asArray
 ]
 
 { #category : #'*Coypu' }
@@ -201,22 +211,33 @@ ByteString >> every: anInteger [
 
 { #category : #'*Coypu' }
 ByteString >> hexBeat [
+	" convert a string with an Hexadecimal number to the Kyma array correspondong to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex)"
 
-" convert a string with an Hexadecimal number to the Kyma array correspondong to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex)"
-|   strings flat rhythm|
-
-strings := (1 to: (self size)) collect: [ :i | 
-((self at: i) digitValue printStringBase: 2 length: 4 padded: true ) ].
-flat := strings flatCollect: [ :each | each ].
-rhythm := ((( 1 to: (flat size)) collect: [ :i | (flat at: i ) digitValue ]) asRhythm ).
-^ rhythm asSeq.
+	| strings flat rhythm announcement|
+	thisContext sender selector asString = 'semibreves' ifFalse: [
+		announcement := RhythmAnnouncement new.
+		announcement rhythm: '''' , self asString , ''' hexBeat'.
+			PerformanceRecorder uniqueInstance announce: announcement.].
+	strings := (1 to: self size) collect: [ :i |
+		           (self at: i) digitValue
+			           printStringBase: 2
+			           length: 4
+			           padded: true ].
+	flat := strings flatCollect: [ :each | each ].
+	rhythm := ((1 to: flat size) collect: [ :i | (flat at: i) digitValue ])
+		          asRhythm.
+	^ rhythm asSeq
 ]
 
 { #category : #'*Coypu' }
 ByteString >> hexBeat: aStringOfNoteNumbers [
 	" convert a string with an Hexadecimal number to the Kyma array corresponding to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex) , and with  anArrayOfNoteNumbers as Notes"
 
-	| strings flat seq |
+	| strings flat seq announcement|
+		thisContext sender selector asString = 'semibreves' ifFalse: [
+		announcement := RhythmAnnouncement new.
+		announcement rhythm: '''' , self asString , ''' hexBeat: ',aStringOfNoteNumbers .
+		PerformanceRecorder uniqueInstance announce: announcement ].
 	strings := (1 to: self size) collect: [ :i |
 		           (self at: i) digitValue
 			           printStringBase: 2
@@ -231,13 +252,20 @@ ByteString >> hexBeat: aStringOfNoteNumbers [
 
 { #category : #'*Coypu' }
 ByteString >> hexBeat: anArrayOfNoteNumbers dur: anArrayOfDurations [
-" convert a string with an Hexadecimal number to the Kyma array corresponding to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex) , and with  anArrayOfNoteNumbers as Notes and anArrayOfDurations as Durations"
-|   strings flat |
+	" convert a string with an Hexadecimal number to the Kyma array corresponding to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex) , and with  anArrayOfNoteNumbers as Notes and anArrayOfDurations as Durations"
 
-strings := (1 to: (self size)) collect: [ :i | 
-((self at: i) digitValue printStringBase: 2 length: 4 padded: true ) ].
-flat := strings flatCollect: [ :each | each ].
-^ ((( 1 to: (flat size)) collect: [ :i | (flat at: i ) digitValue ]) asRhythm ) and: anArrayOfNoteNumbers and: anArrayOfDurations .
+	| strings flat announcement|
+		announcement := RhythmAnnouncement new.
+		announcement rhythm: '''' , self asString , ''' hexBeat: ',anArrayOfNoteNumbers, ' dur: ',anArrayOfDurations .
+		PerformanceRecorder uniqueInstance announce: announcement.
+	strings := (1 to: self size) collect: [ :i |
+		           (self at: i) digitValue
+			           printStringBase: 2
+			           length: 4
+			           padded: true ].
+	flat := strings flatCollect: [ :each | each ].
+	^ ((1 to: flat size) collect: [ :i | (flat at: i) digitValue ])
+		  asRhythm and: anArrayOfNoteNumbers and: anArrayOfDurations
 ]
 
 { #category : #'*Coypu' }
@@ -297,44 +325,82 @@ self pattern notes: anArrayOfNotes to: aKeyInAPerformance .
 
 { #category : #'*Coypu' }
 ByteString >> once [
-"play the sound from the SuperDirt audio engine once at the desired index if any -
+	"play the sound from the SuperDirt audio engine once at the desired index if any -
 for exampe cp:4 sound the 3rd sample of the /Library/Application\ Support/SuperCollider/downloaded-quarks/Dirt-Samples/cp folder"
-| sound note message parsedString|
-parsedString := (self findBetweenSubstrings: ':') .
-sound := parsedString at: 1. 
-parsedString size = 2 ifTrue: [ note:= parsedString at: 2 ] ifFalse:  [note := 0].
-message := OSCMessage for: { '/dirt/play' . 's' . sound . 'n' . note}. 
-(OSCBundle for: { message } )sendToAddressString:  '127.0.0.1' port: 57120. 
+
+	| sound note message parsedString announcement|
+
+		announcement := SymbolAnnouncement new.
+		announcement symbol: ' ''' , self , ''' once' .
+		PerformanceRecorder uniqueInstance announce: announcement.
+	parsedString := self findBetweenSubstrings: ':'.
+	sound := parsedString at: 1.
+	parsedString size = 2
+		ifTrue: [ note := parsedString at: 2 ]
+		ifFalse: [ note := 0 ].
+	message := OSCMessage for: {
+			           '/dirt/play'.
+			           's'.
+			           sound.
+			           'n'.
+			           note }.
+	(OSCBundle for: { message })
+		sendToAddressString: '127.0.0.1'
+		port: 57120
 ]
 
 { #category : #'*Coypu' }
 ByteString >> onceAtSpeed: aFloat [
-"play the soundfrom the SuperDirt audio engine once at the desired speed"
-| sound note message parsedString condition|
-note := 0.
-parsedString := (self findBetweenSubstrings: ':') .
-sound := parsedString at: 1. 
-condition := parsedString size = 2.
-condition  ifTrue: [ note:= parsedString at: 2 ] ifFalse:  [note := 0].
-message := OSCMessage for: { '/dirt/play' . 's' . sound . 'n' . note . 'speed' . aFloat}. 
-(OSCBundle for: { message } )sendToAddressString:  '127.0.0.1' port: 57120. 
+	"play the soundfrom the SuperDirt audio engine once at the desired speed"
 
-
+	| sound note message parsedString condition announcement |
+	announcement := SymbolAnnouncement new.
+	announcement symbol: ' ''' , self , ''' onceAtSpeed: ',aFloat asString.
+	PerformanceRecorder uniqueInstance announce: announcement.
+	note := 0.
+	parsedString := self findBetweenSubstrings: ':'.
+	sound := parsedString at: 1.
+	condition := parsedString size = 2.
+	condition
+		ifTrue: [ note := parsedString at: 2 ]
+		ifFalse: [ note := 0 ].
+	message := OSCMessage for: {
+			           '/dirt/play'.
+			           's'.
+			           sound.
+			           'n'.
+			           note.
+			           'speed'.
+			           aFloat }.
+	(OSCBundle for: { message })
+		sendToAddressString: '127.0.0.1'
+		port: 57120
 ]
 
 { #category : #'*Coypu' }
 ByteString >> onceAtSpeed: aFloat withNote: aNote [
-"play the soundfrom the SuperDirt audio engine once at the desired speed"
-| sound message parsedString condition|
+	"play the soundfrom the SuperDirt audio engine once at the desired speed"
 
-parsedString := (self findBetweenSubstrings: ':') .
-sound := parsedString at: 1. 
-condition := parsedString size = 2.
+	| sound message parsedString condition announcement |
+	announcement := SymbolAnnouncement new.
+	announcement symbol:
+		' ''' , self , ''' onceAtSpeed: ' , aFloat asString, ' withNote: ',aNote asString.
+	PerformanceRecorder uniqueInstance announce: announcement.
+	parsedString := self findBetweenSubstrings: ':'.
+	sound := parsedString at: 1.
+	condition := parsedString size = 2.
 
-message := OSCMessage for: { '/dirt/play' . 's' . sound . 'n' . aNote . 'speed' . aFloat}. 
-(OSCBundle for: { message } )sendToAddressString:  '127.0.0.1' port: 57120. 
-
-
+	message := OSCMessage for: {
+			           '/dirt/play'.
+			           's'.
+			           sound.
+			           'n'.
+			           aNote.
+			           'speed'.
+			           aFloat }.
+	(OSCBundle for: { message })
+		sendToAddressString: '127.0.0.1'
+		port: 57120
 ]
 
 { #category : #'*Coypu' }
@@ -350,36 +416,59 @@ ByteString >> parseChord [
 ]
 
 { #category : #'*Coypu' }
-ByteString >> pattern [ 
-" convert a string with an Hexadecimal number to the Kyma array correspondong to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex)"
-|   strings flat |
+ByteString >> pattern [
+	" convert a string with an Hexadecimal number to the Kyma array corresponding to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex)"
 
-strings := (1 to: (self size)) collect: [ :i | 
-((self at: i) digitValue printStringBase: 2 length: 4 padded: true ) ].
-flat := strings flatCollect: [ :each | each ].
-^ ((( 1 to: (flat size)) collect: [ :i | (flat at: i ) digitValue ]) asRhythm ) asSeq.
+	| strings flat announcement |
+	announcement := RhythmAnnouncement new.
+	announcement symbol: ' ''' , self , ''' pattern'.
+	PerformanceRecorder uniqueInstance announce: announcement.
+	strings := (1 to: self size) collect: [ :i |
+		           (self at: i) digitValue
+			           printStringBase: 2
+			           length: 4
+			           padded: true ].
+	flat := strings flatCollect: [ :each | each ].
+	^ ((1 to: flat size) collect: [ :i | (flat at: i) digitValue ])
+		  asRhythm asSeq
 ]
 
 { #category : #'*Coypu' }
-ByteString >> pattern: anArrayOfNoteNumbers [ 
-" convert a string with an Hexadecimal number to the Kyma array corresponding to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex) , and with  anArrayOfNoteNumbers as Notes"
-|   strings flat |
+ByteString >> pattern: anArrayOfNoteNumbers [
+	" convert a string with an Hexadecimal number to the Kyma array corresponding to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex) , and with  anArrayOfNoteNumbers as Notes"
 
-strings := (1 to: (self size)) collect: [ :i | 
-((self at: i) digitValue printStringBase: 2 length: 4 padded: true ) ].
-flat := strings flatCollect: [ :each | each ].
-^ ((( 1 to: (flat size)) collect: [ :i | (flat at: i ) digitValue ]) asRhythm ) and: anArrayOfNoteNumbers  .
+	| strings flat announcement|
+		announcement := RhythmAnnouncement new.
+	announcement symbol:
+		' ''' , self , ''' pattern: ', anArrayOfNoteNumbers .
+	PerformanceRecorder uniqueInstance announce: announcement.
+	strings := (1 to: self size) collect: [ :i |
+		           (self at: i) digitValue
+			           printStringBase: 2
+			           length: 4
+			           padded: true ].
+	flat := strings flatCollect: [ :each | each ].
+	^ ((1 to: flat size) collect: [ :i | (flat at: i) digitValue ])
+		  asRhythm and: anArrayOfNoteNumbers
 ]
 
 { #category : #'*Coypu' }
 ByteString >> pattern: anArrayOfNoteNumbers and: anArrayOfDurations [
-" convert a string with an Hexadecimal number to the Kyma array corresponding to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex) , and with  anArrayOfNoteNumbers as Notes and anArrayOfDurations as Durations"
-|   strings flat |
+	" convert a string with an Hexadecimal number to the Kyma array corresponding to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex) , and with  anArrayOfNoteNumbers as Notes and anArrayOfDurations as Durations"
 
-strings := (1 to: (self size)) collect: [ :i | 
-((self at: i) digitValue printStringBase: 2 length: 4 padded: true ) ].
-flat := strings flatCollect: [ :each | each ].
-^ ((( 1 to: (flat size)) collect: [ :i | (flat at: i ) digitValue ]) asRhythm ) and: anArrayOfNoteNumbers and: anArrayOfDurations .
+	| strings flat announcement|
+		announcement := RhythmAnnouncement new.
+	announcement symbol:
+		' ''' , self , ''' pattern: ' , anArrayOfNoteNumbers, ' and: ', anArrayOfDurations.
+	PerformanceRecorder uniqueInstance announce: announcement.
+	strings := (1 to: self size) collect: [ :i |
+		           (self at: i) digitValue
+			           printStringBase: 2
+			           length: 4
+			           padded: true ].
+	flat := strings flatCollect: [ :each | each ].
+	^ ((1 to: flat size) collect: [ :i | (flat at: i) digitValue ])
+		  asRhythm and: anArrayOfNoteNumbers and: anArrayOfDurations
 ]
 
 { #category : #'*Coypu' }

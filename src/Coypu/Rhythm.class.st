@@ -77,7 +77,9 @@ Rhythm >> asDirtArray [
 { #category : #'sequencer creation' }
 Rhythm >> notes: anArray [
 
-	^ Sequencer new gates: self; notes: anArray
+	^ Sequencer new
+		  gates: self;
+		  notes: anArray
 ]
 
 { #category : #accessing }

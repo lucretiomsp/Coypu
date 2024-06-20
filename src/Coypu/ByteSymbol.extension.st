@@ -70,11 +70,10 @@ ByteSymbol >> indexes: aStringOfIndexes [
 
 { #category : #'*Coypu' }
 ByteSymbol >> mute [
-
 	" remove the key from the Performance, if any active key in the Performance correspond to the symbol"
 
 	| perf |
-	perf := Performance uniqueInstance.
+	perf := PerformanceRecorder uniqueInstance.
 	perf removeKey: self ifAbsent: [ nil ]
 ]
 
@@ -102,21 +101,19 @@ ByteSymbol >> number: anArrayOfNumbers [
 
 { #category : #'*Coypu' }
 ByteSymbol >> solo [
-
 	"shorthand for p solo: aKeyInperformance"
 
 	| p |
-	p := Performance uniqueInstance.
+	p := PerformanceRecorder uniqueInstance.
 	p solo: self
 ]
 
 { #category : #'*Coypu' }
 ByteSymbol >> unsolo [
-
 	"shorthand for p unsolo: aKeyInPerformance"
 
 	| p |
-	p := Performance uniqueInstance.
+	p := PerformanceRecorder uniqueInstance.
 	p unsolo: self
 ]
 
