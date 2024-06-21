@@ -1,10 +1,12 @@
 Class {
-	#name : #MfInputElementSkin,
-	#superclass : #MfBasicMooflodSkin,
-	#category : #'Mooflod-InputWidget'
+	#name : 'MfInputElementSkin',
+	#superclass : 'MfBasicMooflodSkin',
+	#category : 'Mooflod-InputWidget',
+	#package : 'Mooflod',
+	#tag : 'InputWidget'
 }
 
-{ #category : #'event handling' }
+{ #category : 'event handling' }
 MfInputElementSkin >> installLookEvent: anEvent [
 	"when installing the skin, changes the properties of widget mentionned down here"
 

@@ -1,16 +1,18 @@
 Class {
-	#name : #MfFractalCircleElement,
-	#superclass : #ToElement,
+	#name : 'MfFractalCircleElement',
+	#superclass : 'ToElement',
 	#instVars : [
 		'currentX',
 		'currentY',
 		'value',
 		'nbOfChilds'
 	],
-	#category : #'Mooflod-FractalCircleWidget'
+	#category : 'Mooflod-FractalCircleWidget',
+	#package : 'Mooflod',
+	#tag : 'FractalCircleWidget'
 }
 
-{ #category : #example }
+{ #category : 'example' }
 MfFractalCircleElement class >> exampleSimpleFractalCircle [
 
 	<script>
@@ -26,13 +28,13 @@ MfFractalCircleElement class >> exampleSimpleFractalCircle [
 	^ c
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MfFractalCircleElement >> circleExtent [
 
 	^ 390 @ 390
 ]
 
-{ #category : #internal }
+{ #category : 'internal' }
 MfFractalCircleElement >> createCircle: x y: anY [
 
 	| c |
@@ -40,7 +42,7 @@ MfFractalCircleElement >> createCircle: x y: anY [
 	self addChild: c
 ]
 
-{ #category : #internal }
+{ #category : 'internal' }
 MfFractalCircleElement >> createCircle: x y: anY color: aColor [
 
 	| c color |
@@ -50,24 +52,24 @@ MfFractalCircleElement >> createCircle: x y: anY color: aColor [
 	self addChild: c
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MfFractalCircleElement >> currentX [
 
 ^currentX.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MfFractalCircleElement >> currentY [ 
 ^currentY.
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MfFractalCircleElement >> defaultGeometry [
 
 	^ BlCircleGeometry new matchExtent: self extent.
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MfFractalCircleElement >> initialize [
 
 	super initialize.
@@ -79,13 +81,13 @@ MfFractalCircleElement >> initialize [
 	value := 0
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MfFractalCircleElement >> numberOfCircles [
 
 ^nbOfChilds 
 ]
 
-{ #category : #'public api' }
+{ #category : 'public api' }
 MfFractalCircleElement >> setValue: aValue [
 
 	(aValue between: 0 and: 100)
@@ -95,7 +97,7 @@ MfFractalCircleElement >> setValue: aValue [
 	self updateCircles
 ]
 
-{ #category : #internal }
+{ #category : 'internal' }
 MfFractalCircleElement >> updateCircles [
 
 	| c |
@@ -109,7 +111,7 @@ MfFractalCircleElement >> updateCircles [
 		self createCircle: currentX y: currentY color: c ]
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 MfFractalCircleElement >> value [
 
 ^value.

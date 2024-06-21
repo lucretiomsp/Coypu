@@ -1,6 +1,6 @@
 Class {
-	#name : #MfPatternElement,
-	#superclass : #ToElement,
+	#name : 'MfPatternElement',
+	#superclass : 'ToElement',
 	#instVars : [
 		'nbOfSteps'
 	],
@@ -9,10 +9,12 @@ Class {
 		'min',
 		'nbsteps'
 	],
-	#category : #'Mooflod-PatternWidget'
+	#category : 'Mooflod-PatternWidget',
+	#package : 'Mooflod',
+	#tag : 'PatternWidget'
 }
 
-{ #category : #examples }
+{ #category : 'examples' }
 MfPatternElement class >> exampleSimplePattern [
 
 	<script>
@@ -29,7 +31,7 @@ MfPatternElement class >> exampleSimplePattern [
 	^ patternelem
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 MfPatternElement >> addInstrumentToStep [
 	"Change the value of the drum attribute for the bar clicked, and update his color for visualization undestanding"
 
@@ -44,7 +46,7 @@ MfPatternElement >> addInstrumentToStep [
 					child removeInstrument  ] ] ]
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 MfPatternElement >> addStepsToThePattern: nbSteps [
 	"Add all bars element in the pattern to display them"
 
@@ -62,13 +64,13 @@ MfPatternElement >> addStepsToThePattern: nbSteps [
 	self addInstrumentToStep
 ]
 
-{ #category : #'visual properties' }
+{ #category : 'visual properties' }
 MfPatternElement >> backgroundPaint [ 
 	"Define the background for the pattern"
 	^ Color red
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MfPatternElement >> initialize [
 
 	super initialize.
@@ -77,56 +79,56 @@ MfPatternElement >> initialize [
 	self layout: BlFrameLayout new.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MfPatternElement >> max [ 
 	
 	^max.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MfPatternElement >> max: aMax [
 
 	max:= aMax.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MfPatternElement >> min [ 
 
 	^min.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MfPatternElement >> min: aMin [
 
 	min:= aMin.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MfPatternElement >> nbOfSteps [
 
 	^ nbOfSteps
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MfPatternElement >> nbsteps [
 
 	^ nbsteps
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MfPatternElement >> nbsteps: someNbSteps [
 
 	nbsteps := someNbSteps.
 	self addStepsToThePattern: nbsteps
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MfPatternElement >> newMooFlodSkin [
 
 	^ MfPatternElementSkin new
 ]
 
-{ #category : #'visual properties' }
+{ #category : 'visual properties' }
 MfPatternElement >> patternExtent [
 
 	^ 36@60

@@ -1,10 +1,12 @@
 Class {
-	#name : #MfKeyboardElementTest,
-	#superclass : #TestCase,
-	#category : #'Mooflod-KeyboardWidget'
+	#name : 'MfKeyboardElementTest',
+	#superclass : 'TestCase',
+	#category : 'Mooflod-KeyboardWidget',
+	#package : 'Mooflod',
+	#tag : 'KeyboardWidget'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MfKeyboardElementTest >> testAllKeysAreInDicts [
 
 | keyB |		
@@ -14,7 +16,7 @@ self assert: keyB children size equals: 64.
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MfKeyboardElementTest >> testWhenKeyPressedItsColorChanges [
 
 	| keyB |

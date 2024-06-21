@@ -1,10 +1,12 @@
 Class {
-	#name : #MfMooflodTheme,
-	#superclass : #ToTheme,
-	#category : #'Mooflod-Core'
+	#name : 'MfMooflodTheme',
+	#superclass : 'ToTheme',
+	#category : 'Mooflod-Core',
+	#package : 'Mooflod',
+	#tag : 'Core'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MfMooflodTheme class >> defaultTokenProperties [
 	"define here token properties of the widget theme"
 
@@ -64,13 +66,13 @@ MfMooflodTheme class >> defaultTokenProperties [
 			   value: Color white) }
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MfMooflodTheme >> newRootSkinInstance [
 
 	^ MfMooflodRootSkin new
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MfMooflodTheme >> newSkinInstanceFor: anElement [
 
 	| space |

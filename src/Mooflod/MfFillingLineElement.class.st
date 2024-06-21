@@ -1,10 +1,12 @@
 Class {
-	#name : #MfFillingLineElement,
-	#superclass : #ToElement,
-	#category : #'Mooflod-FilledSquareWidget'
+	#name : 'MfFillingLineElement',
+	#superclass : 'ToElement',
+	#category : 'Mooflod-FilledSquareWidget',
+	#package : 'Mooflod',
+	#tag : 'FilledSquareWidget'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MfFillingLineElement >> initialize [
 
 	super initialize.

@@ -21,7 +21,8 @@ Class {
 		'dirtMIDIDevice',
 		'activeDSP',
 		'perfVisualizer',
-		'trackVisualizers'
+		'trackVisualizers',
+		'isVisualizerOpen'
 	],
 	#classInstVars : [
 		'uniqueInstance',
@@ -184,6 +185,9 @@ Performance >> dirtMIDIDevice: aString [
 Performance >> displayVisualizer: aBoolean [
 
 displayVisualizer := aBoolean.
+visualizer := MfVisualizerElement new level: 2.
+	stepVisualizer := MfPerformanceStepsDisplayer new.
+isVisualizerOpen := false
 ]
 
 { #category : 'accessing' }
@@ -195,8 +199,9 @@ Performance >> freq [
 { #category : 'accessing' }
 Performance >> freq: aDurationInSeconds [
 	"use for playback speed"
-visualizer := MfVisualizerElement new level: 2.
-	freq := aDurationInSeconds asFloat
+
+	freq := aDurationInSeconds asFloat.
+	"visualizer square initializeAnimation: freq * 4."
 ]
 
 { #category : 'LiveCoding - Performance' }
@@ -211,6 +216,7 @@ Performance >> initialize: aSize [
 	activeProcess := Process new terminate.
 	self muteAll.
 	freq := 132 bpm.
+
 	displayVisualizer := false.
 ]
 
@@ -218,6 +224,12 @@ Performance >> initialize: aSize [
 Performance >> isPerformance [
 
 	^ true
+]
+
+{ #category : 'accessing' }
+Performance >> isVisualizerOpen: aBoolean [ 
+
+isVisualizerOpen:= aBoolean 
 ]
 
 { #category : 'accessing' }
@@ -393,12 +405,15 @@ Performance >> playFor: aNumberOfSteps [
 	"just on performance at once"
 	self activeProcess isTerminated ifTrue: [
 		self performer playFor: aNumberOfSteps ].
-	
-	stepVisualizer := MfPerformanceStepsDisplayer new.
-	stepVisualizer addSteps: self transportStep.
-	stepVisualizer initializeAnimation: self freq.
-	displayVisualizer ifTrue:[
-	self openVisualizers.
+	displayVisualizer ifTrue: [
+		isVisualizerOpen ifFalse: [ 
+				stepVisualizer addSteps: self transportStep.
+				stepVisualizer initializeAnimation: self freq.
+				self openVisualizers.
+				self isVisualizerOpen: true ].
+	isVisualizerOpen ifTrue: [ 
+		stepVisualizer animationIsRunning:true ].
+	stepVisualizer pauseAnimation:  aNumberOfSteps / 9.
 	visualizer initAnimation: aNumberOfSteps / 9].
 	self resetAllSequencers.
 

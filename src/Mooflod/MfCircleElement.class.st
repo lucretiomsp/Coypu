@@ -1,10 +1,12 @@
 Class {
-	#name : #MfCircleElement,
-	#superclass : #ToElement,
-	#category : #'Mooflod-FractalCircleWidget'
+	#name : 'MfCircleElement',
+	#superclass : 'ToElement',
+	#category : 'Mooflod-FractalCircleWidget',
+	#package : 'Mooflod',
+	#tag : 'FractalCircleWidget'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MfCircleElement >> initialize [
 
 	super initialize.

@@ -1,10 +1,12 @@
 Class {
-	#name : #MfMixingButtonElement,
-	#superclass : #ToElement,
-	#category : #'Mooflod-MixingTableWidget'
+	#name : 'MfMixingButtonElement',
+	#superclass : 'ToElement',
+	#category : 'Mooflod-MixingTableWidget',
+	#package : 'Mooflod',
+	#tag : 'MixingTableWidget'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MfMixingButtonElement >> initialize [
 
 	super initialize.

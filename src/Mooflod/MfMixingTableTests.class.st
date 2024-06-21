@@ -1,10 +1,12 @@
 Class {
-	#name : #MfMixingTableTests,
-	#superclass : #TestCase,
-	#category : #'Mooflod-MixingTableWidget'
+	#name : 'MfMixingTableTests',
+	#superclass : 'TestCase',
+	#category : 'Mooflod-MixingTableWidget',
+	#package : 'Mooflod',
+	#tag : 'MixingTableWidget'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MfMixingTableTests >> testIfPressingKeyTurnOnButton [
 
 	| m |

@@ -1,26 +1,28 @@
 Class {
-	#name : #MfStepElement,
-	#superclass : #BlElement,
+	#name : 'MfStepElement',
+	#superclass : 'BlElement',
 	#instVars : [
 		'instrument'
 	],
-	#category : #'Mooflod-PatternWidget'
+	#category : 'Mooflod-PatternWidget',
+	#package : 'Mooflod',
+	#tag : 'PatternWidget'
 }
 
-{ #category : #action }
+{ #category : 'action' }
 MfStepElement >> assignInstrument [
 	"Sets drum attribute to true"
 
 	instrument := true
 ]
 
-{ #category : #'visual properties' }
+{ #category : 'visual properties' }
 MfStepElement >> backgroundPaint [ 
 	"Define the background for a bar"
 	^ Color white.
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MfStepElement >> initialize [
 
 	super initialize.
@@ -30,20 +32,20 @@ MfStepElement >> initialize [
 	self constraintsDo: [ :e | e frame vertical alignCenter ].
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MfStepElement >> instrument [
 
 	^ instrument
 ]
 
-{ #category : #removing }
+{ #category : 'removing' }
 MfStepElement >> removeInstrument [
 	"Sets drum attribute to false"
 
 	instrument := false
 ]
 
-{ #category : #'visual properties' }
+{ #category : 'visual properties' }
 MfStepElement >> stepExtent [
 	"Size of a bar"
 	^30@52.

@@ -1,13 +1,15 @@
 Class {
-	#name : #MfPulsingSquare,
-	#superclass : #BlElement,
+	#name : 'MfPulsingSquare',
+	#superclass : 'BlElement',
 	#instVars : [
 		'flashingAnimation'
 	],
-	#category : #'Mooflod-PulsingSquare'
+	#category : 'Mooflod-PulsingSquare',
+	#package : 'Mooflod',
+	#tag : 'PulsingSquare'
 }
 
-{ #category : #example }
+{ #category : 'example' }
 MfPulsingSquare class >> exampleSimplePulsingSquare [
 
 	<script>
@@ -22,13 +24,13 @@ MfPulsingSquare class >> exampleSimplePulsingSquare [
 	^ aSquare
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MfPulsingSquare >> flashingAnimation [
 
 ^flashingAnimation 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MfPulsingSquare >> initialize [
 
 	super initialize.
@@ -38,7 +40,7 @@ MfPulsingSquare >> initialize [
 	self border: (BlBorder paint: Color black).
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MfPulsingSquare >> initializeAnimation [
 
 	flashingAnimation := BlAnimation new duration: 0.5 seconds.
@@ -54,7 +56,7 @@ MfPulsingSquare >> initializeAnimation [
 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MfPulsingSquare >> initializeAnimation: aTime [
 
 	flashingAnimation := BlAnimation new duration: aTime seconds.

@@ -2,17 +2,19 @@
 The key binding are using the physical position so that it works on any keyboard (the key Q on qwerty is the same as the key A on Azerty).
 "
 Class {
-	#name : #MfMixingTableElement,
-	#superclass : #ToElement,
+	#name : 'MfMixingTableElement',
+	#superclass : 'ToElement',
 	#classVars : [
 		'keymap',
 		'nbButtonPerRow',
 		'nbButtons'
 	],
-	#category : #'Mooflod-MixingTableWidget'
+	#category : 'Mooflod-MixingTableWidget',
+	#package : 'Mooflod',
+	#tag : 'MixingTableWidget'
 }
 
-{ #category : #example }
+{ #category : 'example' }
 MfMixingTableElement class >> exampleMixingTable [
 
 	<script>
@@ -27,7 +29,7 @@ MfMixingTableElement class >> exampleMixingTable [
 	^ mT
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 MfMixingTableElement >> addButton: anElement key: aKey [
 	"add the key passed as parameter to the key dictionnary"
 
@@ -36,13 +38,13 @@ MfMixingTableElement >> addButton: anElement key: aKey [
 	
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MfMixingTableElement >> defaultGeometry [
 	^ BlRectangleGeometry new
 	
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MfMixingTableElement >> initialize [
 
 	super initialize.
@@ -57,7 +59,7 @@ MfMixingTableElement >> initialize [
 		aLayoutConstraints vertical fitContent ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MfMixingTableElement >> initializeEventListeners [
 	"add the handler that changes color when pressing a key"
 
@@ -72,7 +74,7 @@ MfMixingTableElement >> initializeEventListeners [
 	self requestFocus
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MfMixingTableElement >> initializeKeys [
 	"create the keys that will be associated to buttons"
 
@@ -85,40 +87,40 @@ MfMixingTableElement >> initializeKeys [
 	self initializeEventListeners
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MfMixingTableElement >> keymap [
 
 
 ^keymap
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MfMixingTableElement >> nbButtonPerRow [
 
 	^ nbButtonPerRow 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MfMixingTableElement >> nbButtonPerRow: rows [
 
 	nbButtonPerRow  := rows.
 	self layout columnCount: nbButtonPerRow 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MfMixingTableElement >> nbButtons [
 
 ^nbButtons 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MfMixingTableElement >> nbButtons: buttons [
 
 	nbButtons := buttons.
 	self initializeKeys
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MfMixingTableElement >> redefineKeys: keys [
 
 	| v |
@@ -131,7 +133,7 @@ MfMixingTableElement >> redefineKeys: keys [
 	self initializeEventListeners
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MfMixingTableElement >> tableExtent [
 
 	^ 400 @ 200

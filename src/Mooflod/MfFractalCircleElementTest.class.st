@@ -1,10 +1,12 @@
 Class {
-	#name : #MfFractalCircleElementTest,
-	#superclass : #TestCase,
-	#category : #'Mooflod-FractalCircleWidget'
+	#name : 'MfFractalCircleElementTest',
+	#superclass : 'TestCase',
+	#category : 'Mooflod-FractalCircleWidget',
+	#package : 'Mooflod',
+	#tag : 'FractalCircleWidget'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MfFractalCircleElementTest >> testIfCirclesAreAddedCorrectly [
 
 	| circle |
@@ -14,7 +16,7 @@ MfFractalCircleElementTest >> testIfCirclesAreAddedCorrectly [
 	self assert: circle numberOfCircles equals: 20.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MfFractalCircleElementTest >> testIfValueIsInitializedCorrectly [
 
 	| circle |
@@ -23,7 +25,7 @@ MfFractalCircleElementTest >> testIfValueIsInitializedCorrectly [
 	self assert: circle value equals: 12
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MfFractalCircleElementTest >> testNothingAddedIfValueIsTooHigh [
 
 	| circle |

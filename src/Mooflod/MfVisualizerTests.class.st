@@ -1,10 +1,12 @@
 Class {
-	#name : #MfVisualizerTests,
-	#superclass : #TestCase,
-	#category : #'Mooflod-VisualizerRepresentation'
+	#name : 'MfVisualizerTests',
+	#superclass : 'TestCase',
+	#category : 'Mooflod-VisualizerRepresentation',
+	#package : 'Mooflod',
+	#tag : 'VisualizerRepresentation'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MfVisualizerTests >> testLevelOneWorksCorrectly [
 
 	| v name firstSect |
@@ -17,7 +19,7 @@ MfVisualizerTests >> testLevelOneWorksCorrectly [
 	self assert: firstSect children size equals: 3
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MfVisualizerTests >> testLevelTwoWorksCorrectly [
 
 	| v name firstSect |
