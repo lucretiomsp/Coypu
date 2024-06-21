@@ -24,6 +24,12 @@ MfPulsingSquare class >> exampleSimplePulsingSquare [
 	^ aSquare
 ]
 
+{ #category : 'as yet unclassified' }
+MfPulsingSquare >> changeAnimationTime: aTime [
+
+	flashingAnimation duration: aTime seconds 
+]
+
 { #category : 'accessing' }
 MfPulsingSquare >> flashingAnimation [
 
@@ -67,7 +73,8 @@ MfPulsingSquare >> initializeAnimation: aTime [
 				 self background paint color = Color white
 					 ifTrue: [ self background: Color red ]
 					 ifFalse: [ self background: Color white ] ]).
-	self addAnimation: flashingAnimation
+	self addAnimation: flashingAnimation.
+
 	
 
 ]

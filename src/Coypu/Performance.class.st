@@ -201,7 +201,8 @@ Performance >> freq: aDurationInSeconds [
 	"use for playback speed"
 
 	freq := aDurationInSeconds asFloat.
-	"visualizer square initializeAnimation: freq * 4."
+	isVisualizerOpen ifTrue: [
+		visualizer square changeAnimationTime: freq * 4 ]
 ]
 
 { #category : 'LiveCoding - Performance' }
@@ -241,6 +242,12 @@ Performance >> length [
 		               ((self values at: i) at: 1) size ].
 	maxLength := valuesSizes inject: 0 into: [ :a :c | a max: c ].
 	^ maxLength
+]
+
+{ #category : 'as yet unclassified' }
+Performance >> levelOfDetail: anInteger [
+
+	visualizer level: anInteger 
 ]
 
 { #category : 'muting and soloing' }
@@ -401,22 +408,19 @@ Performance >> play [
 { #category : 'playing' }
 Performance >> playFor: aNumberOfSteps [
 	" reset all the Sequencers"
-
 	"just on performance at once"
 	self activeProcess isTerminated ifTrue: [
 		self performer playFor: aNumberOfSteps ].
 	displayVisualizer ifTrue: [
-		isVisualizerOpen ifFalse: [ 
-				stepVisualizer addSteps: self transportStep.
-				stepVisualizer initializeAnimation: self freq.
-				self openVisualizers.
-				self isVisualizerOpen: true ].
-	isVisualizerOpen ifTrue: [ 
-		stepVisualizer animationIsRunning:true ].
-	stepVisualizer pauseAnimation:  aNumberOfSteps / 9.
-	visualizer initAnimation: aNumberOfSteps / 9].
+		isVisualizerOpen ifFalse: [
+			stepVisualizer addSteps: self transportStep.
+			stepVisualizer initializeAnimation: self freq.
+			self openVisualizers.
+			self isVisualizerOpen: true ].
+		isVisualizerOpen ifTrue: [ stepVisualizer animationIsRunning: true ].
+		stepVisualizer pauseAnimation: 15 / bpm / 60 * (aNumberOfSteps / 16).
+		visualizer initAnimation: 15 / bpm / 60 * (aNumberOfSteps / 16)].
 	self resetAllSequencers.
-
 
 ]
 

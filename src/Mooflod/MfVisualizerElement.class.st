@@ -105,7 +105,7 @@ MfVisualizerElement >> cleanVisualizer [
 { #category : 'initialization' }
 MfVisualizerElement >> initAnimation: nbSteps [
 
-	animation := BlAnimation new duration: (nbSteps) seconds.
+	animation := BlAnimation new duration: nbSteps seconds.
 	animation addEventHandler: (BlEventHandler
 			 on: BlAnimationLoopDoneEvent
 			 do: [ :e | self cleanVisualizer ]).

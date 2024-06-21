@@ -1207,7 +1207,7 @@ Sequencer >> to: aSymbol [
 
 	| announcement |
 	    Performance uniqueInstance visualizer addInstrument: aSymbol.
-    Performance uniqueInstance visualizer square initializeAnimation:
+    	Performance uniqueInstance visualizer square initializeAnimation:
         Performance uniqueInstance freq * 4.
 	self noteIndex: 1.
 	self seqKey: aSymbol asString.
