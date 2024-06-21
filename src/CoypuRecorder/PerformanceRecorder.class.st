@@ -238,6 +238,12 @@ PerformanceRecorder >> isPerformance [
 Performance uniqueInstance isPerformance
 ]
 
+{ #category : 'testing' }
+PerformanceRecorder >> isVisualizerOpen: aBoolean [ 
+
+Performance uniqueInstance isVisualizerOpen: aBoolean.
+]
+
 { #category : 'accessing' }
 PerformanceRecorder >> length [
 
