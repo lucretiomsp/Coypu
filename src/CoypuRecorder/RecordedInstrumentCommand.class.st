@@ -91,6 +91,8 @@ RecordedInstrumentCommand >> print [
 	"Print the command in the same way it has been used in the original performance"
 
 	| m |
+	
+	"Print for a Once line ex: 'bass3' once "
 	rythm ifNil: [
 		delay
 			ifNotNil: [
@@ -100,9 +102,13 @@ RecordedInstrumentCommand >> print [
 					ifFalse: [
 					^ symbol allButFirst , 'AtTime: ' , delay asString , '.' ] ]
 			ifNil: [ ^ symbol allButFirst , '.' ] ].
+		
+		
 	m := rythm.
+	"add the notes if called"
 	notes ifNotNil: [ m := m , notes ].
-
+	
+	"Classic command ex: 16 upbeats to: #bass3"
 	symbol
 		ifNotNil: [
 			m := m , ' to: #' , symbol asString
@@ -110,15 +116,16 @@ RecordedInstrumentCommand >> print [
 			     (delay
 				      ifNotNil: [ ' atTime: ' , delay asString , '.' ]
 				      ifNil: [ '.' ]) ]
+	"Instrument without a symbol ex: 16 upbeats."
 		ifNil: [
 			delay
 				ifNotNil: [
 					m := ('' join: m substrings allButLast) , ' delayed: '''
 					     , m substrings last asString , ''' atTime: '
 					     , delay asString , '.' ]
-				ifNil: [ "m := m , (delay ifNotNil: [ 'AtTime: ' , delay asString ]) , '.'"
-					m :=m , '.' ] ].
-
+				ifNil: [	m :=m , '.' ] ].
+				
+	"add the dirtNotes if called"			
 	dirtNotes ifNotNil: [
 		m := m allButLast , '; ' , 'dirtNotes: ''' , dirtNotes , '''.' ].
 	^ m
