@@ -202,7 +202,8 @@ Performance >> freq: aDurationInSeconds [
 
 	freq := aDurationInSeconds asFloat.
 	isVisualizerOpen ifTrue: [
-		visualizer square changeAnimationTime: freq * 4 ]
+		visualizer squareArray do: [ :s |
+			s changeAnimationTime: freq * 4 ] ]
 ]
 
 { #category : 'LiveCoding - Performance' }

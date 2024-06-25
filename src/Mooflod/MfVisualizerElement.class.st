@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'nbTracks',
 		'animation',
-		'square'
+		'squareArray'
 	],
 	#classVars : [
 		'level'
@@ -42,7 +42,7 @@ MfVisualizerElement >> addElementsLevelFour: aChildren [
 { #category : 'adding' }
 MfVisualizerElement >> addElementsLevelOne: aName [
 
-	| label name sect |
+	| label name sect square |
 	sect := self children at: nbTracks.
 	name := BlTextElement new.
 	name text: (self textFrom: aName).
@@ -54,7 +54,7 @@ MfVisualizerElement >> addElementsLevelOne: aName [
 	label transformDo: [ :t | t translateBy: 20 @ 25 ].
 	square transformDo: [ :q | q translateBy: 450 @ 15 ].
 	name transformDo: [ :t | t translateBy: 130 @ 25 ].
-
+	squareArray add: square.
 	sect addChild: square.
 	sect addChild: label.
 	sect addChild: name
@@ -114,7 +114,6 @@ MfVisualizerElement >> initAnimation: nbSteps [
 
 { #category : 'initialization' }
 MfVisualizerElement >> initLevelRepresentation: aName [
-
 	level == 1 ifTrue: [ self addElementsLevelOne: aName ].
 	level == 2 ifTrue: [ self addElementsLevelTwo: aName].
 	level == 3 ifTrue: [ self addElementsLevelThree: aName ].
@@ -146,6 +145,7 @@ MfVisualizerElement >> initialize [
 	self size: 500 @ 800.
 	self border: (BlBorder paint: Color lightGray width: 2).
 self initSections.
+	squareArray := OrderedCollection new.
 	nbTracks := 0
 ]
 
@@ -180,9 +180,9 @@ MfVisualizerElement >> open [
 ]
 
 { #category : 'accessing' }
-MfVisualizerElement >> square [
+MfVisualizerElement >> squareArray [
 
-^square
+^squareArray
 ]
 
 { #category : 'adding' }
