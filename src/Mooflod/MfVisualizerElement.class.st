@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'nbTracks',
 		'animation',
-		'squareArray'
+		'squareArray',
+		'patternArray'
 	],
 	#classVars : [
 		'level'
@@ -70,7 +71,6 @@ MfVisualizerElement >> addElementsLevelThree: aChildren [
 MfVisualizerElement >> addElementsLevelTwo: aName [
 
 	| pattern sect |
-	
 	self addElementsLevelOne: aName.
 	sect := self children at: nbTracks.
 	pattern := MfPatternElement new
@@ -78,6 +78,7 @@ MfVisualizerElement >> addElementsLevelTwo: aName [
 		           max: 16;
 		           nbsteps: 12.
 	pattern transformDo: [ :q | q translateBy: 40 @ 100 ].
+	patternArray add: pattern.
 	sect addChild: pattern
 ]
 
@@ -145,8 +146,9 @@ MfVisualizerElement >> initialize [
 	self geometry: BlRectangleGeometry new.
 	self size: 500 @ 800.
 	self border: (BlBorder paint: Color lightGray width: 2).
-self initSections.
+	self initSections.
 	squareArray := OrderedCollection new.
+	patternArray := OrderedCollection new.
 	nbTracks := 0
 ]
 
@@ -178,6 +180,12 @@ MfVisualizerElement >> open [
 	space root addChild: self.
 	space toTheme: MfMooflodTheme new.
 	space show.
+]
+
+{ #category : 'accessing' }
+MfVisualizerElement >> patternArray [ 
+
+^patternArray 
 ]
 
 { #category : 'accessing' }

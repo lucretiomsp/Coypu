@@ -1218,6 +1218,7 @@ Sequencer >> to: aSymbol [
 		                ifFalse: [ SymbolAnnouncement new ].
 	announcement symbol: self seqKey.
 	PerformanceRecorder uniqueInstance announce: announcement.
+	PerformanceRecorder uniqueInstance visualizer patternArray last forSequencer: self.
 
 	"For SuperDirt"
 	self dirtMessage at: '_id' put: self seqKey.
