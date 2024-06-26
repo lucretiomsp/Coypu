@@ -105,7 +105,7 @@ MfVisualizerElement >> cleanVisualizer [
 { #category : 'initialization' }
 MfVisualizerElement >> initAnimation: nbSteps [
 
-	animation := BlAnimation new duration: nbSteps seconds.
+	animation := BlAnimation new duration: (nbSteps) seconds.
 	animation addEventHandler: (BlEventHandler
 			 on: BlAnimationLoopDoneEvent
 			 do: [ :e | self cleanVisualizer ]).
@@ -114,6 +114,7 @@ MfVisualizerElement >> initAnimation: nbSteps [
 
 { #category : 'initialization' }
 MfVisualizerElement >> initLevelRepresentation: aName [
+
 	level == 1 ifTrue: [ self addElementsLevelOne: aName ].
 	level == 2 ifTrue: [ self addElementsLevelTwo: aName].
 	level == 3 ifTrue: [ self addElementsLevelThree: aName ].

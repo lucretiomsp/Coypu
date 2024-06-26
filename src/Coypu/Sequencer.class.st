@@ -1207,8 +1207,8 @@ Sequencer >> to: aSymbol [
 
 	| announcement |
 	    Performance uniqueInstance visualizer addInstrument: aSymbol.
-    	Performance uniqueInstance visualizer squareArray last initializeAnimation:
-        Performance uniqueInstance freq * 4.
+   " 	Performance uniqueInstance visualizer squareArray last initializeAnimation:
+        Performance uniqueInstance freq * 4."
 	self noteIndex: 1.
 	self seqKey: aSymbol asString.
 	announcement := (self notesSize > 4 and: [

@@ -421,6 +421,9 @@ Performance >> playFor: aNumberOfSteps [
 		isVisualizerOpen ifTrue: [ stepVisualizer animationIsRunning: true ].
 		stepVisualizer pauseAnimation: 15 / bpm / 60 * (aNumberOfSteps / 16).
 		visualizer initAnimation: 15 / bpm / 60 * (aNumberOfSteps / 16)].
+	visualizer squareArray do: [:s |
+		 s initializeAnimation:
+        freq * 4 ] .
 	self resetAllSequencers.
 
 ]
