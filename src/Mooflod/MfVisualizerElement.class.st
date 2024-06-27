@@ -52,9 +52,9 @@ MfVisualizerElement >> addElementsLevelOne: aName [
 	label := BlTextElement new.
 	label text: (self textFrom: 'Instrument :').
 	label text fontSize: 18.
-	label transformDo: [ :t | t translateBy: 20 @ 25 ].
+	label transformDo: [ :t | t translateBy: 20 @ 17 ].
 	square transformDo: [ :q | q translateBy: 550 @ 10 ].
-	name transformDo: [ :t | t translateBy: 130 @ 25 ].
+	name transformDo: [ :t | t translateBy: 130 @ 17 ].
 	squareArray add: square.
 	sect addChild: square.
 	sect addChild: label.
