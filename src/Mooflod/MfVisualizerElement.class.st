@@ -24,10 +24,10 @@ MfVisualizerElement class >> exampleVisualizer [
 	v addInstrument: 'Kick'.
 	v level: 1.
 	v addInstrument: 'Snare'.
-	v initAnimation: 4.
+	v initAnimation: 400.
 	space := BlSpace new.
 	space root layout: BlFlowLayout horizontal.
-	v transformDo: [ :c | c translateBy: 200 @ 50 ].
+	v transformDo: [ :c | c translateBy: 200 @ 0 ].
 	space root addChild: v.
 	space toTheme: MfMooflodTheme new.
 	space show.
@@ -53,7 +53,7 @@ MfVisualizerElement >> addElementsLevelOne: aName [
 	label text: (self textFrom: 'Instrument :').
 	label text fontSize: 18.
 	label transformDo: [ :t | t translateBy: 20 @ 25 ].
-	square transformDo: [ :q | q translateBy: 450 @ 15 ].
+	square transformDo: [ :q | q translateBy: 550 @ 10 ].
 	name transformDo: [ :t | t translateBy: 130 @ 25 ].
 	squareArray add: square.
 	sect addChild: square.
@@ -76,8 +76,8 @@ MfVisualizerElement >> addElementsLevelTwo: aName [
 	pattern := MfPatternElement new
 		           min: 4;
 		           max: 16;
-		           nbsteps: 12.
-	pattern transformDo: [ :q | q translateBy: 40 @ 100 ].
+		           nbsteps: 16.
+	pattern transformDo: [ :q | q translateBy: 20 @ 70 ].
 	patternArray add: pattern.
 	sect addChild: pattern
 ]
@@ -85,8 +85,8 @@ MfVisualizerElement >> addElementsLevelTwo: aName [
 { #category : 'adding' }
 MfVisualizerElement >> addInstrument: aName [
 
-	nbTracks < 4 ifFalse: [ ^ self ].
-	nbTracks := nbTracks +1.
+	nbTracks < 5 ifFalse: [ ^ self ].
+	nbTracks := nbTracks + 1.
 	self initLevelRepresentation: aName
 ]
 
@@ -127,15 +127,15 @@ MfVisualizerElement >> initSections [
 
 	| y |
 	y := 0.
-	1 to: 4 do: [ :s |
+	1 to: 5 do: [ :s |
 		| sect |
 		sect := BlElement new.
 		sect geometry: BlRectangleGeometry new.
-		sect size: 500 @ 200.
+		sect size: 600 @ 180.
 		sect border: (BlBorder paint: Color white width: 2).
 		sect layout: BlFrameLayout new.
 		sect transformDo: [ :t | t translateBy: 0 @ y ].
-		y := y + 200.
+		y := y + 180.
 		self addChild: sect ]
 ]
 
@@ -144,7 +144,7 @@ MfVisualizerElement >> initialize [
 
 	super initialize.
 	self geometry: BlRectangleGeometry new.
-	self size: 500 @ 800.
+	self size: 600 @ 900.
 	self border: (BlBorder paint: Color lightGray width: 2).
 	self initSections.
 	squareArray := OrderedCollection new.
@@ -168,18 +168,6 @@ MfVisualizerElement >> level: aLevel [
 MfVisualizerElement >> nbTracks [
 
 ^nbTracks 
-]
-
-{ #category : 'instance creation' }
-MfVisualizerElement >> open [ 
-
-|space|
-	space := BlSpace new.
-	space root layout: BlFlowLayout horizontal.
-	self transformDo: [ :c | c translateBy: 200 @ 50 ].
-	space root addChild: self.
-	space toTheme: MfMooflodTheme new.
-	space show.
 ]
 
 { #category : 'accessing' }

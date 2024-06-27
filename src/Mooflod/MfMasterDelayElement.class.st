@@ -1,5 +1,5 @@
 Class {
-	#name : 'MfFractalCircleElement',
+	#name : 'MfMasterDelayElement',
 	#superclass : 'ToElement',
 	#instVars : [
 		'currentX',
@@ -7,13 +7,13 @@ Class {
 		'value',
 		'nbOfChilds'
 	],
-	#category : 'Mooflod-FractalCircleWidget',
+	#category : 'Mooflod-MasterDelayWidget',
 	#package : 'Mooflod',
-	#tag : 'FractalCircleWidget'
+	#tag : 'MasterDelayWidget'
 }
 
 { #category : 'example' }
-MfFractalCircleElement class >> exampleSimpleFractalCircle [
+MfMasterDelayElement class >> exampleSimpleFractalCircle [
 
 	<script>
 	| c space |
@@ -29,13 +29,13 @@ MfFractalCircleElement class >> exampleSimpleFractalCircle [
 ]
 
 { #category : 'initialization' }
-MfFractalCircleElement >> circleExtent [
+MfMasterDelayElement >> circleExtent [
 
 	^ 390 @ 390
 ]
 
 { #category : 'internal' }
-MfFractalCircleElement >> createCircle: x y: anY [
+MfMasterDelayElement >> createCircle: x y: anY [
 
 	| c |
 	c := MfCircleElement new size: x @ anY.
@@ -43,7 +43,7 @@ MfFractalCircleElement >> createCircle: x y: anY [
 ]
 
 { #category : 'internal' }
-MfFractalCircleElement >> createCircle: x y: anY color: aColor [
+MfMasterDelayElement >> createCircle: x y: anY color: aColor [
 
 	| c color |
 	color := Color gray: aColor.
@@ -53,24 +53,24 @@ MfFractalCircleElement >> createCircle: x y: anY color: aColor [
 ]
 
 { #category : 'accessing' }
-MfFractalCircleElement >> currentX [
+MfMasterDelayElement >> currentX [
 
 ^currentX.
 ]
 
 { #category : 'accessing' }
-MfFractalCircleElement >> currentY [ 
+MfMasterDelayElement >> currentY [ 
 ^currentY.
 ]
 
 { #category : 'initialization' }
-MfFractalCircleElement >> defaultGeometry [
+MfMasterDelayElement >> defaultGeometry [
 
 	^ BlCircleGeometry new matchExtent: self extent.
 ]
 
 { #category : 'initialization' }
-MfFractalCircleElement >> initialize [
+MfMasterDelayElement >> initialize [
 
 	super initialize.
 	self size: self circleExtent.
@@ -82,13 +82,13 @@ MfFractalCircleElement >> initialize [
 ]
 
 { #category : 'accessing' }
-MfFractalCircleElement >> numberOfCircles [
+MfMasterDelayElement >> numberOfCircles [
 
 ^nbOfChilds 
 ]
 
 { #category : 'public api' }
-MfFractalCircleElement >> setValue: aValue [
+MfMasterDelayElement >> setValue: aValue [
 
 	(aValue between: 0 and: 100)
 		ifTrue: [ value := aValue ]
@@ -98,7 +98,7 @@ MfFractalCircleElement >> setValue: aValue [
 ]
 
 { #category : 'internal' }
-MfFractalCircleElement >> updateCircles [
+MfMasterDelayElement >> updateCircles [
 
 	| c |
 	c := 1.
@@ -112,7 +112,7 @@ MfFractalCircleElement >> updateCircles [
 ]
 
 { #category : 'evaluating' }
-MfFractalCircleElement >> value [
+MfMasterDelayElement >> value [
 
 ^value.
 ]

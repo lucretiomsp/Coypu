@@ -48,5 +48,6 @@ MfStepElement >> removeInstrument [
 { #category : 'visual properties' }
 MfStepElement >> stepExtent [
 	"Size of a bar"
-	^30@52.
+
+	^ 30 @ 42
 ]

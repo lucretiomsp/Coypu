@@ -51,12 +51,11 @@ MfPatternElement >> addInstrumentToStep [
 MfPatternElement >> addSeqStepsToThePattern: anArrayOfGates [
 	"Add all bars element in the pattern to display them"
 
-	
-"add steps element to a MfPatternElement where black are gates and white are rests"
+	"add steps element to a MfPatternElement where black are gates and white are rests"
 
-| step changingX nbSteps colors|
-nbSteps := anArrayOfGates size.
-colors := Array with: Color white with: Color black.
+	| step changingX nbSteps colors |
+	nbSteps := anArrayOfGates size.
+	colors := Array with: Color white with: Color black.
 	nbOfSteps := 0.
 	changingX := 2.5.
 	(nbSteps between: min and: max) ifTrue: [
@@ -65,8 +64,8 @@ colors := Array with: Color white with: Color black.
 			step := MfStepElement new background: (colors at: i + 1).
 			step transformDo: [ :t | t translateBy: changingX @ 0 ].
 			changingX := changingX + 35.
-			self addChild: step] ].
-	self size: 35 * nbSteps @ 60.
+			self addChild: step ] ].
+	self size: 35 * nbSteps @ 50.
 	self addInstrumentToStep
 ]
 
@@ -84,7 +83,7 @@ MfPatternElement >> addStepsToThePattern: nbSteps [
 			step transformDo: [ :t | t translateBy: changingX @ 0 ].
 			changingX := changingX + 35.
 			self addChild: step ] ].
-	self size: 35 * nbSteps @ 60.
+	self size: 35 * nbSteps @ 50.
 	self addInstrumentToStep
 ]
 
@@ -170,5 +169,5 @@ MfPatternElement >> newMooFlodSkin [
 { #category : 'visual properties' }
 MfPatternElement >> patternExtent [
 
-	^ 36@60
+	^ 36 @ 50
 ]

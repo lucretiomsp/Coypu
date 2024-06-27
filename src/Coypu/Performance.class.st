@@ -281,7 +281,7 @@ Performance >> openVisualizers [
 	space root layout: BlFlowLayout horizontal.
 	space root addChild: stepVisualizer.
 	space root addChild: visualizer.
-	space root childrenDo: [ :child | child margin: (BlInsets all: 10) ].
+	space root childrenDo: [ :child | child margin: (BlInsets horizontal: 10) ].
 	space toTheme: MfMooflodTheme new.
 	space show
 ]

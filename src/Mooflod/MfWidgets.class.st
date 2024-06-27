@@ -14,7 +14,7 @@ MfWidgets class >> exampleDisplayingAllWidgets [
 	aSquare := MfFilledSquareElement new position: 20 @ 50.
 	aSquare setValue: 65.
 	anInput := MfNumberInputElement new position: 90 @ 0.
-	c := MfFractalCircleElement new.
+	c := MfMasterDelayElement new.
 	c setValue: 100.
 	mT := MfMixingTableElement new
 		      nbButtons: 12;

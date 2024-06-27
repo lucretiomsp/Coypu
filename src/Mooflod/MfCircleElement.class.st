@@ -1,9 +1,9 @@
 Class {
 	#name : 'MfCircleElement',
 	#superclass : 'ToElement',
-	#category : 'Mooflod-FractalCircleWidget',
+	#category : 'Mooflod-MasterDelayWidget',
 	#package : 'Mooflod',
-	#tag : 'FractalCircleWidget'
+	#tag : 'MasterDelayWidget'
 }
 
 { #category : 'initialization' }
