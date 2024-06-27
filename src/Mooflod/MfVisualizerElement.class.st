@@ -132,7 +132,7 @@ MfVisualizerElement >> initSections [
 		sect := BlElement new.
 		sect geometry: BlRectangleGeometry new.
 		sect size: 600 @ 180.
-		sect border: (BlBorder paint: Color white width: 2).
+		sect border: (BlBorder paint: Color black width: 2).
 		sect layout: BlFrameLayout new.
 		sect transformDo: [ :t | t translateBy: 0 @ y ].
 		y := y + 180.
@@ -186,5 +186,5 @@ MfVisualizerElement >> squareArray [
 MfVisualizerElement >> textFrom: aName [
 
 	^ aName asRopedText attributes:
-		  { (BlTextForegroundAttribute paint: Color white) }
+		  { (BlTextForegroundAttribute paint: Color green) }
 ]
