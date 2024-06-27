@@ -19,7 +19,7 @@ MfFilledSquareElement class >> exampleSimpleFilledSquare [
 	<script>
 	| aSquare space |
 	aSquare := self new.
-	aSquare setValue: 65.
+	aSquare delayAmount: 65.
 
 	space := BlSpace new.
 	space root layout: BlFlowLayout horizontal.
@@ -40,6 +40,12 @@ MfFilledSquareElement >> currentY [
 MfFilledSquareElement >> defaultGeometry [ 
 
 ^BlSquareGeometry new 
+]
+
+{ #category : 'initialization' }
+MfFilledSquareElement >> delayAmount: aValue [ 
+	(aValue between: 0 and: 100) ifTrue: [ self value: aValue ].
+	self updateSquare.
 ]
 
 { #category : 'accessing' }
@@ -77,12 +83,6 @@ MfFilledSquareElement >> openFilledSquare: aSquare [
 	space root addChild: aSquare.
 	space show.
 	^ aSquare
-]
-
-{ #category : 'initialization' }
-MfFilledSquareElement >> setValue: aValue [ 
-	(aValue between: 0 and: 100) ifTrue: [ self value: aValue ].
-	self updateSquare.
 ]
 
 { #category : 'as yet unclassified' }

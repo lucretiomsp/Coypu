@@ -12,10 +12,10 @@ MfWidgets class >> exampleDisplayingAllWidgets [
 	<script>
 	| k timer aPiano s aSquare space c anInput mT p |
 	aSquare := MfFilledSquareElement new position: 20 @ 50.
-	aSquare setValue: 65.
+	aSquare delayAmount: 65.
 	anInput := MfNumberInputElement new position: 90 @ 0.
 	c := MfMasterDelayElement new.
-	c setValue: 100.
+	c delayAmount: 100.
 	mT := MfMixingTableElement new
 		      nbButtons: 12;
 		      nbButtonPerRow: 4.
