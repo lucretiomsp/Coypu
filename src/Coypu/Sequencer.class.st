@@ -135,10 +135,10 @@ Sequencer >> allNotes: anInteger [
 ]
 
 { #category : #'LiveCoding-ExtraParams' }
-Sequencer >> amount: aNumberOrAnArray [
+Sequencer >> amount: aStringWithIndexes [ 
 	"set the amount to a collection of value in array or to to the numbe"
 
-	self extra: #Amount values: aNumberOrAnArray asDirtArray
+	self extra: #Amount values: aStringWithIndexes asDirtPureNotes
 ]
 
 { #category : #converting }
@@ -164,10 +164,10 @@ Sequencer >> bpq: aFloatOrAnArray [
 ]
 
 { #category : #'LiveCoding-ExtraParams' }
-Sequencer >> bw: aNumberOrAnArray [
+Sequencer >> bw: aStringWithIndexes [ 
 	"set the bandwidth (bw) to  a collection of value in array or to to the numbe"
 
-	self extra: #bw values: aNumberOrAnArray asDirtArray
+	self extra: #Bw values: aStringWithIndexes asDirtPureNotes
 ]
 
 { #category : #'LiveCoding  - SuperDirt' }
@@ -201,10 +201,10 @@ Sequencer >> chords: aStringWithOneOrMoreChords octave: anIntegerOrAnArray [
 ]
 
 { #category : #'LiveCoding-ExtraParams' }
-Sequencer >> cutoff: aNumberOrAnArray [
+Sequencer >> cutoff: aStringWithIndexes [
 	"set the cutoff to a collection of value in array or to to the numbe"
 
-	self extra: #Cutoff values: aNumberOrAnArray asDirtArray
+	self extra: #Cutoff values: aStringWithIndexes asDirtPureNotes
 ]
 
 { #category : #'sequencer - cycles' }
@@ -220,10 +220,10 @@ Sequencer >> cycleDurations: anArrayOfFractions [
 ]
 
 { #category : #'LiveCoding-ExtraParams' }
-Sequencer >> decay: aNumberOrAnArray [
+Sequencer >> decay: aStringWithIndexes [ 
 	"set the decay to a collection of value in array or to to the numbe"
 
-	self extra: #Decay values: aNumberOrAnArray asDirtArray
+	self extra: #Decay values: aStringWithIndexes asDirtPureNotes
 ]
 
 { #category : #'LiveCoding  - SuperDirt' }
@@ -323,10 +323,10 @@ Sequencer >> djf: aFloatOrAnArray [
 ]
 
 { #category : #'LiveCoding-ExtraParams' }
-Sequencer >> drive: aNumberOrAnArray [
+Sequencer >> drive: aStringWithIndexes [ 
 	"set the drive to a collection of value in array or to to the numbe"
 
-	self extra: #Drive values: aNumberOrAnArray asDirtArray
+	self extra: #Drive values: aStringWithIndexes asDirtPureNotes
 ]
 
 { #category : #accessing }
@@ -354,19 +354,17 @@ Sequencer >> durationsSize [
 ]
 
 { #category : #'LiveCoding-ExtraParams' }
-Sequencer >> duty: aNumberOrAnArray [
+Sequencer >> duty: aStringWithIndexes [ 
 	"set the duty cycle to a collection of value in array or to to the numbe"
 
-	self extra: #Duty values: aNumberOrAnArray asDirtArray 
+	self extra: #Duty values: aStringWithIndexes asDirtPureNotes 
 ]
 
 { #category : #'LiveCoding-ExtraParams' }
-Sequencer >> extra: aSymbol values: aNumberorAnArray [
+Sequencer >> extra: aSymbol values: aStringWithIndexes [
+	"stores extra values to control synths parameters on Kyma"
 
-"stores extra values to control synths parameters on Kyma"
-
-self extraParams at: aSymbol put: aNumberorAnArray asDirtArray
-
+	self extraParams at: aSymbol put: aStringWithIndexes asDirtPureNotes 
 ]
 
 { #category : #accessing }
@@ -531,24 +529,24 @@ Sequencer >> kymaMessage: anObject [
 ]
 
 { #category : #'LiveCoding-ExtraParams' }
-Sequencer >> level: aNumberOrAnArray [
+Sequencer >> level: aStringWithIndexes [
 	"set the level to  a collection of value in array or to to the numbe"
 
-	self extra: #Level values: aNumberOrAnArray asDirtArray
+	self extra: #Level values: aStringWithIndexes asDirtPureNotes 
 ]
 
 { #category : #'LiveCoding-ExtraParams' }
-Sequencer >> lfoAmount: aNumberOrAnArray [
+Sequencer >> lfoAmount: aStringWithIndexes [
 	"set the lfoAmount to a collection of value in array or to to the numbe"
 
-	self extra: #LfoAmount values: aNumberOrAnArray asDirtArray
+	self extra: #LfoAmount values: aStringWithIndexes asDirtPureNotes 
 ]
 
 { #category : #'LiveCoding-ExtraParams' }
-Sequencer >> lfoFreq: aNumberOrAnArray [
-	"set the dlfo frequency to a collection of value in array or to to the numbe"
+Sequencer >> lfoFreq:  aStringWithIndexes [
+	"set the lfo freqency"
 
-	self extra: #lfoFreq values: aNumberOrAnArray asDirtArray
+	self extra: #LfoFreq values: aStringWithIndexes asDirtPureNotes 
 ]
 
 { #category : #'LiveCoding  - SuperDirt' }
@@ -624,11 +622,11 @@ Sequencer >> midiChannel: anIntegerBetween1And16 [
 ]
 
 { #category : #'LiveCoding-ExtraParams' }
-Sequencer >> modIndex: aNumberOrAnArray [
+Sequencer >> modIndex: aStringWithIndexes [
 	"convenience method to avoid extra typing when we want to modify the modulationIndex"
 
 	self extraParams:
-		(Array with: #ModIndex with: aNumberOrAnArray asDirtArray)
+		(Array with: #ModIndex with: aStringWithIndexes asDirtPureNotes )
 ]
 
 { #category : #'LiveCoding-ExtraParams' }
@@ -640,11 +638,19 @@ Sequencer >> modPitch: aStringWithIndexes [
 ]
 
 { #category : #'LiveCoding-ExtraParams' }
-Sequencer >> mode: aNumberOrAnArray [
+Sequencer >> modRatio: aStringWithIndexes [
+	"convenience method to avoid extra typing when we want to modify the modulationRatio , i.e. the ratio between the frequency of the carrier and the frequency of the modlatorr"
+
+	self extraParams:
+		(Array with: #ModRatio with: aStringWithIndexes asDirtPureNotes)
+]
+
+{ #category : #'LiveCoding-ExtraParams' }
+Sequencer >> mode: aStringWithIndexes [
 	"convenience method to avoid extra typing when we want to modify the mode parameter, that usually correspond to chords mode "
 
 	self extraParams:
-		(Array with: #Mode with: aNumberOrAnArray asDirtArray)
+		(Array with: #Mode with: aStringWithIndexes asDirtPureNotes )
 ]
 
 { #category : #accessing }
@@ -1016,10 +1022,10 @@ Sequencer >> randomSamplesFromFolder: aStringForAFolderOfSamples [
 ]
 
 { #category : #'LiveCoding-ExtraParams' }
-Sequencer >> ratio: aNumberOrAnArray [
-	"set the ratio to a collection of value in array or to to the numbe"
+Sequencer >> ratio: aStringWithIndexes [
+	"set the ratio to a collection of value in array or to to the number"
 
-	self extra: #Ratio values: aNumberOrAnArray asDirtArray
+	self extra: #Ratio values: aStringWithIndexes asDirtPureNotes 
 ]
 
 { #category : #'LiveCoding  - SuperDirt' }
@@ -1384,8 +1390,8 @@ Sequencer >> withRandomNotesMin: anInteger max: anotherInteger [
 ]
 
 { #category : #'LiveCoding-ExtraParams' }
-Sequencer >> x: aNumberOrAnArray [
-	"set the x to  a collection of value in array or to to the numbe"
+Sequencer >> x: aStringWithIndexes [
+	"set the x value , for example in Modal Bar sytnhs"
 
-	self extra: #x values: aNumberOrAnArray asDirtArray
+	self extra: #x values: aStringWithIndexes asDirtPureNotes 
 ]

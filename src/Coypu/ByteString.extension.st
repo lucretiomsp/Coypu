@@ -48,9 +48,11 @@ ByteString >> asDirtNotes [
 					ifTrue: [ gates := gates , i withNRests ]
 					ifFalse: [ gates := gates , i ] ] ].
 
-	notesAStrings := (gates copyReplaceAll: '~' with: '') findBetweenSubstrings: ' '.
+	notesAStrings := (gates copyReplaceAll: '~' with: '')
+		                 findBetweenSubstrings: ' '.
 
-	notesAsNumbers := notesAStrings collect: [ :i | i ~= ' ' ifTrue: [ i asInteger ] ].
+	notesAsNumbers := notesAStrings collect: [ :i |
+		                  i ~= ' ' ifTrue: [ i asNumber ] ].
 
 	notesAsNumbers do: [ :i |
 		dirtString := dirtString , i asString , ' ' ].
