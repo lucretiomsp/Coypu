@@ -106,7 +106,7 @@ PerformanceReplayer >> writeScriptInStonFile: aNameFile [
 
 { #category : 'read/write usage' }
 PerformanceReplayer >> writeScriptInStonFile: aNameFile filePath: aFilePath [
-	"write the performanceScript in a new ston file in the following path  home/Documents/PerformanceScripts/DateOfTheDay as aNameFile.ston"
+	"write the performanceScript in a new ston file in the following path to filepath"
 
 	| x script stream |
 	x := aFilePath .

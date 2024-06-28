@@ -41,7 +41,7 @@ Class {
 	#type : 'variable',
 	#instVars : [
 		'dirtNotes',
-		'rythm',
+		'rhythm',
 		'symbol',
 		'notes'
 	],
@@ -91,9 +91,8 @@ RecordedInstrumentCommand >> print [
 	"Print the command in the same way it has been used in the original performance"
 
 	| m |
-	
 	"Print for a Once line ex: 'bass3' once "
-	rythm ifNil: [
+	rhythm ifNil: [
 		delay
 			ifNotNil: [
 				(symbol includesSubstring: 'onceAtSpeed:')
@@ -102,30 +101,28 @@ RecordedInstrumentCommand >> print [
 					ifFalse: [
 					^ symbol allButFirst , 'AtTime: ' , delay asString , '.' ] ]
 			ifNil: [ ^ symbol allButFirst , '.' ] ].
-		
-		
-	m := rythm.
+
+
+	m := rhythm.
 	"add the notes if called"
 	notes ifNotNil: [ m := m , notes ].
-	
 	"Classic command ex: 16 upbeats to: #bass3"
-	symbol
+	self symbol
 		ifNotNil: [
 			m := m , ' to: #' , symbol asString
 			     ,
 			     (delay
 				      ifNotNil: [ ' atTime: ' , delay asString , '.' ]
 				      ifNil: [ '.' ]) ]
-	"Instrument without a symbol ex: 16 upbeats."
-		ifNil: [
+		ifNil: [ "Instrument without a symbol ex: 16 upbeats."
 			delay
 				ifNotNil: [
 					m := ('' join: m substrings allButLast) , ' delayed: '''
 					     , m substrings last asString , ''' atTime: '
 					     , delay asString , '.' ]
-				ifNil: [	m :=m , '.' ] ].
-				
-	"add the dirtNotes if called"			
+				ifNil: [ m := m , '.' ] ].
+
+	"add the dirtNotes if called"
 	dirtNotes ifNotNil: [
 		m := m allButLast , '; ' , 'dirtNotes: ''' , dirtNotes , '''.' ].
 	^ m
@@ -133,14 +130,14 @@ RecordedInstrumentCommand >> print [
 
 { #category : 'instance creation' }
 RecordedInstrumentCommand >> rhythm [
-^rythm 
+
+	^ rhythm
 ]
 
 { #category : 'instance creation' }
-RecordedInstrumentCommand >> rhythm: aRythm [ 
+RecordedInstrumentCommand >> rhythm: aRythm [
 
-	rythm := aRythm.
-
+	rhythm := aRythm
 ]
 
 { #category : 'instance creation' }

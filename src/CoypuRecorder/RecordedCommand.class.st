@@ -66,6 +66,16 @@ RecordedCommand >> initialize [
 	time := DateAndTime now asTime 
 ]
 
+{ #category : 'as yet unclassified' }
+RecordedCommand >> isRecordedInstructionCommand [
+	^ self subclassResponsibility
+]
+
+{ #category : 'as yet unclassified' }
+RecordedCommand >> isRecordedInstrumentCommand [
+	^ self subclassResponsibility
+]
+
 { #category : 'printing' }
 RecordedCommand >> print [
 

@@ -91,13 +91,6 @@ SavedPerformance >> add: anObject [
 { #category : 'adding' }
 SavedPerformance >> addInstrument: anAnnouncement [
 	"Add a new RecordedInstrumentCommand in the collectionOfCommands. This message is called when a RythmAnnouncement is announced"
-
-	"(collectionOfCommands last isRecordedInstrumentCommand and: [
-		 collectionOfCommands last symbol isNil ]) ifTrue: [
-		collectionOfCommands last rythm:
-			collectionOfCommands last rythm , ', ' , anAnnouncement rythm.
-		^ self ]."
-
 	collectionOfCommands add:
 		(RecordedInstrumentCommand new rhythm: anAnnouncement rhythm)
 ]
@@ -175,18 +168,23 @@ This message is called when a DirtNotesAnnouncement is announced."
 SavedPerformance >> lastSymbol: anAnnouncement [
 	"add to the last RecordedInstrumentCommand a Symbol.
 This message is called when a SymbolAnnouncement is announced."
-|x|
-anAnnouncement class = SymbolAnnouncement ifTrue:[
-	(anAnnouncement symbol includesSubstring: 'once')
+
+	| x |
+	anAnnouncement class = SymbolAnnouncement
 		ifTrue: [
-			collectionOfCommands add:
-				(RecordedInstrumentCommand new symbol: anAnnouncement symbol) ]
-		ifFalse: [ collectionOfCommands last symbol: anAnnouncement symbol ]]
-	ifFalse:[x := collectionOfCommands allButLast last rhythm,', ',collectionOfCommands last rhythm.
-		self collectionOfCommands: collectionOfCommands allButLast.
-		collectionOfCommands last
-		rhythm: x;
-		symbol: anAnnouncement symbol]
+			(anAnnouncement symbol includesSubstring: 'once')
+				ifTrue: [
+					collectionOfCommands add:
+						(RecordedInstrumentCommand new symbol: anAnnouncement symbol) ]
+				ifFalse: [
+				collectionOfCommands last symbol: anAnnouncement symbol ] ]
+		ifFalse: [
+			x := collectionOfCommands allButLast last rhythm , ', '
+			     , collectionOfCommands last rhythm.
+			self collectionOfCommands: collectionOfCommands allButLast.
+			collectionOfCommands last
+				rhythm: x;
+				symbol: anAnnouncement symbol ]
 ]
 
 { #category : 'visitors' }

@@ -48,12 +48,12 @@ super initialize
 
 { #category : 'action' }
 PerformanceMusicalReplayer >> replayWithoutPlayground [
-|x|
 
-x :=	String streamContents: [:s | 
-		performanceScript  do: [:each | s nextPutAll: each asString]].
-	
-Object readFromString: x.
+	| x |
+	x := String streamContents: [ :s |
+		     performanceScript do: [ :each |
+			     s nextPutAll: each asString , String cr ] ].
+	 Object readFromString: x 
 ]
 
 { #category : 'read/write usage' }

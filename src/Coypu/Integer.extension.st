@@ -856,9 +856,10 @@ Integer >> upbeats [
 Integer >> upbeats: aStringOfNotes [
 	"creates an Array of size=self  of values (0,1) with 1 to the position corresponding to a 4/4 upbeat rhythm"
 
-	| seq announcement|
-	announcement := RhythmAnnouncement new rhythm: (self asString,' upbeats: ',aStringOfNotes ).
-PerformanceRecorder uniqueInstance announce: announcement.
+	| seq announcement |
+	announcement := RhythmAnnouncement new rhythm:
+		                self asString , ' upbeats: ' , aStringOfNotes.
+	PerformanceRecorder uniqueInstance announce: announcement.
 	seq := ((1 to: self) collect: [ :i | ((i rem: 4) = 3) asBit ])
 		       asRhythm asSeq.
 	seq notes: aStringOfNotes asDirtPureNotes.

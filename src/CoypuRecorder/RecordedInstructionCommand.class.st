@@ -37,12 +37,24 @@ Class {
 	#superclass : 'RecordedCommand',
 	#type : 'variable',
 	#instVars : [
-		'order'
+		'instruction'
 	],
 	#category : 'CoypuRecorder-RecordedCommand',
 	#package : 'CoypuRecorder',
 	#tag : 'RecordedCommand'
 }
+
+{ #category : 'accessing' }
+RecordedInstructionCommand >> instruction [
+
+	^instruction
+]
+
+{ #category : 'accessing' }
+RecordedInstructionCommand >> instruction: anInstruction [
+
+instruction := anInstruction 
+]
 
 { #category : 'testing' }
 RecordedInstructionCommand >> isRecordedInstructionCommand [
@@ -56,23 +68,11 @@ RecordedInstructionCommand >> isRecordedInstrumentCommand [
 	^ false
 ]
 
-{ #category : 'accessing' }
-RecordedInstructionCommand >> order [
-
-	^order
-]
-
-{ #category : 'accessing' }
-RecordedInstructionCommand >> order: anOrder [
-
-order := anOrder
-]
-
 { #category : 'printing' }
 RecordedInstructionCommand >> print [
 "Print the command into the same way it has been used in the original performance"
 	| p |
-	p := 'p ' , self order asString.
+	p := 'p ' , self instruction asString.
 	delay ifNotNil: [
 		p := (p includesSubstring: ':')
 			     ifFalse: [ p allButLast , 'AtTime: ' , delay asString , '.' ]

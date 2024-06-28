@@ -69,7 +69,7 @@ PerformanceRecorder >> activeDSP [
 PerformanceRecorder >> activeDSP: aDSP [
 
 
-	savedPerformance add: (RecordedInstructionCommand new order:
+	savedPerformance add: (RecordedInstructionCommand new instruction:
 			 'activeDSP: ' , aDSP asString , '.').
 	Performance uniqueInstance activeDSP: aDSP
 ]
@@ -145,7 +145,7 @@ PerformanceRecorder >> bpm [
 PerformanceRecorder >> bpm: aRateInSeconds [
 
 
-	savedPerformance add: (RecordedInstructionCommand new order:
+	savedPerformance add: (RecordedInstructionCommand new instruction:
 			 'bpm: ', aRateInSeconds  asString , '.').
 	Performance uniqueInstance bpm: aRateInSeconds
 ]
@@ -191,6 +191,12 @@ PerformanceRecorder >> displayVisualizer: aBoolean [
 Performance uniqueInstance displayVisualizer: aBoolean.
 ]
 
+{ #category : 'accessing' }
+PerformanceRecorder >> emptySavedPerformance [
+
+	savedPerformance collectionOfCommands: OrderedCollection new.
+]
+
 { #category : 'accessing - structure variables' }
 PerformanceRecorder >> freq [
 	^ Performance uniqueInstance freq
@@ -205,7 +211,7 @@ Performance uniqueInstance freq1: anObject
 { #category : 'accessing' }
 PerformanceRecorder >> freq: aDurationInSeconds [
 "Create a new RecordedOrderCommand to add to the savedPerformance before calling the freq: message of the Performance "
-	savedPerformance add: (RecordedInstructionCommand new order:
+	savedPerformance add: (RecordedInstructionCommand new instruction:
 			 'freq: ' , (1 / (4 * aDurationInSeconds) * 60) asInteger asString
 			 , ' bpm.').
 	Performance uniqueInstance freq: aDurationInSeconds
@@ -250,11 +256,17 @@ PerformanceRecorder >> length [
 Performance uniqueInstance length
 ]
 
+{ #category : 'as yet unclassified' }
+PerformanceRecorder >> levelOfDetail: anIntegerBetween1And5 [
+
+Performance uniqueInstance levelOfDetail: anIntegerBetween1And5 
+]
+
 { #category : 'muting and soloing' }
 PerformanceRecorder >> mute: aKeyOrAnArrayOfKeys [
 	"Create a new RecordedOrderCommand to add to the savedPerformance before calling the mute: message of the Performance "
 
-	savedPerformance add: (RecordedInstructionCommand new order:
+	savedPerformance add: (RecordedInstructionCommand new instruction:
 			 'mute: ' , '#' , aKeyOrAnArrayOfKeys asString , '.').
 	Performance uniqueInstance mute: aKeyOrAnArrayOfKeys
 ]
@@ -273,7 +285,7 @@ PerformanceRecorder >> muteAll [
 "Create a new RecordedOrderCommand to add to the savedPerformance before calling the muteAll: message of the Performance "
 	savedPerformance
 		add:( RecordedInstructionCommand new
-		order: 'muteAll.').
+		instruction: 'muteAll.').
 	Performance uniqueInstance muteAll
 		
 ]
@@ -303,7 +315,7 @@ Performance uniqueInstance opensVisualizer.
 PerformanceRecorder >> pacaDance [
 	"Create a new RecordedOrderCommand to add to the savedPerformance before calling the pacaDance message of the Performance "
 
-	savedPerformance add: (RecordedInstructionCommand new order: 'pacaDance').
+	savedPerformance add: (RecordedInstructionCommand new instruction: 'pacaDance').
 
 	Performance uniqueInstance pacaDance
 ]
@@ -350,7 +362,7 @@ PerformanceRecorder >> performer: aPerformer [
 		when: DoubleRhythmAnnouncement send: #lastSymbol: to: savedPerformance;
 		when: NotesAnnouncement send: #appliesNotes: to: savedPerformance.
 
-	savedPerformance add: (RecordedInstructionCommand new order:
+	savedPerformance add: (RecordedInstructionCommand new instruction:
 			 'performer: ' , aPerformer asString allButFirst , ' new.').
 	Performance uniqueInstance performer: aPerformer
 ]
@@ -365,14 +377,14 @@ PerformanceRecorder >> performer: aPerformer atTime: aDelay [
 { #category : 'playing' }
 PerformanceRecorder >> play [
 	"Create a new RecordedOrderCommand to add to the savedPerformance before calling the play message of the Performance "
-	savedPerformance add: (RecordedInstructionCommand new order: 'play.').
+	savedPerformance add: (RecordedInstructionCommand new instruction: 'play.').
 	Performance uniqueInstance play
 ]
 
 { #category : 'playing' }
 PerformanceRecorder >> playFor: aNumberOfSteps [
 	"Create a new RecordedOrderCommand to add to the savedPerformance before calling the playFor: message of the Performance "
-	savedPerformance add: (RecordedInstructionCommand new order:
+	savedPerformance add: (RecordedInstructionCommand new instruction:
 			 'playFor: ' , (aNumberOfSteps / 16) asString , ' bars.').
 	Performance uniqueInstance playFor: aNumberOfSteps
 ]
@@ -389,7 +401,7 @@ PerformanceRecorder >> playFor: aNumberOfSteps atTime: aTime [
 { #category : 'muting and soloing' }
 PerformanceRecorder >> playKymaSequencFor: aNumberOfSteps [
 	"Create a new RecordedOrderCommand to add to the savedPerformance before calling the playKymaSequencFor:  message of the Performance "
-	savedPerformance add: (RecordedInstructionCommand new order:
+	savedPerformance add: (RecordedInstructionCommand new instruction:
 			 'playKymaSequencFor: ' , aNumberOfSteps asString , '.').
 	Performance uniqueInstance playKymaSequencFor: aNumberOfSteps
 ]
@@ -407,7 +419,7 @@ PerformanceRecorder >> playKymaSequencFor: aNumberOfSteps atTime: aTime [
 PerformanceRecorder >> playKymaSequenceAt: aRateInSeconds for: aNumberOfSteps [
 	"Create a new RecordedOrderCommand to add to the savedPerformance before calling the playKymaSequenceAt:for:  message of the Performance "
 
-	savedPerformance add: (RecordedInstructionCommand new order:
+	savedPerformance add: (RecordedInstructionCommand new instruction:
 			 'playKymaSequenceAt:' , aRateInSeconds asString , ' ' , 'for: '
 			 , aNumberOfSteps asString , '.').
 	Performance uniqueInstance
@@ -427,7 +439,7 @@ PerformanceRecorder >> playKymaSequenceAt: aRateInSeconds for: aNumberOfSteps at
 PerformanceRecorder >> playLocalSequenceAt: aRateInSeconds for: aNumberOfSteps [
 	"Create a new RecordedOrderCommand to add to the savedPerformance before calling the playLocalSequenceAt:for:  message of the Performance "
 
-	savedPerformance add: (RecordedInstructionCommand new order:
+	savedPerformance add: (RecordedInstructionCommand new instruction:
 			 'playLocalSequenceAt:' , aRateInSeconds asString , ' ' , 'for: '
 			 , aNumberOfSteps asString , '.').
 	Performance uniqueInstance
@@ -476,7 +488,7 @@ Performance uniqueInstance resetAllSequencers
 { #category : 'accessing' }
 PerformanceRecorder >> restore [
 	"Create a new RecordedOrderCommand to add to the savedPerformance before calling the restore  message of the Performance "
-	savedPerformance add: (RecordedInstructionCommand new order: 'restore.').
+	savedPerformance add: (RecordedInstructionCommand new instruction: 'restore.').
 	Performance uniqueInstance restore
 ]
 
@@ -510,7 +522,7 @@ PerformanceRecorder >> savedPerformance [
 { #category : 'muting and soloing' }
 PerformanceRecorder >> solo: aKeyOrAnArrayOfKeys [
 	"Create a new RecordedOrderCommand to add to the savedPerformance before calling the solo: message of the Performance "
-		savedPerformance add: (RecordedInstructionCommand new order:
+		savedPerformance add: (RecordedInstructionCommand new instruction:
 			 'solo: ' , '#' , aKeyOrAnArrayOfKeys asString , '.').
 	Performance uniqueInstance solo: aKeyOrAnArrayOfKeys.
 
@@ -529,7 +541,7 @@ PerformanceRecorder >> solo: aKeyOrAnArrayOfKeys atTime: aTime [
 PerformanceRecorder >> stop [
 	"Create a new RecordedOrderCommand to add to the savedPerformance before calling the stop message of the Performance "
 
-	savedPerformance add: (RecordedInstructionCommand new order: 'stop.').
+	savedPerformance add: (RecordedInstructionCommand new instruction: 'stop.').
 	Performance uniqueInstance stop
 ]
 
@@ -576,7 +588,7 @@ Performance uniqueInstance transportStep: anInteger
 PerformanceRecorder >> unsolo: aKeyOrAnArrayOfKeys [
 	"Create a new RecordedOrderCommand to add to the savedPerformance before calling the unsolo: message of the Performance "
 	Performance uniqueInstance unsolo: aKeyOrAnArrayOfKeys.
-	savedPerformance add: (RecordedInstructionCommand new order:
+	savedPerformance add: (RecordedInstructionCommand new instruction:
 			 'unsolo: ' , '#' , aKeyOrAnArrayOfKeys asString , '.')
 ]
 

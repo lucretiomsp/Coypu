@@ -26,6 +26,13 @@ SavedPerformanceTest >> setUp [
 	replayer := PerformanceTextualReplayer new
 ]
 
+{ #category : 'running' }
+SavedPerformanceTest >> tearDown [
+	
+	performanceRecorder stop.
+	super tearDown
+]
+
 { #category : 'tests' }
 SavedPerformanceTest >> testAbsoluteToDelay [
 
