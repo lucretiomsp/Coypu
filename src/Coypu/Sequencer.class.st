@@ -1206,12 +1206,14 @@ Sequencer >> to: aSymbol [
 	" assign sequencer to the performance at aSymbol. if a sound for SuperDirt is not specified, the symbol is used for sound name"
 
 	| announcement isInKeys |
-	isInKeys:= false.
-	Performance uniqueInstance keys do: [ :k | k = aSymbol ifTrue:[
-				isInKeys:= true.
-			]].
-	isInKeys ifFalse: [ 	Performance uniqueInstance visualizer addInstrument: aSymbol. ]
-.
+	isInKeys := false.
+	Performance uniqueInstance keys do: [ :k |
+		k = aSymbol ifTrue: [ 
+				(PerformanceRecorder uniqueInstance visualizer patternArray at:k)
+		forSequencer: self.
+		isInKeys := true ] ].
+	isInKeys ifFalse: [
+		Performance uniqueInstance visualizer addInstrument: aSymbol ].
 	" 	Performance uniqueInstance visualizer squareArray last initializeAnimation:
         Performance uniqueInstance freq * 4."
 	self noteIndex: 1.
@@ -1223,8 +1225,7 @@ Sequencer >> to: aSymbol [
 		                ifFalse: [ SymbolAnnouncement new ].
 	announcement symbol: self seqKey.
 	PerformanceRecorder uniqueInstance announce: announcement.
-	PerformanceRecorder uniqueInstance visualizer patternArray last
-		forSequencer: self.
+
 
 	"For SuperDirt"
 	self dirtMessage at: '_id' put: self seqKey.

@@ -78,7 +78,7 @@ MfVisualizerElement >> addElementsLevelTwo: aName [
 		           max: 16;
 		           nbsteps: 16.
 	pattern transformDo: [ :q | q translateBy: 20 @ 70 ].
-	patternArray add: pattern.
+	patternArray at:aName put: pattern.
 	sect addChild: pattern
 ]
 
@@ -148,7 +148,7 @@ MfVisualizerElement >> initialize [
 	self border: (BlBorder paint: Color lightGray width: 2).
 	self initSections.
 	squareArray := OrderedCollection new.
-	patternArray := OrderedCollection new.
+	patternArray := Dictionary new.
 	nbTracks := 0
 ]
 
