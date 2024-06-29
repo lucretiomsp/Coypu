@@ -326,7 +326,7 @@ Sequencer >> djf: aFloatOrAnArray [
 Sequencer >> drive: aStringWithIndexes [ 
 	"set the drive to a collection of value in array or to to the numbe"
 
-	self extra: #Drive values: aStringWithIndexes asDirtPureNotes
+	self extra: #Drive values: aStringWithIndexes 
 ]
 
 { #category : #accessing }
