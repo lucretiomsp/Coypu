@@ -461,7 +461,7 @@ Sequencer >> index [
 Sequencer >> index: aStringOrAnArray [
 	"convenience method to avoid extra typing when we want to modify the index , i.e. the sample number of a sample player"
 
-	self extra: #Indec values: aStringOrAnArray asDirtArrayOfValues 
+	self extra: #Index values: aStringOrAnArray asDirtArrayOfValues
 ]
 
 { #category : #'LiveCoding - Performance' }
