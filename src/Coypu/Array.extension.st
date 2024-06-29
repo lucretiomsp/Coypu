@@ -82,6 +82,13 @@ Array >> asDirtArray [
 ]
 
 { #category : #'*Coypu' }
+Array >> asDirtArrayOfValues [
+	"convenience method to send values to extra aparmeters of a Sequencer"
+
+	^ self
+]
+
+{ #category : #'*Coypu' }
 Array >> asMonoSeq [
 
 	"returns Sequencer with default note 60nn and default durations 1/16th and noteIndex = 0"

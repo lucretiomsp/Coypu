@@ -33,6 +33,13 @@ ByteString >> asDirtArray [
 ]
 
 { #category : #'*Coypu' }
+ByteString >> asDirtArrayOfValues [
+	" designed for change Sequencer extra paramters"
+
+	^ self asDirtPureNotes asDirtArray 
+]
+
+{ #category : #'*Coypu' }
 ByteString >> asDirtNotes [
 	" returns a sequencer containing a trig for each integer and a rest for whatever other character and with the notes coresponding to the integeres inside the string - tokens must be separated by string"
 
