@@ -136,11 +136,11 @@ Sequencer >> allNotes: anInteger [
 	self notes: newNotes.
 ]
 
-{ #category : 'LiveCoding-Kyma' }
-Sequencer >> amount: aNumberOrAnArray [
+{ #category : 'LiveCoding-ExtraParams' }
+Sequencer >> amount: aStringOrAnArray [
 	"set the amount to a collection of value in array or to to the numbe"
 
-	self extra: #amount values: aNumberOrAnArray asDirtArray
+	self extra: #Amount values: aStringOrAnArray asDirtArrayOfValues 
 ]
 
 { #category : 'converting' }
@@ -165,11 +165,11 @@ Sequencer >> bpq: aFloatOrAnArray [
 		put:  aFloatOrAnArray asDirtArray
 ]
 
-{ #category : 'LiveCoding-Kyma' }
-Sequencer >> bw: aNumberOrAnArray [
+{ #category : 'LiveCoding-ExtraParams' }
+Sequencer >> bw: aStringOrAnArray [
 	"set the bandwidth (bw) to  a collection of value in array or to to the numbe"
 
-	self extra: #bw values: aNumberOrAnArray asDirtArray
+	self extra: #Bw values: aStringOrAnArray asDirtArrayOfValues 
 ]
 
 { #category : 'LiveCoding  - SuperDirt' }
@@ -202,11 +202,11 @@ Sequencer >> chords: aStringWithOneOrMoreChords octave: anIntegerOrAnArray [
 	
 ]
 
-{ #category : 'LiveCoding-Kyma' }
-Sequencer >> cutoff: aNumberOrAnArray [
+{ #category : 'LiveCoding-ExtraParams' }
+Sequencer >> cutoff: aStringOrAnArray [
 	"set the cutoff to a collection of value in array or to to the numbe"
 
-	self extra: #cutoff  values: aNumberOrAnArray asDirtArray
+	self extra: #Cutoff values:aStringOrAnArray asDirtArrayOfValues 
 ]
 
 { #category : 'sequencer - cycles' }
@@ -219,6 +219,13 @@ Sequencer >> cycleDurations [
 Sequencer >> cycleDurations: anArrayOfFractions [
 
 	cycleDurations := anArrayOfFractions 
+]
+
+{ #category : 'LiveCoding-ExtraParams' }
+Sequencer >> decay: aStringOrAnArray [
+	"set the decay to a collection of value in array or to to the numbe"
+
+	self extra: #Decay values: aStringOrAnArray asDirtArrayOfValues 
 ]
 
 { #category : 'LiveCoding  - SuperDirt' }
@@ -321,6 +328,13 @@ Sequencer >> djf: aFloatOrAnArray [
 		put:  aFloatOrAnArray asDirtArray
 ]
 
+{ #category : 'LiveCoding-ExtraParams' }
+Sequencer >> drive: aStringOrAnArray [
+	"set the drive to a collection of value in array or to to the numbe"
+
+	self extra: #Drive values: aStringOrAnArray asDirtArrayOfValues 
+]
+
 { #category : 'accessing' }
 Sequencer >> duration [
 
@@ -345,20 +359,18 @@ Sequencer >> durationsSize [
 	^ durations size
 ]
 
-{ #category : 'LiveCoding-Kyma' }
-Sequencer >> duty: aNumberOrAnArray [
+{ #category : 'LiveCoding-ExtraParams' }
+Sequencer >> duty: aStringOrAnArray [
 	"set the duty cycle to a collection of value in array or to to the numbe"
 
-	self extra: #Duty values: aNumberOrAnArray asDirtArray 
+	self extra: #Duty values: aStringOrAnArray asDirtArrayOfValues 
 ]
 
-{ #category : 'LiveCoding-Kyma' }
-Sequencer >> extra: aSymbol values: aNumberorAnArray [
+{ #category : 'LiveCoding-ExtraParams' }
+Sequencer >> extra: aSymbol values: aStringWithIndexes [
+	"stores extra values to control synths parameters on Kyma values can be a Number, an Array or  a valid string of Coypu Notation"
 
-"stores extra values to control synths parameters on Kyma"
-
-self extraParams at: aSymbol put: aNumberorAnArray asDirtArray
-
+	self extraParams at: aSymbol put: aStringWithIndexes asDirtArrayOfValues 
 ]
 
 { #category : 'accessing' }
@@ -451,12 +463,11 @@ Sequencer >> index [
 	^ self extra1 at: 2
 ]
 
-{ #category : 'LiveCoding-Kyma' }
-Sequencer >> index: aStringWithIndexes [
+{ #category : 'LiveCoding-ExtraParams' }
+Sequencer >> index: aStringOrAnArray [
 	"convenience method to avoid extra typing when we want to modify the index , i.e. the sample number of a sample player"
 
-	self extraParams:
-		(Array with: #Index with: aStringWithIndexes asDirtPureNotes )
+	self extra: #Index values: aStringOrAnArray asDirtArrayOfValues
 ]
 
 { #category : 'LiveCoding - Performance' }
@@ -522,25 +533,25 @@ Sequencer >> kymaMessage: anObject [
 	kymaMessage := anObject
 ]
 
-{ #category : 'LiveCoding-Kyma' }
-Sequencer >> level: aNumberOrAnArray [
+{ #category : 'LiveCoding-ExtraParams' }
+Sequencer >> level: aStringOrAnArray [
 	"set the level to  a collection of value in array or to to the numbe"
 
-	self extra: #level values: aNumberOrAnArray asDirtArray
+	self extra: #Level values: aStringOrAnArray asDirtArrayOfValues 
 ]
 
-{ #category : 'LiveCoding-Kyma' }
-Sequencer >> lfoAmount: aNumberOrAnArray [
+{ #category : 'LiveCoding-ExtraParams' }
+Sequencer >> lfoAmount: aStringOrAnArray [
 	"set the lfoAmount to a collection of value in array or to to the numbe"
 
-	self extra: #lfoAmount values: aNumberOrAnArray asDirtArray
+	self extra: #LfoAmount values: aStringOrAnArray asDirtArrayOfValues 
 ]
 
-{ #category : 'LiveCoding-Kyma' }
-Sequencer >> lfoFreq: aNumberOrAnArray [
-	"set the dlfo frequency to a collection of value in array or to to the numbe"
+{ #category : 'LiveCoding-ExtraParams' }
+Sequencer >> lfoFreq: aStringOrAnArray [
+	"set the lfo freqency"
 
-	self extra: #lfoFreq values: aNumberOrAnArray asDirtArray
+	self extra: #LfoFreq values: aStringOrAnArray asDirtArrayOfValues 
 ]
 
 { #category : 'LiveCoding  - SuperDirt' }
@@ -613,6 +624,34 @@ Sequencer >> midiChannel [
 Sequencer >> midiChannel: anIntegerBetween1And16 [
 
 	midiChannel := anIntegerBetween1And16 
+]
+
+{ #category : 'LiveCoding-ExtraParams' }
+Sequencer >> modIndex: aStringOrAnArray [
+	"convenience method to avoid extra typing when we want to modify the modulationIndex"
+
+	self extra: #ModIndex values:  aStringOrAnArray asDirtArrayOfValues 
+]
+
+{ #category : 'LiveCoding-ExtraParams' }
+Sequencer >> modPitch: aStringOrAnArray [
+	"convenience method to avoid extra typing when we want to modify the modulationPitch , i.e. the sample number of a sample player"
+
+	self extra: #ModPitch values:  aStringOrAnArray asDirtArrayOfValues 
+]
+
+{ #category : 'LiveCoding-ExtraParams' }
+Sequencer >> modRatio: aStringOrAnArray [
+	"convenience method to avoid extra typing when we want to modify the modulationRatio , i.e. the ratio between the frequency of the carrier and the frequency of the modlatorr"
+
+	self extra:  #ModRatio values:  aStringOrAnArray asDirtArrayOfValues 
+]
+
+{ #category : 'LiveCoding-ExtraParams' }
+Sequencer >> mode: aStringOrAnArray [
+	"convenience method to avoid extra typing when we want to modify the mode parameter, that usually correspond to chords mode "
+
+	self extra: #Mode values: aStringOrAnArray asDirtArrayOfValues
 ]
 
 { #category : 'accessing' }
@@ -992,11 +1031,11 @@ Sequencer >> randomSamplesFromFolder: aStringForAFolderOfSamples [
 	self sound: aStringForAFolderOfSamples ; dirtNotes: (randIndex  randomInts: folderSize) .
 ]
 
-{ #category : 'LiveCoding-Kyma' }
-Sequencer >> ratio: aNumberOrAnArray [
-	"set the ratio to a collection of value in array or to to the numbe"
+{ #category : 'LiveCoding-ExtraParams' }
+Sequencer >> ratio: aStringOrAnArray [
+	"set the ratio to a collection of value in array or to to the number"
 
-	self extra: #ratio values: aNumberOrAnArray asDirtArray
+	self extra: #Ratio values: aStringOrAnArray asDirtArrayOfValues 
 ]
 
 { #category : 'LiveCoding  - SuperDirt' }
@@ -1379,9 +1418,9 @@ Sequencer >> withRandomNotesMin: anInteger max: anotherInteger [
 	^ self notes: newNotes
 ]
 
-{ #category : 'LiveCoding-Kyma' }
-Sequencer >> x: aNumberOrAnArray [
-	"set the x to  a collection of value in array or to to the numbe"
+{ #category : 'LiveCoding-ExtraParams' }
+Sequencer >> x: aStringOrAnArray [
+	"set the x value , for example in Modal Bar sytnhs"
 
-	self extra: #x values: aNumberOrAnArray asDirtArray
+	self extra: #X values: aStringOrAnArray asDirtArrayOfValues 
 ]
