@@ -108,6 +108,16 @@ PerformanceRecorder >> announce: anAnnouncement [
 { #category : 'accessing' }
 PerformanceRecorder >> announcer [
 
+ announcer ifNil:[announcer := Announcer new.
+	announcer
+		when: RhythmAnnouncement send: #addInstrument: to: savedPerformance;
+		when: SymbolAnnouncement send: #lastSymbol: to: savedPerformance;
+		when: DirtNotesAnnouncement
+		send: #lastDirtNotes:
+		to: savedPerformance;
+		when: DelayAnnouncement send: #appliesDelay: to: savedPerformance;
+		when: DoubleRhythmAnnouncement send: #lastSymbol: to: savedPerformance;
+		when: NotesAnnouncement send: #appliesNotes: to: savedPerformance].
 	^ announcer
 ]
 
@@ -351,17 +361,7 @@ PerformanceRecorder >> performer [
 PerformanceRecorder >> performer: aPerformer [
 
 	savedPerformance := SavedPerformance new.
-	announcer := Announcer new.
-	announcer
-		when: RhythmAnnouncement send: #addInstrument: to: savedPerformance;
-		when: SymbolAnnouncement send: #lastSymbol: to: savedPerformance;
-		when: DirtNotesAnnouncement
-		send: #lastDirtNotes:
-		to: savedPerformance;
-		when: DelayAnnouncement send: #appliesDelay: to: savedPerformance;
-		when: DoubleRhythmAnnouncement send: #lastSymbol: to: savedPerformance;
-		when: NotesAnnouncement send: #appliesNotes: to: savedPerformance.
-
+	
 	savedPerformance add: (RecordedInstructionCommand new instruction:
 			 'performer: ' , aPerformer asString allButFirst , ' new.').
 	Performance uniqueInstance performer: aPerformer
