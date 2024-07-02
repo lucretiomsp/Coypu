@@ -77,7 +77,7 @@ MfVisualizerElement >> addElementsLevelTwo: aName [
 		           min: 4;
 		           max: 16;
 		           nbsteps: 16.
-	pattern transformDo: [ :q | q translateBy: 20 @ 70 ].
+	pattern transformDo: [ :q | q translateBy: 20 @ 60 ].
 	"pattern forSequencer: aName ."
 	patternArray at: aName put: pattern.
 	sect addChild: pattern

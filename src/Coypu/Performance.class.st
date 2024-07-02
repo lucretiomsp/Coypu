@@ -408,7 +408,9 @@ Performance >> play [
 { #category : 'playing' }
 Performance >> playFor: aNumberOfSteps [
 	" reset all the Sequencers"
+
 	"just on performance at once"
+
 	self activeProcess isTerminated ifTrue: [
 		self performer playFor: aNumberOfSteps ].
 	displayVisualizer ifTrue: [
@@ -419,12 +421,9 @@ Performance >> playFor: aNumberOfSteps [
 			self isVisualizerOpen: true ].
 		isVisualizerOpen ifTrue: [ stepVisualizer animationIsRunning: true ].
 		stepVisualizer pauseAnimation: 15 / bpm / 60 * (aNumberOfSteps / 16).
-		visualizer initAnimation: 15 / bpm / 60 * (aNumberOfSteps / 16)].
-	visualizer squareArray do: [:s |
-		 s initializeAnimation:
-        freq * 4 ] .
-	self resetAllSequencers.
+		visualizer initAnimation: 15 / bpm / 60 * (aNumberOfSteps / 16) ].
 
+	self resetAllSequencers
 ]
 
 { #category : 'as yet unclassified' }
