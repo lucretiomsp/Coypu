@@ -44,17 +44,6 @@ Class {
 	#tag : 'savedPerformance'
 }
 
-{ #category : 'instance creation' }
-SavedPerformance class >> new [
-
-	| x |
-	x := super new.
-
-	x collectionOfCommands: OrderedCollection new.
-	
-^x
-]
-
 { #category : 'calculating' }
 SavedPerformance >> absoluteToDelay [
 	"Take the time of each commands and return an OrderedCollection with the delay between each of them"
@@ -153,6 +142,12 @@ SavedPerformance >> header: aScript [
 		'p := PerformanceRecorder uniqueInstance.' , String cr;
 	addFirst: '|p|',String cr.
 	^ aScript
+]
+
+{ #category : 'initialization' }
+SavedPerformance >> initialize [ 
+
+collectionOfCommands := OrderedCollection new.
 ]
 
 { #category : 'adding' }

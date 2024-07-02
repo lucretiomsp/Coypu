@@ -49,8 +49,8 @@ PerformanceRecorder class >> new [
 { #category : 'accessing' }
 PerformanceRecorder class >> uniqueInstance [
 
-	^ uniqueInstance
-		  ifNil: [ uniqueInstance := super new announcer: Announcer new. ]
+	^ uniqueInstance ifNil: [
+		  uniqueInstance := super new]
 ]
 
 { #category : 'accessing' }
@@ -101,23 +101,31 @@ Performance uniqueInstance add: aSequencer channel: anIntegerBetween1And16
 
 { #category : 'announcer' }
 PerformanceRecorder >> announce: anAnnouncement [
-"Used to announce with the announcer of PerformanceRecorder"
-	announcer announce: anAnnouncement.
+	"Used to announce with the announcer of PerformanceRecorder"
+
+	"announcer ifNil: ["
+		announcer := Announcer new.
+		announcer
+			when: RhythmAnnouncement
+			send: #addInstrument:
+			to: savedPerformance;
+			when: SymbolAnnouncement send: #lastSymbol: to: savedPerformance;
+			when: DirtNotesAnnouncement
+			send: #lastDirtNotes:
+			to: savedPerformance;
+			when: DelayAnnouncement send: #appliesDelay: to: savedPerformance;
+			when: DoubleRhythmAnnouncement
+			send: #lastSymbol:
+			to: savedPerformance;
+			when: NotesAnnouncement send: #appliesNotes: to: savedPerformance "]".
+
+	announcer announce: anAnnouncement
 ]
 
 { #category : 'accessing' }
 PerformanceRecorder >> announcer [
 
- announcer ifNil:[announcer := Announcer new.
-	announcer
-		when: RhythmAnnouncement send: #addInstrument: to: savedPerformance;
-		when: SymbolAnnouncement send: #lastSymbol: to: savedPerformance;
-		when: DirtNotesAnnouncement
-		send: #lastDirtNotes:
-		to: savedPerformance;
-		when: DelayAnnouncement send: #appliesDelay: to: savedPerformance;
-		when: DoubleRhythmAnnouncement send: #lastSymbol: to: savedPerformance;
-		when: NotesAnnouncement send: #appliesNotes: to: savedPerformance].
+
 	^ announcer
 ]
 
@@ -361,7 +369,8 @@ PerformanceRecorder >> performer [
 PerformanceRecorder >> performer: aPerformer [
 
 	savedPerformance := SavedPerformance new.
-	
+
+
 	savedPerformance add: (RecordedInstructionCommand new instruction:
 			 'performer: ' , aPerformer asString allButFirst , ' new.').
 	Performance uniqueInstance performer: aPerformer
