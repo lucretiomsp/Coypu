@@ -1250,14 +1250,16 @@ Sequencer >> to: aSymbol [
 		k = aSymbol ifTrue: [
 			(PerformanceRecorder uniqueInstance visualizer patternArray at: k)
 				forSequencer: self.
-			isInKeys := true ] ].
-Performance uniqueInstance visualizer ifNotNil: [
+			isInKeys := true .
+		(	Performance uniqueInstance visualizer squareArray at: k)  changeAnimationTime: Performance uniqueInstance freq * 4] ].
+ 
 	isInKeys ifFalse: [
 		Performance uniqueInstance visualizer addInstrument: aSymbol.
 		PerformanceRecorder uniqueInstance visualizer patternArray
-			associations last value forSequencer: self ].
-	Performance uniqueInstance visualizer squareArray do: [ :s |
-		s initializeAnimation: Performance uniqueInstance freq * 4 ]].
+			associations last value forSequencer: self .
+			Performance uniqueInstance visualizer squareArray last initializeAnimation: Performance uniqueInstance freq * 4 ].
+	
+
 	self noteIndex: 1.
 	self seqKey: aSymbol asString.
 	announcement := (self notesSize > 4 and: [
