@@ -85,7 +85,7 @@ SavedPerformanceTest >> testAbsoluteToRelative [
 { #category : 'tests' }
 SavedPerformanceTest >> testAddInstrument [
 
-
+	self commands size traceCr.
 	16 upbeats to: #bd.
 
 	self denyEmpty: self commands.

@@ -103,21 +103,20 @@ Performance uniqueInstance add: aSequencer channel: anIntegerBetween1And16
 PerformanceRecorder >> announce: anAnnouncement [
 	"Used to announce with the announcer of PerformanceRecorder"
 
-	"announcer ifNil: ["
-		announcer := Announcer new.
-		announcer
-			when: RhythmAnnouncement
-			send: #addInstrument:
-			to: savedPerformance;
-			when: SymbolAnnouncement send: #lastSymbol: to: savedPerformance;
-			when: DirtNotesAnnouncement
-			send: #lastDirtNotes:
-			to: savedPerformance;
-			when: DelayAnnouncement send: #appliesDelay: to: savedPerformance;
-			when: DoubleRhythmAnnouncement
-			send: #lastSymbol:
-			to: savedPerformance;
-			when: NotesAnnouncement send: #appliesNotes: to: savedPerformance "]".
+	announcer ifNil: [
+
+	announcer := Announcer new.
+	announcer
+		when: RhythmAnnouncement send: #addInstrument: to: savedPerformance;
+		when: SymbolAnnouncement send: #lastSymbol: to: savedPerformance;
+		when: DirtNotesAnnouncement
+		send: #lastDirtNotes:
+		to: savedPerformance;
+		when: DelayAnnouncement send: #appliesDelay: to: savedPerformance;
+		when: DoubleRhythmAnnouncement
+		send: #lastSymbol:
+		to: savedPerformance;
+		when: NotesAnnouncement send: #appliesNotes: to: savedPerformance].
 
 	announcer announce: anAnnouncement
 ]
@@ -212,7 +211,7 @@ Performance uniqueInstance displayVisualizer: aBoolean.
 { #category : 'accessing' }
 PerformanceRecorder >> emptySavedPerformance [
 
-	savedPerformance collectionOfCommands: OrderedCollection new.
+	savedPerformance collectionOfCommands removeAll
 ]
 
 { #category : 'accessing - structure variables' }
@@ -248,6 +247,12 @@ PerformanceRecorder >> freq: aDurationInSeconds atTime: aTime [
 PerformanceRecorder >> incrementTransportStep [
 
 	Performance uniqueInstance incrementTransportStep 
+]
+
+{ #category : 'initialization' }
+PerformanceRecorder >> initialize [
+	
+savedPerformance := SavedPerformance new
 ]
 
 { #category : 'initialization' }
@@ -368,9 +373,7 @@ PerformanceRecorder >> performer [
 { #category : 'accessing' }
 PerformanceRecorder >> performer: aPerformer [
 
-	savedPerformance := SavedPerformance new.
-
-
+self emptySavedPerformance.
 	savedPerformance add: (RecordedInstructionCommand new instruction:
 			 'performer: ' , aPerformer asString allButFirst , ' new.').
 	Performance uniqueInstance performer: aPerformer

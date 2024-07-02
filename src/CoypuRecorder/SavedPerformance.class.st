@@ -80,6 +80,7 @@ SavedPerformance >> add: anObject [
 { #category : 'adding' }
 SavedPerformance >> addInstrument: anAnnouncement [
 	"Add a new RecordedInstrumentCommand in the collectionOfCommands. This message is called when a RythmAnnouncement is announced"
+
 	collectionOfCommands add:
 		(RecordedInstrumentCommand new rhythm: anAnnouncement rhythm)
 ]
