@@ -95,10 +95,11 @@ MfPatternElement >> backgroundPaint [
 
 { #category : 'adding' }
 MfPatternElement >> forSequencer: aSequencer [
-"creates a visualization of a Sequencer, where gates are black squares and rests are white squares"
-self min: 1.
-self max: aSequencer gates size.
-self nbsSequencerStep: aSequencer gates 
+	"creates a visualization of a Sequencer, where gates are black squares and rests are white squares"
+
+	self min: 1.
+	self max: aSequencer gates size.
+	self nbsSequencerStep: aSequencer gates
 ]
 
 { #category : 'initialization' }
