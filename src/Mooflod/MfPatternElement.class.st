@@ -27,7 +27,7 @@ MfPatternElement class >> exampleSimplePattern [
 	space root addChild: patternelem.
 	space toTheme: MfMooflodTheme new.
 	patternelem transformDo: [ :c | c translateBy: 180 @ 200 ].
-	patternelem forSequencer: 16 upbeats .
+
 	space show.
 	^ patternelem
 ]
@@ -57,15 +57,15 @@ MfPatternElement >> addSeqStepsToThePattern: anArrayOfGates [
 	nbSteps := anArrayOfGates size.
 	colors := Array with: Color white with: Color black.
 	nbOfSteps := 0.
-	changingX := 2.5.
+	changingX := 1.25.
 	(nbSteps between: min and: max) ifTrue: [
 		nbOfSteps := nbSteps.
 		anArrayOfGates do: [ :i |
 			step := MfStepElement new background: (colors at: i + 1).
 			step transformDo: [ :t | t translateBy: changingX @ 0 ].
-			changingX := changingX + 35.
+			changingX := changingX + 17.5.
 			self addChild: step ] ].
-	self size: 35 * nbSteps @ 50.
+	self size: 17.5 * nbSteps @ 25.
 	self addInstrumentToStep
 ]
 
@@ -75,15 +75,15 @@ MfPatternElement >> addStepsToThePattern: nbSteps [
 
 	| step changingX |
 	nbOfSteps := 0.
-	changingX := 2.5.
+	changingX := 1.25.
 	(nbSteps between: min and: max) ifTrue: [
 		nbOfSteps := nbSteps.
 		1 to: nbSteps do: [ :i |
 			step := MfStepElement new.
 			step transformDo: [ :t | t translateBy: changingX @ 0 ].
-			changingX := changingX + 35.
+			changingX := changingX + 17.5.
 			self addChild: step ] ].
-	self size: 35 * nbSteps @ 50.
+	self size: 17.5 * nbSteps @ 25.
 	self addInstrumentToStep
 ]
 
@@ -170,5 +170,5 @@ MfPatternElement >> newMooFlodSkin [
 { #category : 'visual properties' }
 MfPatternElement >> patternExtent [
 
-	^ 36 @ 50
+	^ 18 @ 25
 ]
