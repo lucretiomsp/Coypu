@@ -60,7 +60,7 @@ MfPerformanceStepsDisplayer >> initialize [
 
 	super initialize.
 	self geometry: (BlRoundedRectangleGeometry cornerRadius: 18).
-	self size: 350 @ 160.
+	self size: 200 @ 100.
 	self background: Color black.
 	animationIsRunning := false
 ]
@@ -88,18 +88,17 @@ MfPerformanceStepsDisplayer >> initializeStepsLabel [
 	text text:
 		('Performance elapsed number of steps' asRopedText attributes:
 			 { (BlTextForegroundAttribute paint: Color green) }).
-	text text fontSize: 19.
+	text text fontSize: 12.
 	text constraintsDo: [ :c |
 		c frame horizontal alignCenter.
 		c frame vertical alignTop ].
-	text transformDo: [ :t |
-		t translateBy: 0@10 ].
+	text transformDo: [ :t | t translateBy: 0 @ 10 ].
 
 
 	label := BlTextElement new.
 	label text: (nbSteps asString asRopedText attributes:
 			 { (BlTextForegroundAttribute paint: Color green) }).
-	label text fontSize: 22.
+	label text fontSize: 16.
 	label constraintsDo: [ :c |
 		c frame horizontal alignCenter.
 		c frame vertical alignCenter ].
@@ -143,8 +142,7 @@ MfPerformanceStepsDisplayer >> setStepsLabel: aNbOfSteps [
 
 	label text: (nbSteps asString asRopedText attributes:
 			 { (BlTextForegroundAttribute paint: Color green) }).
-	label text fontSize: 22.
-
+	label text fontSize: 16
 ]
 
 { #category : 'accessing' }

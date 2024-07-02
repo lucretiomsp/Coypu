@@ -42,7 +42,7 @@ MfPulsingSquare >> initialize [
 	super initialize.
 	self geometry: BlSquareGeometry new.
 	self background: Color white.
-	self size: 32 @ 32.
+	self size: 16 @ 16.
 	self border: (BlBorder paint: Color black)
 ]
 
