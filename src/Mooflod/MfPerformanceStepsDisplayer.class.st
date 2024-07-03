@@ -1,6 +1,6 @@
 Class {
-	#name : 'MfPerformanceStepsDisplayer',
-	#superclass : 'ToElement',
+	#name : #MfPerformanceStepsDisplayer,
+	#superclass : #ToElement,
 	#instVars : [
 		'label',
 		'nbSteps',
@@ -8,12 +8,10 @@ Class {
 		'animation',
 		'animationIsRunning'
 	],
-	#category : 'Mooflod-PerformanceStepsDisplayer',
-	#package : 'Mooflod',
-	#tag : 'PerformanceStepsDisplayer'
+	#category : 'Mooflod-PerformanceStepsDisplayer'
 }
 
-{ #category : 'example' }
+{ #category : #example }
 MfPerformanceStepsDisplayer class >> exampleNbSteps [
 
 	<script>
@@ -29,7 +27,7 @@ MfPerformanceStepsDisplayer class >> exampleNbSteps [
 	^ s
 ]
 
-{ #category : 'adding' }
+{ #category : #adding }
 MfPerformanceStepsDisplayer >> addSteps: aNbOfSteps [
 
 	(aNbOfSteps between: 0 and: 30000) ifFalse: [ ^ self ].
@@ -37,25 +35,25 @@ MfPerformanceStepsDisplayer >> addSteps: aNbOfSteps [
 	self initializeStepsLabel
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MfPerformanceStepsDisplayer >> animation [
 
 	^ animation
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MfPerformanceStepsDisplayer >> animationIsRunning [
 
 	^ animationIsRunning 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MfPerformanceStepsDisplayer >> animationIsRunning: aBoolean [
 
 	animationIsRunning := aBoolean
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MfPerformanceStepsDisplayer >> initialize [
 
 	super initialize.
@@ -65,7 +63,7 @@ MfPerformanceStepsDisplayer >> initialize [
 	animationIsRunning := false
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MfPerformanceStepsDisplayer >> initializeAnimation: aBpm [
 
 	animationIsRunning := true.
@@ -81,7 +79,7 @@ MfPerformanceStepsDisplayer >> initializeAnimation: aBpm [
 	self addAnimation: animation
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MfPerformanceStepsDisplayer >> initializeStepsLabel [
 
 	text := BlTextElement new.
@@ -107,25 +105,25 @@ MfPerformanceStepsDisplayer >> initializeStepsLabel [
 	self initializeAnimation: 139
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MfPerformanceStepsDisplayer >> label [ 
 
 ^label
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MfPerformanceStepsDisplayer >> nbSteps [
 
 ^nbSteps
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 MfPerformanceStepsDisplayer >> newMooflodSkin [
 
 	^ MfPerformanceStepsDisplayerSkin new 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 MfPerformanceStepsDisplayer >> pauseAnimation: aDuration [
 
 	animation := BlAnimation new duration: aDuration seconds.
@@ -137,7 +135,7 @@ MfPerformanceStepsDisplayer >> pauseAnimation: aDuration [
 	self addAnimation: animation
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MfPerformanceStepsDisplayer >> setStepsLabel: aNbOfSteps [
 
 	label text: (nbSteps asString asRopedText attributes:
@@ -145,7 +143,7 @@ MfPerformanceStepsDisplayer >> setStepsLabel: aNbOfSteps [
 	label text fontSize: 16
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MfPerformanceStepsDisplayer >> text [
 ^text
 ]

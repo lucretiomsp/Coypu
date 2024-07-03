@@ -1,21 +1,19 @@
 Class {
-	#name : 'MfPianoWhiteNoteElement',
-	#superclass : 'ToElement',
+	#name : #MfPianoWhiteNoteElement,
+	#superclass : #ToElement,
 	#classVars : [
 		'note'
 	],
-	#category : 'Mooflod-PianoKeyboardWidget',
-	#package : 'Mooflod',
-	#tag : 'PianoKeyboardWidget'
+	#category : 'Mooflod-PianoKeyboardWidget'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MfPianoWhiteNoteElement class >> newWithColor: aColor [
 
 	^ self new background: aColor; yourself
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MfPianoWhiteNoteElement >> initialize [
 
 	super initialize.
@@ -25,12 +23,12 @@ MfPianoWhiteNoteElement >> initialize [
 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MfPianoWhiteNoteElement >> note [
 ^note
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MfPianoWhiteNoteElement >> note: aNote [
 
 note:= aNote .

@@ -1,12 +1,10 @@
 Class {
-	#name : 'MfWidgets',
-	#superclass : 'Object',
-	#category : 'Mooflod-Widgets',
-	#package : 'Mooflod',
-	#tag : 'Widgets'
+	#name : #MfWidgets,
+	#superclass : #Object,
+	#category : 'Mooflod-Widgets'
 }
 
-{ #category : 'example' }
+{ #category : #example }
 MfWidgets class >> exampleDisplayingAllWidgets [
 
 	<script>

@@ -3,24 +3,22 @@ This is copy of the original bloc BlDevKeyboardElement.
 In particular this keyboard works independently from the language layout. 
 "
 Class {
-	#name : 'MfKeyboardElement',
-	#superclass : 'ToElement',
+	#name : #MfKeyboardElement,
+	#superclass : #ToElement,
 	#instVars : [
 		'keymap'
 	],
-	#category : 'Mooflod-KeyboardWidget',
-	#package : 'Mooflod',
-	#tag : 'KeyboardWidget'
+	#category : 'Mooflod-KeyboardWidget'
 }
 
-{ #category : 'examples' }
+{ #category : #examples }
 MfKeyboardElement class >> example [
 
 	<script>
 	self new openInSpace
 ]
 
-{ #category : 'examples' }
+{ #category : #examples }
 MfKeyboardElement class >> exampleSimpleKeyboard [
 
 	<script>
@@ -38,14 +36,14 @@ MfKeyboardElement class >> exampleSimpleKeyboard [
 	^ space
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MfKeyboardElement >> addButton: anElement key: aKey [
 	"add the key passed as parameter to the key dictionnary"
 	keymap at: aKey put: anElement.
 	self addChild: anElement
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MfKeyboardElement >> initialize [
 
 	super initialize.
@@ -61,7 +59,7 @@ MfKeyboardElement >> initialize [
 	self requestFocus.
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MfKeyboardElement >> initializeBottomRow [
 	"add all keys from the bottom row of keyboard"
 	self addButton: (self simpleSmallKey: 'fn') key: KeyboardKey function.
@@ -78,7 +76,7 @@ MfKeyboardElement >> initializeBottomRow [
 	self addButton: (self simpleSmallKey: 'down') key: KeyboardKey down.
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MfKeyboardElement >> initializeEventListeners [
 	"when pressing a key, changes the color of it and notify a down/unknown if the key is not in the dico"
 
@@ -98,7 +96,7 @@ MfKeyboardElement >> initializeEventListeners [
 			ifPresent: [ :aButton | aButton background: Color black ] ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MfKeyboardElement >> initializeFirstRow [
 	| theKeys |
 	"add all keys from first row to the keys dico"
@@ -112,7 +110,7 @@ MfKeyboardElement >> initializeFirstRow [
 	self addButton: (self simpleKey: '\') key: KeyboardKey backslash.
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MfKeyboardElement >> initializeKeys [
 	self initializeTopRow.
 	self initializeFirstRow.
@@ -121,7 +119,7 @@ MfKeyboardElement >> initializeKeys [
 	self initializeBottomRow
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MfKeyboardElement >> initializeSecondRow [
 	| theKeys |
 	
@@ -135,7 +133,7 @@ MfKeyboardElement >> initializeSecondRow [
 	self addButton: (self wideKey: 'return' span: 1.8) key: KeyboardKey enter.
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MfKeyboardElement >> initializeThirdRow [
 	| theKeys |
 	"add all keys in the third row, for example the shift left key is a big key
@@ -152,7 +150,7 @@ MfKeyboardElement >> initializeThirdRow [
 	self addButton: (self wideKey: 'shift' span: 2.42) key: KeyboardKey shiftRight.
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MfKeyboardElement >> initializeTopRow [
 	| theKeys |
 	
@@ -166,25 +164,25 @@ MfKeyboardElement >> initializeTopRow [
 	self addButton: (self wideKey: 'delete' span: 1.45) key: KeyboardKey backspace.
 ]
 
-{ #category : 'geometry' }
+{ #category : #geometry }
 MfKeyboardElement >> keyboardHeight [
 "sets the keyboard widget height"
 	^ (5 * self rowHeight) + ((5 * 2 + 1) * self spacing)
 ]
 
-{ #category : 'geometry' }
+{ #category : #geometry }
 MfKeyboardElement >> keyboardWidth [
 	"sets the keyboard widget width"
 	^ self rowWidth
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MfKeyboardElement >> keymap [ 
 
 	^keymap.
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 MfKeyboardElement >> newButton: anExtent [
 	"creates an instance of button and give its graphical properties"
 
@@ -201,17 +199,17 @@ MfKeyboardElement >> newButton: anExtent [
 		  background: Color black
 ]
 
-{ #category : 'geometry' }
+{ #category : #geometry }
 MfKeyboardElement >> rowHeight [
 	^ 35
 ]
 
-{ #category : 'geometry' }
+{ #category : #geometry }
 MfKeyboardElement >> rowWidth [
 	^ (13 * self simpleKeyWidth) + (self wideWidth: 1.5) + ((14 * 2) * self spacing)
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 MfKeyboardElement >> simpleKey: aString [
 
 	| button label |
@@ -232,17 +230,17 @@ MfKeyboardElement >> simpleKey: aString [
 	^ button
 ]
 
-{ #category : 'geometry' }
+{ #category : #geometry }
 MfKeyboardElement >> simpleKeyExtent [
 	^ self simpleKeyWidth @ self rowHeight
 ]
 
-{ #category : 'geometry' }
+{ #category : #geometry }
 MfKeyboardElement >> simpleKeyWidth [
 	^ self rowHeight * 1.2
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 MfKeyboardElement >> simpleSmallKey: aString [
 
 	| button label |
@@ -262,12 +260,12 @@ MfKeyboardElement >> simpleSmallKey: aString [
 	^ button
 ]
 
-{ #category : 'geometry' }
+{ #category : #geometry }
 MfKeyboardElement >> spacing [
 	^ 5
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 MfKeyboardElement >> wideKey: aString span: aNumber [
 
 	| button label |
@@ -287,7 +285,7 @@ MfKeyboardElement >> wideKey: aString span: aNumber [
 	^ button
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 MfKeyboardElement >> wideSmallKey: aString span: aNumber [
 
 	| button label |
@@ -307,7 +305,7 @@ MfKeyboardElement >> wideSmallKey: aString span: aNumber [
 	^ button
 ]
 
-{ #category : 'geometry' }
+{ #category : #geometry }
 MfKeyboardElement >> wideWidth: aNumber [
 	^ ((self simpleKeyWidth * aNumber) + self spacing)
 ]

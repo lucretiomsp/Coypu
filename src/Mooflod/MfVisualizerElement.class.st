@@ -1,6 +1,6 @@
 Class {
-	#name : 'MfVisualizerElement',
-	#superclass : 'ToElement',
+	#name : #MfVisualizerElement,
+	#superclass : #ToElement,
 	#instVars : [
 		'nbTracks',
 		'animation',
@@ -10,12 +10,10 @@ Class {
 	#classVars : [
 		'level'
 	],
-	#category : 'Mooflod-VisualizerRepresentation',
-	#package : 'Mooflod',
-	#tag : 'VisualizerRepresentation'
+	#category : #'Mooflod-VisualizerRepresentation'
 }
 
-{ #category : 'examples' }
+{ #category : #examples }
 MfVisualizerElement class >> exampleVisualizer [
 
 	<script>
@@ -34,13 +32,13 @@ MfVisualizerElement class >> exampleVisualizer [
 	^ v
 ]
 
-{ #category : 'adding' }
+{ #category : #adding }
 MfVisualizerElement >> addElementsLevelFour: aChildren [ 
 
 	
 ]
 
-{ #category : 'adding' }
+{ #category : #adding }
 MfVisualizerElement >> addElementsLevelOne: aName [
 
 	| label name sect square |
@@ -55,19 +53,19 @@ MfVisualizerElement >> addElementsLevelOne: aName [
 	label transformDo: [ :t | t translateBy: 20 @ 17 ].
 	square transformDo: [ :q | q translateBy: 550 @ 10 ].
 	name transformDo: [ :t | t translateBy: 130 @ 17 ].
-	squareArray add: square.
+	squareArray at:aName put: square.
 	sect addChild: square.
 	sect addChild: label.
 	sect addChild: name
 ]
 
-{ #category : 'adding' }
+{ #category : #adding }
 MfVisualizerElement >> addElementsLevelThree: aChildren [ 
 
 	
 ]
 
-{ #category : 'adding' }
+{ #category : #adding }
 MfVisualizerElement >> addElementsLevelTwo: aName [
 
 	| pattern sect |
@@ -83,7 +81,7 @@ MfVisualizerElement >> addElementsLevelTwo: aName [
 	sect addChild: pattern
 ]
 
-{ #category : 'adding' }
+{ #category : #adding }
 MfVisualizerElement >> addInstrument: aName [
 
 	nbTracks < 5 ifFalse: [ ^ self ].
@@ -91,20 +89,20 @@ MfVisualizerElement >> addInstrument: aName [
 	self initLevelRepresentation: aName
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MfVisualizerElement >> animation [
 
 	^ animation
 ]
 
-{ #category : 'action' }
+{ #category : #action }
 MfVisualizerElement >> cleanVisualizer [
 
 	self childrenDo: [ :c | c childrenDo: [ :cc | cc removeFromParent ] ].
 	nbTracks := 0
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MfVisualizerElement >> initAnimation: nbSteps [
 
 	animation := BlAnimation new duration: (nbSteps) seconds.
@@ -114,7 +112,7 @@ MfVisualizerElement >> initAnimation: nbSteps [
 	self addAnimation: animation
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MfVisualizerElement >> initLevelRepresentation: aName [
 
 	level == 1 ifTrue: [ self addElementsLevelOne: aName ].
@@ -123,7 +121,7 @@ MfVisualizerElement >> initLevelRepresentation: aName [
 	level == 4 ifTrue: [ self addElementsLevelFour: aName ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MfVisualizerElement >> initSections [
 
 	| y |
@@ -140,7 +138,7 @@ MfVisualizerElement >> initSections [
 		self addChild: sect ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MfVisualizerElement >> initialize [
 
 	super initialize.
@@ -148,42 +146,42 @@ MfVisualizerElement >> initialize [
 	self size: 600 @ 900.
 	self border: (BlBorder paint: Color lightGray width: 2).
 	self initSections.
-	squareArray := OrderedCollection new.
+	squareArray := Dictionary  new.
 	patternArray := Dictionary new.
 	nbTracks := 0
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MfVisualizerElement >> level [ 
 ^level
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MfVisualizerElement >> level: aLevel [
 
 	level := aLevel.
 	
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MfVisualizerElement >> nbTracks [
 
 ^nbTracks 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MfVisualizerElement >> patternArray [ 
 
 ^patternArray 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MfVisualizerElement >> squareArray [
 
 ^squareArray
 ]
 
-{ #category : 'adding' }
+{ #category : #adding }
 MfVisualizerElement >> textFrom: aName [
 
 	^ aName asRopedText attributes:

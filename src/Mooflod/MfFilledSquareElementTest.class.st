@@ -1,12 +1,10 @@
 Class {
-	#name : 'MfFilledSquareElementTest',
-	#superclass : 'TestCase',
-	#category : 'Mooflod-FilledSquareWidget',
-	#package : 'Mooflod',
-	#tag : 'FilledSquareWidget'
+	#name : #MfFilledSquareElementTest,
+	#superclass : #TestCase,
+	#category : 'Mooflod-FilledSquareWidget'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 MfFilledSquareElementTest >> testSquareIsFilledCorrectly [
 
 	| square |
@@ -16,7 +14,7 @@ MfFilledSquareElementTest >> testSquareIsFilledCorrectly [
 	self assert: square currentY equals: 112
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MfFilledSquareElementTest >> testSquaredIsNotFilledAtAllAtInitialization [
 
 	| square |

@@ -2,8 +2,8 @@
 Performer sdfor SuperDirt with Roassal visualization
 "
 Class {
-	#name : 'PerformerSuperDirtAndRoassal',
-	#superclass : 'Performer',
+	#name : #PerformerSuperDirtAndRoassal,
+	#superclass : #Performer,
 	#instVars : [
 		'canvasBlock',
 		'canvas',
@@ -13,24 +13,22 @@ Class {
 		'color',
 		'border'
 	],
-	#category : 'Coypu-Performer',
-	#package : 'Coypu',
-	#tag : 'Performer'
+	#category : 'Coypu-Performer'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 PerformerSuperDirtAndRoassal >> canvas [
 
 	^ canvasBlock
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 PerformerSuperDirtAndRoassal >> canvas: anObject [
 
 	canvasBlock := anObject
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 PerformerSuperDirtAndRoassal >> initialize [
 	super initialize.
 	self canvas: [ self updateCanvas ].
@@ -38,7 +36,7 @@ PerformerSuperDirtAndRoassal >> initialize [
 	self initializeRoassalCanvas.
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 PerformerSuperDirtAndRoassal >> initializeRoassalCanvas [
 
 	canvas := RSCanvas new.
@@ -63,7 +61,7 @@ PerformerSuperDirtAndRoassal >> initializeRoassalCanvas [
 		          yourself
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 PerformerSuperDirtAndRoassal >> newBall [
 
 	| e att xs ys |
@@ -89,14 +87,14 @@ PerformerSuperDirtAndRoassal >> newBall [
 	^ e
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 PerformerSuperDirtAndRoassal >> open [
 	canvas open
 		position: 0@0;
 		extent: self currentWorld extent * (1 @ 0.2).
 ]
 
-{ #category : 'playing' }
+{ #category : #playing }
 PerformerSuperDirtAndRoassal >> playFor: aNumberOfSteps [
 	"play the performance to SuperDIrt/SuperCollider audio engine - default freq is 132 bpm 
 	Performance speed can be changed with p freq: a bpm"
@@ -124,7 +122,7 @@ PerformerSuperDirtAndRoassal >> playFor: aNumberOfSteps [
 			 Processor timingPriority)
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 PerformerSuperDirtAndRoassal >> updateCanvas [
 
 	| shapes scale ball |

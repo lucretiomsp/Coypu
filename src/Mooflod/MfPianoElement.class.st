@@ -5,8 +5,8 @@ I represent a 2 octaves piano.
 I should get a call back that it invoked when pressed. 
 "
 Class {
-	#name : 'MfPianoElement',
-	#superclass : 'ToElement',
+	#name : #MfPianoElement,
+	#superclass : #ToElement,
 	#instVars : [
 		'whiteKeyColor',
 		'blackKeyColor',
@@ -16,12 +16,10 @@ Class {
 		'xPositionOfBlackNotes',
 		'blacknotes'
 	],
-	#category : 'Mooflod-PianoKeyboardWidget',
-	#package : 'Mooflod',
-	#tag : 'PianoKeyboardWidget'
+	#category : 'Mooflod-PianoKeyboardWidget'
 }
 
-{ #category : 'examples' }
+{ #category : #examples }
 MfPianoElement class >> openPiano [
 
 	<script>
@@ -37,18 +35,18 @@ MfPianoElement class >> openPiano [
 	^ space
 ]
 
-{ #category : 'visual properties' }
+{ #category : #'visual properties' }
 MfPianoElement >> backgroundPaint [ 
 
 	^ Color black.
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MfPianoElement >> blacknotes [
 	^ blacknotes
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MfPianoElement >> initialize [
 
 	super initialize.
@@ -61,7 +59,7 @@ MfPianoElement >> initialize [
 		startNote: 'C'
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MfPianoElement >> initializeBlackHandlers [
 
 	blacknotes do: [ :n |
@@ -76,7 +74,7 @@ MfPianoElement >> initializeBlackHandlers [
 			do: [ :evt | n background: blackKeyColor ] ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MfPianoElement >> initializeNotes [
 
 	| wN wx bN bx whiteNoteDescriptions blackNoteXArray array |
@@ -118,7 +116,7 @@ MfPianoElement >> initializeNotes [
 	^ blackNoteXArray
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MfPianoElement >> initializeWhiteHandlers [
 
 	whitenotes do: [ :n |
@@ -133,7 +131,7 @@ MfPianoElement >> initializeWhiteHandlers [
 			do: [ :evt | n background: whiteKeyColor ] ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MfPianoElement >> initializeXPositionsOfBlackNotes [
 
 	| cA dA eA fA gA aA bA |
@@ -158,32 +156,32 @@ MfPianoElement >> initializeXPositionsOfBlackNotes [
 		                         bA }
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MfPianoElement >> nOctaves [
 
 ^nOctaves 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MfPianoElement >> nOctaves: num [
 
 	nOctaves := num.
 		self size: self pianoExtent.
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MfPianoElement >> pianoExtent [
 
 	^ (252.5 *nOctaves)  @ 130
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MfPianoElement >> startNote [
 
 ^startNote 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MfPianoElement >> startNote: aNote [
 
 	startNote := aNote.
@@ -191,12 +189,12 @@ MfPianoElement >> startNote: aNote [
 	self initializeNotes 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MfPianoElement >> whiteKeyColor [
 	^ whiteKeyColor
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MfPianoElement >> whitenotes [
 
 ^whitenotes

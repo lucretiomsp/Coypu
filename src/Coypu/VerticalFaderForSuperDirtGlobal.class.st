@@ -2,14 +2,12 @@
 Vertical Fader to control FX on Elektron Syntakt. 
 "
 Class {
-	#name : 'VerticalFaderForSuperDirtGlobal',
-	#superclass : 'VerticalFaderForSuperDirt',
-	#category : 'Coypu-GUI',
-	#package : 'Coypu',
-	#tag : 'GUI'
+	#name : #VerticalFaderForSuperDirtGlobal,
+	#superclass : #VerticalFaderForSuperDirt,
+	#category : 'Coypu-GUI'
 }
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 VerticalFaderForSuperDirtGlobal class >> new: aStringWithADestinationAndAParameter [
 
 " if the paameter is a number, the fader sends out to MIDI via SuperDirt the cursor value for the control change number assigned"
@@ -29,7 +27,7 @@ param := (parsedString  at: 2) asInteger .
 		yourself
 ]
 
-{ #category : 'event handling' }
+{ #category : #'event handling' }
 VerticalFaderForSuperDirtGlobal >> mouseMove: anEvent [
 " the VerticalFaderForSuperDirt modify the contents of the Sequencer in Performance named as destination"
 	| newLocation mappedY cursorY faderBottom range faderTop |

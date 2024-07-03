@@ -1,12 +1,10 @@
 Class {
-	#name : 'MfPerformanceStepsDisplayerTests',
-	#superclass : 'TestCase',
-	#category : 'Mooflod-PerformanceStepsDisplayer',
-	#package : 'Mooflod',
-	#tag : 'PerformanceStepsDisplayer'
+	#name : #MfPerformanceStepsDisplayerTests,
+	#superclass : #TestCase,
+	#category : 'Mooflod-PerformanceStepsDisplayer'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 MfPerformanceStepsDisplayerTests >> testAnimationStartsWhenAddingSteps [
 
 		| displayer |
@@ -18,7 +16,7 @@ MfPerformanceStepsDisplayerTests >> testAnimationStartsWhenAddingSteps [
 	self assert: displayer animationIsRunning equals: true
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MfPerformanceStepsDisplayerTests >> testStepsCantBeOver30000 [
 
 	| displayer |

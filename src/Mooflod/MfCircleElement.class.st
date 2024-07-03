@@ -1,12 +1,10 @@
 Class {
-	#name : 'MfCircleElement',
-	#superclass : 'ToElement',
-	#category : 'Mooflod-MasterDelayWidget',
-	#package : 'Mooflod',
-	#tag : 'MasterDelayWidget'
+	#name : #MfCircleElement,
+	#superclass : #ToElement,
+	#category : 'Mooflod-MasterDelayWidget'
 }
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MfCircleElement >> initialize [
 
 	super initialize.

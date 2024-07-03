@@ -1,12 +1,10 @@
 Class {
-	#name : 'MfMasterDelayElementTest',
-	#superclass : 'TestCase',
-	#category : 'Mooflod-MasterDelayWidget',
-	#package : 'Mooflod',
-	#tag : 'MasterDelayWidget'
+	#name : #MfMasterDelayElementTest,
+	#superclass : #TestCase,
+	#category : 'Mooflod-MasterDelayWidget'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 MfMasterDelayElementTest >> testIfCirclesAreAddedCorrectly [
 
 	| circle |
@@ -16,7 +14,7 @@ MfMasterDelayElementTest >> testIfCirclesAreAddedCorrectly [
 	self assert: circle numberOfCircles equals: 20.
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MfMasterDelayElementTest >> testIfValueIsInitializedCorrectly [
 
 	| circle |
@@ -25,7 +23,7 @@ MfMasterDelayElementTest >> testIfValueIsInitializedCorrectly [
 	self assert: circle delayAmount equals: 12
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MfMasterDelayElementTest >> testNothingAddedIfValueIsTooHigh [
 
 	| circle |

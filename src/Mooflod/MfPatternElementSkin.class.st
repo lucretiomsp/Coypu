@@ -1,12 +1,10 @@
 Class {
-	#name : 'MfPatternElementSkin',
-	#superclass : 'MfBasicMooflodSkin',
-	#category : 'Mooflod-PatternWidget',
-	#package : 'Mooflod',
-	#tag : 'PatternWidget'
+	#name : #MfPatternElementSkin,
+	#superclass : #MfBasicMooflodSkin,
+	#category : 'Mooflod-PatternWidget'
 }
 
-{ #category : 'event handling' }
+{ #category : #'event handling' }
 MfPatternElementSkin >> installLookEvent: anEvent [
 	"when installing the skin, changes the properties of widget mentionned down here"
 

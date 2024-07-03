@@ -1,6 +1,6 @@
 Class {
-	#name : 'MfNumberInputElement',
-	#superclass : 'ToElement',
+	#name : #MfNumberInputElement,
+	#superclass : #ToElement,
 	#instVars : [
 		'plus',
 		'minus',
@@ -9,12 +9,10 @@ Class {
 		'inputLabel',
 		'validateValueBlock'
 	],
-	#category : 'Mooflod-InputWidget',
-	#package : 'Mooflod',
-	#tag : 'InputWidget'
+	#category : 'Mooflod-InputWidget'
 }
 
-{ #category : 'example' }
+{ #category : #example }
 MfNumberInputElement class >> openInputWithSkin [
 
 	<script>
@@ -27,7 +25,7 @@ MfNumberInputElement class >> openInputWithSkin [
 	^ anInput
 ]
 
-{ #category : 'buttons' }
+{ #category : #buttons }
 MfNumberInputElement >> changeValueTo: aValue [
 
 	inputValue text: (self configuredString: aValue asString).
@@ -35,14 +33,14 @@ MfNumberInputElement >> changeValueTo: aValue [
 	value := aValue
 ]
 
-{ #category : 'buttons' }
+{ #category : #buttons }
 MfNumberInputElement >> configuredString: aString [
 
 	^ aString asRopedText attributes: { (BlTextForegroundAttribute paint: Color white) }.
 	
 ]
 
-{ #category : 'buttons' }
+{ #category : #buttons }
 MfNumberInputElement >> createCircle [
 
 	| circle |
@@ -54,7 +52,7 @@ MfNumberInputElement >> createCircle [
 	^ circle
 ]
 
-{ #category : 'buttons' }
+{ #category : #buttons }
 MfNumberInputElement >> decreaseInput [
 	
 	(validateValueBlock value: value - 1) ifTrue: [
@@ -62,7 +60,7 @@ MfNumberInputElement >> decreaseInput [
 		self changeValueTo: value ]
 ]
 
-{ #category : 'buttons' }
+{ #category : #buttons }
 MfNumberInputElement >> increaseInput [
 
 	(validateValueBlock value: value + 1) ifTrue: [
@@ -70,7 +68,7 @@ MfNumberInputElement >> increaseInput [
 		self changeValueTo: value ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MfNumberInputElement >> initialize [
 
 	super initialize.
@@ -87,7 +85,7 @@ MfNumberInputElement >> initialize [
 	self initializePlusButton
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MfNumberInputElement >> initializeInputValue: aValue [
 
 	inputValue := BlTextElement new.
@@ -98,7 +96,7 @@ MfNumberInputElement >> initializeInputValue: aValue [
 	self addChild: inputValue
 ]
 
-{ #category : 'buttons' }
+{ #category : #buttons }
 MfNumberInputElement >> initializeMinusButton [
 
 	| text |
@@ -118,7 +116,7 @@ MfNumberInputElement >> initializeMinusButton [
 	self addChild: minus
 ]
 
-{ #category : 'buttons' }
+{ #category : #buttons }
 MfNumberInputElement >> initializePlusButton [
 
 	| text |
@@ -139,19 +137,19 @@ MfNumberInputElement >> initializePlusButton [
 	self addChild: plus
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MfNumberInputElement >> inputExtent [ 
 
 	^ 300@120
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MfNumberInputElement >> label [
 
 	^ inputLabel 
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MfNumberInputElement >> label: aString [
 
 	inputLabel := BlTextElement new.
@@ -164,41 +162,41 @@ MfNumberInputElement >> label: aString [
 	self addChild: inputLabel
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MfNumberInputElement >> minus [
 	^ minus
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 MfNumberInputElement >> newMooflodSkin [
 
 	^ MfInputElementSkin new
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MfNumberInputElement >> plus [
 	^ plus
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MfNumberInputElement >> validateValueBlock [
 
 	^ validateValueBlock
 ]
 
-{ #category : 'evaluating' }
+{ #category : #evaluating }
 MfNumberInputElement >> validateValueBlock: aBlock [
 
 	validateValueBlock := aBlock
 ]
 
-{ #category : 'evaluating' }
+{ #category : #evaluating }
 MfNumberInputElement >> value [
 
 	^ value
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MfNumberInputElement >> value: anInteger [
 
 	value := anInteger 

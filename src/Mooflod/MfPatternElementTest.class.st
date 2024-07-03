@@ -1,12 +1,10 @@
 Class {
-	#name : 'MfPatternElementTest',
-	#superclass : 'TestCase',
-	#category : 'Mooflod-PatternWidget',
-	#package : 'Mooflod',
-	#tag : 'PatternWidget'
+	#name : #MfPatternElementTest,
+	#superclass : #TestCase,
+	#category : 'Mooflod-PatternWidget'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 MfPatternElementTest >> testIfInstrumentAssignedOnClick [
 
 	| patternElem |
@@ -21,7 +19,7 @@ MfPatternElementTest >> testIfInstrumentAssignedOnClick [
 		self assert: e instrument equals: true "Now all bars have a drum assigned" ]
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MfPatternElementTest >> testInstrumentRemovedOnClick [
 
 	| patternElem |
@@ -38,7 +36,7 @@ MfPatternElementTest >> testInstrumentRemovedOnClick [
 		self assert: e instrument equals: false "Now all bars have no drums, same as creation state" ]
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MfPatternElementTest >> testPatternIsEmptyIfNbStepsNotValid [
 
 	| patternE1 patternE2 |
@@ -55,7 +53,7 @@ MfPatternElementTest >> testPatternIsEmptyIfNbStepsNotValid [
 	self assert: patternE2 nbOfSteps equals: 0 "Bars not added to element, under the min"
 ]
 
-{ #category : 'test-init' }
+{ #category : #'test-init' }
 MfPatternElementTest >> testStepAreInitializedCorrectlyInPattern [
 
 	| patternElem |

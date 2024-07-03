@@ -1,12 +1,10 @@
 Class {
-	#name : 'MfPianoTests',
-	#superclass : 'TestCase',
-	#category : 'Mooflod-PianoKeyboardWidget',
-	#package : 'Mooflod',
-	#tag : 'PianoKeyboardWidget'
+	#name : #MfPianoTests,
+	#superclass : #TestCase,
+	#category : 'Mooflod-PianoKeyboardWidget'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 MfPianoTests >> testNoteChangesOnClick [
 
 	| p |
@@ -19,7 +17,7 @@ MfPianoTests >> testNoteChangesOnClick [
 		self assert: n background paint color equals: Color lightGray ]
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MfPianoTests >> testNotesInitializedCorrectly [
 
 	| p |
@@ -27,7 +25,7 @@ MfPianoTests >> testNotesInitializedCorrectly [
 	self assert: p whitenotes size + p blacknotes size  equals: 24
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MfPianoTests >> testStartingNoteUpdatePiano [
 
 	| p |
@@ -38,7 +36,7 @@ MfPianoTests >> testStartingNoteUpdatePiano [
 		equals: #( 24 39 39 68 36 70 39 39 68 36 )
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MfPianoTests >> testTwoPianoCanHaveDifferentOctaves [
 
 	| p1 p2 |
@@ -51,7 +49,7 @@ MfPianoTests >> testTwoPianoCanHaveDifferentOctaves [
 	self assert: p1 nOctaves ~= p2 nOctaves.
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MfPianoTests >> testTwoPianoCanHaveDifferentStartNote [
 
 	| p1 p2 |
