@@ -8,7 +8,7 @@ Class {
 		'animation',
 		'animationIsRunning'
 	],
-	#category : 'Mooflod-PerformanceStepsDisplayer'
+	#category : #'Mooflod-PerformanceStepsDisplayer'
 }
 
 { #category : #example }
@@ -58,7 +58,7 @@ MfPerformanceStepsDisplayer >> initialize [
 
 	super initialize.
 	self geometry: (BlRoundedRectangleGeometry cornerRadius: 18).
-	self size: 200 @ 100.
+	self size: 100 @ 50.
 	self background: Color black.
 	animationIsRunning := false
 ]
@@ -86,7 +86,7 @@ MfPerformanceStepsDisplayer >> initializeStepsLabel [
 	text text:
 		('Performance elapsed number of steps' asRopedText attributes:
 			 { (BlTextForegroundAttribute paint: Color green) }).
-	text text fontSize: 12.
+	text text fontSize: 6.
 	text constraintsDo: [ :c |
 		c frame horizontal alignCenter.
 		c frame vertical alignTop ].
@@ -99,7 +99,8 @@ MfPerformanceStepsDisplayer >> initializeStepsLabel [
 	label text fontSize: 16.
 	label constraintsDo: [ :c |
 		c frame horizontal alignCenter.
-		c frame vertical alignCenter ].
+	 ].
+	label transformDo: [ :t | t translateBy: 0 @ 25 ].
 	self addChild: label.
 	self addChild: text.
 	self initializeAnimation: 139
