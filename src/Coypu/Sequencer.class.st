@@ -1244,18 +1244,20 @@ Sequencer >> to: aSymbol [
 
 	| announcement isInKeys |
 	isInKeys := false.
-	Performance uniqueInstance keys do: [ :k |
+	Performance uniqueInstance keysDo: [ :k |
 		(k = aSymbol) ifTrue: [
-			(PerformanceRecorder uniqueInstance visualizer patternArray at: aSymbol )
+			(PerformanceRecorder uniqueInstance visualizer patternArray at: k )
 				forSequencer: self.
 			isInKeys := true .
-		(	Performance uniqueInstance visualizer squareArray at: aSymbol )  changeAnimationTime: Performance uniqueInstance freq * 4] ].
+		(	Performance uniqueInstance visualizer squareArray at: k )  changeAnimationTime: Performance uniqueInstance freq * 4] ].
  
 	isInKeys ifFalse: [
+		
 		Performance uniqueInstance visualizer addInstrument: aSymbol.
-		PerformanceRecorder uniqueInstance visualizer patternArray
-			associations last value forSequencer: self .
-			Performance uniqueInstance visualizer squareArray associations last value initializeAnimation: Performance uniqueInstance freq * 4 ].
+		"aSymbol = 'ht' ifTrue: [ self halt ]."
+		(PerformanceRecorder uniqueInstance visualizer patternArray
+			associationAt: aSymbol) value forSequencer: self .
+			(Performance uniqueInstance visualizer squareArray associationAt: aSymbol ) value initializeAnimation: Performance uniqueInstance freq * 4 ].
 	
 
 	self noteIndex: 1.
