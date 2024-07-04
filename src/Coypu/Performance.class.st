@@ -182,7 +182,7 @@ Performance >> dirtMIDIDevice: aString [
 Performance >> displayVisualizer: aBoolean [
 
 	displayVisualizer := aBoolean.
-	visualizer := MfVisualizerElement new level: 3.
+	visualizer := MfVisualizerElement new level: 4.
 	stepVisualizer := MfPerformanceStepsDisplayer new.
 	isVisualizerOpen := false
 ]

@@ -19,9 +19,9 @@ MfVisualizerElement class >> exampleVisualizer [
 
 	<script>
 	| v space |
-	v := self new level: 3.
+	v := self new level: 4.
 	v addInstrument: 'Kick'.
-	v addInstrument: 'Snare'.
+	v addInstrument: 'TpSampler'.
 	v initAnimation: 400.
 	space := BlSpace new.
 	space root layout: BlFlowLayout horizontal.
@@ -33,9 +33,21 @@ MfVisualizerElement class >> exampleVisualizer [
 ]
 
 { #category : #adding }
-MfVisualizerElement >> addElementsLevelFour: aChildren [ 
+MfVisualizerElement >> addElementsLevelFour: aName [
 
-	
+	| sect slider1 slider2 |
+	self addElementsLevelTwo: aName.
+	sect := self children at: nbTracks.
+	slider1 := ICSlider new name: 'aaa'.
+	slider2 := ICSlider new.
+	slider1 transformDo: [ :q | q translateBy: 100 @ 100 ].
+	slider2 transformDo: [ :q | q translateBy: 400 @ 100 ].
+	sect addChild: slider1.
+	sect addChild: slider2.
+	self
+		setLabelToSlider: aName
+		firstSlider: slider1
+		secondSlider: slider2
 ]
 
 { #category : #adding }
@@ -62,19 +74,7 @@ MfVisualizerElement >> addElementsLevelOne: aName [
 { #category : #adding }
 MfVisualizerElement >> addElementsLevelThree: aName [
 
-	| sect slider1 slider2 |
-	self addElementsLevelTwo: aName.
-	sect := self children at: nbTracks.
-	slider1 := ICSlider new name: 'aaa'.
-	slider2 := ICSlider new.
-	slider1 transformDo: [ :q | q translateBy: 100 @ 100 ].
-	slider2 transformDo: [ :q | q translateBy: 400 @ 100 ].
-	sect addChild: slider1.
-	sect addChild: slider2.
-	self
-		setLabelToSlider: aName
-		firstSlider: slider1
-		secondSlider: slider2
+
 ]
 
 { #category : #adding }
@@ -213,22 +213,52 @@ MfVisualizerElement >> setLabelToSlider: aName firstSlider: aSlider secondSlider
 	aName = 'Kick' ifTrue: [
 		sliderArray at: 'KickDrive' put: aSlider.
 		sliderArray at: 'KickDecay' put: anOtherSlider.
+		aSlider
+			changeMinValueLabelTo:  0.1;
+			changeMaxValueLabelTo: 5.
+		anOtherSlider
+					changeMinValueLabelTo: 0.1;
+				changeMaxValueLabelTo: 2.
 		isValidName := true ].
 	aName = 'TpSampler' ifTrue: [
 		sliderArray at: 'TpSamplerIndex' put: aSlider.
 		sliderArray at: 'TpSamplerEffect' put: anOtherSlider.
+		aSlider
+					changeMinValueLabelTo: 1;
+			changeMaxValueLabelTo: 3.
+		anOtherSlider
+					changeMinValueLabelTo: 0;
+			changeMaxValueLabelTo: 10.
 		isValidName := true ].
 	aName = 'PsgPlus' ifTrue: [
 		sliderArray at: 'PsgPlusIndex' put: aSlider.
 		sliderArray at: 'PsgPlusLfoAmount' put: anOtherSlider.
+		aSlider
+					changeMinValueLabelTo: 0;
+			changeMaxValueLabelTo: 3.
+		anOtherSlider
+					changeMinValueLabelTo: 0;
+			changeMaxValueLabelTo: 10.
 		isValidName := true ].
 	aName = 'Chordy' ifTrue: [
 		sliderArray at: 'ChordyMode' put: aSlider.
 		sliderArray at: 'ChordyCutoff' put: anOtherSlider.
+		aSlider
+					changeMinValueLabelTo: 1;
+			changeMaxValueLabelTo: 3.
+		anOtherSlider
+					changeMinValueLabelTo: 0;
+			changeMaxValueLabelTo: 10.
 		isValidName := true ].
 	aName = 'Fm2Op' ifTrue: [
 		sliderArray at: 'Fm2OpModIndex' put: aSlider.
 		sliderArray at: 'F2OpModRatio' put: anOtherSlider.
+		aSlider
+					changeMinValueLabelTo: 1;
+			changeMaxValueLabelTo: 3.
+		anOtherSlider
+					changeMinValueLabelTo: 0.1;
+			changeMaxValueLabelTo: 12.
 		isValidName := true ].
 	isValidName ifTrue: [
 		self addLabelToSliders: aSlider secondSlider: anOtherSlider ]
