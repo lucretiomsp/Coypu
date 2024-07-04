@@ -5,7 +5,8 @@ Class {
 		'nbTracks',
 		'animation',
 		'squareArray',
-		'patternArray'
+		'patternArray',
+		'sliderArray'
 	],
 	#classVars : [
 		'level'
@@ -18,9 +19,8 @@ MfVisualizerElement class >> exampleVisualizer [
 
 	<script>
 	| v space |
-	v := self new level: 2.
+	v := self new level: 3.
 	v addInstrument: 'Kick'.
-	v level: 1.
 	v addInstrument: 'Snare'.
 	v initAnimation: 400.
 	space := BlSpace new.
@@ -60,9 +60,21 @@ MfVisualizerElement >> addElementsLevelOne: aName [
 ]
 
 { #category : #adding }
-MfVisualizerElement >> addElementsLevelThree: aChildren [ 
+MfVisualizerElement >> addElementsLevelThree: aName [
 
-	
+	| sect slider1 slider2 |
+	self addElementsLevelTwo: aName.
+	sect := self children at: nbTracks.
+	slider1 := ICSlider new name: 'aaa'.
+	slider2 := ICSlider new.
+	slider1 transformDo: [ :q | q translateBy: 100 @ 100 ].
+	slider2 transformDo: [ :q | q translateBy: 400 @ 100 ].
+	sect addChild: slider1.
+	sect addChild: slider2.
+	self
+		setLabelToSlider: aName
+		firstSlider: slider1
+		secondSlider: slider2
 ]
 
 { #category : #adding }
@@ -75,7 +87,7 @@ MfVisualizerElement >> addElementsLevelTwo: aName [
 		           min: 4;
 		           max: 16;
 		           nbsteps: 16.
-	pattern transformDo: [ :q | q translateBy: 20 @ 60 ].
+	pattern transformDo: [ :q | q translateBy: 20 @ 50 ].
 	"pattern forSequencer: aName ."
 	patternArray at: aName put: pattern.
 	sect addChild: pattern
@@ -87,6 +99,23 @@ MfVisualizerElement >> addInstrument: aName [
 	nbTracks < 5 ifFalse: [ ^ self ].
 	nbTracks := nbTracks + 1.
 	self initLevelRepresentation: aName
+]
+
+{ #category : #adding }
+MfVisualizerElement >> addLabelToSliders: aSlider secondSlider: anOtherSlider [
+
+	| label1 label2 sect |
+	sect := self children at: nbTracks.
+	label1 := BlTextElement new.
+	label2 := BlTextElement new.
+	label1 text: (self textFrom: (sliderArray keyAtValue: aSlider)).
+	label2 text: (self textFrom: (sliderArray keyAtValue: anOtherSlider)).
+	label1 text fontSize: 12.
+	label2 text fontSize: 12.
+	label1 transformDo: [ :t | t translateBy: 132 @ 85 ].
+	label2 transformDo: [ :t | t translateBy: 432 @ 85 ].
+	sect addChild: label1.
+	sect addChild: label2
 ]
 
 { #category : #accessing }
@@ -146,8 +175,9 @@ MfVisualizerElement >> initialize [
 	self size: 600 @ 900.
 	self border: (BlBorder paint: Color lightGray width: 2).
 	self initSections.
-	squareArray := Dictionary  new.
+	squareArray := Dictionary new.
 	patternArray := Dictionary new.
+	sliderArray := Dictionary new.
 	nbTracks := 0
 ]
 
@@ -173,6 +203,35 @@ MfVisualizerElement >> nbTracks [
 MfVisualizerElement >> patternArray [ 
 
 ^patternArray 
+]
+
+{ #category : #initialization }
+MfVisualizerElement >> setLabelToSlider: aName firstSlider: aSlider secondSlider: anOtherSlider [
+
+	| isValidName |
+	isValidName := false.
+	aName = 'Kick' ifTrue: [
+		sliderArray at: 'KickDrive' put: aSlider.
+		sliderArray at: 'KickDecay' put: anOtherSlider.
+		isValidName := true ].
+	aName = 'TpSampler' ifTrue: [
+		sliderArray at: 'TpSamplerIndex' put: aSlider.
+		sliderArray at: 'TpSamplerEffect' put: anOtherSlider.
+		isValidName := true ].
+	aName = 'PsgPlus' ifTrue: [
+		sliderArray at: 'PsgPlusIndex' put: aSlider.
+		sliderArray at: 'PsgPlusLfoAmount' put: anOtherSlider.
+		isValidName := true ].
+	aName = 'Chordy' ifTrue: [
+		sliderArray at: 'ChordyMode' put: aSlider.
+		sliderArray at: 'ChordyCutoff' put: anOtherSlider.
+		isValidName := true ].
+	aName = 'Fm2Op' ifTrue: [
+		sliderArray at: 'Fm2OpModIndex' put: aSlider.
+		sliderArray at: 'F2OpModRatio' put: anOtherSlider.
+		isValidName := true ].
+	isValidName ifTrue: [
+		self addLabelToSliders: aSlider secondSlider: anOtherSlider ]
 ]
 
 { #category : #accessing }

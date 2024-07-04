@@ -28,7 +28,7 @@ Class {
 		'uniqueInstance',
 		'orbit'
 	],
-	#category : 'Coypu-Performance'
+	#category : #'Coypu-Performance'
 }
 
 { #category : #'as yet unclassified' }
@@ -181,10 +181,10 @@ Performance >> dirtMIDIDevice: aString [
 { #category : #accessing }
 Performance >> displayVisualizer: aBoolean [
 
-displayVisualizer := aBoolean.
-visualizer := MfVisualizerElement new level: 2.
+	displayVisualizer := aBoolean.
+	visualizer := MfVisualizerElement new level: 3.
 	stepVisualizer := MfPerformanceStepsDisplayer new.
-isVisualizerOpen := false
+	isVisualizerOpen := false
 ]
 
 { #category : #accessing }
