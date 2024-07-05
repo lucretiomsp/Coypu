@@ -8,7 +8,7 @@ Class {
 		'delayTime',
 		'nbOfChilds'
 	],
-	#category : 'Mooflod-MasterDelayWidget'
+	#category : #'Mooflod-MasterDelayWidget'
 }
 
 { #category : #example }
@@ -31,7 +31,7 @@ MfMasterDelayElement class >> exampleSimpleFractalCircle [
 { #category : #initialization }
 MfMasterDelayElement >> circleExtent [
 
-	^ 390 @ 390
+	^ 104 @ 104
 ]
 
 { #category : #internal }
@@ -108,7 +108,7 @@ MfMasterDelayElement >> initialize [
 	self border: (BlBorder paint: Color black width: 3).
 	self layout: BlFrameLayout new.
 	delayAmount := 0.
-		delayTime := 0
+	delayTime := 0
 ]
 
 { #category : #accessing }
@@ -126,10 +126,10 @@ MfMasterDelayElement >> rColor [
 { #category : #internal }
 MfMasterDelayElement >> updateCircles [
 
-	currentX := 390.
-	currentY := 390.
+	currentX := 104.
+	currentY := 104.
 	1 to: delayAmount / 4 do: [ :i |
-		currentX := currentX - 15.
-		currentY := currentY - 15.
+		currentX := currentX - 4.
+		currentY := currentY - 4.
 		self createCircle: currentX y: currentY color: self rColor ]
 ]

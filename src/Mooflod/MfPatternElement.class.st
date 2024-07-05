@@ -9,7 +9,7 @@ Class {
 		'min',
 		'nbsteps'
 	],
-	#category : 'Mooflod-PatternWidget'
+	#category : #'Mooflod-PatternWidget'
 }
 
 { #category : #examples }
@@ -19,8 +19,8 @@ MfPatternElement class >> exampleSimplePattern [
 	| patternelem space |
 	patternelem := self new
 		               min: 4;
-		               max: 16;
-		               nbsteps: 12.
+		               max: 32;
+		               nbsteps: 32.
 	space := BlSpace new.
 	space root addChild: patternelem.
 	space toTheme: MfMooflodTheme new.

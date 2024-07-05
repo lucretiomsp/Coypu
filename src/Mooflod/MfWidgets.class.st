@@ -1,7 +1,7 @@
 Class {
 	#name : #MfWidgets,
 	#superclass : #Object,
-	#category : 'Mooflod-Widgets'
+	#category : #'Mooflod-Widgets'
 }
 
 { #category : #example }
@@ -39,7 +39,7 @@ MfWidgets class >> exampleDisplayingAllWidgets [
 	space root addChild: aPiano.
 	space root addChild: timer.
 	space root addChild: k.
-	space root childrenDo: [ :child | child margin: (BlInsets all: 10) ].
+	space root childrenDo: [ :child | child margin: (BlInsets all: 5) ].
 
 	space show
 ]

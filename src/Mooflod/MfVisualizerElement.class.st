@@ -145,9 +145,10 @@ MfVisualizerElement >> initAnimation: nbSteps [
 MfVisualizerElement >> initLevelRepresentation: aName [
 
 	level == 1 ifTrue: [ self addElementsLevelOne: aName ].
-	level == 2 ifTrue: [ self addElementsLevelTwo: aName].
+	level == 2 ifTrue: [ self addElementsLevelTwo: aName ].
 	level == 3 ifTrue: [ self addElementsLevelThree: aName ].
-	level == 4 ifTrue: [ self addElementsLevelFour: aName ]
+	level == 4 ifTrue: [ self addElementsLevelFour: aName ].
+		level == 5 ifTrue: [ self addElementsLevelFour: aName ].
 ]
 
 { #category : #initialization }
@@ -159,11 +160,11 @@ MfVisualizerElement >> initSections [
 		| sect |
 		sect := BlElement new.
 		sect geometry: BlRectangleGeometry new.
-		sect size: 600 @ 180.
+		sect size: 600 @ 140.
 		sect border: (BlBorder paint: Color black width: 2).
 		sect layout: BlFrameLayout new.
 		sect transformDo: [ :t | t translateBy: 0 @ y ].
-		y := y + 180.
+		y := y + 140.
 		self addChild: sect ]
 ]
 
@@ -172,7 +173,7 @@ MfVisualizerElement >> initialize [
 
 	super initialize.
 	self geometry: BlRectangleGeometry new.
-	self size: 600 @ 900.
+	self size: 600 @ 700.
 	self border: (BlBorder paint: Color lightGray width: 2).
 	self initSections.
 	squareArray := Dictionary new.

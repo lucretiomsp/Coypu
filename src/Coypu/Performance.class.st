@@ -22,7 +22,8 @@ Class {
 		'activeDSP',
 		'perfVisualizer',
 		'trackVisualizers',
-		'isVisualizerOpen'
+		'isVisualizerOpen',
+		'space'
 	],
 	#classInstVars : [
 		'uniqueInstance',
@@ -128,6 +129,38 @@ Performance >> add: aSequencer channel: anIntegerBetween1And16 [
 	super add: aSequencer.
 ]
 
+{ #category : #adding }
+Performance >> addMasterWidgets [
+
+	| delayW cutoffW container slider textElt |
+	delayW := MfMasterDelayElement new.
+	slider := ICLogarithmicSlider new.
+	delayW transformDo: [ :q | q translateBy: 50 @ 300 ].
+	cutoffW := ICMasterCutoff new.
+	container := BlElement new
+		             layout: BlLinearLayout vertical;
+		             constraintsDo: [ :c |
+			             c horizontal fitContent.
+			             c vertical fitContent ].
+
+	container addChild: cutoffW.
+	container addChild: slider.
+		container childrenDo: [ :child |
+		child margin: (BlInsets vertical: 10) ].
+	container transformDo: [ :q | q translateBy: 50 @ 150 ].
+	slider minValue: cutoffW minValue.
+	slider maxValue: cutoffW maxValue.
+
+	textElt := BlTextElement new text: slider minValue asRopedText.
+	container addChild: textElt.
+
+	slider callBack: [ :value |
+		cutoffW setValue: value.
+		textElt text: value asRopedText ].
+	space root addChild: container.
+	space root addChild: delayW
+]
+
 { #category : #accessing }
 Performance >> at: key put: anObject [
 	"Set the value at key to be anObject.  If key is not found, create a
@@ -182,7 +215,7 @@ Performance >> dirtMIDIDevice: aString [
 Performance >> displayVisualizer: aBoolean [
 
 	displayVisualizer := aBoolean.
-	visualizer := MfVisualizerElement new level: 4.
+	visualizer := MfVisualizerElement new level: 5.
 	stepVisualizer := MfPerformanceStepsDisplayer new.
 	isVisualizerOpen := false
 ]
@@ -273,12 +306,12 @@ Performance >> muteAll [
 { #category : #accessing }
 Performance >> openVisualizers [
 
-	| space |
 	space := BlSpace new.
-	space root layout: BlFlowLayout horizontal.
+	visualizer transformDo: [ :q | q translateBy: 200 @ 0 ].
 	space root addChild: stepVisualizer.
 	space root addChild: visualizer.
-	space root childrenDo: [ :child | child margin: (BlInsets horizontal: 10) ].
+	"space root childrenDo: [ :child |
+		child margin: (BlInsets horizontal: 10) ]."
 	space toTheme: MfMooflodTheme new.
 	space show
 ]
@@ -417,7 +450,8 @@ Performance >> playFor: aNumberOfSteps [
 			stepVisualizer initializeAnimation: self freq.
 			self openVisualizers.
 			self isVisualizerOpen: true ].
-		isVisualizerOpen ifTrue: [ stepVisualizer animationIsRunning: true ].
+		isVisualizerOpen ifTrue: [ stepVisualizer animationIsRunning: true.
+			visualizer level = 5 ifTrue: [self addMasterWidgets].].
 		stepVisualizer pauseAnimation: 15 / bpm / 60 * (aNumberOfSteps / 16).
 		visualizer initAnimation: 15 / bpm / 60 * (aNumberOfSteps / 16) ].
 
@@ -681,6 +715,12 @@ Performance >> solo: aKeyOrAnArrayOfKeys [
 			canvas removeShape: (rsGroupDictionary at: i) asShape ] ]] ] fork
 " 
 				keys ~= aKeyOrAnArrayOfKeys ] ]
+]
+
+{ #category : #accessing }
+Performance >> space [ 
+
+^space
 ]
 
 { #category : #accessing }
