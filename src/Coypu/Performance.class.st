@@ -450,8 +450,9 @@ Performance >> playFor: aNumberOfSteps [
 			stepVisualizer initializeAnimation: self freq.
 			self openVisualizers.
 			self isVisualizerOpen: true ].
-		isVisualizerOpen ifTrue: [ stepVisualizer animationIsRunning: true.
-			visualizer level = 5 ifTrue: [self addMasterWidgets].].
+		isVisualizerOpen ifTrue: [
+			stepVisualizer animationIsRunning: true.
+			 ].
 		stepVisualizer pauseAnimation: 15 / bpm / 60 * (aNumberOfSteps / 16).
 		visualizer initAnimation: 15 / bpm / 60 * (aNumberOfSteps / 16) ].
 
