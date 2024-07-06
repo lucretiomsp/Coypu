@@ -40,6 +40,38 @@ ByteString >> asDirtArrayOfValues [
 ]
 
 { #category : #'*Coypu' }
+ByteString >> asDirtIndex [
+	" returns a sequencer containing a trig for each integer and a rest for whatever other character and with the notes coresponding to the integeres inside the string - tokens must be separated by string"
+
+	| seq tokens gates notesAStrings notesAsNumbers dirtString |
+	gates := ''.
+	tokens := self splitOn: ','.
+	dirtString := ''.
+	tokens do: [ :i |
+		(i includes: $*)
+			ifTrue: [ gates := gates , i multiplyStringsInString ]
+			ifFalse: [
+				(i includes: $/)
+					ifTrue: [ gates := gates , i withNRests ]
+					ifFalse: [ gates := gates , i ] ] ].
+
+	notesAStrings := (gates copyReplaceAll: '~' with: '')
+		                 findBetweenSubstrings: ' '.
+
+	notesAsNumbers := notesAStrings collect: [ :i |
+		                  i ~= ' ' ifTrue: [ i asNumber ] ].
+
+	notesAsNumbers do: [ :i |
+		dirtString := dirtString , i asString , ' ' ].
+
+	seq := gates asSeqGates asSeq.
+	seq dirtNotes: dirtString.
+	seq index: notesAsNumbers asArray.
+
+	^ seq
+]
+
+{ #category : #'*Coypu' }
 ByteString >> asDirtNotes [
 	" returns a sequencer containing a trig for each integer and a rest for whatever other character and with the notes coresponding to the integeres inside the string - tokens must be separated by string"
 
