@@ -65,7 +65,7 @@ ByteString >> asDirtIndex [
 		dirtString := dirtString , i asString , ' ' ].
 
 	seq := gates asSeqGates asSeq.
-	seq dirtNotes: dirtString.
+
 	seq index: notesAsNumbers asArray.
 
 	^ seq
