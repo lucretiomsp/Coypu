@@ -8,7 +8,7 @@ Class {
 	#instVars : [
 		'keymap'
 	],
-	#category : 'Mooflod-KeyboardWidget'
+	#category : #'Mooflod-KeyboardWidget'
 }
 
 { #category : #examples }
@@ -24,13 +24,12 @@ MfKeyboardElement class >> exampleSimpleKeyboard [
 	<script>
 	| k space |
 	k := MfKeyboardElement new.
-	space := BlSpace new.
-	space root
-		background: Color orange;
-		layout: BlFlowLayout horizontal.
+	space := BlSpace new extent: World extent x / 6 @ World extent y.
+	space useMorphicHost.
+	space toTheme: MfMooflodTheme new.
 	k transformDo: [ :c |
-		c rotateBy: -90.
-		c translateBy: 50 @ 350 ].
+		c rotateBy: 90.
+		c translateBy: -270 @ 300 ].
 	space root addChild: k.
 	space show.
 	^ space

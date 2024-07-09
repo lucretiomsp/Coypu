@@ -308,8 +308,8 @@ Performance >> muteAll [
 { #category : #accessing }
 Performance >> openVisualizers [
 
-	space := BlSpace new.
-	visualizer transformDo: [ :q | q translateBy: 200 @ 0 ].
+	space := BlSpace new extent: World extent x / 3 @ World extent y.
+	space useMorphicHost.
 	space root addChild: stepVisualizer.
 	space root addChild: visualizer.
 	"space root childrenDo: [ :child |

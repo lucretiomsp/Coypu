@@ -65,7 +65,8 @@ MfVisualizerElement >> addElementsLevelOne: aName [
 	label transformDo: [ :t | t translateBy: 20 @ 17 ].
 	square transformDo: [ :q | q translateBy: 550 @ 10 ].
 	name transformDo: [ :t | t translateBy: 130 @ 17 ].
-	squareArray at:aName put: square.
+	squareArray at: aName put: square.
+	self addIconToInstrument: aName.
 	sect addChild: square.
 	sect addChild: label.
 	sect addChild: name
@@ -74,7 +75,7 @@ MfVisualizerElement >> addElementsLevelOne: aName [
 { #category : #adding }
 MfVisualizerElement >> addElementsLevelThree: aName [
 
-
+	self addElementsLevelTwo: aName
 ]
 
 { #category : #adding }
@@ -91,6 +92,16 @@ MfVisualizerElement >> addElementsLevelTwo: aName [
 	"pattern forSequencer: aName ."
 	patternArray at: aName put: pattern.
 	sect addChild: pattern
+]
+
+{ #category : #adding }
+MfVisualizerElement >> addIconToInstrument: aName [
+
+	| sect icon |
+	sect := self children at: nbTracks.
+	aName = 'Kick' ifTrue: [ icon := ICBassDrumIcon new ].
+	icon transformDo: [ :t | t translateBy: 360 @ 10 ].
+	sect addChild: icon
 ]
 
 { #category : #adding }
