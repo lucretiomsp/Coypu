@@ -11,7 +11,7 @@ Class {
 	#classVars : [
 		'value'
 	],
-	#category : 'Mooflod-TimerWidget'
+	#category : #'Mooflod-TimerWidget'
 }
 
 { #category : #example }
@@ -110,6 +110,9 @@ MfTimerElement >> newMooflodSkin [
 { #category : #initialization }
 MfTimerElement >> replaceTimerTextValue: aValue [
 
+ self children size = 2 ifTrue: [ self removeChildAt: 1 ]
+ifFalse: [  ].
+
 	timerValue := BlTextElement new.
 	timerValue text: aValue asString asRopedText.
 	timerValue text fontSize: 100.
@@ -118,7 +121,8 @@ MfTimerElement >> replaceTimerTextValue: aValue [
 	timerValue constraintsDo: [ :c |
 		c frame horizontal alignCenter.
 		c frame vertical alignCenter ].
-	self addChild: timerValue
+	self addChild: timerValue.
+
 ]
 
 { #category : #accessing }
@@ -153,5 +157,5 @@ MfTimerElement >> value [
 MfTimerElement >> value: aValue [
 
 	value := aValue.
-	self initializeTimerValue .
+	self initializeTimerValue
 ]
