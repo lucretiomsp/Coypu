@@ -308,16 +308,18 @@ Performance >> muteAll [
 { #category : #accessing }
 Performance >> openVisualizers [
 
-	space := BlSpace new extent: World extent x / 3 @ World extent y.
+	space := BlSpace new extent:
+		         World extent x * (5 / 12) @ World extent y.
 	space useMorphicHost.
-	stepVisualizer transformDo: [ :q | q translateBy: 250 @ 0 ].
+	stepVisualizer transformDo: [ :q | q translateBy: 100 @ 0 ].
 	visualizer transformDo: [ :q | q translateBy: 0 @ 60 ].
 	space root addChild: stepVisualizer.
 	space root addChild: visualizer.
 	space root childrenDo: [ :child |
 		child margin: (BlInsets vertical: 10) ].
 	space toTheme: MfMooflodTheme new.
-	space show
+	space show.
+	space position: World extent x * (10 / 12) @ 20
 ]
 
 { #category : #'LiveCoding - satelliteEvent' }

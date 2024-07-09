@@ -63,7 +63,7 @@ MfVisualizerElement >> addElementsLevelOne: aName [
 	label text: (self textFrom: 'Instrument :').
 	label text fontSize: 12.
 	label transformDo: [ :t | t translateBy: 20 @ 17 ].
-	square transformDo: [ :q | q translateBy: 450 @ 10 ].
+	square transformDo: [ :q | q translateBy: 450 @ 2 ].
 	name transformDo: [ :t | t translateBy: 90 @ 17 ].
 	squareArray at: aName put: square.
 	self addIconToInstrument: aName.

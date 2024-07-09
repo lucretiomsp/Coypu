@@ -1255,8 +1255,8 @@ Sequencer >> to: aSymbol [
 	isInKeys ifFalse: [
 		Performance uniqueInstance visualizer addInstrument: aSymbol.
 		"aSymbol = 'ht' ifTrue: [ self halt ]."
-		(Performance uniqueInstance visualizer patternArray
-			 associationAt: aSymbol) value forSequencer: self.
+		Performance uniqueInstance visualizer level = 1 ifFalse: [(Performance uniqueInstance visualizer patternArray associationAt:
+			 aSymbol) value forSequencer: self].
 		(Performance uniqueInstance visualizer squareArray associationAt:
 			 aSymbol) value initializeAnimation:
 			Performance uniqueInstance freq * 4 ].

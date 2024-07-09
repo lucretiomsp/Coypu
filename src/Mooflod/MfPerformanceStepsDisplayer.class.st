@@ -58,7 +58,7 @@ MfPerformanceStepsDisplayer >> initialize [
 
 	super initialize.
 	self geometry: (BlRoundedRectangleGeometry cornerRadius: 18).
-	self size: 100 @ 50.
+	self size: 300 @ 50.
 	self background: Color black.
 	animationIsRunning := false
 ]
@@ -82,28 +82,22 @@ MfPerformanceStepsDisplayer >> initializeAnimation: aBpm [
 { #category : #initialization }
 MfPerformanceStepsDisplayer >> initializeStepsLabel [
 
-	text := BlTextElement new.
-	text text:
-		('Performance elapsed number of steps' asRopedText attributes:
-			 { (BlTextForegroundAttribute paint: Color green) }).
-	text text fontSize: 6.
-	text constraintsDo: [ :c |
-		c frame horizontal alignCenter.
-		c frame vertical alignTop ].
-	text transformDo: [ :t | t translateBy: 0 @ 10 ].
+	    text := BlTextElement new.
+    text text:
+        ('Performance elapsed number of steps' asRopedText attributes:
+             { (BlTextForegroundAttribute paint: Color green) }).
+    text text fontSize: 14.
+    text transformDo: [ :t | t translateBy: 15 @ 18 ].
 
 
-	label := BlTextElement new.
-	label text: (nbSteps asString asRopedText attributes:
-			 { (BlTextForegroundAttribute paint: Color green) }).
-	label text fontSize: 16.
-	label constraintsDo: [ :c |
-		c frame horizontal alignCenter.
-	 ].
-	label transformDo: [ :t | t translateBy: 0 @ 25 ].
-	self addChild: label.
-	self addChild: text.
-	self initializeAnimation: 139
+    label := BlTextElement new.
+    label text: (nbSteps asString asRopedText attributes:
+             { (BlTextForegroundAttribute paint: Color green) }).
+    label text fontSize: 16.
+    label transformDo: [ :t | t translateBy: 250 @ 19 ].
+    self addChild: label.
+    self addChild: text.
+    self initializeAnimation: 139
 ]
 
 { #category : #accessing }
