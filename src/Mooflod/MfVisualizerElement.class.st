@@ -266,6 +266,12 @@ MfVisualizerElement >> setLabelToSlider: aName firstSlider: aSlider secondSlider
 ]
 
 { #category : #accessing }
+MfVisualizerElement >> sliderArray [		
+	
+^sliderArray 
+]
+
+{ #category : #accessing }
 MfVisualizerElement >> squareArray [
 
 ^squareArray

@@ -145,7 +145,7 @@ Performance >> addMasterWidgets [
 
 	container addChild: cutoffW.
 	container addChild: slider.
-		container childrenDo: [ :child |
+	container childrenDo: [ :child |
 		child margin: (BlInsets vertical: 10) ].
 	container transformDo: [ :q | q translateBy: 50 @ 150 ].
 	slider minValue: cutoffW minValue.
@@ -157,6 +157,8 @@ Performance >> addMasterWidgets [
 	slider callBack: [ :value |
 		cutoffW setValue: value.
 		textElt text: value asRopedText ].
+		self visualizer sliderArray at: 'MasterDelay' put: delayW .
+		self visualizer sliderArray at: 'MasterCutoff' put: cutoffW .
 	space root addChild: container.
 	space root addChild: delayW
 ]
