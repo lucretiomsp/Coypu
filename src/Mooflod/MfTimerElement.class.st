@@ -6,7 +6,8 @@ Class {
 		'timerValue',
 		'annulus',
 		'currentAngle',
-		'decreasingAngleStep'
+		'decreasingAngleStep',
+		'textArray'
 	],
 	#classVars : [
 		'value'
@@ -57,6 +58,17 @@ MfTimerElement >> defaultGeometry [
 ]
 
 { #category : #initialization }
+MfTimerElement >> initialize [
+
+	super initialize.
+	value := 60.
+	textArray := Dictionary new.
+	self initializeTimerValue.
+	self initializeAnnulus.
+	
+]
+
+{ #category : #initialization }
 MfTimerElement >> initializeAnimation [
 
 	| started |
@@ -97,8 +109,16 @@ MfTimerElement >> initializeTimerValue [
 
 	decreasingAngleStep := 360 / value.
 	currentAngle := 360.
-	self replaceTimerTextValue: value.
-	self initializeAnnulus
+	timerValue := BlTextElement new.
+	timerValue text: value asString asRopedText.
+	timerValue text fontSize: 11.
+	timerValue text attributes:
+		{ (BlTextForegroundAttribute paint: Color yellow) }.
+	timerValue constraintsDo: [ :c |
+		c frame horizontal alignCenter.
+		c frame vertical alignCenter ].
+	textArray at: 'text' put: timerValue .
+	self addChild: timerValue
 ]
 
 { #category : #skin }
@@ -111,18 +131,31 @@ MfTimerElement >> newMooflodSkin [
 MfTimerElement >> replaceTimerTextValue: aValue [
 
 	self children size = 2
-		ifTrue: [ self removeChildAt: 1 ]
+		ifTrue: [ (textArray at: 'text') removeFromParent ]
 		ifFalse: [  ].
 
 	timerValue := BlTextElement new.
 	timerValue text: aValue asString asRopedText.
-	timerValue text fontSize: 20.
+	timerValue text fontSize: 11.
 	timerValue text attributes:
 		{ (BlTextForegroundAttribute paint: Color yellow) }.
 	timerValue constraintsDo: [ :c |
 		c frame horizontal alignCenter.
 		c frame vertical alignCenter ].
+		textArray at: 'text' put: timerValue.
 	self addChild: timerValue
+]
+
+{ #category : #accessing }
+MfTimerElement >> setValue: aValue [
+
+	self value:  69 + (12 * ((aValue / 440) log: 2)).
+]
+
+{ #category : #accessing }
+MfTimerElement >> textArray [ 
+
+^textArray 
 ]
 
 { #category : #accessing }
@@ -157,5 +190,5 @@ MfTimerElement >> value [
 MfTimerElement >> value: aValue [
 
 	value := aValue.
-	self initializeTimerValue
+	self replaceTimerTextValue: aValue 
 ]

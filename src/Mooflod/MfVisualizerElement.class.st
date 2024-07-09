@@ -81,24 +81,30 @@ MfVisualizerElement >> addElementsLevelThree: aName [
 	number := MfTimerElement new value: 60.
 	label := BlTextElement new.
 	label text fontSize: 12.
-	label transformDo: [ :t | t translateBy: 325 @ 3 ].
+	label transformDo: [ :t | t translateBy: 315 @ 3 ].
 	number transformDo: [ :q | q translateBy: 320 @ 20 ].
 	sect addChild: number.
 	sect addChild: label.
 	aName = 'Kick' ifTrue: [
 		sliderArray at: 'KickNote' put: number.
-		label text: (self textFrom: 'KickNote') ].
+		label text: ('KickNote' asRopedText attributes:
+				 { (BlTextForegroundAttribute paint: Color yellow) }) ].
 	aName = 'TpSampler' ifTrue: [
 		sliderArray at: 'TpSamplerNote' put: number.
-		label text: (self textFrom: 'TpSamplerNote') ].
+		label text: ('TpSamplerNote' asRopedText attributes:
+				 { (BlTextForegroundAttribute paint: Color yellow) }) ].
 	aName = 'PsgPlus' ifTrue: [
-		sliderArray at: 'PsgPlusNote' put: number ].
+		sliderArray at: 'PsgPlusNote' put: number.
+		label text: ('PsgPlusNote' asRopedText attributes:
+				 { (BlTextForegroundAttribute paint: Color yellow) }) ].
 	aName = 'Fm2Op' ifTrue: [
 		sliderArray at: 'Fm2OpNote' put: number.
-		label text: (self textFrom: 'Fm2OpNote') ].
+		label text: ('Fm2OpNote' asRopedText attributes:
+				 { (BlTextForegroundAttribute paint: Color yellow) }) ].
 	aName = 'Chordy' ifTrue: [
 		sliderArray at: 'ChordyNote' put: number.
-		label text: (self textFrom: 'ChordyNote') ]
+		label text: ('ChordyNote' asRopedText attributes:
+				 { (BlTextForegroundAttribute paint: Color yellow) }) ]
 ]
 
 { #category : #adding }
@@ -123,6 +129,10 @@ MfVisualizerElement >> addIconToInstrument: aName [
 	| sect icon |
 	sect := self children at: nbTracks.
 	aName = 'Kick' ifTrue: [ icon := ICBassDrumIcon new ].
+		aName = 'Fm2Op' ifTrue: [ icon := ICFm2OpIcon new ].
+			aName = 'TpSampler' ifTrue: [ icon := ICPercussionsIcon new ].
+				aName = 'PsgPlus' ifTrue: [ icon := ICWaveIcon new ].
+					aName = 'Chordy' ifTrue: [ icon := ICMonoLeadIcon  new ].
 	icon transformDo: [ :t | t translateBy: 400 @ 23 ].
 	sect addChild: icon
 ]
@@ -146,8 +156,8 @@ MfVisualizerElement >> addLabelToSliders: aSlider secondSlider: anOtherSlider [
 	label2 text: (self textFrom: (sliderArray keyAtValue: anOtherSlider)).
 	label1 text fontSize: 12.
 	label2 text fontSize: 12.
-	label1 transformDo: [ :t | t translateBy: 45 @ 65 ].
-	label2 transformDo: [ :t | t translateBy: 245 @ 65 ].
+	label1 transformDo: [ :t | t translateBy: 15 @ 65 ].
+	label2 transformDo: [ :t | t translateBy: 215 @ 65 ].
 	sect addChild: label1.
 	sect addChild: label2
 ]
