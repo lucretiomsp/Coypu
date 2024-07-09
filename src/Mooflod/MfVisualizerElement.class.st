@@ -40,8 +40,8 @@ MfVisualizerElement >> addElementsLevelFour: aName [
 	sect := self children at: nbTracks.
 	slider1 := ICSlider new name: 'aaa'.
 	slider2 := ICSlider new.
-	slider1 transformDo: [ :q | q translateBy: 100 @ 100 ].
-	slider2 transformDo: [ :q | q translateBy: 400 @ 100 ].
+	slider1 transformDo: [ :q | q translateBy: 10 @ 75 ].
+	slider2 transformDo: [ :q | q translateBy: 210 @ 75 ].
 	sect addChild: slider1.
 	sect addChild: slider2.
 	self
@@ -57,14 +57,14 @@ MfVisualizerElement >> addElementsLevelOne: aName [
 	sect := self children at: nbTracks.
 	name := BlTextElement new.
 	name text: (self textFrom: aName).
-	name text fontSize: 18.
+	name text fontSize: 12.
 	square := MfPulsingSquare new.
 	label := BlTextElement new.
 	label text: (self textFrom: 'Instrument :').
-	label text fontSize: 18.
+	label text fontSize: 12.
 	label transformDo: [ :t | t translateBy: 20 @ 17 ].
-	square transformDo: [ :q | q translateBy: 550 @ 10 ].
-	name transformDo: [ :t | t translateBy: 130 @ 17 ].
+	square transformDo: [ :q | q translateBy: 450 @ 10 ].
+	name transformDo: [ :t | t translateBy: 90 @ 17 ].
 	squareArray at: aName put: square.
 	self addIconToInstrument: aName.
 	sect addChild: square.
@@ -88,7 +88,7 @@ MfVisualizerElement >> addElementsLevelTwo: aName [
 		           min: 4;
 		           max: 16;
 		           nbsteps: 16.
-	pattern transformDo: [ :q | q translateBy: 20 @ 50 ].
+	pattern transformDo: [ :q | q translateBy: 10 @ 35 ].
 	"pattern forSequencer: aName ."
 	patternArray at: aName put: pattern.
 	sect addChild: pattern
@@ -100,7 +100,7 @@ MfVisualizerElement >> addIconToInstrument: aName [
 	| sect icon |
 	sect := self children at: nbTracks.
 	aName = 'Kick' ifTrue: [ icon := ICBassDrumIcon new ].
-	icon transformDo: [ :t | t translateBy: 340 @ 0 ].
+	icon transformDo: [ :t | t translateBy: 400 @ 23 ].
 	sect addChild: icon
 ]
 
@@ -123,8 +123,8 @@ MfVisualizerElement >> addLabelToSliders: aSlider secondSlider: anOtherSlider [
 	label2 text: (self textFrom: (sliderArray keyAtValue: anOtherSlider)).
 	label1 text fontSize: 12.
 	label2 text fontSize: 12.
-	label1 transformDo: [ :t | t translateBy: 132 @ 85 ].
-	label2 transformDo: [ :t | t translateBy: 432 @ 85 ].
+	label1 transformDo: [ :t | t translateBy: 45 @ 65 ].
+	label2 transformDo: [ :t | t translateBy: 245 @ 65 ].
 	sect addChild: label1.
 	sect addChild: label2
 ]
@@ -171,11 +171,11 @@ MfVisualizerElement >> initSections [
 		| sect |
 		sect := BlElement new.
 		sect geometry: BlRectangleGeometry new.
-		sect size: 600 @ 140.
+		sect size: 600 @ 110.
 		sect border: (BlBorder paint: Color black width: 2).
 		sect layout: BlFrameLayout new.
 		sect transformDo: [ :t | t translateBy: 0 @ y ].
-		y := y + 140.
+		y := y + 110.
 		self addChild: sect ]
 ]
 
@@ -184,7 +184,7 @@ MfVisualizerElement >> initialize [
 
 	super initialize.
 	self geometry: BlRectangleGeometry new.
-	self size: 600 @ 700.
+	self size: 600 @ 550.
 	self border: (BlBorder paint: Color lightGray width: 2).
 	self initSections.
 	squareArray := Dictionary new.

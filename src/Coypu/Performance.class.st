@@ -135,7 +135,7 @@ Performance >> addMasterWidgets [
 	| delayW cutoffW container slider textElt |
 	delayW := MfMasterDelayElement new.
 	slider := ICLogarithmicSlider new.
-	delayW transformDo: [ :q | q translateBy: 50 @ 300 ].
+	delayW transformDo: [ :q | q translateBy: 300 @ 610 ].
 	cutoffW := ICMasterCutoff new.
 	container := BlElement new
 		             layout: BlLinearLayout vertical;
@@ -147,7 +147,7 @@ Performance >> addMasterWidgets [
 	container addChild: slider.
 	container childrenDo: [ :child |
 		child margin: (BlInsets vertical: 10) ].
-	container transformDo: [ :q | q translateBy: 50 @ 150 ].
+	container transformDo: [ :q | q translateBy: 50 @ 610 ].
 	slider minValue: cutoffW minValue.
 	slider maxValue: cutoffW maxValue.
 
@@ -157,8 +157,8 @@ Performance >> addMasterWidgets [
 	slider callBack: [ :value |
 		cutoffW setValue: value.
 		textElt text: value asRopedText ].
-		self visualizer sliderArray at: 'MasterDelay' put: delayW .
-		self visualizer sliderArray at: 'MasterCutoff' put: cutoffW .
+	self visualizer sliderArray at: 'MasterDelay' put: delayW.
+	self visualizer sliderArray at: 'MasterCutoff' put: cutoffW.
 	space root addChild: container.
 	space root addChild: delayW
 ]
@@ -310,11 +310,12 @@ Performance >> openVisualizers [
 
 	space := BlSpace new extent: World extent x / 3 @ World extent y.
 	space useMorphicHost.
-	visualizer transformDo: [ :q  | q translateBy: 200@0 ].
+	stepVisualizer transformDo: [ :q | q translateBy: 250 @ 0 ].
+	visualizer transformDo: [ :q | q translateBy: 0 @ 60 ].
 	space root addChild: stepVisualizer.
 	space root addChild: visualizer.
 	space root childrenDo: [ :child |
-		child margin: (BlInsets horizontal: 10) ].
+		child margin: (BlInsets vertical: 10) ].
 	space toTheme: MfMooflodTheme new.
 	space show
 ]
@@ -452,7 +453,7 @@ Performance >> playFor: aNumberOfSteps [
 			stepVisualizer addSteps: self transportStep.
 			stepVisualizer initializeAnimation: self freq.
 			self openVisualizers.
-			MfKeyboardElement new openInMooflod.
+			"MfKeyboardElement new openInMooflod."
 			self isVisualizerOpen: true ].
 		isVisualizerOpen ifTrue: [ stepVisualizer animationIsRunning: true ].
 		stepVisualizer pauseAnimation: 15 / bpm / 60 * (aNumberOfSteps / 16).
