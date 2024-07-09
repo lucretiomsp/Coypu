@@ -198,6 +198,24 @@ MfKeyboardElement >> newButton: anExtent [
 		  background: Color black
 ]
 
+{ #category : #'as yet unclassified' }
+MfKeyboardElement >> openInMooflod [
+
+	| space |
+	space := BlSpace new extent: World extent x / 6 @ World extent y.
+	space useMorphicHost.
+	space toTheme: MfMooflodTheme new.
+
+	self transformDo: [ :c |
+		c rotateBy: 90.
+		c translateBy: -270 @ 300 ].
+	space root addChild: self.
+
+	space root position: 0 @ 20.
+		space show.
+	^ space
+]
+
 { #category : #geometry }
 MfKeyboardElement >> rowHeight [
 	^ 35

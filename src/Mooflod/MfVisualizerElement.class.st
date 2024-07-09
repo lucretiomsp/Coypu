@@ -100,7 +100,7 @@ MfVisualizerElement >> addIconToInstrument: aName [
 	| sect icon |
 	sect := self children at: nbTracks.
 	aName = 'Kick' ifTrue: [ icon := ICBassDrumIcon new ].
-	icon transformDo: [ :t | t translateBy: 360 @ 10 ].
+	icon transformDo: [ :t | t translateBy: 340 @ 0 ].
 	sect addChild: icon
 ]
 

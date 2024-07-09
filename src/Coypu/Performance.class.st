@@ -310,10 +310,11 @@ Performance >> openVisualizers [
 
 	space := BlSpace new extent: World extent x / 3 @ World extent y.
 	space useMorphicHost.
+	visualizer transformDo: [ :q  | q translateBy: 200@0 ].
 	space root addChild: stepVisualizer.
 	space root addChild: visualizer.
-	"space root childrenDo: [ :child |
-		child margin: (BlInsets horizontal: 10) ]."
+	space root childrenDo: [ :child |
+		child margin: (BlInsets horizontal: 10) ].
 	space toTheme: MfMooflodTheme new.
 	space show
 ]
@@ -451,10 +452,9 @@ Performance >> playFor: aNumberOfSteps [
 			stepVisualizer addSteps: self transportStep.
 			stepVisualizer initializeAnimation: self freq.
 			self openVisualizers.
+			MfKeyboardElement new openInMooflod.
 			self isVisualizerOpen: true ].
-		isVisualizerOpen ifTrue: [
-			stepVisualizer animationIsRunning: true.
-			 ].
+		isVisualizerOpen ifTrue: [ stepVisualizer animationIsRunning: true ].
 		stepVisualizer pauseAnimation: 15 / bpm / 60 * (aNumberOfSteps / 16).
 		visualizer initAnimation: 15 / bpm / 60 * (aNumberOfSteps / 16) ].
 
