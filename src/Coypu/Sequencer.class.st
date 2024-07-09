@@ -1246,7 +1246,7 @@ Sequencer >> to: aSymbol [
 	isInKeys := false.
 	Performance uniqueInstance keysDo: [ :k |
 		k = aSymbol ifTrue: [
-			(PerformanceRecorder uniqueInstance visualizer patternArray at: k)
+			(Performance uniqueInstance visualizer patternArray at: k)
 				forSequencer: self.
 			isInKeys := true.
 			(Performance uniqueInstance visualizer squareArray at: k)
@@ -1255,12 +1255,13 @@ Sequencer >> to: aSymbol [
 	isInKeys ifFalse: [
 		Performance uniqueInstance visualizer addInstrument: aSymbol.
 		"aSymbol = 'ht' ifTrue: [ self halt ]."
-		(PerformanceRecorder uniqueInstance visualizer patternArray
+		(Performance uniqueInstance visualizer patternArray
 			 associationAt: aSymbol) value forSequencer: self.
 		(Performance uniqueInstance visualizer squareArray associationAt:
 			 aSymbol) value initializeAnimation:
 			Performance uniqueInstance freq * 4 ].
-(Performance uniqueInstance visualizer level = 5 )ifTrue: [ Performance uniqueInstance addMasterWidgets  ].
+	Performance uniqueInstance visualizer level = 5 ifTrue: [
+		Performance uniqueInstance addMasterWidgets ].
 
 	self noteIndex: 1.
 	self seqKey: aSymbol asString.
