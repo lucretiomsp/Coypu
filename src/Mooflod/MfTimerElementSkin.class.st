@@ -1,7 +1,7 @@
 Class {
 	#name : #MfTimerElementSkin,
 	#superclass : #MfBasicMooflodSkin,
-	#category : 'Mooflod-TimerWidget'
+	#category : #'Mooflod-TimerWidget'
 }
 
 { #category : #'event handling' }
@@ -11,6 +11,6 @@ MfTimerElementSkin >> installLookEvent: anEvent [
 	super installLookEvent: anEvent.
 	anEvent elementDo: [ :e |
 		e geometry: e defaultGeometry.
-		e size: 300 @ 300.
+		e size: 65 @ 65.
 		e background: e backgroundPaint ]
 ]

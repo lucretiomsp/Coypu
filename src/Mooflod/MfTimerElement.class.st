@@ -82,14 +82,14 @@ MfTimerElement >> initializeAnimation [
 { #category : #initialization }
 MfTimerElement >> initializeAnnulus [
 
-	annulus := BlElement new background: Color lightOrange.
-	annulus size: 300 @ 300.
+	annulus := BlElement new background: Color yellow.
+	annulus size: 65 @ 65.
 	annulus geometry: self annulusGeometry.
 	annulus constraintsDo: [ :c |
 		c frame horizontal alignCenter.
 		c frame vertical alignCenter ].
 	self addChild: annulus.
-	self initializeAnimation 
+	self initializeAnimation
 ]
 
 { #category : #initialization }
@@ -110,19 +110,19 @@ MfTimerElement >> newMooflodSkin [
 { #category : #initialization }
 MfTimerElement >> replaceTimerTextValue: aValue [
 
- self children size = 2 ifTrue: [ self removeChildAt: 1 ]
-ifFalse: [  ].
+	self children size = 2
+		ifTrue: [ self removeChildAt: 1 ]
+		ifFalse: [  ].
 
 	timerValue := BlTextElement new.
 	timerValue text: aValue asString asRopedText.
-	timerValue text fontSize: 100.
+	timerValue text fontSize: 20.
 	timerValue text attributes:
-		{ (BlTextForegroundAttribute paint: Color lightOrange) }.
+		{ (BlTextForegroundAttribute paint: Color yellow) }.
 	timerValue constraintsDo: [ :c |
 		c frame horizontal alignCenter.
 		c frame vertical alignCenter ].
-	self addChild: timerValue.
-
+	self addChild: timerValue
 ]
 
 { #category : #accessing }

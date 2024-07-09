@@ -36,7 +36,7 @@ MfVisualizerElement class >> exampleVisualizer [
 MfVisualizerElement >> addElementsLevelFour: aName [
 
 	| sect slider1 slider2 |
-	self addElementsLevelTwo: aName.
+	self addElementsLevelThree: aName.
 	sect := self children at: nbTracks.
 	slider1 := ICSlider new name: 'aaa'.
 	slider2 := ICSlider new.
@@ -75,7 +75,30 @@ MfVisualizerElement >> addElementsLevelOne: aName [
 { #category : #adding }
 MfVisualizerElement >> addElementsLevelThree: aName [
 
-	self addElementsLevelTwo: aName
+	| number label sect |
+	self addElementsLevelTwo: aName.
+	sect := self children at: nbTracks.
+	number := MfTimerElement new value: 60.
+	label := BlTextElement new.
+	label text fontSize: 12.
+	label transformDo: [ :t | t translateBy: 325 @ 3 ].
+	number transformDo: [ :q | q translateBy: 320 @ 20 ].
+	sect addChild: number.
+	sect addChild: label.
+	aName = 'Kick' ifTrue: [
+		sliderArray at: 'KickNote' put: number.
+		label text: (self textFrom: 'KickNote') ].
+	aName = 'TpSampler' ifTrue: [
+		sliderArray at: 'TpSamplerNote' put: number.
+		label text: (self textFrom: 'TpSamplerNote') ].
+	aName = 'PsgPlus' ifTrue: [
+		sliderArray at: 'PsgPlusNote' put: number ].
+	aName = 'Fm2Op' ifTrue: [
+		sliderArray at: 'Fm2OpNote' put: number.
+		label text: (self textFrom: 'Fm2OpNote') ].
+	aName = 'Chordy' ifTrue: [
+		sliderArray at: 'ChordyNote' put: number.
+		label text: (self textFrom: 'ChordyNote') ]
 ]
 
 { #category : #adding }
