@@ -6,7 +6,8 @@ Class {
 		'animation',
 		'squareArray',
 		'patternArray',
-		'sliderArray'
+		'sliderArray',
+		'tracks'
 	],
 	#classVars : [
 		'level'
@@ -37,7 +38,7 @@ MfVisualizerElement >> addElementsLevelFour: aName [
 
 	| sect slider1 slider2 |
 	self addElementsLevelThree: aName.
-	sect := self children at: nbTracks.
+	sect := self children at: nbTracks .
 	slider1 := ICSlider new name: 'aaa'.
 	slider2 := ICSlider new.
 	slider1 transformDo: [ :q | q translateBy: 10 @ 75 ].
@@ -54,7 +55,7 @@ MfVisualizerElement >> addElementsLevelFour: aName [
 MfVisualizerElement >> addElementsLevelOne: aName [
 
 	| label name sect square |
-	sect := self children at: nbTracks.
+	sect := self children at: nbTracks .
 	name := BlTextElement new.
 	name text: (self textFrom: aName).
 	name text fontSize: 12.
@@ -112,7 +113,7 @@ MfVisualizerElement >> addElementsLevelTwo: aName [
 
 	| pattern sect |
 	self addElementsLevelOne: aName.
-	sect := self children at: nbTracks.
+	sect := self children at: nbTracks .
 	pattern := MfPatternElement new
 		           min: 4;
 		           max: 16;
@@ -141,8 +142,10 @@ MfVisualizerElement >> addIconToInstrument: aName [
 MfVisualizerElement >> addInstrument: aName [
 
 	nbTracks < 5 ifFalse: [ ^ self ].
-	nbTracks := nbTracks + 1.
-	self initLevelRepresentation: aName
+   nbTracks := nbTracks + 1.
+	self initLevelRepresentation: aName.
+	
+	'ADDED INSTRUMENT' , nbTracks asString traceCr
 ]
 
 { #category : #adding }
@@ -166,6 +169,22 @@ MfVisualizerElement >> addLabelToSliders: aSlider secondSlider: anOtherSlider [
 MfVisualizerElement >> animation [
 
 	^ animation
+]
+
+{ #category : #action }
+MfVisualizerElement >> cleanRow [
+
+	self childrenDo: [ :c | c childrenDo: [ :cc | cc removeFromParent ] ].
+	nbTracks := 0
+]
+
+{ #category : #action }
+MfVisualizerElement >> cleanRow: anInteger [
+
+	| sect |
+	sect := self children at: anInteger .
+	sect removeChildren.
+	self nbTracks: anInteger - 1
 ]
 
 { #category : #action }
@@ -223,6 +242,13 @@ MfVisualizerElement >> initialize [
 	squareArray := Dictionary new.
 	patternArray := Dictionary new.
 	sliderArray := Dictionary new.
+	tracks := Dictionary new.
+	tracks
+		at: #Kick put: 1;
+		at: #TpSampler put: 2;
+		at: #Fm2Op put: 3;
+		at: #PsgPlus put: 4;
+		at: #Chordy put: 5.
 	nbTracks := 0
 ]
 
@@ -245,6 +271,12 @@ MfVisualizerElement >> nbTracks [
 ]
 
 { #category : #accessing }
+MfVisualizerElement >> nbTracks: anInteger [
+
+	nbTracks := anInteger 
+]
+
+{ #category : #accessing }
 MfVisualizerElement >> patternArray [ 
 
 ^patternArray 
@@ -259,50 +291,50 @@ MfVisualizerElement >> setLabelToSlider: aName firstSlider: aSlider secondSlider
 		sliderArray at: 'KickDrive' put: aSlider.
 		sliderArray at: 'KickDecay' put: anOtherSlider.
 		aSlider
-			changeMinValueLabelTo:  0.1;
+			changeMinValueLabelTo: 0.1;
 			changeMaxValueLabelTo: 5.
 		anOtherSlider
-					changeMinValueLabelTo: 0.1;
-				changeMaxValueLabelTo: 2.
+			changeMinValueLabelTo: 0.01;
+			changeMaxValueLabelTo: 2.
 		isValidName := true ].
 	aName = 'TpSampler' ifTrue: [
 		sliderArray at: 'TpSamplerIndex' put: aSlider.
 		sliderArray at: 'TpSamplerEffect' put: anOtherSlider.
 		aSlider
-					changeMinValueLabelTo: 1;
-			changeMaxValueLabelTo: 3.
+			changeMinValueLabelTo: 0;
+			changeMaxValueLabelTo: 22.
 		anOtherSlider
-					changeMinValueLabelTo: 0;
-			changeMaxValueLabelTo: 10.
+			changeMinValueLabelTo: 0;
+			changeMaxValueLabelTo: 1.
 		isValidName := true ].
 	aName = 'PsgPlus' ifTrue: [
 		sliderArray at: 'PsgPlusIndex' put: aSlider.
 		sliderArray at: 'PsgPlusLfoAmount' put: anOtherSlider.
 		aSlider
-					changeMinValueLabelTo: 0;
+			changeMinValueLabelTo: 0;
 			changeMaxValueLabelTo: 3.
 		anOtherSlider
-					changeMinValueLabelTo: 0;
+			changeMinValueLabelTo: 0;
 			changeMaxValueLabelTo: 10.
 		isValidName := true ].
 	aName = 'Chordy' ifTrue: [
 		sliderArray at: 'ChordyMode' put: aSlider.
 		sliderArray at: 'ChordyCutoff' put: anOtherSlider.
 		aSlider
-					changeMinValueLabelTo: 1;
+			changeMinValueLabelTo: 1;
 			changeMaxValueLabelTo: 3.
 		anOtherSlider
-					changeMinValueLabelTo: 0;
+			changeMinValueLabelTo: 0;
 			changeMaxValueLabelTo: 10.
 		isValidName := true ].
 	aName = 'Fm2Op' ifTrue: [
 		sliderArray at: 'Fm2OpModIndex' put: aSlider.
 		sliderArray at: 'F2OpModRatio' put: anOtherSlider.
 		aSlider
-					changeMinValueLabelTo: 1;
+			changeMinValueLabelTo: 1;
 			changeMaxValueLabelTo: 3.
 		anOtherSlider
-					changeMinValueLabelTo: 0.1;
+			changeMinValueLabelTo: 0.1;
 			changeMaxValueLabelTo: 12.
 		isValidName := true ].
 	isValidName ifTrue: [
@@ -326,4 +358,16 @@ MfVisualizerElement >> textFrom: aName [
 
 	^ aName asRopedText attributes:
 		  { (BlTextForegroundAttribute paint: Color green) }
+]
+
+{ #category : #accessing }
+MfVisualizerElement >> tracks [
+
+	^ tracks
+]
+
+{ #category : #accessing }
+MfVisualizerElement >> tracks: anObject [
+
+	tracks := anObject
 ]

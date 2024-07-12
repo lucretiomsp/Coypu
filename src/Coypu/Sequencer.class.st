@@ -365,6 +365,13 @@ Sequencer >> duty: aStringOrAnArray [
 ]
 
 { #category : #'LiveCoding-ExtraParams' }
+Sequencer >> effect: aStringOrAnArray [
+	"convenience method to avoid extra typing when we want to modify the effect, i.e. dry/wet "
+
+	self extra: #Effect values: aStringOrAnArray asDirtArrayOfValues
+]
+
+{ #category : #'LiveCoding-ExtraParams' }
 Sequencer >> extra: aSymbol values: aStringWithIndexes [
 	"stores extra values to control synths parameters on Kyma values can be a Number, an Array or  a valid string of Coypu Notation"
 
@@ -1246,22 +1253,26 @@ Sequencer >> to: aSymbol [
 	isInKeys := false.
 	Performance uniqueInstance keysDo: [ :k |
 		k = aSymbol ifTrue: [
+			
+(Performance uniqueInstance  class = PerformanceRecorder) ifTrue: [  
 			(Performance uniqueInstance visualizer patternArray at: k)
 				forSequencer: self.
 			isInKeys := true.
 			(Performance uniqueInstance visualizer squareArray at: k)
-				changeAnimationTime: Performance uniqueInstance freq * 4 ] ].
+				changeAnimationTime: Performance uniqueInstance freq * 4 ] ]].
 
 	isInKeys ifFalse: [
-		Performance uniqueInstance visualizer addInstrument: aSymbol.
+		(Performance uniqueInstance  class = PerformanceRecorder) ifTrue:
+		[Performance uniqueInstance visualizer addInstrument: aSymbol.
 		"aSymbol = 'ht' ifTrue: [ self halt ]."
-		Performance uniqueInstance visualizer level = 1 ifFalse: [(Performance uniqueInstance visualizer patternArray associationAt:
-			 aSymbol) value forSequencer: self].
+		Performance uniqueInstance visualizer level = 1 ifFalse: [
+			(Performance uniqueInstance visualizer patternArray associationAt:
+				 aSymbol) value forSequencer: self ].
 		(Performance uniqueInstance visualizer squareArray associationAt:
 			 aSymbol) value initializeAnimation:
 			Performance uniqueInstance freq * 4 ].
 	Performance uniqueInstance visualizer level = 5 ifTrue: [
-		Performance uniqueInstance addMasterWidgets ].
+		Performance uniqueInstance addMasterWidgets ]].
 
 	self noteIndex: 1.
 	self seqKey: aSymbol asString.

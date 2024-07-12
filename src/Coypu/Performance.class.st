@@ -8,11 +8,7 @@ Class {
 	#superclass : #Dictionary,
 	#type : #variable,
 	#instVars : [
-		'displayVisualizer',
-		'visualizer',
-		'stepVisualizer',
 		'performer',
-		'canvas',
 		'freq',
 		'backup',
 		'bpm',
@@ -20,9 +16,6 @@ Class {
 		'activeProcess',
 		'dirtMIDIDevice',
 		'activeDSP',
-		'perfVisualizer',
-		'trackVisualizers',
-		'isVisualizerOpen',
 		'space'
 	],
 	#classInstVars : [
@@ -214,15 +207,6 @@ Performance >> dirtMIDIDevice: aString [
 ]
 
 { #category : #accessing }
-Performance >> displayVisualizer: aBoolean [
-
-	displayVisualizer := aBoolean.
-	visualizer := MfVisualizerElement new level: 5.
-	stepVisualizer := MfPerformanceStepsDisplayer new.
-	isVisualizerOpen := false
-]
-
-{ #category : #accessing }
 Performance >> freq [
 	"better to convert it to Float to avoid OSC sending issues"
 	^ freq asFloat
@@ -232,10 +216,7 @@ Performance >> freq [
 Performance >> freq: aDurationInSeconds [
 	"use for playback speed"
 
-	freq := aDurationInSeconds asFloat.
-	isVisualizerOpen ifTrue: [
-		visualizer squareArray do: [ :s |
-			s changeAnimationTime: freq * 4 ] ]
+	freq := aDurationInSeconds asFloat
 ]
 
 { #category : #'LiveCoding - Performance' }
@@ -250,20 +231,12 @@ Performance >> initialize: aSize [
 	activeProcess := Process new terminate.
 	self muteAll.
 	freq := 132 bpm.
-
-	displayVisualizer := false.
 ]
 
 { #category : #testing }
 Performance >> isPerformance [
 
 	^ true
-]
-
-{ #category : #accessing }
-Performance >> isVisualizerOpen: aBoolean [ 
-
-isVisualizerOpen:= aBoolean 
 ]
 
 { #category : #accessing }
@@ -277,21 +250,20 @@ Performance >> length [
 	^ maxLength
 ]
 
-{ #category : #'as yet unclassified' }
-Performance >> levelOfDetail: anInteger [
-
-	visualizer level: anInteger 
-]
-
 { #category : #'muting and soloing' }
 Performance >> mute: aKeyOrAnArrayOfKeys [
 	"remove all the keys in the arrayOfKeys from the Performance or remove just a single key"
 
+	| tracks |
+	tracks := #( #Kick #TpSampler #Fm2Op #PsgPlus #Chordy ).
+
 	aKeyOrAnArrayOfKeys isArray
 		ifTrue: [
 		aKeyOrAnArrayOfKeys do: [ :i | self removeKey: i ifAbsent: [  ] ] ]
-		ifFalse: [ self removeKey: aKeyOrAnArrayOfKeys ].
-
+		ifFalse: [
+			self removeKey: aKeyOrAnArrayOfKeys.
+			Performance uniqueInstance visualizer cleanRow:
+				(tracks indexOf: aKeyOrAnArrayOfKeys) ]
 ]
 
 { #category : #'muting and soloing' }
@@ -303,23 +275,6 @@ Performance >> muteAll [
 	self keysDo: [ :i | self removeKey: i ifAbsent: [ nil ] ].
 
 
-]
-
-{ #category : #accessing }
-Performance >> openVisualizers [
-
-	space := BlSpace new extent:
-		         World extent x * (5 / 12) @ World extent y.
-	space useMorphicHost.
-	stepVisualizer transformDo: [ :q | q translateBy: 100 @ 0 ].
-	visualizer transformDo: [ :q | q translateBy: 0 @ 60 ].
-	space root addChild: stepVisualizer.
-	space root addChild: visualizer.
-	space root childrenDo: [ :child |
-		child margin: (BlInsets vertical: 10) ].
-	space toTheme: MfMooflodTheme new.
-	space show.
-	space position: World extent x * (10 / 12) @ 20
 ]
 
 { #category : #'LiveCoding - satelliteEvent' }
@@ -398,20 +353,6 @@ Performance >> pacaDance [
 ]
 
 { #category : #accessing }
-Performance >> perfVisualizer [
-
-	^ perfVisualizer
-]
-
-{ #category : #accessing }
-Performance >> perfVisualizer: aPerfVisualizer [
-	"assing a perfVisualzier and initialize a new Dictionary for trackVisualziers"
-
-	perfVisualizer := aPerfVisualizer.
-	self trackVisualizers: Dictionary new.
-]
-
-{ #category : #accessing }
 Performance >> performer [
 
 	^ performer
@@ -450,17 +391,7 @@ Performance >> playFor: aNumberOfSteps [
 
 	self activeProcess isTerminated ifTrue: [
 		self performer playFor: aNumberOfSteps ].
-	displayVisualizer ifTrue: [
-		isVisualizerOpen ifFalse: [
-			stepVisualizer addSteps: self transportStep.
-			stepVisualizer initializeAnimation: self freq.
-			self openVisualizers.
-			"MfKeyboardElement new openInMooflod."
-			self isVisualizerOpen: true ].
-		isVisualizerOpen ifTrue: [ stepVisualizer animationIsRunning: true ].
-		stepVisualizer pauseAnimation: 15 / bpm / 60 * (aNumberOfSteps / 16).
-		visualizer initAnimation: 15 / bpm / 60 * (aNumberOfSteps / 16) ].
-
+	
 	self resetAllSequencers
 ]
 
@@ -732,8 +663,6 @@ Performance >> space [
 { #category : #accessing }
 Performance >> stop [
 
-	visualizer cleanVisualizer.
-	stepVisualizer animationIsRunning: false.
 	self activeProcess terminate
 ]
 
@@ -744,18 +673,6 @@ Performance >> swap: firstKey with: secondKey [
 	tempValue := self at: firstKey.
 	self at: firstKey put: (self at: secondKey).
 	self at: secondKey put: tempValue
-]
-
-{ #category : #accessing }
-Performance >> trackVisualizers [
-
-	^ trackVisualizers
-]
-
-{ #category : #accessing }
-Performance >> trackVisualizers: aDictionary [
-
-	trackVisualizers := aDictionary
 ]
 
 { #category : #accessing }
@@ -773,9 +690,4 @@ Performance >> unsolo: aKeyInPerformance [
 	"convenience method to unsolo a key in the performance"
 	
 	self restore
-]
-
-{ #category : #accessing }
-Performance >> visualizer [
-	^visualizer 
 ]
