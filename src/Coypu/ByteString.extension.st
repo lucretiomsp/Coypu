@@ -115,10 +115,10 @@ ByteString >> asDirtPureNotes [
 	" retruns just the note numbers parsed - tokens must be separated by string"
 
 	| seq tokens gates notesAStrings notesAsNumbers dirtString announcement |
-	thisContext sender selector asString = 'hexBeat:' ifFalse:[
-	announcement := RhythmAnnouncement new.
-	announcement rhythm: '''' , self asString , ''' asDirtPureNotes'.
-	PerformanceRecorder uniqueInstance announce: announcement].
+	thisContext sender selector = #DoIt ifTrue: [
+		announcement := RhythmAnnouncement new.
+		announcement rhythm: '''' , self asString , ''' asDirtPureNotes'.
+		PerformanceRecorder uniqueInstance announce: announcement ].
 	gates := ''.
 	tokens := self splitOn: ','.
 	dirtString := ''.

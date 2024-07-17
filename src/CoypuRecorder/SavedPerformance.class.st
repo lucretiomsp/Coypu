@@ -94,6 +94,12 @@ Only called when recording a replay of a Performance."
 		(collectionOfCommands last time asTime addMilliSeconds: anAnnouncement delay).
 ]
 
+{ #category : 'as yet unclassified' }
+SavedPerformance >> appliesExtraValues: anAnnouncement [
+
+collectionOfCommands last extraValues: anAnnouncement extraValues
+]
+
 { #category : 'calculating' }
 SavedPerformance >> appliesNotes: anAnnouncement [
 	" Add the seconds of the delay to the time of the last RecordedCommands

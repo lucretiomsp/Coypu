@@ -300,16 +300,16 @@ Sequencer >> dirtNotes: aStringWithNotes [
 	"add into a Sequencer anotes from a String in which numbers can be multiplicated"
 
 	| tokens dNotes arrayOfNotes announcement |
-	thisContext sender selector asString = 'asDirtNotes' ifFalse:[ 
-	announcement := DirtNotesAnnouncement new.
-	announcement newDirtNotes: aStringWithNotes.
-	PerformanceRecorder uniqueInstance announce: announcement].
+	thisContext sender selector = #DoIt ifTrue: [
+		announcement := DirtNotesAnnouncement new.
+		announcement newDirtNotes: aStringWithNotes.
+		PerformanceRecorder uniqueInstance announce: announcement ].
 	tokens := aStringWithNotes splitOn: ','.
 	dNotes := ' '.
 	tokens do: [ :i |
-		(i includes: $*)
-			ifTrue: [ dNotes := dNotes , i multiplyStringsInString ]
-			ifFalse: [ dNotes := dNotes , i ] ].
+		dNotes := (i includes: $*)
+			          ifTrue: [ dNotes , i multiplyStringsInString ]
+			          ifFalse: [ dNotes , i ] ].
 
 	arrayOfNotes := (dNotes findBetweenSubstrings: '  ') collect: [ :each |
 		                each asNumber ].
@@ -376,7 +376,21 @@ Sequencer >> effect: aStringOrAnArray [
 Sequencer >> extra: aSymbol values: aStringWithIndexes [
 	"stores extra values to control synths parameters on Kyma values can be a Number, an Array or  a valid string of Coypu Notation"
 
-	self extraParams at: aSymbol put: aStringWithIndexes asDirtArrayOfValues 
+	| announcement stringWithIndexes |
+	stringWithIndexes := aStringWithIndexes.
+	aStringWithIndexes class = Array ifTrue: [  
+	stringWithIndexes := String streamContents: [ :s |
+		                     aStringWithIndexes do: [ :each |
+			                     s
+				                     nextPutAll: each asString;
+				                     nextPutAll: ' ' ] ]].
+	announcement := ExtraValuesAnnouncement new extraValues:
+		                ' ' , thisContext sender selector asString , ''''
+		                , stringWithIndexes allButLast  asString ,''';'.
+	PerformanceRecorder uniqueInstance announce: announcement.
+	self extraParams
+		at: aSymbol
+		put: aStringWithIndexes asDirtArrayOfValues
 ]
 
 { #category : 'accessing' }

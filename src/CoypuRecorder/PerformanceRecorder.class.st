@@ -103,19 +103,21 @@ PerformanceRecorder >> announce: anAnnouncement [
 	"Used to announce with the announcer of PerformanceRecorder"
 
 	announcer ifNil: [
-
-	announcer := Announcer new.
-	announcer
-		when: RhythmAnnouncement send: #addInstrument: to: savedPerformance;
-		when: SymbolAnnouncement send: #lastSymbol: to: savedPerformance;
-		when: DirtNotesAnnouncement
-		send: #lastDirtNotes:
-		to: savedPerformance;
-		when: DelayAnnouncement send: #appliesDelay: to: savedPerformance;
-		when: DoubleRhythmAnnouncement
-		send: #lastSymbol:
-		to: savedPerformance;
-		when: NotesAnnouncement send: #appliesNotes: to: savedPerformance].
+		announcer := Announcer new.
+		announcer
+			when: RhythmAnnouncement
+			send: #addInstrument:
+			to: savedPerformance;
+			when: SymbolAnnouncement send: #lastSymbol: to: savedPerformance;
+			when: DirtNotesAnnouncement
+			send: #lastDirtNotes:
+			to: savedPerformance;
+			when: DelayAnnouncement send: #appliesDelay: to: savedPerformance;
+			when: DoubleRhythmAnnouncement
+			send: #lastSymbol:
+			to: savedPerformance;
+			when: NotesAnnouncement send: #appliesNotes: to: savedPerformance;
+			when: ExtraValuesAnnouncement send: #appliesExtraValues: to: savedPerformance ].
 
 	announcer announce: anAnnouncement
 ]

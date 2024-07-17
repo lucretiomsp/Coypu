@@ -43,7 +43,8 @@ Class {
 		'dirtNotes',
 		'rhythm',
 		'symbol',
-		'notes'
+		'notes',
+		'extraValues'
 	],
 	#category : 'CoypuRecorder-RecordedCommand',
 	#package : 'CoypuRecorder',
@@ -60,6 +61,18 @@ RecordedInstrumentCommand >> dirtNotes [
 RecordedInstrumentCommand >> dirtNotes: aDirtNotes [
 
 dirtNotes := aDirtNotes
+]
+
+{ #category : 'accessing' }
+RecordedInstrumentCommand >> extraValues [
+
+^	extraValues
+]
+
+{ #category : 'accessing' }
+RecordedInstrumentCommand >> extraValues: aString [
+
+extraValues := aString 
 ]
 
 { #category : 'testing' }
@@ -107,6 +120,7 @@ RecordedInstrumentCommand >> print [
 	"add the notes if called"
 	notes ifNotNil: [ m := m , notes ].
 	"Classic command ex: 16 upbeats to: #bass3"
+	self extraValues ifNotNil:[ m := m,extraValues].
 	self symbol
 		ifNotNil: [
 			m := m , ' to: #' , symbol asString
