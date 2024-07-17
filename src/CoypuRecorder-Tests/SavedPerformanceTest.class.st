@@ -21,7 +21,7 @@ SavedPerformanceTest >> setUp [
 
 	super setUp.
 	performanceRecorder := PerformanceRecorder uniqueInstance.
-	performanceRecorder displayVisualizer: false.
+
 	performanceRecorder performer: PerformerSuperDirt new.
 	replayer := PerformanceTextualReplayer new
 ]

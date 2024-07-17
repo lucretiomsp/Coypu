@@ -29,65 +29,67 @@ Visited by a SavedPerformance.
 
 "
 Class {
-	#name : #RecordedCommand,
-	#superclass : #Object,
-	#type : #variable,
+	#name : 'RecordedCommand',
+	#superclass : 'Object',
+	#type : 'variable',
 	#instVars : [
 		'time',
 		'delay'
 	],
-	#category : 'CoypuRecorder-RecordedCommand'
+	#category : 'CoypuRecorder-RecordedCommand',
+	#package : 'CoypuRecorder',
+	#tag : 'RecordedCommand'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RecordedCommand >> delay: aTimeInSeconds [
 
 delay := aTimeInSeconds
 ]
 
-{ #category : #'visitor - double dispatching' }
+{ #category : 'visitor - double dispatching' }
 RecordedCommand >> getPrint: aSavedPerformance [
 "Visited by a SavedPerformance to get my print"
 	^ aSavedPerformance getCommandScript: self print
 ]
 
-{ #category : #'visitor - double dispatching' }
+{ #category : 'visitor - double dispatching' }
 RecordedCommand >> getTime: aSavedPerformance [
 	"Visited by a SavedPerformance to get my time"
 	^ aSavedPerformance getCommandTime: self time asTime
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 RecordedCommand >> initialize [
 
 	super initialize.
 	time := DateAndTime now asTime 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 RecordedCommand >> isRecordedInstructionCommand [
 	^ self subclassResponsibility
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 RecordedCommand >> isRecordedInstrumentCommand [
 	^ self subclassResponsibility
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 RecordedCommand >> print [
 
 self subclassResponsibility 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RecordedCommand >> time [
 
 ^time 
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RecordedCommand >> time: aDateAndTime [
 
 

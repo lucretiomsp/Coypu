@@ -25,10 +25,9 @@ PerformanceReplayerTest >> setUp [
 
 	super setUp.
 	performanceRecorder := PerformanceRecorder uniqueInstance.
-	performanceRecorder displayVisualizer: false.
 	performanceRecorder performer: PerformerSuperDirt new.
 	replayer := PerformanceMusicalReplayer new.
-		securePerformance := SavedPerformance new.
+	securePerformance := SavedPerformance new.
 	securePerformance
 		add: (RecordedInstructionCommand new instruction:
 					 'performer:  PerformerSuperDirt new.');
@@ -37,7 +36,7 @@ PerformanceReplayerTest >> setUp [
 				 rhythm: '16 upbeats';
 				 symbol: 'bd');
 		add:
-		(RecordedInstructionCommand new instruction: 'playFor: 16 bars.').
+		(RecordedInstructionCommand new instruction: 'playFor: 16 bars.')
 ]
 
 { #category : 'running' }
@@ -124,13 +123,6 @@ PerformanceReplayerTest >> testReplaySameAsOriginal [
 PerformanceReplayerTest >> testReplaySameAsOriginalWithSureSavedPerformance [
 
 	| performance replayedPerformance |
-	"performanceRecorder freq: 138 bpm.
-	(Delay forMilliseconds: 500) wait.
-	16 upbeats to: #bd.
-	(Delay forSeconds: 2) wait.
-	16 downbeats
-		to: #bass3;
-		dirtNotes: '4'."
 	replayer getScript: securePerformance.
 
 	performance := replayer performanceScript.
