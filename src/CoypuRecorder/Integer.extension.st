@@ -1,6 +1,6 @@
-Extension { #name : #Integer }
+Extension { #name : 'Integer' }
 
-{ #category : #'*CoypuRecorder' }
+{ #category : '*CoypuRecorder' }
 Integer >> delayed: aMethodOfInteger atTime: aDelayInMilliseconds [
 
 	(Delay forMilliseconds: aDelayInMilliseconds) wait.

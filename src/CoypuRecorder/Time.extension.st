@@ -1,6 +1,6 @@
-Extension { #name : #Time }
+Extension { #name : 'Time' }
 
-{ #category : #'*CoypuRecorder' }
+{ #category : '*CoypuRecorder' }
 Time >> addMilliSeconds: nMilliSeconds [
 	"Answer a Time that is nSeconds after the receiver."
 

@@ -1,8 +1,8 @@
 Class {
-	#name : 'DoubleRhythmAnnouncement',
+	#name : 'ExtraValuesAnnouncement',
 	#superclass : 'Announcement',
 	#instVars : [
-		'symbol'
+		'extraValues'
 	],
 	#category : 'CoypuRecorder-Announcements',
 	#package : 'CoypuRecorder',
@@ -10,13 +10,13 @@ Class {
 }
 
 { #category : 'accessing' }
-DoubleRhythmAnnouncement >> symbol [
+ExtraValuesAnnouncement >> extraValues [
 
-	^symbol
+	^ extraValues
 ]
 
 { #category : 'accessing' }
-DoubleRhythmAnnouncement >> symbol: aSymbol [
+ExtraValuesAnnouncement >> extraValues: aSymbol [
 
-symbol := aSymbol
+	extraValues := aSymbol
 ]

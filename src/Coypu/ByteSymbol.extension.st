@@ -1,13 +1,13 @@
-Extension { #name : #ByteSymbol }
+Extension { #name : 'ByteSymbol' }
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 ByteSymbol >> asDirtArray [ 
 " convenience method to send messages to SuperDirt"
 
 ^ Array with: self.
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 ByteSymbol >> bw: anArrayOfBw [
 
 	"set anArrayOfBw as extra1 of the sequencer in the performance at self"
@@ -19,7 +19,7 @@ ByteSymbol >> bw: anArrayOfBw [
 			anArrayOfBw }
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 ByteSymbol >> extra1: anArrayWithASymbolAndAnArray [
 
 	" change the value of extra1 in the Performance at self key"
@@ -30,7 +30,7 @@ ByteSymbol >> extra1: anArrayWithASymbolAndAnArray [
 	(p at: self) extra1: anArrayWithASymbolAndAnArray
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 ByteSymbol >> extra2: anArrayWithASymbolAndAnArray [
 
 	" change the value of extra1 in the Performance at self key"
@@ -41,7 +41,7 @@ ByteSymbol >> extra2: anArrayWithASymbolAndAnArray [
 	(p at: self) extra2: anArrayWithASymbolAndAnArray
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 ByteSymbol >> for: anArray [
 
 "creates a Dictionary with the symbol as key and the array as value"
@@ -57,7 +57,7 @@ d add: self -> anArray.
 "
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 ByteSymbol >> indexes: aStringOfIndexes [
 	"change the sample indexes of a seuquencer in a performance at self key"
 
@@ -68,7 +68,7 @@ ByteSymbol >> indexes: aStringOfIndexes [
 			values: aStringOfIndexes asDirtPureNotes  
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 ByteSymbol >> mute [
 	" remove the key from the Performance, if any active key in the Performance correspond to the symbol"
 
@@ -77,7 +77,7 @@ ByteSymbol >> mute [
 	perf removeKey: self ifAbsent: [ nil ]
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 ByteSymbol >> notes: anArrayOfNotes [
 
 	" change the notes of a Sequencer at self key in a Performance"
@@ -87,7 +87,7 @@ ByteSymbol >> notes: anArrayOfNotes [
 	(p at: self) notes: anArrayOfNotes
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 ByteSymbol >> number: anArrayOfNumbers [
 
 	" set the extra2 slot of the sequencer in the performance at self key with the values of anArrayOfNumbers and the string #Number - to be used with muultikits"
@@ -99,7 +99,7 @@ ByteSymbol >> number: anArrayOfNumbers [
 			anArrayOfNumbers }
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 ByteSymbol >> solo [
 	"shorthand for p solo: aKeyInperformance"
 
@@ -108,7 +108,7 @@ ByteSymbol >> solo [
 	p solo: self
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 ByteSymbol >> unsolo [
 	"shorthand for p unsolo: aKeyInPerformance"
 
@@ -117,7 +117,7 @@ ByteSymbol >> unsolo [
 	p unsolo: self
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 ByteSymbol >> x: anArrayOfXs [
 
 	"set anArrayOfX as extra1 of the sequencer in the performance at self

@@ -2,8 +2,8 @@
 I am a special type pf Performance to be used in MoogLof experiments (Music On-The-Fly with Level Of Details)
 "
 Class {
-	#name : #PerfTypeMooflod,
-	#superclass : #PerfType,
+	#name : 'PerfTypeMooflod',
+	#superclass : 'PerfType',
 	#instVars : [
 		'isVisualizerOpen',
 		'level',
@@ -14,10 +14,12 @@ Class {
 		'perfVisualizer',
 		'trackVisualizers'
 	],
-	#category : #'Coypu-Performance'
+	#category : 'Coypu-Performance',
+	#package : 'Coypu',
+	#tag : 'Performance'
 }
 
-{ #category : #adding }
+{ #category : 'adding' }
 PerfTypeMooflod >> addMasterWidgets [
 
 	| delayW cutoffW container slider textElt |
@@ -51,10 +53,10 @@ PerfTypeMooflod >> addMasterWidgets [
 	visualizerSpace root addChild: delayW
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 PerfTypeMooflod >> addSequencer: aSequencer to: aSymbol [
 
-	| announcement isInKeys perf |
+	|isInKeys perf |
 	perf := Performance uniqueInstance.
 	isInKeys := false.
 	perf keysDo: [ :k |
@@ -76,15 +78,6 @@ PerfTypeMooflod >> addSequencer: aSequencer to: aSymbol [
 	" common part"
 	aSequencer noteIndex: 1.
 	aSequencer seqKey: aSymbol asString.
-	announcement := (aSequencer notesSize > 4 and: [
-		                 (aSequencer notes at: 1) = 60 and: [
-			                 (aSequencer notes at: 5) = 60 ] ])
-		                ifTrue: [ DoubleRhythmAnnouncement new ]
-		                ifFalse: [ SymbolAnnouncement new ].
-	announcement symbol: aSequencer seqKey.
-	PerformanceRecorder uniqueInstance announce: announcement.
-
-
 	"For SuperDirt"
 	aSequencer dirtMessage at: '_id' put: aSequencer seqKey.
 	aSequencer dirtMessage at: 'orbit' put: aSequencer orbit.
@@ -95,10 +88,10 @@ PerfTypeMooflod >> addSequencer: aSequencer to: aSymbol [
 		ifTrue: [  ].
 
 	"For Polyphony"
-	aSequencer  seqChords
+	aSequencer seqChords
 		ifNil: [ Performance uniqueInstance at: aSymbol put: aSequencer ]
 		ifNotNil: [
-		Performance uniqueInstance at: aSymbol put: aSequencer  asPolySeq ].
+		Performance uniqueInstance at: aSymbol put: aSequencer asPolySeq ].
 
 
 	"For PerformerPhaust"
@@ -107,13 +100,13 @@ PerfTypeMooflod >> addSequencer: aSequencer to: aSymbol [
 		aSequencer phaustNoteDestination: aSequencer seqKey , 'Note' ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerfTypeMooflod >> displayVisualizer [
 
 	^ displayVisualizer
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerfTypeMooflod >> displayVisualizer: aBoolean [
 
 	displayVisualizer := aBoolean.
@@ -122,7 +115,7 @@ PerfTypeMooflod >> displayVisualizer: aBoolean [
 	isVisualizerOpen := false
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PerfTypeMooflod >> initialize [
 
 	super initialize.
@@ -134,37 +127,37 @@ PerfTypeMooflod >> initialize [
 	isVisualizerOpen := false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerfTypeMooflod >> isVisualizerOpen [
 
 	^ isVisualizerOpen
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerfTypeMooflod >> isVisualizerOpen: aBoolean [ 
 
 isVisualizerOpen:= aBoolean 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerfTypeMooflod >> level [
 
 	^ level
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerfTypeMooflod >> level: anObject [
 
 	level := anObject
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 PerfTypeMooflod >> levelOfDetail: anInteger [
 
 	visualizer level: anInteger 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerfTypeMooflod >> openVisualizers [
 
 	visualizerSpace := BlSpace new extent:
@@ -181,13 +174,13 @@ PerfTypeMooflod >> openVisualizers [
 	visualizerSpace position: World extent x * (10 / 12) @ 20
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerfTypeMooflod >> perfVisualizer [
 
 	^ perfVisualizer
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerfTypeMooflod >> perfVisualizer: aPerfVisualizer [
 	"assing a perfVisualzier and initialize a new Dictionary for trackVisualziers"
 
@@ -195,7 +188,7 @@ PerfTypeMooflod >> perfVisualizer: aPerfVisualizer [
 	self trackVisualizers: Dictionary new.
 ]
 
-{ #category : #playing }
+{ #category : 'playing' }
 PerfTypeMooflod >> playFor: aNumberOfSteps [
 	" reset all the Sequencers"
 
@@ -220,7 +213,7 @@ PerfTypeMooflod >> playFor: aNumberOfSteps [
 	perf resetAllSequencers
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerfTypeMooflod >> playPhaustEventAt: anIndex forSequencer: aSequencer [
 	"sends a message to Phausto / the DSP api must be written in a sensible way "
 
@@ -248,48 +241,48 @@ PerfTypeMooflod >> playPhaustEventAt: anIndex forSequencer: aSequencer [
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerfTypeMooflod >> stepVisualizer [
 
 	^ stepVisualizer
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerfTypeMooflod >> stepVisualizer: anObject [
 
 	stepVisualizer := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerfTypeMooflod >> trackVisualizers [
 
 	^ trackVisualizers
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerfTypeMooflod >> trackVisualizers: aDictionary [
 
 	trackVisualizers := aDictionary
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerfTypeMooflod >> visualizer [
 	^visualizer 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerfTypeMooflod >> visualizer: anObject [
 
 	visualizer := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerfTypeMooflod >> visualizerSpace [
 
 	^ visualizerSpace
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerfTypeMooflod >> visualizerSpace: anObject [
 
 	visualizerSpace := anObject

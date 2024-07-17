@@ -1,6 +1,6 @@
-Extension { #name : #Process }
+Extension { #name : 'Process' }
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Process >> swapWith: anotherProcess [
 "terminate the Process and start anotherProcess"
 self terminate.

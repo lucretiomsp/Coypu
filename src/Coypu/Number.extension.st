@@ -1,28 +1,28 @@
-Extension { #name : #Number }
+Extension { #name : 'Number' }
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Number >> asDirtArray [
 	"convenience method to create an array from an interger. used to send osc messages to SuperDirt"
 	^ Array with: self
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Number >> bars: aNumber [
 "use it with anInteger bpm to have a cycle of the Iteration of a duration of aNumber of bars(or a fraction)"
 ^ (Delay forSeconds: ((self * aNumber) /100)) wait.
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Number >> bpm [
 "returns time in milliseconds of one bar at self bpm"
 ^ (60 / self) / 4
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Number >> delay [
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Number >> midiNoteToFreq [
 " convert Midi note number to frequency"
 	| baseFreq |
@@ -30,7 +30,7 @@ Number >> midiNoteToFreq [
 	^ (baseFreq * (2 raisedTo: self - 69 / 12.0)) asFloat
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Number >> randomsFromArray: anArray [
 	" returns an array of self size with randomInts from anArray at: 1 to anArray at: 2"
 
@@ -40,13 +40,13 @@ Number >> randomsFromArray: anArray [
 	^ (1 to: self )collect: [ : i | Random new nextIntegerBetween: min and: max  ].
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Number >> secondsInStepAt: aDuration [
 "return the number of steps at aDuration time as 1/16th of a bar which corresponding to self seconds"
 ^ (self / aDuration) asInteger.
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Number >> toKyma: aString [
 	"comment stating purpose of instance-side message"
 	"scope: class-variables  &  instance-variables"	
@@ -57,7 +57,7 @@ Number >> toKyma: aString [
 	(OSCMessage for: { vcslabel  . (self asFloat)  }) sendToAddressString: pacaAddress  port: 8000.
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Number >> toLocal: aString [
 
 	"comment stating purpose of instance-side message"
@@ -73,7 +73,7 @@ Number >> toLocal: aString [
 			 self asFloat }) sendToAddressString: localAddress port: 57120
 ]
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Number >> wait [ 
 ^ (Delay forSeconds: self) wait.
 ]

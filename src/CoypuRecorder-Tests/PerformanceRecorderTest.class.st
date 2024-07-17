@@ -20,7 +20,6 @@ PerformanceRecorderTest >> setUp [
 
 	super setUp.
 	performanceRecorder := PerformanceRecorder uniqueInstance.
-	performanceRecorder displayVisualizer: false.
 	performanceRecorder performer: PerformerSuperDirt new
 ]
 
