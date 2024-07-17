@@ -6,39 +6,23 @@ A performance is a Dictionary subclass used for live coding package.
 Class {
 	#name : #Performance,
 	#superclass : #Dictionary,
-	#type : #variable,
 	#instVars : [
-		'displayVisualizer',
-		'visualizer',
-		'stepVisualizer',
 		'performer',
-		'canvas',
 		'freq',
 		'backup',
 		'bpm',
 		'transportStep',
 		'activeProcess',
 		'dirtMIDIDevice',
-		'activeDSP',
-		'perfVisualizer',
-		'trackVisualizers',
-		'isVisualizerOpen',
-		'space'
+		'activeDSP'
 	],
 	#classInstVars : [
 		'uniqueInstance',
-		'orbit'
+		'orbit',
+		'performanceType'
 	],
 	#category : #'Coypu-Performance'
 }
-
-{ #category : #'as yet unclassified' }
-Performance class >> basic [
-
-	^ self new
-		  visualization: NoneVisualization new;
-		  yourself
-]
 
 { #category : #'instance creation' }
 Performance class >> new [ 
@@ -58,28 +42,31 @@ Performance class >> orbit: anInteger [
 	orbit := anInteger % 12
 ]
 
+{ #category : #accessing }
+Performance class >> performanceType [
+
+	^ performanceType
+]
+
+{ #category : #accessing }
+Performance class >> performanceType: aPerformanceType [
+
+	performanceType := aPerformanceType 
+]
+
+{ #category : #initialization }
+Performance class >> reset [
+
+	<script>
+	uniqueInstance := nil
+]
+
 { #category : #'instance creation' }
 Performance class >> uniqueInstance [
 
 	self orbit: 0.
-	^ uniqueInstance ifNil: [ uniqueInstance := super new ]
-]
-
-{ #category : #'as yet unclassified' }
-Performance class >> withCanvas: aRSCanvas [
-
-	^ self new
-		  canvas: aRSCanvas;
-		  freq: 120 bpm;
-		  rsGroupDictionary: Dictionary new
-]
-
-{ #category : #'as yet unclassified' }
-Performance class >> withCircles [
-
-	^ self new
-		  visualization: CircleVisualization new;
-		  yourself
+	
+	^ uniqueInstance ifNil: [ uniqueInstance := super new . self performanceType: PerfType new. ]
 ]
 
 { #category : #'as yet unclassified' }
@@ -127,40 +114,6 @@ Performance >> add: aSequencer channel: anIntegerBetween1And16 [
 
 	aSequencer midiChannel: anIntegerBetween1And16. 
 	super add: aSequencer.
-]
-
-{ #category : #adding }
-Performance >> addMasterWidgets [
-
-	| delayW cutoffW container slider textElt |
-	delayW := MfMasterDelayElement new.
-	slider := ICLogarithmicSlider new.
-	delayW transformDo: [ :q | q translateBy: 300 @ 610 ].
-	cutoffW := ICMasterCutoff new.
-	container := BlElement new
-		             layout: BlLinearLayout vertical;
-		             constraintsDo: [ :c |
-			             c horizontal fitContent.
-			             c vertical fitContent ].
-
-	container addChild: cutoffW.
-	container addChild: slider.
-	container childrenDo: [ :child |
-		child margin: (BlInsets vertical: 10) ].
-	container transformDo: [ :q | q translateBy: 50 @ 610 ].
-	slider minValue: cutoffW minValue.
-	slider maxValue: cutoffW maxValue.
-
-	textElt := BlTextElement new text: slider minValue asRopedText.
-	container addChild: textElt.
-
-	slider callBack: [ :value |
-		cutoffW setValue: value.
-		textElt text: value asRopedText ].
-	self visualizer sliderArray at: 'MasterDelay' put: delayW.
-	self visualizer sliderArray at: 'MasterCutoff' put: cutoffW.
-	space root addChild: container.
-	space root addChild: delayW
 ]
 
 { #category : #accessing }
@@ -214,15 +167,6 @@ Performance >> dirtMIDIDevice: aString [
 ]
 
 { #category : #accessing }
-Performance >> displayVisualizer: aBoolean [
-
-	displayVisualizer := aBoolean.
-	visualizer := MfVisualizerElement new level: 5.
-	stepVisualizer := MfPerformanceStepsDisplayer new.
-	isVisualizerOpen := false
-]
-
-{ #category : #accessing }
 Performance >> freq [
 	"better to convert it to Float to avoid OSC sending issues"
 	^ freq asFloat
@@ -232,10 +176,7 @@ Performance >> freq [
 Performance >> freq: aDurationInSeconds [
 	"use for playback speed"
 
-	freq := aDurationInSeconds asFloat.
-	isVisualizerOpen ifTrue: [
-		visualizer squareArray do: [ :s |
-			s changeAnimationTime: freq * 4 ] ]
+	freq := aDurationInSeconds asFloat
 ]
 
 { #category : #'LiveCoding - Performance' }
@@ -250,20 +191,12 @@ Performance >> initialize: aSize [
 	activeProcess := Process new terminate.
 	self muteAll.
 	freq := 132 bpm.
-
-	displayVisualizer := false.
 ]
 
 { #category : #testing }
 Performance >> isPerformance [
 
 	^ true
-]
-
-{ #category : #accessing }
-Performance >> isVisualizerOpen: aBoolean [ 
-
-isVisualizerOpen:= aBoolean 
 ]
 
 { #category : #accessing }
@@ -277,21 +210,20 @@ Performance >> length [
 	^ maxLength
 ]
 
-{ #category : #'as yet unclassified' }
-Performance >> levelOfDetail: anInteger [
-
-	visualizer level: anInteger 
-]
-
 { #category : #'muting and soloing' }
 Performance >> mute: aKeyOrAnArrayOfKeys [
 	"remove all the keys in the arrayOfKeys from the Performance or remove just a single key"
 
+	| tracks |
+	tracks := #( #Kick #TpSampler #Fm2Op #PsgPlus #Chordy ).
+
 	aKeyOrAnArrayOfKeys isArray
 		ifTrue: [
 		aKeyOrAnArrayOfKeys do: [ :i | self removeKey: i ifAbsent: [  ] ] ]
-		ifFalse: [ self removeKey: aKeyOrAnArrayOfKeys ].
-
+		ifFalse: [
+			self removeKey: aKeyOrAnArrayOfKeys.
+			Performance uniqueInstance visualizer cleanRow:
+				(tracks indexOf: aKeyOrAnArrayOfKeys) ]
 ]
 
 { #category : #'muting and soloing' }
@@ -303,21 +235,6 @@ Performance >> muteAll [
 	self keysDo: [ :i | self removeKey: i ifAbsent: [ nil ] ].
 
 
-]
-
-{ #category : #accessing }
-Performance >> openVisualizers [
-
-	space := BlSpace new extent: World extent x / 3 @ World extent y.
-	space useMorphicHost.
-	stepVisualizer transformDo: [ :q | q translateBy: 250 @ 0 ].
-	visualizer transformDo: [ :q | q translateBy: 0 @ 60 ].
-	space root addChild: stepVisualizer.
-	space root addChild: visualizer.
-	space root childrenDo: [ :child |
-		child margin: (BlInsets vertical: 10) ].
-	space toTheme: MfMooflodTheme new.
-	space show
 ]
 
 { #category : #'LiveCoding - satelliteEvent' }
@@ -396,17 +313,13 @@ Performance >> pacaDance [
 ]
 
 { #category : #accessing }
-Performance >> perfVisualizer [
-
-	^ perfVisualizer
+Performance >> performanceType [
+	^ self class performanceType
 ]
 
 { #category : #accessing }
-Performance >> perfVisualizer: aPerfVisualizer [
-	"assing a perfVisualzier and initialize a new Dictionary for trackVisualziers"
-
-	perfVisualizer := aPerfVisualizer.
-	self trackVisualizers: Dictionary new.
+Performance >> performanceType: aPerformanceType [ 
+	^ self class performanceType: aPerformanceType 
 ]
 
 { #category : #accessing }
@@ -442,24 +355,10 @@ Performance >> play [
 
 { #category : #playing }
 Performance >> playFor: aNumberOfSteps [
-	" reset all the Sequencers"
+	"what happens depends on the Performance type! "
 
-	"just on performance at once"
-
-	self activeProcess isTerminated ifTrue: [
-		self performer playFor: aNumberOfSteps ].
-	displayVisualizer ifTrue: [
-		isVisualizerOpen ifFalse: [
-			stepVisualizer addSteps: self transportStep.
-			stepVisualizer initializeAnimation: self freq.
-			self openVisualizers.
-			"MfKeyboardElement new openInMooflod."
-			self isVisualizerOpen: true ].
-		isVisualizerOpen ifTrue: [ stepVisualizer animationIsRunning: true ].
-		stepVisualizer pauseAnimation: 15 / bpm / 60 * (aNumberOfSteps / 16).
-		visualizer initAnimation: 15 / bpm / 60 * (aNumberOfSteps / 16) ].
-
-	self resetAllSequencers
+	self class performanceType playFor: aNumberOfSteps.
+	self class performanceType asString traceCr 
 ]
 
 { #category : #'as yet unclassified' }
@@ -722,17 +621,9 @@ Performance >> solo: aKeyOrAnArrayOfKeys [
 ]
 
 { #category : #accessing }
-Performance >> space [ 
-
-^space
-]
-
-{ #category : #accessing }
 Performance >> stop [
 
-	visualizer cleanVisualizer.
-	stepVisualizer animationIsRunning: false.
-	self activeProcess terminate
+	self performanceType stop.
 ]
 
 { #category : #modifying }
@@ -745,18 +636,6 @@ Performance >> swap: firstKey with: secondKey [
 ]
 
 { #category : #accessing }
-Performance >> trackVisualizers [
-
-	^ trackVisualizers
-]
-
-{ #category : #accessing }
-Performance >> trackVisualizers: aDictionary [
-
-	trackVisualizers := aDictionary
-]
-
-{ #category : #accessing }
 Performance >> transportStep [
 	^ transportStep
 ]
@@ -766,14 +645,19 @@ Performance >> transportStep: anInteger [
 	transportStep := anInteger 
 ]
 
+{ #category : #accessing }
+Performance >> type [
+	^ self class type
+]
+
+{ #category : #accessing }
+Performance >> type: aPerformanceType [ 
+	^ self class type: aPerformanceType 
+]
+
 { #category : #'LiveCoding - Performance' }
 Performance >> unsolo: aKeyInPerformance [
 	"convenience method to unsolo a key in the performance"
 	
 	self restore
-]
-
-{ #category : #accessing }
-Performance >> visualizer [
-	^visualizer 
 ]

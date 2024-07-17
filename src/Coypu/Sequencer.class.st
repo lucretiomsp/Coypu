@@ -11,7 +11,6 @@ It is conceived as something in between a Digital Audio Workstation track and a 
 Class {
 	#name : #Sequencer,
 	#superclass : #Object,
-	#type : #variable,
 	#instVars : [
 		'seqKey',
 		'extraParams',
@@ -362,6 +361,13 @@ Sequencer >> duty: aStringOrAnArray [
 	"set the duty cycle to a collection of value in array or to to the numbe"
 
 	self extra: #Duty values: aStringOrAnArray asDirtArrayOfValues 
+]
+
+{ #category : #'LiveCoding-ExtraParams' }
+Sequencer >> effect: aStringOrAnArray [
+	"convenience method to avoid extra typing when we want to modify the effect, i.e. dry/wet "
+
+	self extra: #Effect values: aStringOrAnArray asDirtArrayOfValues
 ]
 
 { #category : #'LiveCoding-ExtraParams' }
@@ -1241,59 +1247,7 @@ Sequencer >> times: anInteger [
 { #category : #'LiveCoding - Performance' }
 Sequencer >> to: aSymbol [
 	" assign sequencer to the performance at aSymbol. if a sound for SuperDirt is not specified, the symbol is used for sound name"
-
-	| announcement isInKeys |
-	isInKeys := false.
-	Performance uniqueInstance keysDo: [ :k |
-		k = aSymbol ifTrue: [
-			(Performance uniqueInstance visualizer patternArray at: k)
-				forSequencer: self.
-			isInKeys := true.
-			(Performance uniqueInstance visualizer squareArray at: k)
-				changeAnimationTime: Performance uniqueInstance freq * 4 ] ].
-
-	isInKeys ifFalse: [
-		Performance uniqueInstance visualizer addInstrument: aSymbol.
-		"aSymbol = 'ht' ifTrue: [ self halt ]."
-		(Performance uniqueInstance visualizer patternArray
-			 associationAt: aSymbol) value forSequencer: self.
-		(Performance uniqueInstance visualizer squareArray associationAt:
-			 aSymbol) value initializeAnimation:
-			Performance uniqueInstance freq * 4 ].
-	Performance uniqueInstance visualizer level = 5 ifTrue: [
-		Performance uniqueInstance addMasterWidgets ].
-
-	self noteIndex: 1.
-	self seqKey: aSymbol asString.
-	announcement := (self notesSize > 4 and: [
-		                 (self notes at: 1) = 60 and: [
-			                 (self notes at: 5) = 60 ] ])
-		                ifTrue: [ DoubleRhythmAnnouncement new ]
-		                ifFalse: [ SymbolAnnouncement new ].
-	announcement symbol: self seqKey.
-	PerformanceRecorder uniqueInstance announce: announcement.
-
-
-	"For SuperDirt"
-	self dirtMessage at: '_id' put: self seqKey.
-	self dirtMessage at: 'orbit' put: self orbit.
-
-	(self dirtMessage includesKey: 's')
-		ifFalse: [
-		self dirtMessage at: 's' put: aSymbol asString asDirtArray ]
-		ifTrue: [  ].
-
-	"For Polyphony"
-	seqChords
-		ifNil: [ Performance uniqueInstance at: aSymbol put: self ]
-		ifNotNil: [
-		Performance uniqueInstance at: aSymbol put: self asPolySeq ].
-
-
-	"For PerformerPhaust"
-	Performance uniqueInstance performer class = PerformerPhaust ifTrue: [
-		self phaustGateDestination: self seqKey , 'Gate'.
-		self phaustNoteDestination: self seqKey , 'Note' ]
+Performance performanceType addSequencer:  self to: aSymbol. 
 ]
 
 { #category : #addToPerformance }

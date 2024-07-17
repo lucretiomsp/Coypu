@@ -12,23 +12,21 @@ represent an announcement when a symbol is given to a sequencer.
 ```
 "
 Class {
-	#name : 'SymbolAnnouncement',
-	#superclass : 'Announcement',
+	#name : #SymbolAnnouncement,
+	#superclass : #Announcement,
 	#instVars : [
 		'symbol'
 	],
-	#category : 'CoypuRecorder-Announcements',
-	#package : 'CoypuRecorder',
-	#tag : 'Announcements'
+	#category : 'CoypuRecorder-Announcements'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SymbolAnnouncement >> symbol [
 
 	^ symbol
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SymbolAnnouncement >> symbol: aSymbol [
 
 	symbol := aSymbol

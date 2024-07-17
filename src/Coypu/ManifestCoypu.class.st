@@ -1,7 +1,7 @@
 Class {
 	#name : #ManifestCoypu,
 	#superclass : #PackageManifest,
-	#category : 'Coypu-Manifest'
+	#category : #'Coypu-Manifest'
 }
 
 { #category : #'code-critics' }
@@ -11,12 +11,16 @@ ManifestCoypu class >> ruleCollectionProtocolRuleV1FalsePositive [
 
 { #category : #'code-critics' }
 ManifestCoypu class >> ruleGuardingClauseRuleV1FalsePositive [
-	^ #(#(#(#RGMethodDefinition #(#Performance #mute: #false)) #'2022-08-06T10:51:34.471387+02:00') )
+
+	<ignoreForCoverage>
+	^ #(#(#(#RGMethodDefinition #(#Performance #mute: #false)) #'2022-08-06T10:51:34.471387+02:00') #(#(#RGMethodDefinition #(#Sequencer #to: #false)) #'2024-07-12T17:49:44.096451+02:00') #(#(#RGMethodDefinition #(#PerfType #addSequencer:to: #false)) #'2024-07-14T13:47:37.051281+02:00') )
 ]
 
 { #category : #'code-critics' }
 ManifestCoypu class >> ruleReGuardClauseRuleV1FalsePositive [
-	^ #(#(#(#RGMethodDefinition #(#Performance #mute: #false)) #'2022-08-06T10:51:48.618469+02:00') )
+
+	<ignoreForCoverage>
+	^ #(#(#(#RGMethodDefinition #(#Performance #mute: #false)) #'2022-08-06T10:51:48.618469+02:00') #(#(#RGMethodDefinition #(#Sequencer #to: #false)) #'2024-07-12T17:49:47.218135+02:00') #(#(#RGMethodDefinition #(#PerfType #addSequencer:to: #false)) #'2024-07-14T13:47:40.515243+02:00') )
 ]
 
 { #category : #'code-critics' }

@@ -40,6 +40,41 @@ ByteString >> asDirtArrayOfValues [
 ]
 
 { #category : #'*Coypu' }
+ByteString >> asDirtIndex [
+	" returns a sequencer containing a trig for each integer and a rest for whatever other character and with indexes coresponding to the integeres inside the string - tokens must be separated by string"
+
+	| seq tokens gates notesAStrings notesAsNumbers dirtString announcement |
+	announcement := RhythmAnnouncement new.
+	announcement rhythm: '''' , self asString , ''' asDirtNotes'.
+	PerformanceRecorder uniqueInstance announce: announcement.
+
+	gates := ''.
+	tokens := self splitOn: ','.
+	dirtString := ''.
+	tokens do: [ :i |
+		(i includes: $*)
+			ifTrue: [ gates := gates , i multiplyStringsInString ]
+			ifFalse: [
+				gates := (i includes: $/)
+					         ifTrue: [ gates , i withNRests ]
+					         ifFalse: [ gates , i ] ] ].
+
+	notesAStrings := (gates copyReplaceAll: '~' with: '')
+		                 findBetweenSubstrings: ' '.
+
+	notesAsNumbers := notesAStrings collect: [ :i |
+		                  i ~= ' ' ifTrue: [ i asNumber ] ].
+
+	notesAsNumbers do: [ :i |
+		dirtString := dirtString , i asString , ' ' ].
+
+	seq := gates asSeqGates asSeq.
+	seq index: notesAsNumbers asArray.
+
+	^ seq
+]
+
+{ #category : #'*Coypu' }
 ByteString >> asDirtNotes [
 	" returns a sequencer containing a trig for each integer and a rest for whatever other character and with the notes coresponding to the integeres inside the string - tokens must be separated by string"
 

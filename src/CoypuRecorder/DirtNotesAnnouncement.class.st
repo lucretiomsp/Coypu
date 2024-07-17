@@ -16,24 +16,22 @@ DirtNotesAnnouncement new.
 
 "
 Class {
-	#name : 'DirtNotesAnnouncement',
-	#superclass : 'Announcement',
+	#name : #DirtNotesAnnouncement,
+	#superclass : #Announcement,
 	#instVars : [
 		'newDirtNotes'
 	],
-	#category : 'CoypuRecorder-Announcements',
-	#package : 'CoypuRecorder',
-	#tag : 'Announcements'
+	#category : 'CoypuRecorder-Announcements'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DirtNotesAnnouncement >> newDirtNotes [
 
 ^newDirtNotes 
 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DirtNotesAnnouncement >> newDirtNotes: aNumberInString [
 
 newDirtNotes := aNumberInString.

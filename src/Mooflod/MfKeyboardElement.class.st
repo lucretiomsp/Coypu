@@ -56,6 +56,7 @@ MfKeyboardElement >> initialize [
 	self initializeKeys.
 	self initializeEventListeners.
 	self requestFocus.
+	self receiveKeyEventsFromLastPlayground 
 ]
 
 { #category : #initialization }
@@ -208,12 +209,21 @@ MfKeyboardElement >> openInMooflod [
 
 	self transformDo: [ :c |
 		c rotateBy: 90.
-		c translateBy: -270 @ 300 ].
+		c translateBy: -270 @ 250 ].
 	space root addChild: self.
 
 	space root position: 0 @ 20.
-		space show.
+	space show.
 	^ space
+]
+
+{ #category : #'as yet unclassified' }
+MfKeyboardElement >> receiveKeyEventsFromLastPlayground [
+
+StPlayground allSubInstances last millerList millerListPresenter pages first text eventHandler
+    whenKeyDownDo: [ :event | BlSpace simulateKeyDownOn: self key: event key];
+    whenKeyUpDo: [ :event | BlSpace simulateKeyUpOn: self key: event key ].
+
 ]
 
 { #category : #geometry }
