@@ -75,6 +75,42 @@ RecordedInstrumentCommand >> extraValues: aString [
 extraValues := aString 
 ]
 
+{ #category : 'printing items' }
+RecordedInstrumentCommand >> hasSymbol: aString [
+| m |
+m := aString.
+	
+	self symbol
+		ifNotNil: [
+			m := m , ' to: #' , symbol asString
+			     ,
+			     (delay
+				      ifNotNil: [ ' atTime: ' , delay asString , '.' ]
+				      ifNil: [ '.' ]) ]
+		ifNil: [ "Instrument without a symbol ex: 16 upbeats."
+			delay
+				ifNotNil: [
+					m := ('' join: m substrings allButLast) , ' delayed: '''
+					     , m substrings last asString , ''' atTime: '
+					     , delay asString , '.' ]
+				ifNil: [ m := m , '.' ] ].
+			
+^ m
+]
+
+{ #category : 'printing items' }
+RecordedInstrumentCommand >> isAOnceCall [
+
+	delay
+		ifNotNil: [
+			(symbol includesSubstring: 'onceAtSpeed:')
+				ifTrue: [
+				^ symbol allButFirst , ' atTime: ' , delay asString , '.' ]
+				ifFalse: [
+				^ symbol allButFirst , 'AtTime: ' , delay asString , '.' ] ]
+		ifNil: [ ^ symbol allButFirst , '.' ]
+]
+
 { #category : 'testing' }
 RecordedInstrumentCommand >> isRecordedInstructionCommand [
 
