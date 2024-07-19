@@ -161,9 +161,7 @@ collectionOfCommands := OrderedCollection new.
 SavedPerformance >> lastDirtNotes: anAnnouncement [
 	"add to the last RecordedInstrumentCommand dirtNotes.
 This message is called when a DirtNotesAnnouncement is announced."
-
-	collectionOfCommands last
-		dirtNotes: anAnnouncement newDirtNotes
+	collectionOfCommands last dirtNotes: anAnnouncement newDirtNotes
 ]
 
 { #category : 'adding' }

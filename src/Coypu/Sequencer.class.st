@@ -299,8 +299,9 @@ Sequencer >> dirtMessage: anArrayOfAssociationForSuperDirt [
 Sequencer >> dirtNotes: aStringWithNotes [
 	"add into a Sequencer anotes from a String in which numbers can be multiplicated"
 
-	| tokens dNotes arrayOfNotes announcement |
-	thisContext sender selector = #DoIt ifTrue: [
+	| tokens dNotes arrayOfNotes announcement selectors|
+	selectors := #( #DoIt #testLastDirtNotes).
+	(selectors includes: thisContext sender selector) ifTrue: [
 		announcement := DirtNotesAnnouncement new.
 		announcement newDirtNotes: aStringWithNotes.
 		PerformanceRecorder uniqueInstance announce: announcement ].
@@ -1263,13 +1264,15 @@ Sequencer >> times: anInteger [
 { #category : 'LiveCoding - Performance' }
 Sequencer >> to: aSymbol [
 	" assign sequencer to the performance at aSymbol. if a sound for SuperDirt is not specified, the symbol is used for sound name"
-	|announcement|
-	announcement := (self notesSize > 4 and: [
+
+	| announcement |
+	announcement := (self notesSize >= 8 and: [
 		                 (self notes at: 1) = 60 and: [
 			                 (self notes at: 5) = 60 ] ])
-		                ifTrue: [ DoubleRhythmAnnouncement new ]
+		                ifTrue: [
+			                DoubleRhythmAnnouncement new ]
 		                ifFalse: [ SymbolAnnouncement new ].
-	announcement symbol: aSymbol .
+	announcement symbol: aSymbol.
 	PerformanceRecorder uniqueInstance announce: announcement.
 
 
