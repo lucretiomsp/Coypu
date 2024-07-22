@@ -128,9 +128,9 @@ PerformanceReplayerTest >> testReplaySameAsOriginalWithSureSavedPerformance [
 	performance := replayer performanceScript.
 
 	replayer replayWithoutPlayground.
-
+	(Delay forMilliseconds: 10) wait.
 	replayer getScript: performanceRecorder savedPerformance.
-
+	
 	replayedPerformance := replayer performanceScript.
 	performance
 		with: replayedPerformance
