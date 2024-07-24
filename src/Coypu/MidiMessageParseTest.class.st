@@ -1,12 +1,10 @@
 Class {
-	#name : 'MidiMessageParseTest',
-	#superclass : 'TestCase',
-	#category : 'Coypu-Tests',
-	#package : 'Coypu',
-	#tag : 'Tests'
+	#name : #MidiMessageParseTest,
+	#superclass : #TestCase,
+	#category : 'Coypu-Tests'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 MidiMessageParseTest >> testIsVoiceMessage [
 
 	self assert: 16r90 isVoiceMessage

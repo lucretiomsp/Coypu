@@ -1,6 +1,6 @@
-Extension { #name : 'Integer' }
+Extension { #name : #Integer }
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> adowa [
 " create an array of self size of  sikyi (by Ashanti people of Ghana) rhytm pulses. Better if the receiever is a multiple of 8."
 | pattern announcement |
@@ -12,7 +12,7 @@ pattern := #(0 0 0 1 0 1 0 1).
 
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> adowa: aStringOfNotes [
 	" create an array of self size of  sikyi (by Ashanti people of Ghana) rhytm pulses. Better if the receiever is a multiple of 8."
 
@@ -27,7 +27,7 @@ Integer >> adowa: aStringOfNotes [
 	^ seq
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> aksak [
 	" create an array of self size of Balcan pseudo aksak rhytm pulses. Better if used with self = 8 x anInteger "
 
@@ -43,7 +43,7 @@ PerformanceRecorder uniqueInstance announce: announcement.
 	"implement shifting to the left"
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> aksak: aStringOfNotes [
 	" create an array of self size of Balcan pseudo aksak rhytm pulses. Better if used with self = 8 x anInteger "
 
@@ -60,7 +60,7 @@ PerformanceRecorder uniqueInstance announce: announcement.
 	"implement shifting to the left"
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> banda [
 	" create an array of self size of Banda (Haiti/Vodoo) rhytm pulses. Better if used with self = 8 x anInteger . it is the same rhythm played in the moribayasa rhythm among the Malinke people of Guinea and in Cuba it is called cinquillo"
 
@@ -75,7 +75,7 @@ PerformanceRecorder uniqueInstance announce: announcement.
 	"implement shifting to the left"
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> banda: aStringOfNotes [
 	" create an array of self size of Banda (Haiti/Vodoo) rhytm pulses. Better if used with self = 8 x anInteger . it is the same rhythm played in the moribayasa rhythm among the Malinke people of Guinea and in Cuba it is called cinquillo"
 
@@ -92,7 +92,7 @@ PerformanceRecorder uniqueInstance announce: announcement.
 	"implement shifting to the left"
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> bomba [
 	" create an array of self size of  puertorican Bomba rhytm pulses. Better if the receiever is a multiple of eight."
 
@@ -105,7 +105,7 @@ PerformanceRecorder uniqueInstance announce: announcement.
 		   pattern at: (i rem: pattern size) + 1 ]) asRhythm asSeq
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> bomba: aStringOfNotes [
 	" create an array of self size of  puertorican Bomba rhytm pulses. Better if the receiever is a multiple of eight."
 
@@ -120,7 +120,7 @@ PerformanceRecorder uniqueInstance announce: announcement.
 	^ seq
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> bossa [
 	" create an array of self size of  bossanova rhytm pulses. Better if used with self = 16 x anInteger "
 
@@ -135,7 +135,7 @@ PerformanceRecorder uniqueInstance announce: announcement.
 	"implement shifting to the left"
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> bossa: aStringOfNotes [
 	" create an array of self size of  bossanova rhytm pulses. Better if used with self = 16 x anInteger "
 
@@ -152,13 +152,13 @@ PerformanceRecorder uniqueInstance announce: announcement.
 	"implement shifting to the left"
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> bpm [
 "return the duration of 1/16th at self bpm"
 ^ ((60/  self) /4).
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> breves [
 	" returns self number of brevesin the first position of the bars"
 
@@ -168,7 +168,7 @@ Integer >> breves [
 	^ result
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> breves: aStringOfNotes [
 	" returns self number of brevesin the first position of the bars"
 
@@ -179,7 +179,7 @@ Integer >> breves: aStringOfNotes [
 	^ result
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> claveSon [
 	" create an array of self size of  Cuban clave Son rhytm pulses. Better if the receiever is a multiple of 16."
 
@@ -192,7 +192,7 @@ PerformanceRecorder uniqueInstance announce: announcement.
 		   pattern at: (i rem: pattern size) + 1 ]) asRhythm asSeq
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> claveSon: aStringOfNotes [
 	" create an array of self size of  Cuban clave Son rhytm pulses. Better if the receiever is a multiple of 16."
 
@@ -207,13 +207,13 @@ PerformanceRecorder uniqueInstance announce: announcement.
 	^ seq
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> copiesOf: anInteger [
 " retuns an array of self size with all  anInteger"
 ^ Array new: self withAll: anInteger.
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> copiesOfEach: anArray [
 " retuns an array of self repetitions of each element of anArray"
 | result  resultSize|
@@ -225,14 +225,14 @@ resultSize := result  size.
 ^ result
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> dirtNoteToSpeed [
 " for SUperDirt, convert a note into speed, for sample playback"
 ^ 2 raisedTo: (self /12)
 
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> downbeats [
 
 	| announcement |
@@ -244,7 +244,7 @@ Integer >> downbeats [
 		  asSeq
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> downbeats: aStringWithDirtNotes [
 
 	| seq announcement|
@@ -256,7 +256,7 @@ PerformanceRecorder uniqueInstance announce: announcement.
 	^ seq
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> gahu [
 	" create an array of self size of gahu (from Ewe people) rhytm pulses. Better if used with self = 8 x anInteger "
 
@@ -271,13 +271,13 @@ PerformanceRecorder uniqueInstance announce: announcement.
 	"implement shifting to the left"
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> into: anArray [
 
 ^ anArray fullScale asArray wrap: self
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> melodyFrom: aScale [
 
 	| array |
@@ -290,7 +290,7 @@ Integer >> melodyFrom: aScale [
 	^ array
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> modulo: anInteger [
 
 	"convenience method to index arrays after incrementing"
@@ -298,7 +298,7 @@ Integer >> modulo: anInteger [
 	^ self - 1 % anInteger  + 1
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> pattern [ 
 	| arrayOfCharacters s|
 	arrayOfCharacters := (self printStringBase: 2) asArray.
@@ -307,7 +307,7 @@ Integer >> pattern [
 	
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> quavers [
 	"creates an Array of aNumber of values (0,1) with 1 to the position corresponding to a rhtyhm of quavers (downbeat + upbeat)"
 |announcement|
@@ -317,7 +317,7 @@ PerformanceRecorder uniqueInstance announce: announcement.
 		   ((i rem: 4) = 1 | ((i rem: 4) = 3)) asBit ]) asRhythm asSeq
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> quavers: aStringOfNotes [
 	"creates an Array of aNumber of values (0,1) with 1 to the position corresponding to a rhtyhm of quavers (downbeat + upbeat)"
 
@@ -330,7 +330,7 @@ PerformanceRecorder uniqueInstance announce: announcement.
 	^ seq
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> randomDiv: aDivision [
 "return an array of size=self random values in the range of 0,1 , with a subdivision of 1/aDivision steps with 2 decimal places"
 	| r array|
@@ -339,7 +339,7 @@ Integer >> randomDiv: aDivision [
 	^ (1 to: self) collect: [ :i | (array at: (r nextInt: (array size))) printShowingDecimalPlaces: 2 ].
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> randomFrom: anArray [
 
 	"return an array of self size of random notes from anArray"
@@ -348,7 +348,7 @@ Integer >> randomFrom: anArray [
 		  anArray at: (Random new nextInteger: anArray size) ]
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> randomInts: aNumber [
 "return an array of self size with random integers with range [0, aNumber]"
 | floatsArray result |
@@ -357,7 +357,7 @@ result := floatsArray collect: [ :i | i rounded ].
 ^ result
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> randomNotes: anArray [
 
 	"answer an Array of size=self with random note numbers between "
@@ -370,7 +370,7 @@ Integer >> randomNotes: anArray [
 		  (Random new nextInteger: range) + min - 1 ]
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> randomNotesFrom: anArray [
 
 	"return an array of self size of random notes from anArray"
@@ -379,7 +379,7 @@ Integer >> randomNotesFrom: anArray [
 		  anArray at: (Random new nextInteger: anArray size) ]
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> randomNotesFrom: anArray octaves: aNumber [
 
 	"return an array of self size of a random note from anArray + a random octave between 0 and aNumber"
@@ -389,7 +389,7 @@ Integer >> randomNotesFrom: anArray octaves: aNumber [
 		  + ((Random new nextInteger: aNumber + 1) - 1 * 12) ]
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> randomSamplesFromFolder: aStringForAFolderOfSamples [
 "return a Sequencer witha random number (between 2 and 512) of trigs and of samples fro the selected folder"
 | randIndex folder folderSize|
@@ -399,7 +399,7 @@ Integer >> randomSamplesFromFolder: aStringForAFolderOfSamples [
 	^ self randomTrigs sound: aStringForAFolderOfSamples ; dirtNotes: (randIndex  randomInts: folderSize) .
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> randomSamplesFromFolder: aStringForAFolderOfSamples withProbability: aProbability [
 "return a Sequencer witha random number (between 2 and 512) of trigs and of samples fro the selected folder"
 | randIndex folder folderSize|
@@ -409,7 +409,7 @@ Integer >> randomSamplesFromFolder: aStringForAFolderOfSamples withProbability: 
 	^ (self randomTrigsWithProbability: aProbability ) sound: aStringForAFolderOfSamples ; dirtNotes: (randIndex  randomInts: folderSize) .
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> randomTrigs [
 	"generates an Array of random 0s and 1s of size: aNumber"
 
@@ -420,7 +420,7 @@ PerformanceRecorder uniqueInstance announce: announcement.
 	^ ((1 to: self) collect: [ :i | r next rounded ]) asRhythm asSeq
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> randomTrigsWithProbability: anIntegerProbability [
 	"generates an Array of random 0s and 1s of size: aNumber with a probability of having a trig of anIntegerProbability "
 
@@ -437,7 +437,7 @@ PerformanceRecorder uniqueInstance announce: announcement.
 	^ rytm asRhythm asSeq
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> randomWalksOn: anArrayOfNotes [
 	"random walk inside an array of notes"
 
@@ -461,7 +461,7 @@ Integer >> randomWalksOn: anArrayOfNotes [
 	^ randomWalker
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> randomWalksOn: anArrayOfNotes octaves: aNumberOfOctaves [
 	"random walk inside an array of notes extended for aNumberOfOctaves range"
 
@@ -487,7 +487,7 @@ Integer >> randomWalksOn: anArrayOfNotes octaves: aNumberOfOctaves [
 	^ randomWalker
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> randomWalksOn: anArrayOfNotes octaves: aNumberOfOctaves root: aRootNoteNumber [
 	"random walk inside an array of notes extended for aNumberOfOctaves range and with a RootNote"
 
@@ -509,7 +509,7 @@ Integer >> randomWalksOn: anArrayOfNotes octaves: aNumberOfOctaves root: aRootNo
 	^ randomWalker + aRootNoteNumber  
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> randoms [
 "generates an Array of random values in the range (0,1) of size: aNumber, whith only 2 decimal places"
 	| r |
@@ -517,7 +517,7 @@ Integer >> randoms [
 	^ (1 to: self) collect: [ :i | ((r next ) printShowingDecimalPlaces: 2) asNumber].
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> rests [
 	" retuns a Sequencer of gates size = self with all zeros / to create long rests "
 
@@ -527,7 +527,7 @@ Integer >> rests [
 	^ (Array new: self withAll: 0) asRhythm asSeq
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> rumba [
 	" create an array of self size of Cuban rumba rhytm pulses. Better if used with self = 16 x anInteger "
 
@@ -542,7 +542,7 @@ PerformanceRecorder uniqueInstance announce: announcement.
 	"implement shifting to the left"
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> rumba: aStringOfNotes [
 	" create an array of self size of Cuban rumba rhytm pulses. Better if used with self = 16 x anInteger and with  anArrayOfNoteNumbers as Notes "
 
@@ -558,7 +558,7 @@ Integer >> rumba: aStringOfNotes [
 	^ seq
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> semibreves [
 	" returns self number of semibrevesin the first position of the bars"
 
@@ -570,7 +570,7 @@ PerformanceRecorder uniqueInstance announce: announcement.
 	^ result
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> semibreves: aStringOfNotes [
 	" returns self number of semibrevesin the first position of the bars"
 
@@ -584,7 +584,7 @@ PerformanceRecorder uniqueInstance announce: announcement.
 	^ result
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> semiquavers [
 
 	| announcement |
@@ -593,7 +593,7 @@ Integer >> semiquavers [
 	^ (Array new: self withAll: 1) asRhythm asSeq
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> semiquavers: aStringOfNotes [
 
 	| seq announcement|
@@ -604,7 +604,7 @@ PerformanceRecorder uniqueInstance announce: announcement.
 	^ seq
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> semitonesToSpeed [
 
  "Convert semitones to playback speed factor"
@@ -618,7 +618,7 @@ Integer >> semitonesToSpeed [
         ^semitoneFactor.
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> shiko [
 	" create an array of self size of shiko (West-African / Caribbean) rhytm pulses. Better if used with self = 16 x anInteger "
 
@@ -633,7 +633,7 @@ PerformanceRecorder uniqueInstance announce: announcement.
 	"implement shifting to the left"
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> shiko: aStringOfNotes [
 	" create an array of self size of shiko (West-African / Caribbean) rhytm pulses. Better if used with self = 16 x anInteger "
 
@@ -650,7 +650,7 @@ PerformanceRecorder uniqueInstance announce: announcement.
 	"implement shifting to the left"
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> sikyi [
 	" create an array of self size of  sikyi (by Ashanti people of Ghana) rhytm pulses. Better if the receiever is a multiple of 8."
 
@@ -663,7 +663,7 @@ PerformanceRecorder uniqueInstance announce: announcement.
 		   pattern at: (i rem: pattern size) + 1 ]) asRhythm asSeq
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> soukous [
 	" create an array of self size of Central Africa soukous rhytm pulses. Better if used with self = 8 x anInteger "
 
@@ -678,7 +678,7 @@ PerformanceRecorder uniqueInstance announce: announcement.
 	"implement shifting to the left"
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> spreadOver: anInteger [
 
 | result |
@@ -686,7 +686,7 @@ result := (0 to: self by: self/anInteger) asArray collect: [:i | i asFloat].
 ^ result
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> toSCAsGate [
 
 	" send an OSC message to superCollider that mimics the behaviour oa MIDI note on message, note is held for a default duration of 2 seconds"
@@ -710,7 +710,7 @@ Integer >> toSCAsGate [
 			 0 }) sendToAddressString: '127.0.0.1' port: 57110
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> toSCAsGate: aDurationInSeconds note: aNoteNumber [
 
 	"send a note-on MIDI-like message to supercollider via OSC"
@@ -737,7 +737,7 @@ Integer >> toSCAsGate: aDurationInSeconds note: aNoteNumber [
 			] fork
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> tresillo [
 	" create an array of self size of  tresillo rhytm pulses. Better if used with self = 8 x anInteger "
 
@@ -761,7 +761,7 @@ pattern := #(1 0 0 1 0 0 1 0 ).
 	"implement shifting to the left"
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> tresillo: aStringOfNotes [
 	" create an array of self size of  tresillo rhytm pulses. Better if used with self = 8 x anInteger "
 
@@ -787,7 +787,7 @@ pattern := #(1 0 0 1 0 0 1 0 ).
 	"implement shifting to the left"
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> trigs [
 	" retuns a Sequencer of gates size = self with all ones - same as semiquavers"
 |announcement|
@@ -796,7 +796,7 @@ PerformanceRecorder uniqueInstance announce: announcement.
 	^ (Array new: self withAll: 1) asRhythm asSeq
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> trueAksak [
 	" create an array of self size of Balcan aksak rhytm pulses. Better if used with self = 13 x anInteger "
 
@@ -811,7 +811,7 @@ PerformanceRecorder uniqueInstance announce: announcement.
 	"implement shifting to the left"
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> tumbao [
 	" create an array of self size of  habanera/tumbao rhytm pulses. Better if the receiever is a multiple of eight."
 
@@ -825,7 +825,7 @@ PerformanceRecorder uniqueInstance announce: announcement.
 	^ rhythm
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> tumbao: aStringOfNotes [
 	" create an array of self size of  habanera/tumbao rhytm pulses. Better if the receiever is a multiple of eight."
 
@@ -840,7 +840,7 @@ PerformanceRecorder uniqueInstance announce: announcement.
 	^ seq
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> upbeats [
 	"creates an Array of size=self  of values (0,1) with 1 to the position corresponding to a 4/4 upbeat rhythm"
 
@@ -852,7 +852,7 @@ Integer >> upbeats [
 		  asSeq
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 Integer >> upbeats: aStringOfNotes [
 	"creates an Array of size=self  of values (0,1) with 1 to the position corresponding to a 4/4 upbeat rhythm"
 

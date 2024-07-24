@@ -2,14 +2,12 @@
 I am a PerformerType and I am here to hel you the manage the double dispatch the messages for tdifferences type of Performances
 "
 Class {
-	#name : 'PerfType',
-	#superclass : 'Object',
-	#category : 'Coypu-Performance',
-	#package : 'Coypu',
-	#tag : 'Performance'
+	#name : #PerfType,
+	#superclass : #Object,
+	#category : #'Coypu-Performance'
 }
 
-{ #category : 'adding' }
+{ #category : #adding }
 PerfType >> addSequencer: aSequencer to: aSymbol [
 
 	aSequencer noteIndex: 1.
@@ -35,7 +33,7 @@ PerfType >> addSequencer: aSequencer to: aSymbol [
 		aSequencer phaustNoteDestination: aSequencer seqKey , 'Note' ]
 ]
 
-{ #category : 'playing' }
+{ #category : #playing }
 PerfType >> playFor: aNumberOfSteps [
 	" reset all the Sequencers , just on performance at once"
 
@@ -48,7 +46,7 @@ PerfType >> playFor: aNumberOfSteps [
 	perf resetAllSequencers
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 PerfType >> playPhaustEventAt: anIndex forSequencer: aSequencer [
 	"sends a message to Phausto / the DSP api must be written in a sensible way "
 
@@ -74,10 +72,4 @@ PerfType >> playPhaustEventAt: anIndex forSequencer: aSequencer [
 		for: dur * stepDuration * 0.8.
 
 	^ true
-]
-
-{ #category : 'accessing' }
-PerfType >> stop [
-
-	Performance uniqueInstance  activeProcess terminate
 ]

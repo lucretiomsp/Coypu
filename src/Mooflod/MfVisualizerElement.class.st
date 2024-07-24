@@ -29,6 +29,7 @@ MfVisualizerElement class >> exampleVisualizer [
 	v transformDo: [ :c | c translateBy: 200 @ 0 ].
 	space root addChild: v.
 	space toTheme: MfMooflodTheme new.
+	space root background: (Color fromHexString: '#313339').
 	space show.
 	^ v
 ]

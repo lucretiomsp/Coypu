@@ -1,6 +1,6 @@
-Extension { #name : 'DSP' }
+Extension { #name : #DSP }
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 DSP >> setValueMooflod: aFloat parameter: aParamAsString [
 	"  set the value of the parameter named aParamAsString"
 
@@ -18,7 +18,7 @@ DSP >> setValueMooflod: aFloat parameter: aParamAsString [
 				ifFalse: [ ^ self class invalidException ] ]
 ]
 
-{ #category : '*Coypu' }
+{ #category : #'*Coypu' }
 DSP >> trigMooflod: aString for: aDurationInSeconds [
 	"send a 10 ms trigger to a Faust parameter, designed to trig envelopes and percussions-like sounds"
 

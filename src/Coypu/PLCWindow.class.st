@@ -1,12 +1,10 @@
 Class {
-	#name : 'PLCWindow',
-	#superclass : 'SpWindow',
-	#category : 'Coypu-Playground',
-	#package : 'Coypu',
-	#tag : 'Playground'
+	#name : #PLCWindow,
+	#superclass : #SpWindow,
+	#category : 'Coypu-Playground'
 }
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 PLCWindow >> defaultColor [
 
 	^ Color red
