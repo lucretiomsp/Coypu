@@ -36,9 +36,9 @@ Internal Representation and Key Implementation Points.
 
 "
 Class {
-	#name : 'RecordedInstrumentCommand',
-	#superclass : 'RecordedCommand',
-	#type : 'variable',
+	#name : #RecordedInstrumentCommand,
+	#superclass : #RecordedCommand,
+	#type : #variable,
 	#instVars : [
 		'dirtNotes',
 		'rhythm',
@@ -46,36 +46,34 @@ Class {
 		'notes',
 		'extraValues'
 	],
-	#category : 'CoypuRecorder-RecordedCommand',
-	#package : 'CoypuRecorder',
-	#tag : 'RecordedCommand'
+	#category : 'CoypuRecorder-RecordedCommand'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 RecordedInstrumentCommand >> dirtNotes [
 
 ^	dirtNotes
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 RecordedInstrumentCommand >> dirtNotes: aDirtNotes [
 
 dirtNotes := aDirtNotes
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 RecordedInstrumentCommand >> extraValues [
 
 ^	extraValues
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 RecordedInstrumentCommand >> extraValues: aString [
 
 extraValues := aString 
 ]
 
-{ #category : 'printing items' }
+{ #category : #'printing items' }
 RecordedInstrumentCommand >> hasSymbol: aString [
 | m |
 m := aString.
@@ -98,7 +96,7 @@ m := aString.
 ^ m
 ]
 
-{ #category : 'printing items' }
+{ #category : #'printing items' }
 RecordedInstrumentCommand >> isAOnceCall [
 
 	delay
@@ -111,46 +109,44 @@ RecordedInstrumentCommand >> isAOnceCall [
 		ifNil: [ ^ symbol allButFirst , '.' ]
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 RecordedInstrumentCommand >> isRecordedInstructionCommand [
 
 	^ false
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 RecordedInstrumentCommand >> isRecordedInstrumentCommand [
 
 ^true
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 RecordedInstrumentCommand >> notes [
 
 ^notes 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 RecordedInstrumentCommand >> notes: anArrayOfNotes [
 
 notes := anArrayOfNotes
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 RecordedInstrumentCommand >> print [
 	"Print the command in the same way it has been used in the original performance"
 
 	| m |
 	"Print for a Once line ex: 'bass3' once "
-	rhythm ifNil: [
-		self isAOnceCall].
+	rhythm ifNil: [ self isAOnceCall ].
 
 
 	m := rhythm.
 	"add the notes if called"
 	notes ifNotNil: [ m := m , notes ].
-	"Classic command ex: 16 upbeats to: #bass3"
 	self extraValues ifNotNil: [ m := m , extraValues ].
-m := self hasSymbol: m.
+	m := self hasSymbol: m.
 
 	"add the dirtNotes if called"
 	dirtNotes ifNotNil: [
@@ -158,25 +154,25 @@ m := self hasSymbol: m.
 	^ m
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 RecordedInstrumentCommand >> rhythm [
 
 	^ rhythm
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 RecordedInstrumentCommand >> rhythm: aRythm [
 
 	rhythm := aRythm
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 RecordedInstrumentCommand >> symbol [
 
 	^ symbol 
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 RecordedInstrumentCommand >> symbol: aSymbol [
 
 

@@ -1,17 +1,15 @@
 Class {
-	#name : 'PerformanceReplayerTest',
-	#superclass : 'TestCase',
+	#name : #PerformanceReplayerTest,
+	#superclass : #TestCase,
 	#instVars : [
 		'performanceRecorder',
 		'replayer',
 		'securePerformance'
 	],
-	#category : 'CoypuRecorder-Tests-Tests',
-	#package : 'CoypuRecorder-Tests',
-	#tag : 'Tests'
+	#category : 'CoypuRecorder-Tests-Tests'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 PerformanceReplayerTest >> filePath [
 
 	| x |
@@ -20,11 +18,12 @@ PerformanceReplayerTest >> filePath [
 	^ x
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 PerformanceReplayerTest >> setUp [
 
 	super setUp.
 	performanceRecorder := PerformanceRecorder uniqueInstance.
+	Performance uniqueInstance performanceType: PerfTypeMock new.
 	performanceRecorder performer: PerformerSuperDirt new.
 	replayer := PerformanceMusicalReplayer new.
 	securePerformance := SavedPerformance new.
@@ -39,14 +38,14 @@ PerformanceReplayerTest >> setUp [
 		(RecordedInstructionCommand new instruction: 'playFor: 16 bars.')
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 PerformanceReplayerTest >> tearDown [
 
-	performanceRecorder stop.
-	super tearDown 
+	Performance uniqueInstance performanceType: PerfType new.
+	super tearDown
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 PerformanceReplayerTest >> testReadScriptStonFile [
 
 	| x oldPerformanceScript |
@@ -68,10 +67,10 @@ PerformanceReplayerTest >> testReadScriptStonFile [
 	replayer performanceScript
 		with: oldPerformanceScript
 		do: [ :w :y | self assert: w equals: y ] ] ensure: [
-		(x / 'ReplayablePerformanceTest.ston') ensureDelete ]
+		(x / 'ReplayablePerformanceTest.ston') delete ]
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 PerformanceReplayerTest >> testReadScriptStonFileWithSureSavedPerformance [
 
 	| x oldPerformanceScript |
@@ -91,10 +90,10 @@ PerformanceReplayerTest >> testReadScriptStonFileWithSureSavedPerformance [
 	replayer performanceScript
 		with: oldPerformanceScript
 		do: [ :w :y | self assert: w equals: y ] ] ensure: [
-		(x / 'ReplayablePerformanceTest.ston') ensureDelete ]
+		(x / 'ReplayablePerformanceTest.ston') delete ]
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 PerformanceReplayerTest >> testReplaySameAsOriginal [
 
 	| performance replayedPerformance |
@@ -119,7 +118,7 @@ PerformanceReplayerTest >> testReplaySameAsOriginal [
 		do: [ :perf1 :perf2 | self assert: perf1 equals: perf2 ]
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 PerformanceReplayerTest >> testReplaySameAsOriginalWithSureSavedPerformance [
 
 	| performance replayedPerformance |
@@ -137,7 +136,7 @@ PerformanceReplayerTest >> testReplaySameAsOriginalWithSureSavedPerformance [
 		do: [ :perf1 :perf2 | self assert: perf1 equals: perf2 ]
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 PerformanceReplayerTest >> testWriteScriptStonFile [
 
 	| x oldPerformanceScript stream |
@@ -162,10 +161,10 @@ PerformanceReplayerTest >> testWriteScriptStonFile [
 	replayer performanceScript
 		with: oldPerformanceScript
 		do: [ :w :y | self assert: w equals: y ] ] ensure: [
-		(x / 'ReplayablePerformanceTest.ston') ensureDelete ]
+		(x / 'ReplayablePerformanceTest.ston') delete ]
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 PerformanceReplayerTest >> testWriteScriptStonFileWhenNameIsTaken [
 
 	| x |
@@ -190,6 +189,6 @@ PerformanceReplayerTest >> testWriteScriptStonFileWhenNameIsTaken [
 		equals: true.
 
 	[  ] ensure: [
-		(x / 'ReplayablePerformanceTest.ston') ensureDelete.
-		(x / 'ReplayablePerformanceTest.1.ston') ensureDelete ]
+		(x / 'ReplayablePerformanceTest.ston') delete.
+		(x / 'ReplayablePerformanceTest.1.ston') delete ]
 ]

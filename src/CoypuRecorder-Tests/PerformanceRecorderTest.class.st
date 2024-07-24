@@ -1,29 +1,35 @@
 Class {
-	#name : 'PerformanceRecorderTest',
-	#superclass : 'TestCase',
+	#name : #PerformanceRecorderTest,
+	#superclass : #TestCase,
 	#instVars : [
 		'performanceRecorder'
 	],
-	#category : 'CoypuRecorder-Tests-Tests',
-	#package : 'CoypuRecorder-Tests',
-	#tag : 'Tests'
+	#category : 'CoypuRecorder-Tests-Tests'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 PerformanceRecorderTest >> commands [
 
 	^ performanceRecorder savedPerformance collectionOfCommands
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 PerformanceRecorderTest >> setUp [
 
 	super setUp.
 	performanceRecorder := PerformanceRecorder uniqueInstance.
-	performanceRecorder performer: PerformerSuperDirt new
+	performanceRecorder performer: PerformerSuperDirt new.
+	Performance uniqueInstance performanceType: PerfTypeMock new
 ]
 
-{ #category : 'tests' }
+{ #category : #running }
+PerformanceRecorderTest >> tearDown [
+
+	Performance uniqueInstance performanceType: PerfType new.
+	super tearDown 
+]
+
+{ #category : #tests }
 PerformanceRecorderTest >> testActiveDSP [
 
 	| grooveBox |
@@ -36,7 +42,7 @@ PerformanceRecorderTest >> testActiveDSP [
 		equals: 'p activeDSP: grooveBox.'
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 PerformanceRecorderTest >> testFreq [
 
 
@@ -47,7 +53,7 @@ PerformanceRecorderTest >> testFreq [
 	self assert: self commands last print equals: 'p freq: 138 bpm.'
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 PerformanceRecorderTest >> testMute [
 
 
@@ -59,7 +65,7 @@ PerformanceRecorderTest >> testMute [
 	self assert: self commands last print equals: 'p mute: #bb.'
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 PerformanceRecorderTest >> testPlay [
 
 
@@ -71,7 +77,7 @@ PerformanceRecorderTest >> testPlay [
 	self assert: self commands last print equals: 'p play.'
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 PerformanceRecorderTest >> testPlayFor [
 
 
@@ -83,7 +89,7 @@ PerformanceRecorderTest >> testPlayFor [
 	self assert: self commands last print equals: 'p playFor: 12 bars.'
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 PerformanceRecorderTest >> testRestore [
 
 
@@ -96,7 +102,7 @@ PerformanceRecorderTest >> testRestore [
 	self assert: self commands last print equals: 'p restore.'
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 PerformanceRecorderTest >> testSameAPIThanPerformance [
 
 	| api |
@@ -104,7 +110,7 @@ PerformanceRecorderTest >> testSameAPIThanPerformance [
 	Performance selectors do: [ :s | self assert: (api includes: s) ]
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 PerformanceRecorderTest >> testSolo [
 
 
@@ -115,7 +121,7 @@ PerformanceRecorderTest >> testSolo [
 	self assert: self commands last print equals: 'p solo: #bb.'
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 PerformanceRecorderTest >> testStop [
 
 
@@ -127,7 +133,7 @@ PerformanceRecorderTest >> testStop [
 	self assert: self commands last print equals: 'p stop.'
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 PerformanceRecorderTest >> testUnsolo [
 
 

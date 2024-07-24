@@ -1,21 +1,19 @@
 Class {
-	#name : 'DoubleRhythmAnnouncement',
-	#superclass : 'Announcement',
+	#name : #DoubleRhythmAnnouncement,
+	#superclass : #Announcement,
 	#instVars : [
 		'symbol'
 	],
-	#category : 'CoypuRecorder-Announcements',
-	#package : 'CoypuRecorder',
-	#tag : 'Announcements'
+	#category : 'CoypuRecorder-Announcements'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DoubleRhythmAnnouncement >> symbol [
 
 	^symbol
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DoubleRhythmAnnouncement >> symbol: aSymbol [
 
 symbol := aSymbol

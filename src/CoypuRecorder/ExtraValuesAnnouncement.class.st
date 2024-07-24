@@ -1,21 +1,19 @@
 Class {
-	#name : 'ExtraValuesAnnouncement',
-	#superclass : 'Announcement',
+	#name : #ExtraValuesAnnouncement,
+	#superclass : #Announcement,
 	#instVars : [
 		'extraValues'
 	],
-	#category : 'CoypuRecorder-Announcements',
-	#package : 'CoypuRecorder',
-	#tag : 'Announcements'
+	#category : 'CoypuRecorder-Announcements'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ExtraValuesAnnouncement >> extraValues [
 
 	^ extraValues
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ExtraValuesAnnouncement >> extraValues: aSymbol [
 
 	extraValues := aSymbol
