@@ -1,10 +1,12 @@
 Class {
-	#name : #MfPianoBlackNoteElement,
-	#superclass : #ToElement,
-	#category : 'Mooflod-PianoKeyboardWidget'
+	#name : 'MfPianoBlackNoteElement',
+	#superclass : 'ToElement',
+	#category : 'Mooflod-PianoKeyboardWidget',
+	#package : 'Mooflod',
+	#tag : 'PianoKeyboardWidget'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MfPianoBlackNoteElement class >> newWithColor: aColor [
 
 	^ self new
@@ -12,7 +14,7 @@ MfPianoBlackNoteElement class >> newWithColor: aColor [
 		  yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MfPianoBlackNoteElement >> initialize [
 
 	super initialize.

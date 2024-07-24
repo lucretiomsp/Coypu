@@ -1,6 +1,6 @@
 Class {
-	#name : #MfMasterDelayElement,
-	#superclass : #ToElement,
+	#name : 'MfMasterDelayElement',
+	#superclass : 'ToElement',
 	#instVars : [
 		'currentX',
 		'currentY',
@@ -8,10 +8,12 @@ Class {
 		'delayTime',
 		'nbOfChilds'
 	],
-	#category : #'Mooflod-MasterDelayWidget'
+	#category : 'Mooflod-MasterDelayWidget',
+	#package : 'Mooflod',
+	#tag : 'MasterDelayWidget'
 }
 
-{ #category : #example }
+{ #category : 'example' }
 MfMasterDelayElement class >> exampleSimpleFractalCircle [
 
 	<script>
@@ -28,13 +30,13 @@ MfMasterDelayElement class >> exampleSimpleFractalCircle [
 	^ c
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MfMasterDelayElement >> circleExtent [
 
 	^ 104 @ 104
 ]
 
-{ #category : #internal }
+{ #category : 'internal' }
 MfMasterDelayElement >> createCircle: x y: anY [
 
 	| c |
@@ -42,7 +44,7 @@ MfMasterDelayElement >> createCircle: x y: anY [
 	self addChild: c
 ]
 
-{ #category : #internal }
+{ #category : 'internal' }
 MfMasterDelayElement >> createCircle: x y: anY color: aColor [
 
 	| c color |
@@ -52,30 +54,30 @@ MfMasterDelayElement >> createCircle: x y: anY color: aColor [
 	self addChild: c
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MfMasterDelayElement >> currentX [
 
 ^currentX.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MfMasterDelayElement >> currentY [ 
 ^currentY.
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MfMasterDelayElement >> defaultGeometry [
 
 	^ BlCircleGeometry new matchExtent: self extent.
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 MfMasterDelayElement >> delayAmount [
 
 	^ delayAmount
 ]
 
-{ #category : #'public api' }
+{ #category : 'public api' }
 MfMasterDelayElement >> delayAmount: aValue [
 
 	(aValue between: 0 and: 100)
@@ -85,13 +87,13 @@ MfMasterDelayElement >> delayAmount: aValue [
 	self updateCircles
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MfMasterDelayElement >> delayTime [ 
 
 ^delayTime 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MfMasterDelayElement >> delayTime: aDelay [
 
 	delayTime := aDelay.
@@ -99,7 +101,7 @@ MfMasterDelayElement >> delayTime: aDelay [
 	^self rColor 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MfMasterDelayElement >> initialize [
 
 	super initialize.
@@ -111,25 +113,25 @@ MfMasterDelayElement >> initialize [
 	delayTime := 0
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MfMasterDelayElement >> numberOfCircles [
 
 ^nbOfChilds 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MfMasterDelayElement >> rColor [
 
 	^ 0 + (12.75 * (delayTime * 10))
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MfMasterDelayElement >> setValue: aFloat [
 
 	self delayAmount: (aFloat * 98 ) + 0.1
 ]
 
-{ #category : #internal }
+{ #category : 'internal' }
 MfMasterDelayElement >> updateCircles [
 
 	currentX := 104.

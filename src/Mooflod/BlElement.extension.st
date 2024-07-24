@@ -1,6 +1,6 @@
-Extension { #name : #BlElement }
+Extension { #name : 'BlElement' }
 
-{ #category : #'*Mooflod' }
+{ #category : '*Mooflod' }
 BlElement >> newMooflodSkin [
 
 	^ MfBasicMooflodSkin new

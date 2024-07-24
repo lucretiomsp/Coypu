@@ -1,10 +1,12 @@
 Class {
-	#name : #MfNumberInputElementTest,
-	#superclass : #TestCase,
-	#category : 'Mooflod-InputWidget'
+	#name : 'MfNumberInputElementTest',
+	#superclass : 'TestCase',
+	#category : 'Mooflod-InputWidget',
+	#package : 'Mooflod',
+	#tag : 'InputWidget'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MfNumberInputElementTest >> testCanChangeLabel [
 
 	| inputElem |
@@ -14,7 +16,7 @@ MfNumberInputElementTest >> testCanChangeLabel [
 	self assert: inputElem label text asString equals: 'Volume'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MfNumberInputElementTest >> testEverythingIsInitializedCorrectly [
 
 	| inputElem |
@@ -22,7 +24,7 @@ MfNumberInputElementTest >> testEverythingIsInitializedCorrectly [
 	self assert: inputElem children size equals: 4
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MfNumberInputElementTest >> testValueCantBeNegative [
 
 	| inputElem value |
@@ -33,7 +35,7 @@ MfNumberInputElementTest >> testValueCantBeNegative [
 	self assert: value equals: 0
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MfNumberInputElementTest >> testValueUpdatedOnClick [
 
 	| inputElem |

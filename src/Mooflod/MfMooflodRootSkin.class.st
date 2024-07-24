@@ -1,10 +1,12 @@
 Class {
-	#name : #MfMooflodRootSkin,
-	#superclass : #ToRawSkin,
-	#category : 'Mooflod-Core'
+	#name : 'MfMooflodRootSkin',
+	#superclass : 'ToRawSkin',
+	#category : 'Mooflod-Core',
+	#package : 'Mooflod',
+	#tag : 'Core'
 }
 
-{ #category : #'event handling' }
+{ #category : 'event handling' }
 MfMooflodRootSkin >> installLookEvent: anEvent [
 
 	super installLookEvent: anEvent.

@@ -12,7 +12,8 @@ Class {
 		'stepVisualizer',
 		'displayVisualizer',
 		'perfVisualizer',
-		'trackVisualizers'
+		'trackVisualizers',
+		'freq'
 	],
 	#category : 'Coypu-Performance',
 	#package : 'Coypu',
@@ -61,7 +62,7 @@ PerfTypeMooflod >> addSequencer: aSequencer to: aSymbol [
 	isInKeys := false.
 	perf keysDo: [ :k |
 		k = aSymbol ifTrue: [
-			(self visualizer patternArray at: k) forSequencer: self.
+			(self visualizer patternArray at: k) forSequencer: aSequencer .
 			isInKeys := true.
 			(self visualizer squareArray at: k) changeAnimationTime:
 				Performance uniqueInstance freq * 4 ] ].
@@ -104,15 +105,6 @@ PerfTypeMooflod >> addSequencer: aSequencer to: aSymbol [
 PerfTypeMooflod >> displayVisualizer [
 
 	^ displayVisualizer
-]
-
-{ #category : 'accessing' }
-PerfTypeMooflod >> displayVisualizer: aBoolean [
-
-	displayVisualizer := aBoolean.
-	visualizer := MfVisualizerElement new level: 5.
-	stepVisualizer := MfPerformanceStepsDisplayer new.
-	isVisualizerOpen := false
 ]
 
 { #category : 'initialization' }
@@ -169,9 +161,11 @@ PerfTypeMooflod >> openVisualizers [
 	visualizerSpace root addChild: visualizer.
 	visualizerSpace root childrenDo: [ :child |
 		child margin: (BlInsets vertical: 10) ].
+	visualizerSpace position: World extent x * (10 / 12) @ 20.
 	visualizerSpace toTheme: MfMooflodTheme new.
+	visualizerSpace root background: (Color fromHexString: '#313339').
 	visualizerSpace show.
-	visualizerSpace position: World extent x * (10 / 12) @ 20
+
 ]
 
 { #category : 'accessing' }
@@ -197,19 +191,19 @@ PerfTypeMooflod >> playFor: aNumberOfSteps [
 	| perf bpm |
 	bpm := 10.
 	perf := Performance uniqueInstance.
-	Transcript
+	"Transcript
 		show: 'PERFOMOOFLOD';
-		open.
+		open."
 	perf activeProcess isTerminated  ifTrue: [ perf performer playFor: aNumberOfSteps ].
 	self displayVisualizer ifTrue: [
 		self isVisualizerOpen ifFalse: [
-			self stepVisualizer addSteps: perf transportStep.
-			self stepVisualizer initializeAnimation: perf freq.
+			stepVisualizer addSteps: perf transportStep.
+			stepVisualizer initializeAnimation: perf freq.
 			self openVisualizers.
-			self isVisualizerOpen: true ].
-		isVisualizerOpen ifTrue: [ stepVisualizer animationIsRunning: true ].
-		stepVisualizer pauseAnimation: 15 / bpm / 60 * (aNumberOfSteps / 16).
-		visualizer initAnimation: 15 / bpm / 60 * (aNumberOfSteps / 16) ].
+			
+			].
+	   stepVisualizer pauseAnimation: 15 / perf bpm / 60 * (aNumberOfSteps / 16).
+		visualizer initAnimation: 15 / perf bpm / 60 * (aNumberOfSteps / 16) ].
 	perf resetAllSequencers
 ]
 
@@ -251,6 +245,14 @@ PerfTypeMooflod >> stepVisualizer [
 PerfTypeMooflod >> stepVisualizer: anObject [
 
 	stepVisualizer := anObject
+]
+
+{ #category : 'accessing' }
+PerfTypeMooflod >> stop [
+
+	visualizer cleanVisualizer .
+	stepVisualizer animationIsRunning: false.
+	Performance uniqueInstance  activeProcess terminate.
 ]
 
 { #category : 'accessing' }
