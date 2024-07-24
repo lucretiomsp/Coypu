@@ -25,6 +25,7 @@ PerformanceReplayerTest >> setUp [
 
 	super setUp.
 	performanceRecorder := PerformanceRecorder uniqueInstance.
+	Performance uniqueInstance performanceType: PerfTypeMock new.
 	performanceRecorder performer: PerformerSuperDirt new.
 	replayer := PerformanceMusicalReplayer new.
 	securePerformance := SavedPerformance new.
@@ -42,8 +43,8 @@ PerformanceReplayerTest >> setUp [
 { #category : 'running' }
 PerformanceReplayerTest >> tearDown [
 
-	performanceRecorder stop.
-	super tearDown 
+	Performance uniqueInstance performanceType: PerfType new.
+	super tearDown
 ]
 
 { #category : 'tests' }
@@ -68,7 +69,7 @@ PerformanceReplayerTest >> testReadScriptStonFile [
 	replayer performanceScript
 		with: oldPerformanceScript
 		do: [ :w :y | self assert: w equals: y ] ] ensure: [
-		(x / 'ReplayablePerformanceTest.ston') ensureDelete ]
+		(x / 'ReplayablePerformanceTest.ston') delete ]
 ]
 
 { #category : 'tests' }
@@ -91,7 +92,7 @@ PerformanceReplayerTest >> testReadScriptStonFileWithSureSavedPerformance [
 	replayer performanceScript
 		with: oldPerformanceScript
 		do: [ :w :y | self assert: w equals: y ] ] ensure: [
-		(x / 'ReplayablePerformanceTest.ston') ensureDelete ]
+		(x / 'ReplayablePerformanceTest.ston') delete ]
 ]
 
 { #category : 'tests' }
@@ -162,7 +163,7 @@ PerformanceReplayerTest >> testWriteScriptStonFile [
 	replayer performanceScript
 		with: oldPerformanceScript
 		do: [ :w :y | self assert: w equals: y ] ] ensure: [
-		(x / 'ReplayablePerformanceTest.ston') ensureDelete ]
+		(x / 'ReplayablePerformanceTest.ston') delete ]
 ]
 
 { #category : 'tests' }
@@ -190,6 +191,6 @@ PerformanceReplayerTest >> testWriteScriptStonFileWhenNameIsTaken [
 		equals: true.
 
 	[  ] ensure: [
-		(x / 'ReplayablePerformanceTest.ston') ensureDelete.
-		(x / 'ReplayablePerformanceTest.1.ston') ensureDelete ]
+		(x / 'ReplayablePerformanceTest.ston') delete.
+		(x / 'ReplayablePerformanceTest.1.ston') delete ]
 ]

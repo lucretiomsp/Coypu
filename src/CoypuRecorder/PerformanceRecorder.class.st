@@ -114,10 +114,12 @@ PerformanceRecorder >> announce: anAnnouncement [
 			to: savedPerformance;
 			when: DelayAnnouncement send: #appliesDelay: to: savedPerformance;
 			when: DoubleRhythmAnnouncement
-			send: #lastSymbol:
+			send: #doubleRhythmsAnnounced
 			to: savedPerformance;
 			when: NotesAnnouncement send: #appliesNotes: to: savedPerformance;
-			when: ExtraValuesAnnouncement send: #appliesExtraValues: to: savedPerformance ].
+			when: ExtraValuesAnnouncement
+			send: #appliesExtraValues:
+			to: savedPerformance ].
 
 	announcer announce: anAnnouncement
 ]

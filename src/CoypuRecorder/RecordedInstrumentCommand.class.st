@@ -141,16 +141,14 @@ RecordedInstrumentCommand >> print [
 
 	| m |
 	"Print for a Once line ex: 'bass3' once "
-	rhythm ifNil: [
-		self isAOnceCall].
+	rhythm ifNil: [ self isAOnceCall ].
 
 
 	m := rhythm.
 	"add the notes if called"
 	notes ifNotNil: [ m := m , notes ].
-	"Classic command ex: 16 upbeats to: #bass3"
 	self extraValues ifNotNil: [ m := m , extraValues ].
-m := self hasSymbol: m.
+	m := self hasSymbol: m.
 
 	"add the dirtNotes if called"
 	dirtNotes ifNotNil: [

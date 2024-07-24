@@ -21,15 +21,17 @@ SavedPerformanceTest >> setUp [
 
 	super setUp.
 	performanceRecorder := PerformanceRecorder uniqueInstance.
-
+	performanceRecorder emptySavedPerformance.
 	performanceRecorder performer: PerformerSuperDirt new.
+	Performance uniqueInstance performanceType: PerfTypeMock new.
 	replayer := PerformanceTextualReplayer new
 ]
 
 { #category : 'running' }
 SavedPerformanceTest >> tearDown [
-	
+
 	performanceRecorder stop.
+	Performance uniqueInstance performanceType: PerfType new.
 	super tearDown
 ]
 
@@ -207,7 +209,7 @@ SavedPerformanceTest >> testScriptForReplayer [
 	performanceRecorder playFor: 4 bars.
 
 	replayer getScript: performanceRecorder savedPerformance.
-	" The size of performanceScript is 5 because of the added line of Performance & Performer"
+
 	self assert: replayer performanceScript size equals: 6.
 
 	self
