@@ -16,7 +16,11 @@ PerformanceReplayerTest >> filePath [
 
 	| x |
 	x := FileLocator home / 'Documents'.
-	x := x / 'PerformanceScripts' / DateAndTime now asDate asString.
+	x := x / 'PerformanceScripts'
+	     /
+	     (DateAndTime now asDate ddmmyyyy asString
+		      copyReplaceAll: '/'
+		      with: '-').
 	^ x
 ]
 
