@@ -1,20 +1,22 @@
 Class {
-	#name : #SavedPerformanceTest,
-	#superclass : #TestCase,
+	#name : 'SavedPerformanceTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'performanceRecorder',
 		'replayer'
 	],
-	#category : 'CoypuRecorder-Tests-Tests'
+	#category : 'CoypuRecorder-Tests-Tests',
+	#package : 'CoypuRecorder-Tests',
+	#tag : 'Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 SavedPerformanceTest >> commands [
 
 	^ performanceRecorder savedPerformance collectionOfCommands
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SavedPerformanceTest >> setUp [
 
 	super setUp.
@@ -25,7 +27,7 @@ SavedPerformanceTest >> setUp [
 	replayer := PerformanceTextualReplayer new
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 SavedPerformanceTest >> tearDown [
 
 	performanceRecorder stop.
@@ -33,7 +35,7 @@ SavedPerformanceTest >> tearDown [
 	super tearDown
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 SavedPerformanceTest >> testAbsoluteToDelay [
 
 	| x |
@@ -59,7 +61,7 @@ SavedPerformanceTest >> testAbsoluteToDelay [
 		equals: true
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 SavedPerformanceTest >> testAbsoluteToRelative [
 
 	| x |
@@ -82,7 +84,7 @@ SavedPerformanceTest >> testAbsoluteToRelative [
 		equals: true
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 SavedPerformanceTest >> testAddInstrument [
 
 	self commands size traceCr.
@@ -93,7 +95,7 @@ SavedPerformanceTest >> testAddInstrument [
 	self assert: self commands last rhythm equals: '16 upbeats'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 SavedPerformanceTest >> testBodyScripts [
 
 	performanceRecorder freq: 138 bpm.
@@ -105,7 +107,7 @@ SavedPerformanceTest >> testBodyScripts [
 		do: [ :x :y | self assert: x print equals: y ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 SavedPerformanceTest >> testDoubleRhythmesCatched [
 
 	16 upbeats , 16 downbeats to: #bass3.
@@ -118,7 +120,7 @@ SavedPerformanceTest >> testDoubleRhythmesCatched [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 SavedPerformanceTest >> testLastDirtNotes [
 
 
@@ -137,7 +139,7 @@ SavedPerformanceTest >> testLastDirtNotes [
 	self assert: self commands last dirtNotes equals: '8'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 SavedPerformanceTest >> testLastSymbol [
 
 	16 upbeats to: #bb.
@@ -147,7 +149,7 @@ SavedPerformanceTest >> testLastSymbol [
 	self assert: self commands last symbol equals: 'bb'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 SavedPerformanceTest >> testNotesAdded [
 
 	16 upbeats notes: #( 43 45 67 ) to: #bb.
@@ -158,7 +160,7 @@ SavedPerformanceTest >> testNotesAdded [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 SavedPerformanceTest >> testNotesNotAddedIfNotCalled [
 
 	16 downbeats to: #bass3.
@@ -168,7 +170,7 @@ SavedPerformanceTest >> testNotesNotAddedIfNotCalled [
 	self assert: self commands last notes equals: nil
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 SavedPerformanceTest >> testOnceCatched [
 
 	'bass3' once.
@@ -179,7 +181,7 @@ SavedPerformanceTest >> testOnceCatched [
 	self assert: self commands last symbol equals: ' ''bass3'' once'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 SavedPerformanceTest >> testRightNumberOfCommandsInSavedPerformance [
 
 
@@ -197,7 +199,7 @@ SavedPerformanceTest >> testRightNumberOfCommandsInSavedPerformance [
 	self assert: self commands size equals: 5.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 SavedPerformanceTest >> testScriptForReplayer [
 
 	self assert: replayer performanceScript isNil equals: true.
@@ -224,7 +226,7 @@ SavedPerformanceTest >> testScriptForReplayer [
 '
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 SavedPerformanceTest >> testScriptWithDelayTimeForReplayer [
 
 	replayer := PerformanceMusicalReplayer new.
@@ -252,7 +254,7 @@ SavedPerformanceTest >> testScriptWithDelayTimeForReplayer [
 '
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 SavedPerformanceTest >> testScriptWithRelativeTimeForReplayer [
 
 	self assert: replayer performanceScript isNil equals: true.
@@ -283,7 +285,7 @@ p playFor: 4 bars.
 '
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 SavedPerformanceTest >> testScriptWithTimeForReplayer [
 
 	self assert: replayer performanceScript isNil equals: true.
@@ -313,7 +315,7 @@ p playFor: 4 bars.
 '
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 SavedPerformanceTest >> testTimes [
 
 	performanceRecorder freq: 138 bpm.
@@ -324,7 +326,7 @@ SavedPerformanceTest >> testTimes [
 		do: [ :x :y | self assert: x time asTime equals: y ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 SavedPerformanceTest >> testTwoSimpleRhythmsInARowNotCatchedAsDoubleRhythmes [
 
 	16 upbeats.
@@ -336,7 +338,7 @@ SavedPerformanceTest >> testTwoSimpleRhythmsInARowNotCatchedAsDoubleRhythmes [
 		assert: self commands last print equals: '16 downbeats to: #bd.'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 SavedPerformanceTest >> testVisitCommandScript [
 
 	16 upbeats to: #bd.
@@ -348,7 +350,7 @@ SavedPerformanceTest >> testVisitCommandScript [
 				 self commands last)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 SavedPerformanceTest >> testVisitCommandTime [
 
 	16 upbeats to: #bd.

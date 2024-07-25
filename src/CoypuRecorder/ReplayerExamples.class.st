@@ -1,14 +1,16 @@
 "
-## Class used to do exemples of usage for CoypuRecorder.
+## Class containing examples of use of the replayer.
 "
 Class {
-	#name : #ReplayerExamples,
-	#superclass : #Object,
-	#category : 'CoypuRecorder-Examples'
+	#name : 'ReplayerExamples',
+	#superclass : 'Object',
+	#category : 'CoypuRecorder-Examples',
+	#package : 'CoypuRecorder',
+	#tag : 'Examples'
 }
 
-{ #category : #exemples }
-ReplayerExamples >> displayPerformanceInStonFile [
+{ #category : 'exemples' }
+ReplayerExamples >> WriteAPerformanceInStonFile [
 
 	<script: ' self new displayPerformanceInStonFile'>
 	| content |
@@ -65,7 +67,7 @@ k writeScriptInStonFile.
 	^ StPlayground openContents: content
 ]
 
-{ #category : #exemples }
+{ #category : 'exemples' }
 ReplayerExamples >> displayPerformanceInTranscript [
 
 	<script: ' self new displayPerformanceInTranscript'>
@@ -114,7 +116,7 @@ k displayInTranscript.'.
 	^ StPlayground openContents: content
 ]
 
-{ #category : #exemples }
+{ #category : 'exemples' }
 ReplayerExamples >> replayPerformance [
 
 	<script: ' self new replayPerformance'>
@@ -163,7 +165,7 @@ k replayWithoutPlayground.'.
 	^ StPlayground openContents: content
 ]
 
-{ #category : #exemples }
+{ #category : 'exemples' }
 ReplayerExamples >> replayPerformanceInPlayground [
 
 	<script: ' self new replayPerformanceInPlayground'>

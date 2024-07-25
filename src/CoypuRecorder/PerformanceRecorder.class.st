@@ -24,8 +24,8 @@ savedPerformance:	<SavedPerformance> object that has an OrderedCollection where 
 
 "
 Class {
-	#name : #PerformanceRecorder,
-	#superclass : #Object,
+	#name : 'PerformanceRecorder',
+	#superclass : 'Object',
 	#instVars : [
 		'savedPerformance',
 		'announcer'
@@ -33,36 +33,38 @@ Class {
 	#classInstVars : [
 		'uniqueInstance'
 	],
-	#category : 'CoypuRecorder-Recorder'
+	#category : 'CoypuRecorder-Recorder',
+	#package : 'CoypuRecorder',
+	#tag : 'Recorder'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PerformanceRecorder class >> new [
 
 	^ Error new signal:
 		  'PerformanceRecorder is a singleton -- Use unique instance instead'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceRecorder class >> uniqueInstance [
 
 	^ uniqueInstance ifNil: [
 		  uniqueInstance := super new]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceRecorder >> Dictionary [
 
 	^ Performance uniqueInstance dictionary
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceRecorder >> activeDSP [ 
 
 ^ Performance uniqueInstance activeDSP
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceRecorder >> activeDSP: aDSP [
 
 
@@ -71,32 +73,32 @@ PerformanceRecorder >> activeDSP: aDSP [
 	Performance uniqueInstance activeDSP: aDSP
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceRecorder >> activeDSP: aDSP atTime: aTime [
 
 	(Delay forMilliseconds: aTime) wait.
 	Performance uniqueInstance activeDSP: aDSP
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceRecorder >> activeProcess [
 
 	^Performance uniqueInstance activeProcess
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceRecorder >> activeProcess: anObject [
 
 Performance uniqueInstance activeProcess: anObject
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 PerformanceRecorder >> add: aSequencer channel: anIntegerBetween1And16 [
 
 Performance uniqueInstance add: aSequencer channel: anIntegerBetween1And16
 ]
 
-{ #category : #announcer }
+{ #category : 'announcer' }
 PerformanceRecorder >> announce: anAnnouncement [
 	"Used to announce with the announcer of PerformanceRecorder"
 
@@ -122,44 +124,44 @@ PerformanceRecorder >> announce: anAnnouncement [
 	announcer announce: anAnnouncement
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceRecorder >> announcer [
 
 
 	^ announcer
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceRecorder >> announcer: anAnnouncer [
 
 	announcer := anAnnouncer
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceRecorder >> at: key put: anObject [
 
 Performance uniqueInstance at: key put: anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceRecorder >> backup [
 
 ^	Performance uniqueInstance backup
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceRecorder >> backup: anObject [
 
 	Performance uniqueInstance backup: anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceRecorder >> bpm [
 
 ^	Performance uniqueInstance bpm
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceRecorder >> bpm: aRateInSeconds [
 
 
@@ -168,7 +170,7 @@ PerformanceRecorder >> bpm: aRateInSeconds [
 	Performance uniqueInstance bpm: aRateInSeconds
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceRecorder >> bpm: aRateInSeconds atTime: aTime [
 	"Call the message bpm with a atTime delay"
 
@@ -177,50 +179,50 @@ PerformanceRecorder >> bpm: aRateInSeconds atTime: aTime [
 	self bpm: aRateInSeconds
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceRecorder >> canvas [
 
 	^Performance uniqueInstance canvas
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceRecorder >> canvas: aRSCanvas [
 
 Performance uniqueInstance canvas: aRSCanvas
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceRecorder >> dirtMIDIDevice [
 	"select a SuperDirt MIDI device for the Performance"
 
 	^Performance uniqueInstance dirtMIDIDevice
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceRecorder >> dirtMIDIDevice: aString [
 	"select a SuperDirt MIDI device for the Performance"
 	
 Performance uniqueInstance dirtMIDIDevice: aString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceRecorder >> emptySavedPerformance [
 
 	savedPerformance collectionOfCommands removeAll
 ]
 
-{ #category : #'accessing - structure variables' }
+{ #category : 'accessing - structure variables' }
 PerformanceRecorder >> freq [
 	^ Performance uniqueInstance freq
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceRecorder >> freq1: anObject [
 
 Performance uniqueInstance freq1: anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceRecorder >> freq: aDurationInSeconds [
 "Create a new RecordedOrderCommand to add to the savedPerformance before calling the freq: message of the Performance "
 	savedPerformance add: (RecordedInstructionCommand new instruction:
@@ -229,7 +231,7 @@ PerformanceRecorder >> freq: aDurationInSeconds [
 	Performance uniqueInstance freq: aDurationInSeconds
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceRecorder >> freq: aDurationInSeconds atTime: aTime [
 	"Call the message freq: with a atTime delay"
 
@@ -238,49 +240,43 @@ PerformanceRecorder >> freq: aDurationInSeconds atTime: aTime [
 	self freq: aDurationInSeconds
 ]
 
-{ #category : #'LiveCoding - Performance' }
+{ #category : 'LiveCoding - Performance' }
 PerformanceRecorder >> incrementTransportStep [
 
 	Performance uniqueInstance incrementTransportStep 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PerformanceRecorder >> initialize [
 	
 savedPerformance := SavedPerformance new
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PerformanceRecorder >> initialize: aSize [
 
 Performance uniqueInstance initialize: aSize
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PerformanceRecorder >> isPerformance [ 
 
 Performance uniqueInstance isPerformance
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PerformanceRecorder >> isVisualizerOpen: aBoolean [ 
 
 Performance uniqueInstance isVisualizerOpen: aBoolean.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceRecorder >> length [
 
 Performance uniqueInstance length
 ]
 
-{ #category : #'as yet unclassified' }
-PerformanceRecorder >> levelOfDetail: anIntegerBetween1And5 [
-
-Performance uniqueInstance levelOfDetail: anIntegerBetween1And5 
-]
-
-{ #category : #'muting and soloing' }
+{ #category : 'muting and soloing' }
 PerformanceRecorder >> mute: aKeyOrAnArrayOfKeys [
 	"Create a new RecordedOrderCommand to add to the savedPerformance before calling the mute: message of the Performance "
 
@@ -289,7 +285,7 @@ PerformanceRecorder >> mute: aKeyOrAnArrayOfKeys [
 	Performance uniqueInstance mute: aKeyOrAnArrayOfKeys
 ]
 
-{ #category : #'muting and soloing' }
+{ #category : 'muting and soloing' }
 PerformanceRecorder >> mute: aKeyOrAnArrayOfKeys atTime: aTime [
 	"Call the mute method with a atTime delay"
 
@@ -298,7 +294,7 @@ PerformanceRecorder >> mute: aKeyOrAnArrayOfKeys atTime: aTime [
 	self mute: aKeyOrAnArrayOfKeys
 ]
 
-{ #category : #'muting and soloing' }
+{ #category : 'muting and soloing' }
 PerformanceRecorder >> muteAll [
 "Create a new RecordedOrderCommand to add to the savedPerformance before calling the muteAll: message of the Performance "
 	savedPerformance
@@ -308,7 +304,7 @@ PerformanceRecorder >> muteAll [
 		
 ]
 
-{ #category : #'muting and soloing' }
+{ #category : 'muting and soloing' }
 PerformanceRecorder >> muteAllAtTime: aTime [
 	"Call the message muteAll with a atTime delay"
 
@@ -317,19 +313,7 @@ PerformanceRecorder >> muteAllAtTime: aTime [
 	self muteAll
 ]
 
-{ #category : #'as yet unclassified' }
-PerformanceRecorder >> openVisualizers [
-
-Performance uniqueInstance opensVisualizer.
-]
-
-{ #category : #'as yet unclassified' }
-PerformanceRecorder >> opensVisualizers [
-
-Performance uniqueInstance opensVisualizer.
-]
-
-{ #category : #'LiveCoding - satelliteEvent' }
+{ #category : 'LiveCoding - satelliteEvent' }
 PerformanceRecorder >> pacaDance [
 	"Create a new RecordedOrderCommand to add to the savedPerformance before calling the pacaDance message of the Performance "
 
@@ -338,7 +322,7 @@ PerformanceRecorder >> pacaDance [
 	Performance uniqueInstance pacaDance
 ]
 
-{ #category : #'LiveCoding - satelliteEvent' }
+{ #category : 'LiveCoding - satelliteEvent' }
 PerformanceRecorder >> pacaDanceAtTime: aTime [
 	"call the pacaDanceAtTime: method with a aTime delay"
 
@@ -347,25 +331,25 @@ PerformanceRecorder >> pacaDanceAtTime: aTime [
 	self pacaDance
 ]
 
-{ #category : #'muting and soloing' }
+{ #category : 'muting and soloing' }
 PerformanceRecorder >> perfVisualizer [
 
 	^Performance uniqueInstance perfVisualizer
 ]
 
-{ #category : #'muting and soloing' }
+{ #category : 'muting and soloing' }
 PerformanceRecorder >> perfVisualizer: aPerfVisualizer [
 
 	Performance uniqueInstance perfVisualizer: aPerfVisualizer 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'accessing' }
 PerformanceRecorder >> performanceType [
 
 	^ Performance performanceType
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'accessing' }
 PerformanceRecorder >> performanceType: aPerformanceType [
 
     savedPerformance add: (RecordedInstructionCommand new instruction:
@@ -373,13 +357,13 @@ PerformanceRecorder >> performanceType: aPerformanceType [
     ^ Performance performanceType: aPerformanceType
 ]
 
-{ #category : #'muting and soloing' }
+{ #category : 'muting and soloing' }
 PerformanceRecorder >> performer [
 
 	^Performance uniqueInstance performer
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceRecorder >> performer: aPerformer [
 
 self emptySavedPerformance.
@@ -388,21 +372,21 @@ self emptySavedPerformance.
 	Performance uniqueInstance performer: aPerformer
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceRecorder >> performer: aPerformer atTime: aDelay [
 
 	(Delay forMilliseconds: aDelay) wait.
 	self performer: aPerformer
 ]
 
-{ #category : #playing }
+{ #category : 'playing' }
 PerformanceRecorder >> play [
 	"Create a new RecordedOrderCommand to add to the savedPerformance before calling the play message of the Performance "
 	savedPerformance add: (RecordedInstructionCommand new instruction: 'play.').
 	Performance uniqueInstance play
 ]
 
-{ #category : #playing }
+{ #category : 'playing' }
 PerformanceRecorder >> playFor: aNumberOfSteps [
 	"Create a new RecordedOrderCommand to add to the savedPerformance before calling the playFor: message of the Performance "
 	savedPerformance add: (RecordedInstructionCommand new instruction:
@@ -410,7 +394,7 @@ PerformanceRecorder >> playFor: aNumberOfSteps [
 	Performance uniqueInstance playFor: aNumberOfSteps
 ]
 
-{ #category : #playing }
+{ #category : 'playing' }
 PerformanceRecorder >> playFor: aNumberOfSteps atTime: aTime [
 	"call the playFor: method with a aTime delay"
 
@@ -419,7 +403,7 @@ PerformanceRecorder >> playFor: aNumberOfSteps atTime: aTime [
 	self playFor: aNumberOfSteps
 ]
 
-{ #category : #'muting and soloing' }
+{ #category : 'muting and soloing' }
 PerformanceRecorder >> playKymaSequencFor: aNumberOfSteps [
 	"Create a new RecordedOrderCommand to add to the savedPerformance before calling the playKymaSequencFor:  message of the Performance "
 	savedPerformance add: (RecordedInstructionCommand new instruction:
@@ -427,7 +411,7 @@ PerformanceRecorder >> playKymaSequencFor: aNumberOfSteps [
 	Performance uniqueInstance playKymaSequencFor: aNumberOfSteps
 ]
 
-{ #category : #'muting and soloing' }
+{ #category : 'muting and soloing' }
 PerformanceRecorder >> playKymaSequencFor: aNumberOfSteps atTime: aTime [
 	"call the playKymaSequencFor: method with a aTime delay"
 
@@ -436,7 +420,7 @@ PerformanceRecorder >> playKymaSequencFor: aNumberOfSteps atTime: aTime [
 	Performance uniqueInstance playKymaSequencFor: aNumberOfSteps
 ]
 
-{ #category : #'muting and soloing' }
+{ #category : 'muting and soloing' }
 PerformanceRecorder >> playKymaSequenceAt: aRateInSeconds for: aNumberOfSteps [
 	"Create a new RecordedOrderCommand to add to the savedPerformance before calling the playKymaSequenceAt:for:  message of the Performance "
 
@@ -448,7 +432,7 @@ PerformanceRecorder >> playKymaSequenceAt: aRateInSeconds for: aNumberOfSteps [
 		for: aNumberOfSteps
 ]
 
-{ #category : #'muting and soloing' }
+{ #category : 'muting and soloing' }
 PerformanceRecorder >> playKymaSequenceAt: aRateInSeconds for: aNumberOfSteps atTime: aTime [
 	"call the playKymaSequenceAt: method with a aTime delay"
 
@@ -456,7 +440,7 @@ PerformanceRecorder >> playKymaSequenceAt: aRateInSeconds for: aNumberOfSteps at
 	self playKymaSequenceAt: aRateInSeconds for: aNumberOfSteps
 ]
 
-{ #category : #'muting and soloing' }
+{ #category : 'muting and soloing' }
 PerformanceRecorder >> playLocalSequenceAt: aRateInSeconds for: aNumberOfSteps [
 	"Create a new RecordedOrderCommand to add to the savedPerformance before calling the playLocalSequenceAt:for:  message of the Performance "
 
@@ -468,7 +452,7 @@ PerformanceRecorder >> playLocalSequenceAt: aRateInSeconds for: aNumberOfSteps [
 		for: aNumberOfSteps
 ]
 
-{ #category : #'muting and soloing' }
+{ #category : 'muting and soloing' }
 PerformanceRecorder >> playLocalSequenceAt: aRateInSeconds for: aNumberOfSteps atTime: aTime [
 	"call the playLocalSequenceAt:for: method with a aTime delay"
 
@@ -477,7 +461,7 @@ PerformanceRecorder >> playLocalSequenceAt: aRateInSeconds for: aNumberOfSteps a
 	self playLocalSequenceAt: aRateInSeconds for: aNumberOfSteps
 ]
 
-{ #category : #playing }
+{ #category : 'playing' }
 PerformanceRecorder >> playatTime: aTime [
 	"call the play method with a aTime delay"
 
@@ -485,13 +469,13 @@ PerformanceRecorder >> playatTime: aTime [
 	self play
 ]
 
-{ #category : #removing }
+{ #category : 'removing' }
 PerformanceRecorder >> remove: aKey [
 	"Create a new RecordedOrderCommand to add to the savedPerformance before calling the remove:  message of the Performance "
 	Performance uniqueInstance remove: aKey
 ]
 
-{ #category : #removing }
+{ #category : 'removing' }
 PerformanceRecorder >> remove: aKey atTime: aTime [
 	"call the remove: method with a aTime delay"
 
@@ -500,20 +484,20 @@ PerformanceRecorder >> remove: aKey atTime: aTime [
 	self remove: aKey
 ]
 
-{ #category : #'muting and soloing' }
+{ #category : 'muting and soloing' }
 PerformanceRecorder >> resetAllSequencers [ 
 
 Performance uniqueInstance resetAllSequencers 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceRecorder >> restore [
 	"Create a new RecordedOrderCommand to add to the savedPerformance before calling the restore  message of the Performance "
 	savedPerformance add: (RecordedInstructionCommand new instruction: 'restore.').
 	Performance uniqueInstance restore
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceRecorder >> restoreAtTime: aTime [
 	"call the remove: method with a aTime delay"
 
@@ -522,25 +506,25 @@ PerformanceRecorder >> restoreAtTime: aTime [
 	self restore
 ]
 
-{ #category : #'muting and soloing' }
+{ #category : 'muting and soloing' }
 PerformanceRecorder >> rsGroupDictionary [
 
 	^Performance uniqueInstance rsGroupDictionary
 ]
 
-{ #category : #'muting and soloing' }
+{ #category : 'muting and soloing' }
 PerformanceRecorder >> rsGroupDictionary: anRSGroupDictionary [
 
  Performance uniqueInstance rsGroupDictionary: anRSGroupDictionary  
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceRecorder >> savedPerformance [
 
 	^ savedPerformance
 ]
 
-{ #category : #'muting and soloing' }
+{ #category : 'muting and soloing' }
 PerformanceRecorder >> solo: aKeyOrAnArrayOfKeys [
 	"Create a new RecordedOrderCommand to add to the savedPerformance before calling the solo: message of the Performance "
 		savedPerformance add: (RecordedInstructionCommand new instruction:
@@ -549,7 +533,7 @@ PerformanceRecorder >> solo: aKeyOrAnArrayOfKeys [
 
 ]
 
-{ #category : #'muting and soloing' }
+{ #category : 'muting and soloing' }
 PerformanceRecorder >> solo: aKeyOrAnArrayOfKeys atTime: aTime [
 	"call the solo: method with a aTime delay"
 
@@ -558,7 +542,7 @@ PerformanceRecorder >> solo: aKeyOrAnArrayOfKeys atTime: aTime [
 	self solo: aKeyOrAnArrayOfKeys
 ]
 
-{ #category : #accessing }
+{ #category : 'start-stop' }
 PerformanceRecorder >> stop [
 	"Create a new RecordedOrderCommand to add to the savedPerformance before calling the stop message of the Performance "
 
@@ -566,7 +550,7 @@ PerformanceRecorder >> stop [
 	Performance uniqueInstance stop
 ]
 
-{ #category : #accessing }
+{ #category : 'start-stop' }
 PerformanceRecorder >> stopAtTime: aTime [
 	"call the stop method with a aTime delay"
 
@@ -575,43 +559,43 @@ PerformanceRecorder >> stopAtTime: aTime [
 	self stop
 ]
 
-{ #category : #'muting and soloing' }
+{ #category : 'muting and soloing' }
 PerformanceRecorder >> swap: firstKey with: secondKey [
 
 Performance uniqueInstance swap: firstKey with: secondKey
 ]
 
-{ #category : #'muting and soloing' }
+{ #category : 'muting and soloing' }
 PerformanceRecorder >> trackVisualizers [
 
 	^Performance uniqueInstance trackVisualizers
 ]
 
-{ #category : #'muting and soloing' }
+{ #category : 'muting and soloing' }
 PerformanceRecorder >> trackVisualizers: aDictionary [
 
 	^Performance uniqueInstance trackVisualizers: aDictionary 
 ]
 
-{ #category : #'muting and soloing' }
+{ #category : 'muting and soloing' }
 PerformanceRecorder >> transportStep [
 
 	^Performance uniqueInstance transportStep
 ]
 
-{ #category : #'muting and soloing' }
+{ #category : 'muting and soloing' }
 PerformanceRecorder >> transportStep: anInteger [
 
 Performance uniqueInstance transportStep: anInteger
 ]
 
-{ #category : #'accessing - structure variables' }
+{ #category : 'accessing - structure variables' }
 PerformanceRecorder >> type [
 
 ^Performance uniqueInstance type
 ]
 
-{ #category : #'accessing - structure variables' }
+{ #category : 'accessing - structure variables' }
 PerformanceRecorder >> type: aPerformanceType [
 
 	savedPerformance add: (RecordedInstructionCommand new instruction:
@@ -619,7 +603,7 @@ PerformanceRecorder >> type: aPerformanceType [
 	Performance uniqueInstance type: aPerformanceType
 ]
 
-{ #category : #'LiveCoding - Performance' }
+{ #category : 'LiveCoding - Performance' }
 PerformanceRecorder >> unsolo: aKeyOrAnArrayOfKeys [
 	"Create a new RecordedOrderCommand to add to the savedPerformance before calling the unsolo: message of the Performance "
 	Performance uniqueInstance unsolo: aKeyOrAnArrayOfKeys.
@@ -627,7 +611,7 @@ PerformanceRecorder >> unsolo: aKeyOrAnArrayOfKeys [
 			 'unsolo: ' , '#' , aKeyOrAnArrayOfKeys asString , '.')
 ]
 
-{ #category : #'LiveCoding - Performance' }
+{ #category : 'LiveCoding - Performance' }
 PerformanceRecorder >> unsolo: aKeyOrAnArrayOfKeys atTime: aTime [
 	"call the unsolo: method with a aTime delay"
 
@@ -636,19 +620,19 @@ PerformanceRecorder >> unsolo: aKeyOrAnArrayOfKeys atTime: aTime [
 	self unsolo: aKeyOrAnArrayOfKeys
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceRecorder >> visualization [
 
 ^	Performance uniqueInstance visualization
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceRecorder >> visualization: anObject [
 
 Performance uniqueInstance visualization: anObject 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformanceRecorder >> visualizer [ 
 
 ^ Performance uniqueInstance visualizer

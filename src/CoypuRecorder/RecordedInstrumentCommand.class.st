@@ -36,9 +36,9 @@ Internal Representation and Key Implementation Points.
 
 "
 Class {
-	#name : #RecordedInstrumentCommand,
-	#superclass : #RecordedCommand,
-	#type : #variable,
+	#name : 'RecordedInstrumentCommand',
+	#superclass : 'RecordedCommand',
+	#type : 'variable',
 	#instVars : [
 		'dirtNotes',
 		'rhythm',
@@ -46,34 +46,36 @@ Class {
 		'notes',
 		'extraValues'
 	],
-	#category : 'CoypuRecorder-RecordedCommand'
+	#category : 'CoypuRecorder-RecordedCommand',
+	#package : 'CoypuRecorder',
+	#tag : 'RecordedCommand'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RecordedInstrumentCommand >> dirtNotes [
 
 ^	dirtNotes
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RecordedInstrumentCommand >> dirtNotes: aDirtNotes [
 
 dirtNotes := aDirtNotes
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RecordedInstrumentCommand >> extraValues [
 
 ^	extraValues
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RecordedInstrumentCommand >> extraValues: aString [
 
 extraValues := aString 
 ]
 
-{ #category : #'printing items' }
+{ #category : 'printing items' }
 RecordedInstrumentCommand >> hasSymbol: aString [
 | m |
 m := aString.
@@ -96,7 +98,7 @@ m := aString.
 ^ m
 ]
 
-{ #category : #'printing items' }
+{ #category : 'printing items' }
 RecordedInstrumentCommand >> isAOnceCall [
 
 	delay
@@ -109,31 +111,31 @@ RecordedInstrumentCommand >> isAOnceCall [
 		ifNil: [ ^ symbol allButFirst , '.' ]
 ]
 
-{ #category : #testing }
+{ #category : 'types' }
 RecordedInstrumentCommand >> isRecordedInstructionCommand [
 
 	^ false
 ]
 
-{ #category : #testing }
+{ #category : 'types' }
 RecordedInstrumentCommand >> isRecordedInstrumentCommand [
 
 ^true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RecordedInstrumentCommand >> notes [
 
 ^notes 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RecordedInstrumentCommand >> notes: anArrayOfNotes [
 
 notes := anArrayOfNotes
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 RecordedInstrumentCommand >> print [
 	"Print the command in the same way it has been used in the original performance"
 
@@ -154,25 +156,25 @@ RecordedInstrumentCommand >> print [
 	^ m
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 RecordedInstrumentCommand >> rhythm [
 
 	^ rhythm
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 RecordedInstrumentCommand >> rhythm: aRythm [
 
 	rhythm := aRythm
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 RecordedInstrumentCommand >> symbol [
 
 	^ symbol 
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 RecordedInstrumentCommand >> symbol: aSymbol [
 
 

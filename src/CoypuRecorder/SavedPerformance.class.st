@@ -34,16 +34,17 @@ SavedPerformance new
 
 "
 Class {
-	#name : #SavedPerformance,
-	#superclass : #Object,
+	#name : 'SavedPerformance',
+	#superclass : 'Object',
 	#instVars : [
-		'collectionOfCommands',
-		'doubleRhythms'
+		'collectionOfCommands'
 	],
-	#category : 'CoypuRecorder-savedPerformance'
+	#category : 'CoypuRecorder-savedPerformance',
+	#package : 'CoypuRecorder',
+	#tag : 'savedPerformance'
 }
 
-{ #category : #calculating }
+{ #category : 'calculating' }
 SavedPerformance >> absoluteToDelay [
 	"Take the time of each commands and return an OrderedCollection with the delay between each of them"
 
@@ -60,7 +61,7 @@ SavedPerformance >> absoluteToDelay [
 	^ delays
 ]
 
-{ #category : #calculating }
+{ #category : 'calculating' }
 SavedPerformance >> absoluteToRelative [
 	"Take the time of each commands and return an OrderedCollection with the relative time from the start of the performance for each of them"
 
@@ -70,13 +71,13 @@ SavedPerformance >> absoluteToRelative [
 		  ((each asMilliSeconds - times first asMilliSeconds) - ((each asMilliSeconds - times first asMilliSeconds) % 10)) asString ]
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 SavedPerformance >> add: anObject [
 
 	collectionOfCommands add: anObject
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 SavedPerformance >> addInstrument: anAnnouncement [
 	"Add a new RecordedInstrumentCommand in the collectionOfCommands. This message is called when a RythmAnnouncement is announced"
 
@@ -84,7 +85,7 @@ SavedPerformance >> addInstrument: anAnnouncement [
 		(RecordedInstrumentCommand new rhythm: anAnnouncement rhythm)
 ]
 
-{ #category : #calculating }
+{ #category : 'calculating' }
 SavedPerformance >> appliesDelay: anAnnouncement [
 	" Add the seconds of the delay to the time of the last RecordedCommands
 Only called when recording a replay of a Performance."
@@ -93,13 +94,13 @@ Only called when recording a replay of a Performance."
 		(collectionOfCommands last time asTime addMilliSeconds: anAnnouncement delay).
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'calculating' }
 SavedPerformance >> appliesExtraValues: anAnnouncement [
 
 collectionOfCommands last extraValues: anAnnouncement extraValues
 ]
 
-{ #category : #calculating }
+{ #category : 'calculating' }
 SavedPerformance >> appliesNotes: anAnnouncement [
 	" Add the seconds of the delay to the time of the last RecordedCommands
 Only called when recording a replay of a Performance."
@@ -107,7 +108,7 @@ Only called when recording a replay of a Performance."
 	collectionOfCommands last notes: anAnnouncement notes.
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 SavedPerformance >> bodyScripts [
 	"Visit every commands in the collectionOfCommands and return a collection of their scripts"
 
@@ -118,18 +119,18 @@ SavedPerformance >> bodyScripts [
 	^ scripts
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SavedPerformance >> collectionOfCommands [
 ^	collectionOfCommands
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 SavedPerformance >> collectionOfCommands: anOrderedCollection [
 
 collectionOfCommands := anOrderedCollection 
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 SavedPerformance >> doubleRhythmsAnnounced [
 | x y |
 					x := collectionOfCommands allButLast last rhythm , ', '
@@ -141,19 +142,19 @@ SavedPerformance >> doubleRhythmsAnnounced [
 						symbol: y
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 SavedPerformance >> getCommandScript: aString [
 
 ^ aString 
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 SavedPerformance >> getCommandTime: aString [
 
 ^ aString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SavedPerformance >> header: aScript [
 
 	aScript addFirst:
@@ -162,21 +163,21 @@ SavedPerformance >> header: aScript [
 	^ aScript
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 SavedPerformance >> initialize [
 
 	collectionOfCommands := OrderedCollection new.
-	doubleRhythms := false
+
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 SavedPerformance >> lastDirtNotes: anAnnouncement [
 	"add to the last RecordedInstrumentCommand dirtNotes.
 This message is called when a DirtNotesAnnouncement is announced."
 	collectionOfCommands last dirtNotes: anAnnouncement newDirtNotes
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 SavedPerformance >> lastSymbol: anAnnouncement [
 	"add to the last RecordedInstrumentCommand a Symbol.
 This message is called when a SymbolAnnouncement is announced."
@@ -191,7 +192,7 @@ This message is called when a SymbolAnnouncement is announced."
 				collectionOfCommands last symbol: anAnnouncement symbol ] 
 ]
 
-{ #category : #visitors }
+{ #category : 'visitors' }
 SavedPerformance >> scriptForReplayer: aReplayer [
 	"Give a script of every commands in collectionOfCommands to the replayer visiting"
 
@@ -199,7 +200,7 @@ SavedPerformance >> scriptForReplayer: aReplayer [
 		((self header:self bodyScripts) collect: [ :each | each , String cr ])
 ]
 
-{ #category : #visitors }
+{ #category : 'visitors' }
 SavedPerformance >> scriptWithDelayTimeForReplayer: aReplayer [
 	"Give a script of every command with the delay between each of them in collectionOfCommands to the replayer visiting"
 
@@ -211,7 +212,7 @@ SavedPerformance >> scriptWithDelayTimeForReplayer: aReplayer [
 		((self header:self bodyScripts) collect: [ :each | each , String cr ])
 ]
 
-{ #category : #visitors }
+{ #category : 'visitors' }
 SavedPerformance >> scriptWithRelativeTimeForReplayer: aReplayer [
 	"Give a script of every command with their relative time in collectionOfCommands to the replayer visiting"
 
@@ -227,7 +228,7 @@ SavedPerformance >> scriptWithRelativeTimeForReplayer: aReplayer [
 		(scripts collect: [ :each | each , String cr ])
 ]
 
-{ #category : #visitors }
+{ #category : 'visitors' }
 SavedPerformance >> scriptWithTimeForReplayer: aDisplayer [
 	"Give a script of every command with their time in collectionOfCommands to the replayer visiting"
 
@@ -241,20 +242,20 @@ SavedPerformance >> scriptWithTimeForReplayer: aDisplayer [
 		(scripts collect: [ :each | each , String cr ])
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 SavedPerformance >> times [
 	"Visit every commands in the collectionOfCommands and return a collection of their times"
 	^ collectionOfCommands collect: [ :each |
 		  self visitCommandTime: each ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 SavedPerformance >> visitCommandScript: aRecordedCommand [
 " visit a RecordedCommand to get its script"
 	^ aRecordedCommand getPrint: self
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 SavedPerformance >> visitCommandTime: aRecordedCommand [
 	" visit a RecordedCommand to get its time"
 	^ aRecordedCommand getTime: self

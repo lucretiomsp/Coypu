@@ -1,6 +1,6 @@
-Extension { #name : #ByteString }
+Extension { #name : 'ByteString' }
 
-{ #category : #'*CoypuRecorder' }
+{ #category : '*CoypuRecorder' }
 ByteString >> delayed: aMethodOfInteger atTime: aDelayInMilliseconds [
 
 	(Delay forMilliseconds: aDelayInMilliseconds) wait.
@@ -8,21 +8,21 @@ ByteString >> delayed: aMethodOfInteger atTime: aDelayInMilliseconds [
 	Object readFromString:'''', self asString ,'''' , aMethodOfInteger
 ]
 
-{ #category : #'*CoypuRecorder' }
+{ #category : '*CoypuRecorder' }
 ByteString >> onceAtSpeed: aFloat atTime: aDelayInMilliseconds [
 
 	(Delay forMilliseconds: aDelayInMilliseconds) wait.
 	self onceAtSpeed: aFloat
 ]
 
-{ #category : #'*CoypuRecorder' }
+{ #category : '*CoypuRecorder' }
 ByteString >> onceAtSpeed: aFloat withNote: aNote atTime: aDelayInMilliseconds [
 
 		(Delay forMilliseconds: aDelayInMilliseconds) wait.
 	self onceAtSpeed: aFloat withNote: aNote
 ]
 
-{ #category : #'*CoypuRecorder' }
+{ #category : '*CoypuRecorder' }
 ByteString >> onceAtTime: aDelayInMilliseconds [
 
 	(Delay forMilliseconds: aDelayInMilliseconds) wait.
