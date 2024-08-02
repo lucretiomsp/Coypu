@@ -15,8 +15,8 @@ BaselineOfCoypu >> baseline: spec [
 			with: [ spec repository: 'github://Ducasse/OSC/src' ];
 			baseline: 'Toplo'
 			with: [
-				spec repository: 'github://pharo-graphics/Toplo:dev/src' ];
-			baseline: 'phausto' with: [spec repository: 'github://lucretiomsp/phausto/src'  ].
+				spec repository: 'github://pharo-graphics/Toplo:dev/src' ]";
+			package: 'phausto' with: [spec repository: 'github://lucretiomsp/phausto/src'  ]".
 
 		"Project packages"
 		spec
