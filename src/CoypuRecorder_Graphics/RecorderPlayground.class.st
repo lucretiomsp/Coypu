@@ -156,7 +156,7 @@ RecorderPlayground >> playgroundInitialize [
 		              id: #listPane;
 		              margin: (BlInsets top: 0 bottom: 5).
 	playground layout: (BlLinearLayout vertical cellSpacing: 0).
-	playground matchParent.
+	playground matchParent
 ]
 
 { #category : 'actions' }

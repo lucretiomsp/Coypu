@@ -15,7 +15,8 @@ BaselineOfCoypu >> baseline: spec [
 			with: [ spec repository: 'github://Ducasse/OSC/src' ];
 			baseline: 'Toplo'
 			with: [
-				spec repository: 'github://pharo-graphics/Toplo:master/src' ].
+				spec repository: 'github://pharo-graphics/Toplo:dev/src' ];
+			baseline: 'Phausto' with: ['github://lucretiomsp/phausto/src'  ].
 
 		"Project packages"
 		spec
@@ -23,7 +24,9 @@ BaselineOfCoypu >> baseline: spec [
 			package: 'CoypuRecorder' with: [ spec requires: 'Coypu' ];
 			package: 'CoypuRecorder-Tests'
 			with: [ spec requires: #( 'CoypuRecorder' ) ];
-			package: 'CoypuRecorder_Graphics' with: [ spec requires: 'CoypuRecorder' ];
-			package: 'CoypuRecorder_Graphics-Tests' with: [ spec requires: 'CoypuRecorder_Graphics' ];
+			package: 'CoypuRecorder_Graphics'
+			with: [ spec requires: 'CoypuRecorder' ];
+			package: 'CoypuRecorder_Graphics-Tests'
+			with: [ spec requires: 'CoypuRecorder_Graphics' ];
 			package: 'Mooflod' with: [ spec requires: 'Toplo' ] ]
 ]
