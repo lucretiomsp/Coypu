@@ -2,12 +2,14 @@
 Vertical Fader for Kyma
 "
 Class {
-	#name : #VerticalFaderForKyma,
-	#superclass : #VerticalFader,
-	#category : #'Coypu-GUI'
+	#name : 'VerticalFaderForKyma',
+	#superclass : 'VerticalFader',
+	#category : 'Coypu-GUI',
+	#package : 'Coypu',
+	#tag : 'GUI'
 }
 
-{ #category : #'event handling' }
+{ #category : 'event handling' }
 VerticalFaderForKyma >> mouseMove: anEvent [
 
 	| newLocation mappedY cursorY faderBottom range faderTop |

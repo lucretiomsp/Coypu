@@ -1,14 +1,16 @@
 Class {
-	#name : #PerformanceTest,
-	#superclass : #TestCase,
+	#name : 'PerformanceTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'performance',
 		'performer'
 	],
-	#category : #'Coypu-Tests'
+	#category : 'Coypu-Tests',
+	#package : 'Coypu',
+	#tag : 'Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceTest >> playPerformance [
 
 	performance at: #gate put: ((15 rumba notes: #( 10 20 30 ))
@@ -20,7 +22,7 @@ PerformanceTest >> playPerformance [
 	self waitASecond
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceTest >> setUp [
 
 	performance := Performance uniqueInstance .
@@ -31,7 +33,7 @@ PerformanceTest >> setUp [
 	"self playPerformance"
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceTest >> testAddSequencerAndReplace [
 
 	| p seq1 seq2 |
@@ -44,7 +46,7 @@ PerformanceTest >> testAddSequencerAndReplace [
 	self assert: (p includes: seq2) & (p includes: seq1) not equals: true
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceTest >> testAssignMIDIChannelToSequencerAutomatically [
 
 	| perf seq |
@@ -56,7 +58,7 @@ PerformanceTest >> testAssignMIDIChannelToSequencerAutomatically [
 	self assert: seq midiChannel equals: 7
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceTest >> testBwToKey [
 
 	| p |
@@ -66,7 +68,7 @@ PerformanceTest >> testBwToKey [
 	self assert: (p at: #synth) extra1 equals: #( #Bw #( 1 2 3 4 ) )
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceTest >> testDirtNotesToKey [
 
 	| seq |
@@ -75,7 +77,7 @@ PerformanceTest >> testDirtNotesToKey [
 	self assert: seq samplesIndex equals: #(0 1 2 3)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceTest >> testHexPatternAndDirtSoundsToKey [
 
 	| p |
@@ -89,7 +91,7 @@ PerformanceTest >> testHexPatternAndDirtSoundsToKey [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceTest >> testHexPatternAndIndexesToKey [
 
 	| p |
@@ -103,7 +105,7 @@ PerformanceTest >> testHexPatternAndIndexesToKey [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceTest >> testHexPatternAndNotesAbdIndexesToKey [
 
 	| p |
@@ -117,7 +119,7 @@ PerformanceTest >> testHexPatternAndNotesAbdIndexesToKey [
 	self assert: (p at: #synth) notes equals: #( 48 48 48 48 )
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceTest >> testHexPatternAndNotesAndMidiChToKey [
 
 	| p |
@@ -127,7 +129,7 @@ PerformanceTest >> testHexPatternAndNotesAndMidiChToKey [
 	self assert: (p at: #synth) midiChannel equals: 2
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceTest >> testHexPatternAndNotesToKey [
 
 	| p |
@@ -141,7 +143,7 @@ PerformanceTest >> testHexPatternAndNotesToKey [
 	self assert: (p at: #synth) notes equals: #( 48 48 48 48 )
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceTest >> testHexPatternMidiChToKey [
 
 	| p |
@@ -150,7 +152,7 @@ PerformanceTest >> testHexPatternMidiChToKey [
 	self assert: (p at: #synth) midiChannel equals: 2
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceTest >> testIndexesToKey [
 
 	| p |
@@ -160,7 +162,7 @@ PerformanceTest >> testIndexesToKey [
 	self assert: (p at: #synth) extra1 equals: #(#Index #(1 2 3 4)).
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceTest >> testMidiChToKey [
 
 	| p |
@@ -170,7 +172,7 @@ PerformanceTest >> testMidiChToKey [
 	self assert: (p at: #synth) midiChannel  equals: 2
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceTest >> testMuteAll [
 	| p |
 	p := Performance uniqueInstance .
@@ -183,7 +185,7 @@ PerformanceTest >> testMuteAll [
 	self assert: p isEmpty equals: true
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceTest >> testMuteKey [
 
 	performance at: #kick put: 16 downbeats.
@@ -191,7 +193,7 @@ PerformanceTest >> testMuteKey [
 	self assert: performance isEmpty equals: true
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceTest >> testNotesAndMidiChToKey [
 
 	| p |
@@ -201,7 +203,7 @@ PerformanceTest >> testNotesAndMidiChToKey [
 	self assert: (p at: #synth) midiChannel equals: 2
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceTest >> testNotesAndModeToKey [
 
 	| p |
@@ -211,7 +213,7 @@ PerformanceTest >> testNotesAndModeToKey [
 	self assert: (p at: #synth) extra1 equals: #(#Mode #( 0 1 2 3)).
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceTest >> testNotesToKey [
 
 	| p |
@@ -221,7 +223,7 @@ PerformanceTest >> testNotesToKey [
 	self assert: ((p at: #synth) notes) equals: #( 48 48 48 48 )
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceTest >> testNumberToKey [
 
 	| p |
@@ -231,7 +233,7 @@ PerformanceTest >> testNumberToKey [
 	self assert: (p at: #synth) extra2 equals: #( #Number #( 1 2 3 4 ) )
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceTest >> testPerformanceBackup [
 
 | p |
@@ -242,7 +244,7 @@ p := Performance uniqueInstance .
 self assert: p backup equals: p asDictionary 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceTest >> testPerformanceKeySolo [
 
 	| p |
@@ -256,7 +258,7 @@ PerformanceTest >> testPerformanceKeySolo [
 	self assert:  p keys equals: #( #tom )
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceTest >> testPerformanceKeysSwap [
 
 	| seq1 seq2 p |
@@ -272,7 +274,7 @@ PerformanceTest >> testPerformanceKeysSwap [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceTest >> testPerformanceSolo [
 
 	| p |
@@ -285,7 +287,7 @@ PerformanceTest >> testPerformanceSolo [
 	self assert: (p solo: #tom) keys equals: #(#tom)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceTest >> testRestorePerformance [
 
 | p | 
@@ -298,7 +300,7 @@ self assert: (p at: #kick) equals: 16 downbeats.
  self assert: (p at: #ch) equals: 16 upbeats.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceTest >> testRhythmAndIndexesToKey [
 
 	| p |
@@ -311,7 +313,7 @@ PerformanceTest >> testRhythmAndIndexesToKey [
 	self assert: (p at: #synth) extra1 equals: #( #Index #( 1 2 3 4 ) )
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceTest >> testRhythmAndNotesAbdIndexesToKey [
 
 	| p |
@@ -326,7 +328,7 @@ PerformanceTest >> testRhythmAndNotesAbdIndexesToKey [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceTest >> testRhythmAndNotesToKey [
 
 	| p |
@@ -339,7 +341,7 @@ PerformanceTest >> testRhythmAndNotesToKey [
 	self assert: (p at: #synth) notes equals: #( 48 48 48 48 )
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceTest >> testSequencerPlaysImmediately [
 
 	| perf |
@@ -349,7 +351,7 @@ PerformanceTest >> testSequencerPlaysImmediately [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceTest >> testStringOfHexToPerformance [
 
 	| p |
@@ -358,7 +360,7 @@ PerformanceTest >> testStringOfHexToPerformance [
 	self assert: (p at: #kick) equals: '8888' pattern
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceTest >> testUnsoloKeyInPerformance [
 
 	| p |
@@ -371,7 +373,7 @@ PerformanceTest >> testUnsoloKeyInPerformance [
 	self assert: (p at: #ch) equals: 16 upbeats
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceTest >> testUnsoloPerformance [
 
 	| p |
@@ -384,7 +386,7 @@ PerformanceTest >> testUnsoloPerformance [
 	self assert: (p at: #ch) equals: 16 upbeats
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PerformanceTest >> waitASecond [
 
 	self flag: #TODO. "Change time management"

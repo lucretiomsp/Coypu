@@ -1,10 +1,12 @@
 Class {
-	#name : #PLCWindowPresenter,
-	#superclass : #SpWindowPresenter,
-	#category : #'Coypu-Playground'
+	#name : 'PLCWindowPresenter',
+	#superclass : 'SpWindowPresenter',
+	#category : 'Coypu-Playground',
+	#package : 'Coypu',
+	#tag : 'Playground'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PLCWindowPresenter >> color [ 
 ^ Color red
 ]

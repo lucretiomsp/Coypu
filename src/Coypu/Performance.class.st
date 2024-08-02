@@ -4,80 +4,74 @@ A performance is a Dictionary subclass used for live coding package.
 
 "
 Class {
-	#name : #Performance,
-	#superclass : #Dictionary,
-	#type : #variable,
+	#name : 'Performance',
+	#superclass : 'Dictionary',
 	#instVars : [
 		'performer',
-		'canvas',
 		'freq',
 		'backup',
 		'bpm',
 		'transportStep',
 		'activeProcess',
 		'dirtMIDIDevice',
-		'activeDSP',
-		'perfVisualizer',
-		'trackVisualizers'
+		'activeDSP'
 	],
 	#classInstVars : [
 		'uniqueInstance',
-		'orbit'
+		'orbit',
+		'performanceType'
 	],
-	#category : #'Coypu-Performance'
+	#category : 'Coypu-Performance',
+	#package : 'Coypu',
+	#tag : 'Performance'
 }
 
-{ #category : #'as yet unclassified' }
-Performance class >> basic [
-
-	^ self new
-		  visualization: NoneVisualization new;
-		  yourself
-]
-
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 Performance class >> new [ 
 
 ^ Error new signal: 'Performance is a singleton -- Use unique instance instead'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Performance class >> orbit [
 
 	^ orbit
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Performance class >> orbit: anInteger [
 
 	orbit := anInteger % 12
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'accessing' }
+Performance class >> performanceType [
+
+	^ performanceType
+]
+
+{ #category : 'accessing' }
+Performance class >> performanceType: aPerformanceType [
+
+	performanceType := aPerformanceType 
+]
+
+{ #category : 'initialization' }
+Performance class >> reset [
+
+	<script>
+	uniqueInstance := nil
+]
+
+{ #category : 'instance creation' }
 Performance class >> uniqueInstance [
 
 	self orbit: 0.
-	^ uniqueInstance ifNil: [ uniqueInstance := super new ]
+	
+	^ uniqueInstance ifNil: [ uniqueInstance := super new . self performanceType: PerfType new. ]
 ]
 
-{ #category : #'as yet unclassified' }
-Performance class >> withCanvas: aRSCanvas [
-
-	^ self new
-		  canvas: aRSCanvas;
-		  freq: 120 bpm;
-		  rsGroupDictionary: Dictionary new
-]
-
-{ #category : #'as yet unclassified' }
-Performance class >> withCircles [
-
-	^ self new
-		  visualization: CircleVisualization new;
-		  yourself
-]
-
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 Performance >> Dictionary [  Variable or expression expected -><< #Performance
 	layout: VariableLayout;
 	slots: {
@@ -95,36 +89,36 @@ Performance >> Dictionary [  Variable or expression expected -><< #Performance
 	package: 'LiveCoding'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Performance >> activeDSP [
 	^ activeDSP 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Performance >> activeDSP: aDSP [
 	activeDSP := aDSP
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Performance >> activeProcess [
 
 	^ activeProcess
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Performance >> activeProcess: anObject [
 
 	activeProcess := anObject
 ]
 
-{ #category : #'performance  - adding' }
+{ #category : 'performance  - adding' }
 Performance >> add: aSequencer channel: anIntegerBetween1And16 [
 
 	aSequencer midiChannel: anIntegerBetween1And16. 
 	super add: aSequencer.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Performance >> at: key put: anObject [
 	"Set the value at key to be anObject.  If key is not found, create a
 	new entry for key and set is value to anObject. Answer anObject."
@@ -138,75 +132,76 @@ Performance >> at: key put: anObject [
 		self perfVisualizer root addChild: (trackVisualizers at: key)."
 ]
 
-{ #category : #'LiveCoding - Performance' }
+{ #category : 'LiveCoding - Performance' }
 Performance >> backup [
 
 	
 	^ backup
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Performance >> backup: anObject [
 
 	backup := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Performance >> bpm [
 
 	^ bpm
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Performance >> bpm: aRateInSeconds [
 	bpm := 60 / 4 / (aRateInSeconds ).
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Performance >> dirtMIDIDevice [
 
 	^ dirtMIDIDevice
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Performance >> dirtMIDIDevice: aString [
 	"select a SuperDirt MIDI device for the Performance"
 	dirtMIDIDevice := aString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Performance >> freq [
 	"better to convert it to Float to avoid OSC sending issues"
 	^ freq asFloat
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Performance >> freq: aDurationInSeconds [
 	"use for playback speed"
+
 	freq := aDurationInSeconds asFloat
 ]
 
-{ #category : #'LiveCoding - Performance' }
+{ #category : 'LiveCoding - Performance' }
 Performance >> incrementTransportStep [
 	transportStep := transportStep + 1.
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 Performance >> initialize: aSize [
 
 	super initialize: aSize.
 	activeProcess := Process new terminate.
 	self muteAll.
-	freq := 132 bpm
+	freq := 132 bpm.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 Performance >> isPerformance [
 
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Performance >> length [
 	"return the number of steps of the largest array contained in the performance values"
 
@@ -217,18 +212,24 @@ Performance >> length [
 	^ maxLength
 ]
 
-{ #category : #'muting and soloing' }
+{ #category : 'muting and soloing' }
 Performance >> mute: aKeyOrAnArrayOfKeys [
 	"remove all the keys in the arrayOfKeys from the Performance or remove just a single key"
+
+	| tracks |
+	tracks := #( #Kick #TpSampler #Fm2Op #PsgPlus #Chordy ).
 
 	aKeyOrAnArrayOfKeys isArray
 		ifTrue: [
 		aKeyOrAnArrayOfKeys do: [ :i | self removeKey: i ifAbsent: [  ] ] ]
-		ifFalse: [ self removeKey: aKeyOrAnArrayOfKeys ].
-
+		ifFalse: [
+			self removeKey: aKeyOrAnArrayOfKeys.
+			self performanceType class = PerfTypeMooflod ifTrue: [
+				self performanceType visualizer cleanRow:
+					(tracks indexOf: aKeyOrAnArrayOfKeys) ] ]
 ]
 
-{ #category : #'muting and soloing' }
+{ #category : 'muting and soloing' }
 Performance >> muteAll [
 	" remove all keys from the Performance"
 
@@ -239,7 +240,7 @@ Performance >> muteAll [
 
 ]
 
-{ #category : #'LiveCoding - satelliteEvent' }
+{ #category : 'LiveCoding - satelliteEvent' }
 Performance >> pacaDance [
 
 	"convenience method created for the ICLC2023 performance - it just play the performance at 132 bpm for 4096 bars"
@@ -314,27 +315,23 @@ Performance >> pacaDance [
 		  step := step + 1 ] ] forkAt: Processor timingPriority
 ]
 
-{ #category : #accessing }
-Performance >> perfVisualizer [
-
-	^ perfVisualizer
+{ #category : 'accessing' }
+Performance >> performanceType [
+	^ self class performanceType
 ]
 
-{ #category : #accessing }
-Performance >> perfVisualizer: aPerfVisualizer [
-	"assing a perfVisualzier and initialize a new Dictionary for trackVisualziers"
-
-	perfVisualizer := aPerfVisualizer.
-	self trackVisualizers: Dictionary new.
+{ #category : 'accessing' }
+Performance >> performanceType: aPerformanceType [ 
+	^ self class performanceType: aPerformanceType 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Performance >> performer [
 
 	^ performer
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Performance >> performer: aPerformer [
 "choose a Performer for the Performance"
 " to be safe, it clear the performance"
@@ -343,7 +340,7 @@ Performance >> performer: aPerformer [
 	Performance uniqueInstance muteAll.
 ]
 
-{ #category : #playing }
+{ #category : 'playing' }
 Performance >> play [
 	" reset all the Sequencers"
 	self resetAllSequencers.
@@ -359,21 +356,15 @@ Performance >> play [
 	
 ]
 
-{ #category : #playing }
+{ #category : 'playing' }
 Performance >> playFor: aNumberOfSteps [
+	"what happens depends on the Performance type! "
 
-
-	" reset all the Sequencers"
-	self resetAllSequencers.
-	
-	"just on performance at once"
-	( self activeProcess isTerminated) 
-		ifTrue: [ self performer playFor: aNumberOfSteps  ]
-
-
+	self class performanceType playFor: aNumberOfSteps.
+	self class performanceType asString traceCr 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 Performance >> playKymaSequencFor: aNumberOfSteps [
 
 "with this method you can chane the Performance speed in real time! "
@@ -452,7 +443,7 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 		  step := step + 1 ] ] forkAt: Processor timingPriority
 ]
 
-{ #category : #playing }
+{ #category : 'playing' }
 Performance >> playKymaSequenceAt: aRateInSeconds for: aNumberOfSteps [
 
 	" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
@@ -530,7 +521,7 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 		  step := step + 1 ] ] forkAt: Processor timingPriority
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 Performance >> playLocalSequenceAt: aRateInSeconds for: aNumberOfSteps [
 
 	" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.
@@ -583,14 +574,14 @@ an OSC with the address /vcs/BPM/1 with the rate converted in BeatsPerMinutes"
 		  step := step + 1 ] ] forkAt: Processor timingPriority
 ]
 
-{ #category : #removing }
+{ #category : 'removing' }
 Performance >> remove: aKey [
 	"shorter version of removeKey:"
 
 	self removeKey: aKey ifAbsent: [  ] 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 Performance >> resetAllSequencers [
 	"reset noteIndex fro all the sequencers in the Performance. "
 
@@ -599,7 +590,7 @@ Performance >> resetAllSequencers [
 			ifTrue: [ value noteIndex: 1 ] ]
 ]
 
-{ #category : #'LiveCoding - Performance' }
+{ #category : 'LiveCoding - Performance' }
 Performance >> restore [
 
 	"restore what the performance was before receiveing messages muteAll or solo"
@@ -611,7 +602,7 @@ Performance >> restore [
 	p keysAndValuesRemove: [ :kp :vp | (p backup includesKey: kp) not ] 
 ]
 
-{ #category : #'muting and soloing' }
+{ #category : 'muting and soloing' }
 Performance >> solo: aKeyOrAnArrayOfKeys [
 
 	" remove all keys from the Performance except aKey or anArrayOfKeys"
@@ -632,12 +623,13 @@ Performance >> solo: aKeyOrAnArrayOfKeys [
 				keys ~= aKeyOrAnArrayOfKeys ] ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Performance >> stop [
-	self activeProcess terminate
+
+	self performanceType stop.
 ]
 
-{ #category : #modifying }
+{ #category : 'modifying' }
 Performance >> swap: firstKey with: secondKey [
 "swap the values of two perfromance keys"
 	| tempValue |
@@ -646,30 +638,27 @@ Performance >> swap: firstKey with: secondKey [
 	self at: secondKey put: tempValue
 ]
 
-{ #category : #accessing }
-Performance >> trackVisualizers [
-
-	^ trackVisualizers
-]
-
-{ #category : #accessing }
-Performance >> trackVisualizers: aDictionary [
-
-	trackVisualizers := aDictionary
-]
-
-{ #category : #accessing }
+{ #category : 'accessing' }
 Performance >> transportStep [
 	^ transportStep
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Performance >> transportStep: anInteger [
-
 	transportStep := anInteger 
 ]
 
-{ #category : #'LiveCoding - Performance' }
+{ #category : 'accessing' }
+Performance >> type [
+	^ self class type
+]
+
+{ #category : 'accessing' }
+Performance >> type: aPerformanceType [ 
+	^ self class type: aPerformanceType 
+]
+
+{ #category : 'LiveCoding - Performance' }
 Performance >> unsolo: aKeyInPerformance [
 	"convenience method to unsolo a key in the performance"
 	

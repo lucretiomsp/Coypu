@@ -2,17 +2,19 @@
 Performer for  a generic OSC audio client on port: 57142
 "
 Class {
-	#name : #PerformerLocal,
-	#superclass : #Performer,
-	#category : #'Coypu-Performer'
+	#name : 'PerformerLocal',
+	#superclass : 'Performer',
+	#category : 'Coypu-Performer',
+	#package : 'Coypu',
+	#tag : 'Performer'
 }
 
-{ #category : #playing }
+{ #category : 'playing' }
 PerformerLocal >> play [
 	self playLocalSequenceAt:  132 bpm for: fourDaysAt120BPM  
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PerformerLocal >> playLocalSequenceAt: aRateInSeconds for: aNumberOfSteps [
 
 	" iterate over a process for self times, at a rate of aRateInMilliSeconds for step, through a dictionary of patterns, containing arrays of numbers as values and symbols represnting the OSC address without slash that will be sent out.

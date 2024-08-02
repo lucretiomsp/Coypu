@@ -1,6 +1,6 @@
-Extension { #name : #Interval }
+Extension { #name : 'Interval' }
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Interval >> map: value to: range [
 
 	^ value - self first / (self last - self first)

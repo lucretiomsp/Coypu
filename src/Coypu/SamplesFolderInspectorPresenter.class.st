@@ -1,10 +1,12 @@
 Class {
-	#name : #SamplesFolderInspectorPresenter,
-	#superclass : #Object,
-	#category : #'Coypu-SuperDirt'
+	#name : 'SamplesFolderInspectorPresenter',
+	#superclass : 'Object',
+	#category : 'Coypu-SuperDirt',
+	#package : 'Coypu',
+	#tag : 'SuperDirt'
 }
 
-{ #category : #inspect }
+{ #category : 'inspect' }
 SamplesFolderInspectorPresenter >> sampleDirectories [
 
 	<inspectorPresentationOrder:0 title:'Sample directories' >

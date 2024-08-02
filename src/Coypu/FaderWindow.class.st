@@ -1,10 +1,12 @@
 Class {
-	#name : #FaderWindow,
-	#superclass : #SystemWindow,
-	#category : #'Coypu-GUI'
+	#name : 'FaderWindow',
+	#superclass : 'SystemWindow',
+	#category : 'Coypu-GUI',
+	#package : 'Coypu',
+	#tag : 'GUI'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FaderWindow class >> countFadersInWorld [
 
 	| fadersInWorld  |

@@ -1,17 +1,19 @@
 Class {
-	#name : #ParsingTests,
-	#superclass : #TestCase,
-	#category : #'Coypu-Tests'
+	#name : 'ParsingTests',
+	#superclass : 'TestCase',
+	#category : 'Coypu-Tests',
+	#package : 'Coypu',
+	#tag : 'Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 ParsingTests >> testCharacterMultiplication [
 
 
 	self assert: 'a' * 3 equals: 'a a a'.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ParsingTests >> testMultiplyStringsInString [
 
 	self 
@@ -19,7 +21,7 @@ ParsingTests >> testMultiplyStringsInString [
 		equals: 'bd cp:4 ~  bd cp:4 ~ '
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ParsingTests >> testNotesFromNotatedString [
 
 	| seq |
@@ -29,7 +31,7 @@ ParsingTests >> testNotesFromNotatedString [
 		equals: #(40 40 40 40 88 88 88 88)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ParsingTests >> testStringsWitNRests [
 
 	self 
@@ -37,7 +39,7 @@ ParsingTests >> testStringsWitNRests [
 		equals: 'bd  ~ ~ ~'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ParsingTests >> testasSeqGates [
 
 	self 

@@ -1,14 +1,15 @@
 Class {
-	#name : #PtError,
-	#superclass : #FFIEnumeration,
+	#name : 'PtError',
+	#superclass : 'FFIEnumeration',
 	#classVars : [
 		'error',
 		'noerror'
 	],
-	#category : #Coypu
+	#category : 'Coypu',
+	#package : 'Coypu'
 }
 
-{ #category : #'enum declaration' }
+{ #category : 'enum declaration' }
 PtError class >> enumDecl [ 
 ^ #(
 noerror 0

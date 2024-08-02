@@ -1,6 +1,6 @@
-Extension { #name : #OrderedCollection }
+Extension { #name : 'OrderedCollection' }
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 OrderedCollection >> asDirtArray [ 
 
 

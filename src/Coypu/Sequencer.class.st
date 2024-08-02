@@ -9,9 +9,8 @@ The Sequencer is the basic unit in Performance.
 It is conceived as something in between a Digital Audio Workstation track and a ""clip"".
 "
 Class {
-	#name : #Sequencer,
-	#superclass : #Object,
-	#type : #variable,
+	#name : 'Sequencer',
+	#superclass : 'Object',
 	#instVars : [
 		'seqKey',
 		'extraParams',
@@ -36,22 +35,24 @@ Class {
 	#classInstVars : [
 		'orbit'
 	],
-	#category : #'Coypu-Sequencers'
+	#category : 'Coypu-Sequencers',
+	#package : 'Coypu',
+	#tag : 'Sequencers'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer class >> orbit [
    
 orbit isNil ifTrue: [ ^ 0 ] ifFalse: [^ orbit]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer class >> orbit: anInteger [
 
 	orbit := anInteger % 12 
 ]
 
-{ #category : #replication }
+{ #category : 'replication' }
 Sequencer >> * anInteger [
 
 	"returns a sequencer containing anInteger repetition of self - polysemic bunary version of times:"
@@ -70,12 +71,12 @@ Sequencer >> * anInteger [
 		  noteIndex: 0
 ]
 
-{ #category : #arithmetic }
+{ #category : 'arithmetic' }
 Sequencer >> + aString [ 
 	self shouldBeImplemented.
 ]
 
-{ #category : #combination }
+{ #category : 'combination' }
 Sequencer >> , anotherSequencer [
 
 	"combine the gates of two sequencers, returns a sequencer"
@@ -93,7 +94,7 @@ Sequencer >> , anotherSequencer [
 		  noteIndex: 0
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 Sequencer >> < aStringOfNotesOrAnaArrayIfNotes [
 	"same as notes but binary!"
 
@@ -102,13 +103,13 @@ Sequencer >> < aStringOfNotesOrAnaArrayIfNotes [
 	^ self notes: aStringOfNotesOrAnaArrayIfNotes 
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 Sequencer >> = anotherSequencer [ 
 	" equality between sequencers"
 	^ ((self notes = anotherSequencer notes) & (self gates = anotherSequencer gates) & (self durations = anotherSequencer durations) & (self extraParams = anotherSequencer extraParams))
 ]
 
-{ #category : #'LiveCoding - Performance' }
+{ #category : 'LiveCoding - Performance' }
 Sequencer >> > aKeyInPerformance [
 
 "binary obscure polysemic alternative of to: methhod"
@@ -116,14 +117,14 @@ Sequencer >> > aKeyInPerformance [
 self to: aKeyInPerformance 
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 Sequencer >> add: anAssociation [
 	" add an associtation of a parameter and a value or an array of values to the dirtMessage"
 	dirtMessage add: anAssociation 
 
 ]
 
-{ #category : #modifying }
+{ #category : 'modifying' }
 Sequencer >> allNotes: anInteger [
 
 	"fill sequencer notes with anArray with all equals notenumbers"
@@ -134,20 +135,20 @@ Sequencer >> allNotes: anInteger [
 	self notes: newNotes.
 ]
 
-{ #category : #'LiveCoding-ExtraParams' }
+{ #category : 'LiveCoding-ExtraParams' }
 Sequencer >> amount: aStringOrAnArray [
 	"set the amount to a collection of value in array or to to the numbe"
 
 	self extra: #Amount values: aStringOrAnArray asDirtArrayOfValues 
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 Sequencer >> asPolySeq [
 	
 	self subclassResponsibility 
 ]
 
-{ #category : #'LiveCoding  - SuperDirt' }
+{ #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> bpf: aFloatOrAnArray [
 	" add bandpass filter effect to the Sequencer at aFloatOrArray frequency"
 	self dirtMessage 
@@ -155,7 +156,7 @@ Sequencer >> bpf: aFloatOrAnArray [
 		put:  aFloatOrAnArray asDirtArray
 ]
 
-{ #category : #'LiveCoding  - SuperDirt' }
+{ #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> bpq: aFloatOrAnArray [
 	" add bandpass filter effect to the Sequencer with aFloatOrArray frequency"
 	self dirtMessage 
@@ -163,14 +164,14 @@ Sequencer >> bpq: aFloatOrAnArray [
 		put:  aFloatOrAnArray asDirtArray
 ]
 
-{ #category : #'LiveCoding-ExtraParams' }
+{ #category : 'LiveCoding-ExtraParams' }
 Sequencer >> bw: aStringOrAnArray [
 	"set the bandwidth (bw) to  a collection of value in array or to to the numbe"
 
 	self extra: #Bw values: aStringOrAnArray asDirtArrayOfValues 
 ]
 
-{ #category : #'LiveCoding  - SuperDirt' }
+{ #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> ccn: anIntOrAnArray ccv: anotherIntOrArray [
 	" add a cc value/array of values to a cc number - to use with MIDI"
 	
@@ -178,7 +179,7 @@ Sequencer >> ccn: anIntOrAnArray ccv: anotherIntOrArray [
 	self dirtMessage at: 'ccv' put: anotherIntOrArray asDirtArray
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> chords: aStringWithOneOrMoreChords [
 	" note and chord type separated by an hyphen for example 'c-maj d#-min f-sus4 e-min7') - can be expressed with a letter or with a note number."
 
@@ -189,7 +190,7 @@ Sequencer >> chords: aStringWithOneOrMoreChords [
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> chords: aStringWithOneOrMoreChords octave: anIntegerOrAnArray [ 
 	" note and chord type separated by an hyphen for example 'c-maj d#-min sus4 min7')"
 
@@ -200,33 +201,33 @@ Sequencer >> chords: aStringWithOneOrMoreChords octave: anIntegerOrAnArray [
 	
 ]
 
-{ #category : #'LiveCoding-ExtraParams' }
+{ #category : 'LiveCoding-ExtraParams' }
 Sequencer >> cutoff: aStringOrAnArray [
 	"set the cutoff to a collection of value in array or to to the numbe"
 
 	self extra: #Cutoff values:aStringOrAnArray asDirtArrayOfValues 
 ]
 
-{ #category : #'sequencer - cycles' }
+{ #category : 'sequencer - cycles' }
 Sequencer >> cycleDurations [
 	" return the duration of each event in the cycle"
 	^ cycleDurations
 ]
 
-{ #category : #'sequencer - cycles' }
+{ #category : 'sequencer - cycles' }
 Sequencer >> cycleDurations: anArrayOfFractions [
 
 	cycleDurations := anArrayOfFractions 
 ]
 
-{ #category : #'LiveCoding-ExtraParams' }
+{ #category : 'LiveCoding-ExtraParams' }
 Sequencer >> decay: aStringOrAnArray [
 	"set the decay to a collection of value in array or to to the numbe"
 
 	self extra: #Decay values: aStringOrAnArray asDirtArrayOfValues 
 ]
 
-{ #category : #'LiveCoding  - SuperDirt' }
+{ #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> delay: aFloatOrAnArray [
 	" add delay wet/dry pattern to the Sequencer"
 
@@ -235,7 +236,7 @@ Sequencer >> delay: aFloatOrAnArray [
 		put: aFloatOrAnArray asDirtArray
 ]
 
-{ #category : #'LiveCoding  - SuperDirt' }
+{ #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> delayFb: aFloatOrAnArray [
 	" add delay feedback pattern to the Sequencer"
 	
@@ -244,7 +245,7 @@ Sequencer >> delayFb: aFloatOrAnArray [
 		put: aFloatOrAnArray asDirtArray
 ]
 
-{ #category : #'LiveCoding  - SuperDirt' }
+{ #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> delayTime: aFloatOrAnArray [
 	" add delay time pattern to the Sequencer"
 	self dirtMessage 
@@ -252,7 +253,7 @@ Sequencer >> delayTime: aFloatOrAnArray [
 		put: aFloatOrAnArray asDirtArray
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 Sequencer >> dirt: anArrayForSuperDirt [
 	"fills the OSC dirtmessage for SuperDirt with suitable values"
 	| keys values msgExtension msgExtensionSize  |
@@ -275,36 +276,40 @@ Sequencer >> dirt: anArrayForSuperDirt [
 			put: (values at: i)]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 Sequencer >> dirt: anArrayForSuperDirt to: aKeyInPerformance [
 	"convenience method to avoid extra parenthesis"
 	(self dirt: anArrayForSuperDirt) to: aKeyInPerformance 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> dirtMessage [
 
 	^ dirtMessage
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> dirtMessage: anArrayOfAssociationForSuperDirt [
 " template for OSC messages for SuperDirt"
 
 	dirtMessage := anArrayOfAssociationForSuperDirt
 ]
 
-{ #category : #'LiveCoding  - SuperDirt' }
+{ #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> dirtNotes: aStringWithNotes [
 	"add into a Sequencer anotes from a String in which numbers can be multiplicated"
 
-	| tokens dNotes arrayOfNotes |
+	| tokens dNotes arrayOfNotes announcement |
+	thisContext sender selector = #DoIt ifTrue: [
+		announcement := DirtNotesAnnouncement new.
+		announcement newDirtNotes: aStringWithNotes.
+		PerformanceRecorder uniqueInstance announce: announcement ].
 	tokens := aStringWithNotes splitOn: ','.
 	dNotes := ' '.
 	tokens do: [ :i |
-		(i includes: $*)
-			ifTrue: [ dNotes := dNotes , i multiplyStringsInString ]
-			ifFalse: [  dNotes := dNotes , i  ] ].
+		dNotes := (i includes: $*)
+			          ifTrue: [ dNotes , i multiplyStringsInString ]
+			          ifFalse: [ dNotes , i ] ].
 
 	arrayOfNotes := (dNotes findBetweenSubstrings: '  ') collect: [ :each |
 		                each asNumber ].
@@ -314,7 +319,7 @@ Sequencer >> dirtNotes: aStringWithNotes [
 	^ self
 ]
 
-{ #category : #'LiveCoding  - SuperDirt' }
+{ #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> djf: aFloatOrAnArray [
 	"Made by Alex McLean. A fun classic DJ Filter. Low pass filter for the first half of the range, high pass for the rest:"
 	self dirtMessage 
@@ -322,58 +327,79 @@ Sequencer >> djf: aFloatOrAnArray [
 		put:  aFloatOrAnArray asDirtArray
 ]
 
-{ #category : #'LiveCoding-ExtraParams' }
+{ #category : 'LiveCoding-ExtraParams' }
 Sequencer >> drive: aStringOrAnArray [
 	"set the drive to a collection of value in array or to to the numbe"
 
 	self extra: #Drive values: aStringOrAnArray asDirtArrayOfValues 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> duration [
 
 	^ self durations at: (self noteIndex modulo: self durationsSize)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> durations [
 
 	^ durations
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> durations: anArray [
 
 	durations := anArray
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> durationsSize [
 
 	^ durations size
 ]
 
-{ #category : #'LiveCoding-ExtraParams' }
+{ #category : 'LiveCoding-ExtraParams' }
 Sequencer >> duty: aStringOrAnArray [
 	"set the duty cycle to a collection of value in array or to to the numbe"
 
 	self extra: #Duty values: aStringOrAnArray asDirtArrayOfValues 
 ]
 
-{ #category : #'LiveCoding-ExtraParams' }
+{ #category : 'LiveCoding-ExtraParams' }
+Sequencer >> effect: aStringOrAnArray [
+	"convenience method to avoid extra typing when we want to modify the effect, i.e. dry/wet "
+
+	self extra: #Effect values: aStringOrAnArray asDirtArrayOfValues
+]
+
+{ #category : 'LiveCoding-ExtraParams' }
 Sequencer >> extra: aSymbol values: aStringWithIndexes [
 	"stores extra values to control synths parameters on Kyma values can be a Number, an Array or  a valid string of Coypu Notation"
 
-	self extraParams at: aSymbol put: aStringWithIndexes asDirtArrayOfValues 
+	| announcement stringWithIndexes |
+	stringWithIndexes := aStringWithIndexes.
+	aStringWithIndexes class = Array ifTrue: [  
+	stringWithIndexes := String streamContents: [ :s |
+		                     aStringWithIndexes do: [ :each |
+			                     s
+				                     nextPutAll: each asString;
+				                     nextPutAll: ' ' ] ]].
+	announcement := ExtraValuesAnnouncement new extraValues:
+		                ' ' , thisContext sender selector asString , ''''
+		                , stringWithIndexes allButLast  asString ,''';'.
+	PerformanceRecorder uniqueInstance announce: announcement.
+	self extraParams
+		at: aSymbol
+		put: aStringWithIndexes asDirtArrayOfValues
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> extraParams [
 
 	^ extraParams
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> extraParams: anArrayWithASymbolAndAnrrayOfValues [
 
 
@@ -384,7 +410,7 @@ value := anArrayWithASymbolAndAnrrayOfValues at: 2.
 	extraParams at: parameter put: value asDirtArray 
 ]
 
-{ #category : #'Sequencer - transformation' }
+{ #category : 'Sequencer - transformation' }
 Sequencer >> flip [
 	" flip the gates in a Sequener: rests become gates, gates become rests"
 
@@ -393,7 +419,7 @@ Sequencer >> flip [
 	^ result asRhythm asSeq.
 ]
 
-{ #category : #'LiveCoding  - SuperDirt' }
+{ #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> gain: aFloatOrAnArray [
 	" add gain pattern to the Sequencer"
 	self dirtMessage 
@@ -401,31 +427,31 @@ Sequencer >> gain: aFloatOrAnArray [
 		put: aFloatOrAnArray asDirtArray
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> gates [
 
 	^ gates
 ]
 
-{ #category : #modifying }
+{ #category : 'modifying' }
 Sequencer >> gates: aRhythm [
 	"change the rhythm inside the sequencer"
 
 	gates := aRhythm
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> gatesSize [
 
 	^ gates size
 ]
 
-{ #category : #'LiveCoding - sequencer' }
+{ #category : 'LiveCoding - sequencer' }
 Sequencer >> gatesSize: anInteger [ 
 	self shouldBeImplemented.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> hasChords [
 
 	| result |
@@ -436,7 +462,7 @@ Sequencer >> hasChords [
 	^ result
 ]
 
-{ #category : #'LiveCoding  - SuperDirt' }
+{ #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> hold: aFloatOrAnArray [
 	" add hold ASR envelope pattern to the Sequencer"
 	
@@ -445,26 +471,26 @@ Sequencer >> hold: aFloatOrAnArray [
 		put:  aFloatOrAnArray   asDirtArray
 ]
 
-{ #category : #'LiveCoding - sequencer' }
+{ #category : 'LiveCoding - sequencer' }
 Sequencer >> incrementTransportStep [ 
 
 self transportStep: self transportStep + 1.
 ]
 
-{ #category : #'accessing - sequencer' }
+{ #category : 'accessing - sequencer' }
 Sequencer >> index [
 
 	^ self extra1 at: 2
 ]
 
-{ #category : #'LiveCoding-ExtraParams' }
+{ #category : 'LiveCoding-ExtraParams' }
 Sequencer >> index: aStringOrAnArray [
 	"convenience method to avoid extra typing when we want to modify the index , i.e. the sample number of a sample player"
 
 	self extra: #Index values: aStringOrAnArray asDirtArrayOfValues
 ]
 
-{ #category : #'LiveCoding - Performance' }
+{ #category : 'LiveCoding - Performance' }
 Sequencer >> index: anArrayOfIndexes to: aKeyInPerformance [
 	"convenience method to avoid extra parenthesis to put a sequencer of gates with sample indexes into a performance"
 	| p |
@@ -473,7 +499,7 @@ Sequencer >> index: anArrayOfIndexes to: aKeyInPerformance [
 	aKeyInPerformance indexes: anArrayOfIndexes 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 Sequencer >> initialize [
 
 	super initialize.
@@ -491,64 +517,64 @@ Sequencer >> initialize [
 	"dirtMessage addAll: { '_id' -> 1 . 'cps' -> 0.56 .  'orbit' -> 0 }"
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> isPoly [
 
 	^ isPoly
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> isPoly: aBolean [
 
 	isPoly := aBolean
 ]
 
-{ #category : #'LiveCoding - sequencer' }
+{ #category : 'LiveCoding - sequencer' }
 Sequencer >> isPolySeq [
 
 	self subclassResponsibility
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 Sequencer >> isSequencer [
 
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> kymaMessage [
 
 	^ kymaMessage
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> kymaMessage: anObject [
 
 	kymaMessage := anObject
 ]
 
-{ #category : #'LiveCoding-ExtraParams' }
+{ #category : 'LiveCoding-ExtraParams' }
 Sequencer >> level: aStringOrAnArray [
 	"set the level to  a collection of value in array or to to the numbe"
 
 	self extra: #Level values: aStringOrAnArray asDirtArrayOfValues 
 ]
 
-{ #category : #'LiveCoding-ExtraParams' }
+{ #category : 'LiveCoding-ExtraParams' }
 Sequencer >> lfoAmount: aStringOrAnArray [
 	"set the lfoAmount to a collection of value in array or to to the numbe"
 
 	self extra: #LfoAmount values: aStringOrAnArray asDirtArrayOfValues 
 ]
 
-{ #category : #'LiveCoding-ExtraParams' }
+{ #category : 'LiveCoding-ExtraParams' }
 Sequencer >> lfoFreq: aStringOrAnArray [
 	"set the lfo freqency"
 
 	self extra: #LfoFreq values: aStringOrAnArray asDirtArrayOfValues 
 ]
 
-{ #category : #'LiveCoding  - SuperDirt' }
+{ #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> lock: aFloatOrAnArray [
 	" add lock pattern to the Sequencer -  a pattern of numbers. Specifies whether delaytime is calculated relative to bpm. When set to 1, delaytime is a direct multiple of a bar."
 	
@@ -557,7 +583,7 @@ Sequencer >> lock: aFloatOrAnArray [
 		put:  aFloatOrAnArray   asDirtArray
 ]
 
-{ #category : #modifying }
+{ #category : 'modifying' }
 Sequencer >> melodyFrom: aScale [
 
 	| array |
@@ -572,7 +598,7 @@ Sequencer >> melodyFrom: aScale [
 	^ self notes: array
 ]
 
-{ #category : #'LiveCoding - Performance' }
+{ #category : 'LiveCoding - Performance' }
 Sequencer >> midiCh: anInteger to: aKeyInPerformance [
 
 	" convenience method to avoid extra parenthesis when assigning a midiChannel to  akey in a performance"
@@ -581,7 +607,7 @@ Sequencer >> midiCh: anInteger to: aKeyInPerformance [
 	p at: aKeyInPerformance put: (self midiChannel: anInteger).
 ]
 
-{ #category : #'LiveCoding  - SuperDirt' }
+{ #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> midiChan: anIntegerOrAnArrayOfIntegers [
 	" add midichannel for SuperDirt to the Sequencer "
 	
@@ -598,7 +624,7 @@ Sequencer >> midiChan: anIntegerOrAnArrayOfIntegers [
 	
 ]
 
-{ #category : #'LiveCoding - Performance' }
+{ #category : 'LiveCoding - Performance' }
 Sequencer >> midiChan: anInteger to: aKeyInPerformance [
 
 	" for use with SuperDirt 
@@ -608,53 +634,53 @@ Sequencer >> midiChan: anInteger to: aKeyInPerformance [
 	p at: aKeyInPerformance put: (self midiChan: anInteger).
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> midiChannel [ 
 
 	^ midiChannel 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> midiChannel: anIntegerBetween1And16 [
 
 	midiChannel := anIntegerBetween1And16 
 ]
 
-{ #category : #'LiveCoding-ExtraParams' }
+{ #category : 'LiveCoding-ExtraParams' }
 Sequencer >> modIndex: aStringOrAnArray [
 	"convenience method to avoid extra typing when we want to modify the modulationIndex"
 
 	self extra: #ModIndex values:  aStringOrAnArray asDirtArrayOfValues 
 ]
 
-{ #category : #'LiveCoding-ExtraParams' }
+{ #category : 'LiveCoding-ExtraParams' }
 Sequencer >> modPitch: aStringOrAnArray [
 	"convenience method to avoid extra typing when we want to modify the modulationPitch , i.e. the sample number of a sample player"
 
 	self extra: #ModPitch values:  aStringOrAnArray asDirtArrayOfValues 
 ]
 
-{ #category : #'LiveCoding-ExtraParams' }
+{ #category : 'LiveCoding-ExtraParams' }
 Sequencer >> modRatio: aStringOrAnArray [
 	"convenience method to avoid extra typing when we want to modify the modulationRatio , i.e. the ratio between the frequency of the carrier and the frequency of the modlatorr"
 
 	self extra:  #ModRatio values:  aStringOrAnArray asDirtArrayOfValues 
 ]
 
-{ #category : #'LiveCoding-ExtraParams' }
+{ #category : 'LiveCoding-ExtraParams' }
 Sequencer >> mode: aStringOrAnArray [
 	"convenience method to avoid extra typing when we want to modify the mode parameter, that usually correspond to chords mode "
 
 	self extra: #Mode values: aStringOrAnArray asDirtArrayOfValues
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> note [
 
 	^ self notes at: (self noteIndex modulo: self notesSize)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> noteIndex [
 	" returns the fourth array of the sequencer if there is one, otherwise returns 0.
 noteIndex is used to play the folloowing note in the array. Only if there is a trig in the gates the noteIndex  will be incremented"
@@ -662,7 +688,7 @@ noteIndex is used to play the folloowing note in the array. Only if there is a t
 	^ noteIndex 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> noteIndex: anInteger [
 
 	" returns the fourth array of the sequencer if there is one, otherwise returns 0.
@@ -671,32 +697,41 @@ noteIndex is used to play the folloowing note in the array. Only if there is a t
 	noteIndex := anInteger
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> notes [
 
 	^ notes
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> notes1: anObject [
 
 	notes := anObject
 ]
 
-{ #category : #modifying }
+{ #category : 'modifying' }
 Sequencer >> notes: anArrayOfNotesOrANoteorAstring [
 	" change notes in the sequencer"
+
+	| announcement |
+	thisContext sender selector = 'notes:' ifTrue: [
+		announcement := NotesAnnouncement new notes:
+			                ' notes: '
+			                , anArrayOfNotesOrANoteorAstring asString.
+		PerformanceRecorder uniqueInstance announce: announcement ].
 
 	anArrayOfNotesOrANoteorAstring isArray
 		ifTrue: [ notes := anArrayOfNotesOrANoteorAstring ]
 		ifFalse: [
-			anArrayOfNotesOrANoteorAstring isByteString ifTrue: [ notes := anArrayOfNotesOrANoteorAstring asDirtPureNotes  ] ifFalse: 
-		[  	notes := Array
-				         new: self numberOfTrigs
-				         withAll: anArrayOfNotesOrANoteorAstring]]
+			anArrayOfNotesOrANoteorAstring isByteString
+				ifTrue: [ notes := anArrayOfNotesOrANoteorAstring asDirtPureNotes ]
+				ifFalse: [
+					notes := Array
+						         new: self numberOfTrigs
+						         withAll: anArrayOfNotesOrANoteorAstring ] ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 Sequencer >> notes: anArrayOfNotes durs: anArrayOfDurations [
 	" change notes in the sequencer"
 
@@ -707,7 +742,7 @@ Sequencer >> notes: anArrayOfNotes durs: anArrayOfDurations [
 			with: 0
 ]
 
-{ #category : #'LiveCoding - Performance' }
+{ #category : 'LiveCoding - Performance' }
 Sequencer >> notes: anArrayOfNotes index: anArrayOfIndexes to: aKeyInPerformance [
 	"convenience method to avoid extra parenthesis while declaring a sequencer of gates with its notes and its sample indexes"
 	
@@ -718,21 +753,21 @@ Sequencer >> notes: anArrayOfNotes index: anArrayOfIndexes to: aKeyInPerformance
 	aKeyInPerformance indexes: anArrayOfIndexes 
 ]
 
-{ #category : #'LiveCoding - Performance' }
+{ #category : 'LiveCoding - Performance' }
 Sequencer >> notes: anArrayOfNotes midiCh: anInteger to: aKeyInPerformance [
 	"convenience method to avoid extra parenthesis"
 	
 	((self notes: anArrayOfNotes ) midiChannel:  anInteger) to: aKeyInPerformance .
 ]
 
-{ #category : #'LiveCoding - Performance' }
+{ #category : 'LiveCoding - Performance' }
 Sequencer >> notes: anArrayOfNotes mode: anArrayOfModes to: aKeyInPerformance [ 
 	"convenience mode to avoid extra parenthesis to put chord modes into sequencer - designed for polyphonic synths"
 	
 	(( self notes: anArrayOfNotes ) extra1: { #Mode . anArrayOfModes  } ) to: aKeyInPerformance 
 ]
 
-{ #category : #'LiveCoding - sequencer' }
+{ #category : 'LiveCoding - sequencer' }
 Sequencer >> notes: anArrayOfNotes to: aKeyInThePerformance [
 	" convenience method to fill keys in performance without using too many parenthesis"
 
@@ -744,13 +779,13 @@ Sequencer >> notes: anArrayOfNotes to: aKeyInThePerformance [
 	self dirtMessage at: 'n' put: anArrayOfNotes 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> notesSize [
 
 	^ notes size
 ]
 
-{ #category : #counting }
+{ #category : 'counting' }
 Sequencer >> numberOfGates [ 
 	"return number of elements in the Sequencer gates array that are greater than 0"
 
@@ -759,7 +794,7 @@ Sequencer >> numberOfGates [
 	^ result size
 ]
 
-{ #category : #counting }
+{ #category : 'counting' }
 Sequencer >> numberOfTrigs [
 	"return number of elements in the Sequencer gates array that are greater than 0"
 	
@@ -767,7 +802,7 @@ Sequencer >> numberOfTrigs [
 	
 ]
 
-{ #category : #'Sequencer - transformation' }
+{ #category : 'Sequencer - transformation' }
 Sequencer >> offset: aNumber [
 	"offset the rhythm by aNumber of 'steps' wrapping it around its size"
 
@@ -780,19 +815,19 @@ Sequencer >> offset: aNumber [
 	self gates: newArray
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> orbit [
 
 	^ orbit
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> orbit: anObject [
 
 	orbit := anObject
 ]
 
-{ #category : #'LiveCoding  - SuperDirt' }
+{ #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> pan: aFloatOrAnArray [
 	" add gain pattern to the Sequencer"
 	self dirtMessage 
@@ -800,31 +835,31 @@ Sequencer >> pan: aFloatOrAnArray [
 		put:  aFloatOrAnArray   asDirtArray
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> phaustGateDestination [
 
 	^ phaustGateDestination
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> phaustGateDestination: aString [
 
 	phaustGateDestination := aString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> phaustNoteDestination [
 
 	^ phaustNoteDestination
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> phaustNoteDestination: anObject [
 
 	phaustNoteDestination := anObject
 ]
 
-{ #category : #'LiveCoding  - SuperDirt' }
+{ #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> pitch: anIntOrAnArray [
 	" add speed pattern to the Sequencer - change speed of samples playback but in chromatic way!"
    | speeds |
@@ -834,12 +869,12 @@ Sequencer >> pitch: anIntOrAnArray [
 		put:  speeds asDirtArray
 ]
 
-{ #category : #'sequencer - cycles' }
+{ #category : 'sequencer - cycles' }
 Sequencer >> playAsCycle [
 
 ]
 
-{ #category : #'sequencer - cycles' }
+{ #category : 'sequencer - cycles' }
 Sequencer >> playAsCycle: aNumberOfCycles on: aMIDISender [
 
 	"playMIDISequenceAt: aRateInSeconds steps: aNumberOfSteps on: aMIDISender"
@@ -879,13 +914,13 @@ if you want to send out ccs
 		  step := step + 1 ] ] forkAt: Processor timingPriority
 ]
 
-{ #category : #'LiveCoding  - SuperDirt' }
+{ #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> playFullDirtEventAt: anIndex [
 
 	self subclassResponsibility
 ]
 
-{ #category : #'LiveCoding  - SuperDirt' }
+{ #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> playFullDirtEventAt: anIndex delta: aRateInSeconds [
 
 	"sends a mesaage to SuperDirt with all the desired OSC arguments and values" 
@@ -907,7 +942,7 @@ message addAll: { '_id' . '1' . 'cps' . 0.56 . 'delta' . 0.125 . 'orbit' . 0 . '
 	^ true 
 ]
 
-{ #category : #'LiveCoding  - SuperDirt' }
+{ #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> playFullDirtEventAt: anIndex port: aPort [
 
 	"sends a mesaage to SuperDirt with all the desired OSC arguments and values" 
@@ -934,19 +969,19 @@ message addAll: { '_id' . '1' . 'cps' . 0.56 . 'delta' . 0.125 . 'orbit' . 0 . '
 	^ true 
 ]
 
-{ #category : #'LiveCoding - Performance' }
+{ #category : 'LiveCoding - Performance' }
 Sequencer >> playLocalEventAt: anIndex [
 
 	self subclassResponsibility 
 ]
 
-{ #category : #'LiveCoding - Performance' }
+{ #category : 'LiveCoding - Performance' }
 Sequencer >> playMIDIEventAt: anIndex [
 
 	self subclassResponsibility 
 ]
 
-{ #category : #'LiveCoding  - SuperDirt' }
+{ #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> playToDirt: aNumberOfSteps rate: aRateInSeconds [
 
 	"play the sequencer to the SuperDirt/SuperCollider synth engine"
@@ -970,7 +1005,7 @@ Sequencer >> playToDirt: aNumberOfSteps rate: aRateInSeconds [
 	^ process
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 Sequencer >> printOn: aStream [
 
 	super printOn: aStream.
@@ -980,7 +1015,7 @@ Sequencer >> printOn: aStream [
 	aStream print: notes.
 ]
 
-{ #category : #progressions }
+{ #category : 'progressions' }
 Sequencer >> progression: anArrayOfIntervals [
 
 	"return a new Sequencer that join together the original sequencer with as many transpositions of self  for as many intervals in anArrayOfIntervals"
@@ -993,7 +1028,7 @@ Sequencer >> progression: anArrayOfIntervals [
 	^ newSeq
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 Sequencer >> randomCounterPoint [
 	" creates aSequencer of trigs randomly counterpointed with self array"
 
@@ -1006,7 +1041,7 @@ Sequencer >> randomCounterPoint [
 	^ newArray asSeq
 ]
 
-{ #category : #'LiveCoding  - SuperDirt' }
+{ #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> randomSamplesFromFolder: aStringForAFolderOfSamples [
 	"returns a random number (between 2 and 512) of indexes from the selected folder inside Dirt-Samples"
 	| randIndex folder folderSize|
@@ -1016,14 +1051,14 @@ Sequencer >> randomSamplesFromFolder: aStringForAFolderOfSamples [
 	self sound: aStringForAFolderOfSamples ; dirtNotes: (randIndex  randomInts: folderSize) .
 ]
 
-{ #category : #'LiveCoding-ExtraParams' }
+{ #category : 'LiveCoding-ExtraParams' }
 Sequencer >> ratio: aStringOrAnArray [
 	"set the ratio to a collection of value in array or to to the number"
 
 	self extra: #Ratio values: aStringOrAnArray asDirtArrayOfValues 
 ]
 
-{ #category : #'LiveCoding  - SuperDirt' }
+{ #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> rel: aFloatOrAnArray [
 	" add release ASR envelope pattern to the Sequencer"
 	self dirtMessage 
@@ -1031,7 +1066,7 @@ Sequencer >> rel: aFloatOrAnArray [
 		put:  aFloatOrAnArray   asDirtArray
 ]
 
-{ #category : #'LiveCoding  - SuperDirt' }
+{ #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> room: aFloatOrAnArray [
 	" add room size reverb pattern to the Sequencer"
 	self dirtMessage 
@@ -1039,42 +1074,42 @@ Sequencer >> room: aFloatOrAnArray [
 		put:  aFloatOrAnArray   asDirtArray
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> samplesIndex [
 
 	^ samplesIndex
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> samplesIndex: anArrayOfIntegers [
 
 	samplesIndex := anArrayOfIntegers 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> seqChords [
 
 	^ seqChords
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> seqChords: anObject [
 
 	seqChords := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> seqKey [
 	^ seqKey
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> seqKey: anObject [
 
 	seqKey := anObject
 ]
 
-{ #category : #counting }
+{ #category : 'counting' }
 Sequencer >> size [
 	"polysemic version of numberOfTrigs method!!!!. return the number of elements in the Sequencer gates array that are greater than 0"
 
@@ -1082,7 +1117,7 @@ Sequencer >> size [
 
 ]
 
-{ #category : #'LiveCoding  - SuperDirt' }
+{ #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> size: aFloatOrAnArray [
 " add rdepth reverb pattern to the Sequencer"
 
@@ -1091,7 +1126,7 @@ Sequencer >> size: aFloatOrAnArray [
 		put:  aFloatOrAnArray   asDirtArray
 ]
 
-{ #category : #'LiveCoding  - SuperDirt' }
+{ #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> sound: soundsAndIndexs [
 	"assign to a Sequencer an array with samples as string and one with samples index - intended to be used with the SuperDirt audioengine for SuperCollider for example: 
 	16 downbeats sound: #('cp' 'bd:3' 'tom:4')
@@ -1122,7 +1157,7 @@ self dirtMessage at: 's' put: (sounds asDirtArray); at: 'n' put:  indexes asDirt
 		  
 ]
 
-{ #category : #'LiveCoding  - SuperDirt' }
+{ #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> sound: aString dirtNotes: anArrayfIndexes [
 	"add into a Sequencer a soundPattern and notes suitable for SuperDirt"
 	
@@ -1130,33 +1165,33 @@ Sequencer >> sound: aString dirtNotes: anArrayfIndexes [
 	self dirtMessage at: 'n' put:  anArrayfIndexes  asDirtArray
 ]
 
-{ #category : #'LiveCoding  - SuperDirt' }
+{ #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> sound: anArrayOfStrings dirtNotes: anArrayOfMidiNN to: aKeyInPerformance [
 	"convenience method to avoid extra parenthesis" 
 	
 	(self sound: anArrayOfStrings dirtNotes: anArrayOfMidiNN ) to: aKeyInPerformance
 ]
 
-{ #category : #'LiveCoding  - SuperDirt' }
+{ #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> sound: soundsAndIndexs to: aKeyInPerformance [
 	"convenience method to avoid extra parenthesis"
 
 	(self sound: soundsAndIndexs ) to: aKeyInPerformance 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> soundPattern [
 
 	^ soundPattern
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> soundPattern: anArrayOfStrings [
 
 	soundPattern := anArrayOfStrings 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> sounds: aStringForDirt [
 
 	| soundsAndIndexs sounds indexes |
@@ -1184,7 +1219,7 @@ Sequencer >> sounds: aStringForDirt [
 		samplesIndex: indexes asDirtArray
 ]
 
-{ #category : #'LiveCoding  - SuperDirt' }
+{ #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> speed: aFloatOrAnArray [
 	" add speed size pattern to the Sequencer - change speed of samples playback"
 	self dirtMessage 
@@ -1192,7 +1227,7 @@ Sequencer >> speed: aFloatOrAnArray [
 		put:  aFloatOrAnArray   asDirtArray
 ]
 
-{ #category : #'LiveCoding  - SuperDirt' }
+{ #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> squiz: aFloatOrAnArray [
 	" add squiz distortion to the Sequencer"
 	self dirtMessage 
@@ -1200,13 +1235,13 @@ Sequencer >> squiz: aFloatOrAnArray [
 		put:  aFloatOrAnArray   asDirtArray
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> stepIndex [
 
 	self at: 4 put: self noteIndex + 1
 ]
 
-{ #category : #replication }
+{ #category : 'replication' }
 Sequencer >> times: anInteger [
 
 	"returns a sequencer containing anInteger repetition of self"
@@ -1225,42 +1260,29 @@ Sequencer >> times: anInteger [
 		  noteIndex: 0
 ]
 
-{ #category : #'LiveCoding - Performance' }
+{ #category : 'LiveCoding - Performance' }
 Sequencer >> to: aSymbol [
 	" assign sequencer to the performance at aSymbol. if a sound for SuperDirt is not specified, the symbol is used for sound name"
-   
-   self noteIndex: 1.
-	self seqKey: aSymbol asString.
-
-	"For SuperDirt"
-	self dirtMessage at: '_id' put: self seqKey.
-	self dirtMessage at: 'orbit' put: self orbit.
-
-	(self dirtMessage includesKey: 's')
-		ifFalse: [
-		self dirtMessage at: 's' put: aSymbol asString asDirtArray ]
-		ifTrue: [  ].
-
-	"For Polyphony"
-	seqChords
-		ifNil: [ Performance uniqueInstance at: aSymbol put: self ]
-		ifNotNil: [
-		Performance uniqueInstance at: aSymbol put: self asPolySeq ].
+	|announcement|
+	announcement := (self notesSize > 4 and: [
+		                 (self notes at: 1) = 60 and: [
+			                 (self notes at: 5) = 60 ] ])
+		                ifTrue: [ DoubleRhythmAnnouncement new ]
+		                ifFalse: [ SymbolAnnouncement new ].
+	announcement symbol: aSymbol .
+	PerformanceRecorder uniqueInstance announce: announcement.
 
 
-	"For PerformerPhaust"
-	Performance uniqueInstance performer class = PerformerPhaust ifTrue: [
-		self phaustGateDestination: self seqKey , 'Gate'.
-		self phaustNoteDestination: self seqKey , 'Note' ]
+	Performance performanceType addSequencer: self to: aSymbol
 ]
 
-{ #category : #addToPerformance }
+{ #category : 'addToPerformance' }
 Sequencer >> to: aPerformance at: aKey [
 
 	aPerformance add: aKey -> self
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 Sequencer >> trace [
 
 	gates traceCr .
@@ -1268,19 +1290,19 @@ Sequencer >> trace [
 	durations traceCr.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> transportStep [
 
 	^ transportStep
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequencer >> transportStep: anObject [
 
 	transportStep := anObject
 ]
 
-{ #category : #modifying }
+{ #category : 'modifying' }
 Sequencer >> transpose: aNumberOfSemitones [
 
 	| melody |
@@ -1292,7 +1314,7 @@ Sequencer >> transpose: aNumberOfSemitones [
 		  noteIndex: self noteIndex 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 Sequencer >> trigs [
 	"return the number of trigs, i.e. gates = 1,  of the sequencer"
 	
@@ -1304,19 +1326,19 @@ Sequencer >> trigs [
 	^ result.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 Sequencer >> visualGroup [
 
 	^ visualGroup
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 Sequencer >> visualGroup: aRSGroup [
 
 	visualGroup := aRSGroup
 ]
 
-{ #category : #visualization }
+{ #category : 'visualization' }
 Sequencer >> visualizeOn: aRSCanvas [
 
 	"visualize the sequencer on a Roassal canvas"
@@ -1351,7 +1373,7 @@ Sequencer >> visualizeOn: aRSCanvas [
 	aRSCanvas signalUpdate
 ]
 
-{ #category : #'LiveCoding  - SuperDirt' }
+{ #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> voice: aFloatOrAnArray [
 	" add voice variation for SuperDirt Synths to the Sequencer"
 
@@ -1360,7 +1382,7 @@ Sequencer >> voice: aFloatOrAnArray [
 		put:  aFloatOrAnArray   asDirtArray
 ]
 
-{ #category : #random }
+{ #category : 'random' }
 Sequencer >> withRandomNotesFrom: anArray root: aRootNote octaves: aNumber [
 	"return an array of self size of a random note from anArray of note numbers with root aRootNote, and aNumber octave range"
 
@@ -1373,7 +1395,7 @@ Sequencer >> withRandomNotesFrom: anArray root: aRootNote octaves: aNumber [
 	
 ]
 
-{ #category : #random }
+{ #category : 'random' }
 Sequencer >> withRandomNotesMin: anInteger max: anotherInteger [
 	"return an array of self size of a random note from anArray of note numbers with root aRootNote, and aNumber octave range"
 
@@ -1384,7 +1406,7 @@ Sequencer >> withRandomNotesMin: anInteger max: anotherInteger [
 	^ self notes: newNotes
 ]
 
-{ #category : #'LiveCoding-ExtraParams' }
+{ #category : 'LiveCoding-ExtraParams' }
 Sequencer >> x: aStringOrAnArray [
 	"set the x value , for example in Modal Bar sytnhs"
 

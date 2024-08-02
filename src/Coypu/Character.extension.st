@@ -1,6 +1,6 @@
-Extension { #name : #Character }
+Extension { #name : 'Character' }
 
-{ #category : #'*Coypu' }
+{ #category : '*Coypu' }
 Character >> * anInteger [ 
 	| result |
 	result := self asString * anInteger.
