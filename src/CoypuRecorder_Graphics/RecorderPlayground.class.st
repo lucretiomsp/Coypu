@@ -59,10 +59,16 @@ RecorderPlayground >> codeEditorInitialize [
 		hasSelection;
 		requestTextStyle;
 		withEditsFeedback;
-		styler: (BlPharoCodeStyler new classOrMetaClass: self class);
+		localTheme: ToBeeDarkTheme new;
+		styler: (BlPharoCodeStyler new
+				 isScripting: true;
+				 workspace: codeEditor;
+				 fontName: AeFontManager defaultCodeFontFamilyName;
+				 yourself);
 		withRowNumbers;
 		whenCancelRequestedDo: [ :cancelRequested |
-			cancelRequested client text: '' ].
+		cancelRequested client text: '' ].
+
 	menuBuilder := [ :menu :request |
 	               | element |
 	               element := request currentTarget.
@@ -97,10 +103,31 @@ RecorderPlayground >> codeEditorInitialize [
 			                labelText: 'Cancel';
 			                whenClickedDo: [ :event | element requestCancel ];
 			                yourself) ].
-	album contextMenu: menuBuilder.
-	album cursorColor: Color cyan.
-
+	album
+		addEditorShortcut: (BlShortcutWithAction new
+				 combination: BlKeyCombination primaryD;
+				 action: [ :aShortcutEvent :aShortcut | self doIt ];
+				 name: 'Do it';
+				 description: 'Run selected expression.');
+		contextMenu: menuBuilder;
+		cursorColor: Color white.
 	^ album
+]
+
+{ #category : 'as yet unclassified' }
+RecorderPlayground >> doIt [
+
+	| toDo |
+	toDo := codeEditor selectedText asString.
+	toDo ifEmpty: [ toDo := codeEditor text asString ].
+	[
+	OpalCompiler new
+		source: toDo readStream;
+		requestor: self;
+		failBlock: [ ^ Object new ];
+		evaluate ]
+		on: OCUndeclaredVariableWarning
+		do: [ :warn | warn traceCr ]
 ]
 
 { #category : 'initialization' }
@@ -110,10 +137,10 @@ RecorderPlayground >> initialize [
 	replayer := PerformanceMusicalReplayer.
 	self playgroundInitialize.
 	replayer := PerformanceMusicalReplayer new.
-	codeEditor := self codeEditorInitialize.
+	codeEditor := self codeEditorInitialize background: Color gray slightlyWhiter.
 	toolBar := self toolBarInitialize.
 	playground addChild: toolBar.
-	playground addChild: codeEditor.
+	playground addChild: codeEditor
 ]
 
 { #category : 'actions' }
@@ -156,7 +183,7 @@ RecorderPlayground >> playgroundInitialize [
 		              id: #listPane;
 		              margin: (BlInsets top: 0 bottom: 5).
 	playground layout: (BlLinearLayout vertical cellSpacing: 0).
-	playground matchParent
+	playground matchParent.
 ]
 
 { #category : 'actions' }
@@ -202,7 +229,7 @@ RecorderPlayground >> toolBarInitialize [
 	bar := ToElement new.
 	bar background: Color darkGray.
 	bar geometry: BlRectangleGeometry new.
-	bar size: 5000 @ 30.
+	bar size: 5000 @ 31.
 	bar layout: (BlLinearLayout horizontal cellSpacing: 5).
 	button := ToButton new.
 	button label: (ToLabel text: 'Play').
