@@ -9,7 +9,7 @@ The name is an homage to Kyma's Capytalk 'dialect', being the coypu a rodent as 
 ```Smalltalk
 Metacello new
     baseline: 'Coypu';
-    repository: 'github://RedwaneEngels/coypu:master';
+    repository: 'github://lucretiomsp/coypu:master';
     load
 ```
 
