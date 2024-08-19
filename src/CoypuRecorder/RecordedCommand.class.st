@@ -59,19 +59,19 @@ RecordedCommand >> getTime: aSavedPerformance [
 	^ aSavedPerformance getCommandTime: self time asTime
 ]
 
-{ #category : 'instance creation' }
+{ #category : 'initialization' }
 RecordedCommand >> initialize [
 
 	super initialize.
 	time := DateAndTime now asTime 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'types' }
 RecordedCommand >> isRecordedInstructionCommand [
 	^ self subclassResponsibility
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'types' }
 RecordedCommand >> isRecordedInstrumentCommand [
 	^ self subclassResponsibility
 ]

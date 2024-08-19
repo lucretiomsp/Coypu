@@ -7,44 +7,42 @@ mout := MIDISender new.
 mout openMidiOutWithDevice: 5.
 "
 Class {
-	#name : 'MIDISender',
-	#superclass : 'Object',
+	#name : #MIDISender,
+	#superclass : #Object,
 	#instVars : [
 		'midiOut',
 		'defaultOutput',
 		'instance'
 	],
-	#category : 'Coypu-MIDI',
-	#package : 'Coypu',
-	#tag : 'MIDI'
+	#category : 'Coypu-MIDI'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 MIDISender >> allNotesOff [
 
 	1 to: 16 do: [ :i | 
 		self sendCC: 123 withValue: 0 onChannel: i]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MIDISender >> closeMidiOut [
 	"Close the MidiOUT stream (where the score sends notes)."
 	^ PortMidiLibrary uniqueInstance portMidiCloseIOStream: midiOut value
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MIDISender >> defaultOutput [
 	"Returns the defaultOutDeviceID of the user machine if it is online."
 	^ defaultOutput
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MIDISender >> defaultOutput: aDevice [
 	"Sets the new default output for the score."
 	defaultOutput := aDevice
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MIDISender >> initialize [
 
 	self instance: PortMidiLibrary uniqueInstance.
@@ -54,29 +52,29 @@ MIDISender >> initialize [
 	
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MIDISender >> instance [
 ^ instance
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MIDISender >> instance: aPortMIDIInstance [
 instance := PortMidiLibrary uniqueInstance.
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MIDISender >> midiOut [
 	"Gets the MidiOUT stream that is used to write the melody."
 	^ midiOut
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MIDISender >> midiOut: anOutputStream [
 	"Sets a new MidiOUT stream that is used to write the melody."
 	midiOut := anOutputStream
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MIDISender >> openWithDevice: aDeviceID [
 	"Opens a new MidiOUT Stream with output device id aDeviceID to play notes.
 	aDeviceID is an integer. PortMidi traceAllDevices / displays all available devices
@@ -98,7 +96,7 @@ MIDISender >> openWithDevice: aDeviceID [
 															andLatency: 0 ] ifTrue: [ ^ -1 ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MIDISender >> playChord: aNoteNumber type: aChordType onChannel: aMIDIChannel duration: aDurationInSeconds [
 
 	" play aChord of aChordType with root aNoteNumber on the selected channel with a fixed velocity of 100"
@@ -142,7 +140,7 @@ MIDISender >> playChord: aNoteNumber type: aChordType onChannel: aMIDIChannel du
 			theMessage: (chordOff at: i) ] ] fork
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 MIDISender >> playDrum: aNoteNumber onChannel: aMIDIChannel [
 " play aNoteNumber on channel aChannel with no corresponding noteOff - intended for drums"
 | instance noteOn channel |
@@ -157,7 +155,7 @@ instance writeShortOn: self midiOut value when: 0 theMessage: noteOn.
 
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MIDISender >> playNote: aNoteNumber onChannel: aMIDIChannel [
 	" play aNoteNumber on channel aChannel for a standard duration of 250 ms"
 
@@ -178,7 +176,7 @@ MIDISender >> playNote: aNoteNumber onChannel: aMIDIChannel [
 	^ 'note was played'
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MIDISender >> playNote: aNoteNumber onChannel: aMIDIChannel duration: aDurationInSeconds [
 
 	" play aNoteNumber on channel aChannel for aDurationInSeconds"
@@ -200,7 +198,7 @@ MIDISender >> playNote: aNoteNumber onChannel: aMIDIChannel duration: aDurationI
 		fork
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 MIDISender >> sendCC: aCCNumber withValue: aValue onChannel: aMIDIChannel [
 " play aNoteNumber on channel aChannel with no corresponding noteOff - intended for drums"
 | instance cChange channel |
@@ -215,7 +213,7 @@ instance writeShortOn: self midiOut value when: 0 theMessage: cChange.
 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 MIDISender >> sendStart [
 	" send Transport start message to exteral MIDI device"
 

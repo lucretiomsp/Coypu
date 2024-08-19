@@ -94,7 +94,7 @@ Only called when recording a replay of a Performance."
 		(collectionOfCommands last time asTime addMilliSeconds: anAnnouncement delay).
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'calculating' }
 SavedPerformance >> appliesExtraValues: anAnnouncement [
 
 collectionOfCommands last extraValues: anAnnouncement extraValues
@@ -130,6 +130,18 @@ SavedPerformance >> collectionOfCommands: anOrderedCollection [
 collectionOfCommands := anOrderedCollection 
 ]
 
+{ #category : 'adding' }
+SavedPerformance >> doubleRhythmsAnnounced [
+| x y |
+					x := collectionOfCommands allButLast last rhythm , ', '
+					     , collectionOfCommands last rhythm.
+					y := collectionOfCommands last symbol.
+					self collectionOfCommands: collectionOfCommands allButLast.
+					collectionOfCommands last
+						rhythm: x;
+						symbol: y
+]
+
 { #category : 'visiting' }
 SavedPerformance >> getCommandScript: aString [
 
@@ -152,18 +164,17 @@ SavedPerformance >> header: aScript [
 ]
 
 { #category : 'initialization' }
-SavedPerformance >> initialize [ 
+SavedPerformance >> initialize [
 
-collectionOfCommands := OrderedCollection new.
+	collectionOfCommands := OrderedCollection new.
+
 ]
 
 { #category : 'adding' }
 SavedPerformance >> lastDirtNotes: anAnnouncement [
 	"add to the last RecordedInstrumentCommand dirtNotes.
 This message is called when a DirtNotesAnnouncement is announced."
-
-	collectionOfCommands last
-		dirtNotes: anAnnouncement newDirtNotes
+	collectionOfCommands last dirtNotes: anAnnouncement newDirtNotes
 ]
 
 { #category : 'adding' }
@@ -171,22 +182,14 @@ SavedPerformance >> lastSymbol: anAnnouncement [
 	"add to the last RecordedInstrumentCommand a Symbol.
 This message is called when a SymbolAnnouncement is announced."
 
-	| x |
-	anAnnouncement class = SymbolAnnouncement
-		ifTrue: [
+
+
 			(anAnnouncement symbol includesSubstring: 'once')
 				ifTrue: [
 					collectionOfCommands add:
 						(RecordedInstrumentCommand new symbol: anAnnouncement symbol) ]
 				ifFalse: [
-				collectionOfCommands last symbol: anAnnouncement symbol ] ]
-		ifFalse: [
-			x := collectionOfCommands allButLast last rhythm , ', '
-			     , collectionOfCommands last rhythm.
-			self collectionOfCommands: collectionOfCommands allButLast.
-			collectionOfCommands last
-				rhythm: x;
-				symbol: anAnnouncement symbol ]
+				collectionOfCommands last symbol: anAnnouncement symbol ] 
 ]
 
 { #category : 'visitors' }

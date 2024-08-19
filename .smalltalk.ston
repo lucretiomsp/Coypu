@@ -1,0 +1,6 @@
+SmalltalkCISpec {
+  #loading : [
+    SCIMetacelloLoadSpec {
+      #baseline : 'Coypu',
+      #directory : 'src'
+    }]}

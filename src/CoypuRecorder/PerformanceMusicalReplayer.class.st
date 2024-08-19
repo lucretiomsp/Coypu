@@ -40,20 +40,16 @@ PerformanceMusicalReplayer >> getScript: aSavedPerformance [
 	aSavedPerformance scriptWithDelayTimeForReplayer: self
 ]
 
-{ #category : 'initialization' }
-PerformanceMusicalReplayer >> initialize [
-super initialize
-	"stop := false"
-]
-
 { #category : 'action' }
 PerformanceMusicalReplayer >> replayWithoutPlayground [
 
 	| x |
 	x := String streamContents: [ :s |
 		     performanceScript do: [ :each |
-			     s nextPutAll: each asString , String cr ] ].
-	 Object readFromString: x 
+			     s
+				     nextPutAll: each asString;
+				     nextPutAll: String cr ] ].
+	[ Object readFromString: x ] forkAt: 40
 ]
 
 { #category : 'read/write usage' }

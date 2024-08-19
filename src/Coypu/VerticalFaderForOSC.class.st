@@ -2,14 +2,12 @@
 Vertical Fader to send OSC messages to the audio server.
 "
 Class {
-	#name : 'VerticalFaderForOSC',
-	#superclass : 'VerticalFader',
-	#category : 'Coypu-GUI',
-	#package : 'Coypu',
-	#tag : 'GUI'
+	#name : #VerticalFaderForOSC,
+	#superclass : #VerticalFader,
+	#category : 'Coypu-GUI'
 }
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 VerticalFaderForOSC class >> new: aStringWithADestinationAndAParameter [
 
 " if the paameter is a number, the fader sends out to MIDI via SuperDirt the cursor value for the control change number assigned"
@@ -30,7 +28,7 @@ param asInteger ifNotNil: [ ((Performance uniqueInstance at: dest) dirtMessage) 
 		yourself
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 VerticalFaderForOSC class >> new: aStringWithADestinationAndAParameter range: anArrayWirhMinAndMax [
 | parsedString  |
 
@@ -44,17 +42,17 @@ parsedString := aStringWithADestinationAndAParameter findBetweenSubstrings: ' '.
 		yourself
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 VerticalFaderForOSC >> destination [ 
 	^ destination 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 VerticalFaderForOSC >> destination: aDestination [
 	destination  := aDestination
 ]
 
-{ #category : 'event handling' }
+{ #category : #'event handling' }
 VerticalFaderForOSC >> mouseMove: anEvent [
 
 	| newLocation mappedY cursorY faderBottom range faderTop |
@@ -73,12 +71,12 @@ VerticalFaderForOSC >> mouseMove: anEvent [
 			mappedY toLocal: faderAddress ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 VerticalFaderForOSC >> parameter [ 
 	^ parameter 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 VerticalFaderForOSC >> parameter: aParameter [
 	parameter := aParameter
 ]

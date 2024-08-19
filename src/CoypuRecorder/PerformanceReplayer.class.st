@@ -86,12 +86,15 @@ PerformanceReplayer >> writeScriptInStonFile [
 
 { #category : 'read/write usage' }
 PerformanceReplayer >> writeScriptInStonFile: aNameFile [
-"write the performanceScript in a new ston file in the following path  home/Documents/PerformanceScripts/DateOfTheDay as aNameFile.ston"
+	"write the performanceScript in a new ston file in the following path  home/Documents/PerformanceScripts/DateOfTheDay as aNameFile.ston"
+
 	| x script stream |
 	x := FileLocator home / 'Documents'.
 	(x / 'PerformanceScripts') isDirectory ifFalse: [
 		(x / 'PerformanceScripts') ensureCreateDirectory ].
-	x := x / 'PerformanceScripts' / DateAndTime now asDate asString.
+	x := x / 'PerformanceScripts'
+	     / (DateAndTime now asDate ddmmyyyy asString copyReplaceAll: '/' with: '-').
+
 	x isDirectory ifFalse: [ x ensureCreateDirectory ].
 
 	script := (x / aNameFile , 'ston') asFileReference.
@@ -132,11 +135,15 @@ PerformanceReplayer >> writeScriptInTxtFile [
 { #category : 'read/write usage' }
 PerformanceReplayer >> writeScriptInTxtFile: aNameFile [
 	"write the performanceScript in a new txt file in the following path  home/Documents/PerformanceScripts/DateOfTheDay as aNameFile.txt"
+
 	| x script stream |
 	x := FileLocator home / 'Documents'.
 	(x / 'PerformanceScripts') isDirectory ifFalse: [
 		(x / 'PerformanceScripts') ensureCreateDirectory ].
-	x := x / 'PerformanceScripts' / DateAndTime now asDate asString.
+x := x / 'PerformanceScripts'
+	     / (DateAndTime now asDate ddmmyyyy asString
+			      copyReplaceAll: '/'
+			      with: '-').
 	x isDirectory ifFalse: [ x ensureCreateDirectory ].
 
 	script := (x / 'TextualPerformance' , 'txt') asFileReference.

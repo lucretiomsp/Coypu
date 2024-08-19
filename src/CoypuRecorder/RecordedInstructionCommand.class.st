@@ -56,13 +56,13 @@ RecordedInstructionCommand >> instruction: anInstruction [
 instruction := anInstruction 
 ]
 
-{ #category : 'testing' }
+{ #category : 'types' }
 RecordedInstructionCommand >> isRecordedInstructionCommand [
 
 	^ true
 ]
 
-{ #category : 'testing' }
+{ #category : 'types' }
 RecordedInstructionCommand >> isRecordedInstrumentCommand [
 
 	^ false

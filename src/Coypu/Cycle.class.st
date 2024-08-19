@@ -2,23 +2,21 @@
 Cycle represents a convenience class to hold information about cyclep playing, inspired by Tidal Cycles
 "
 Class {
-	#name : 'Cycle',
-	#superclass : 'Object',
+	#name : #Cycle,
+	#superclass : #Object,
 	#classVars : [
 		'duration'
 	],
-	#category : 'Coypu-Sequencers',
-	#package : 'Coypu',
-	#tag : 'Sequencers'
+	#category : 'Coypu-Sequencers'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 Cycle class >> duration [
 
 	^ duration 
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 Cycle class >> initialize [
 
 
@@ -26,7 +24,7 @@ Cycle class >> initialize [
 	self setDuration: 60 / 132 * 4
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 Cycle class >> play: aSequencer on: aMIDISender for: aNumberOfCycles [
 
 	"playMIDISequenceAt: aRateInSeconds steps: aNumberOfSteps on: aMIDISender"
@@ -66,20 +64,20 @@ if you want to send out ccs
 		  step := step + 1 ] ] forkAt: Processor timingPriority
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 Cycle class >> setDuration: aDurationInseconds [
 
 duration := aDurationInseconds 
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 Cycle >> initialize [
 
 	super initialize.
 	self setDuration: 60 / 132 * 4
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 Cycle >> setDuration: aDurationInSeconds [
 
 	duration := aDurationInSeconds 

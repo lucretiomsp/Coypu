@@ -2,34 +2,32 @@
 Performer for external MIDI hardware
 "
 Class {
-	#name : 'PerformerMIDI',
-	#superclass : 'Performer',
+	#name : #PerformerMIDI,
+	#superclass : #Performer,
 	#classInstVars : [
 		'midiOut'
 	],
-	#category : 'Coypu-Performer',
-	#package : 'Coypu',
-	#tag : 'Performer'
+	#category : 'Coypu-Performer'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 PerformerMIDI class >> midiOut [
 
 	^ midiOut
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 PerformerMIDI class >> midiOut: aMIDISender [
 
 	midiOut := aMIDISender 
 ]
 
-{ #category : 'playing' }
+{ #category : #playing }
 PerformerMIDI >> play [
 	self shouldBeImplemented 
 ]
 
-{ #category : 'playing' }
+{ #category : #playing }
 PerformerMIDI >> playFor: aNumberOfSteps [
 	"play the performance to SuperDIrt/SuperCollider audio engine - default freq is 132 bpm 
 	Performance speed can be changed with p freq: a bpm"
@@ -54,7 +52,7 @@ PerformerMIDI >> playFor: aNumberOfSteps [
 			 Processor timingPriority)
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 PerformerMIDI >> playMIDISequenceAt: aRateInSeconds for: aNumberOfSteps on: aMIDISender [
 
 	"test"

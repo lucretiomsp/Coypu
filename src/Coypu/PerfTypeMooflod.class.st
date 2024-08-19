@@ -2,8 +2,8 @@
 I am a special type pf Performance to be used in MoogLof experiments (Music On-The-Fly with Level Of Details)
 "
 Class {
-	#name : 'PerfTypeMooflod',
-	#superclass : 'PerfType',
+	#name : #PerfTypeMooflod,
+	#superclass : #PerfType,
 	#instVars : [
 		'isVisualizerOpen',
 		'level',
@@ -12,14 +12,13 @@ Class {
 		'stepVisualizer',
 		'displayVisualizer',
 		'perfVisualizer',
-		'trackVisualizers'
+		'trackVisualizers',
+		'freq'
 	],
-	#category : 'Coypu-Performance',
-	#package : 'Coypu',
-	#tag : 'Performance'
+	#category : #'Coypu-Performance'
 }
 
-{ #category : 'adding' }
+{ #category : #adding }
 PerfTypeMooflod >> addMasterWidgets [
 
 	| delayW cutoffW container slider textElt |
@@ -53,7 +52,7 @@ PerfTypeMooflod >> addMasterWidgets [
 	visualizerSpace root addChild: delayW
 ]
 
-{ #category : 'adding' }
+{ #category : #adding }
 PerfTypeMooflod >> addSequencer: aSequencer to: aSymbol [
 
 	|isInKeys perf |
@@ -61,7 +60,7 @@ PerfTypeMooflod >> addSequencer: aSequencer to: aSymbol [
 	isInKeys := false.
 	perf keysDo: [ :k |
 		k = aSymbol ifTrue: [
-			(self visualizer patternArray at: k) forSequencer: self.
+			(self visualizer patternArray at: k) forSequencer: aSequencer .
 			isInKeys := true.
 			(self visualizer squareArray at: k) changeAnimationTime:
 				Performance uniqueInstance freq * 4 ] ].
@@ -100,22 +99,22 @@ PerfTypeMooflod >> addSequencer: aSequencer to: aSymbol [
 		aSequencer phaustNoteDestination: aSequencer seqKey , 'Note' ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 PerfTypeMooflod >> displayVisualizer [
 
 	^ displayVisualizer
 ]
 
-{ #category : 'accessing' }
-PerfTypeMooflod >> displayVisualizer: aBoolean [
+{ #category : #accessing }
+PerfTypeMooflod >> freq: aDurationInSeconds [
 
-	displayVisualizer := aBoolean.
-	visualizer := MfVisualizerElement new level: 5.
-	stepVisualizer := MfPerformanceStepsDisplayer new.
-	isVisualizerOpen := false
+Performance uniqueInstance freq: aDurationInSeconds .
+isVisualizerOpen ifTrue: [ 
+	visualizer squareArray do: [ :s|
+		s changeAnimationTime: Performance uniqueInstance freq * 4 ] .]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 PerfTypeMooflod >> initialize [
 
 	super initialize.
@@ -127,37 +126,43 @@ PerfTypeMooflod >> initialize [
 	isVisualizerOpen := false
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 PerfTypeMooflod >> isVisualizerOpen [
 
 	^ isVisualizerOpen
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 PerfTypeMooflod >> isVisualizerOpen: aBoolean [ 
 
 isVisualizerOpen:= aBoolean 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 PerfTypeMooflod >> level [
 
 	^ level
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 PerfTypeMooflod >> level: anObject [
-
-	level := anObject
+|perf |
+	level := anObject.
+		"perf := Performance uniqueInstance.
+		perf keysDo: [ :k |
+			perf visualizer cleanRow:
+					(perf tracks indexOf: k)
+					
+			 ]"
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 PerfTypeMooflod >> levelOfDetail: anInteger [
 
 	visualizer level: anInteger 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 PerfTypeMooflod >> openVisualizers [
 
 	visualizerSpace := BlSpace new extent:
@@ -169,18 +174,20 @@ PerfTypeMooflod >> openVisualizers [
 	visualizerSpace root addChild: visualizer.
 	visualizerSpace root childrenDo: [ :child |
 		child margin: (BlInsets vertical: 10) ].
+	visualizerSpace position: World extent x * (10 / 12) @ 20.
 	visualizerSpace toTheme: MfMooflodTheme new.
+	visualizerSpace root background: (Color fromHexString: '#313339').
 	visualizerSpace show.
-	visualizerSpace position: World extent x * (10 / 12) @ 20
+
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 PerfTypeMooflod >> perfVisualizer [
 
 	^ perfVisualizer
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 PerfTypeMooflod >> perfVisualizer: aPerfVisualizer [
 	"assing a perfVisualzier and initialize a new Dictionary for trackVisualziers"
 
@@ -188,7 +195,7 @@ PerfTypeMooflod >> perfVisualizer: aPerfVisualizer [
 	self trackVisualizers: Dictionary new.
 ]
 
-{ #category : 'playing' }
+{ #category : #playing }
 PerfTypeMooflod >> playFor: aNumberOfSteps [
 	" reset all the Sequencers"
 
@@ -197,23 +204,23 @@ PerfTypeMooflod >> playFor: aNumberOfSteps [
 	| perf bpm |
 	bpm := 10.
 	perf := Performance uniqueInstance.
-	Transcript
+	"Transcript
 		show: 'PERFOMOOFLOD';
-		open.
+		open."
 	perf activeProcess isTerminated  ifTrue: [ perf performer playFor: aNumberOfSteps ].
 	self displayVisualizer ifTrue: [
 		self isVisualizerOpen ifFalse: [
-			self stepVisualizer addSteps: perf transportStep.
-			self stepVisualizer initializeAnimation: perf freq.
+			stepVisualizer addSteps: perf transportStep.
+			stepVisualizer initializeAnimation: perf freq.
 			self openVisualizers.
-			self isVisualizerOpen: true ].
-		isVisualizerOpen ifTrue: [ stepVisualizer animationIsRunning: true ].
-		stepVisualizer pauseAnimation: 15 / bpm / 60 * (aNumberOfSteps / 16).
-		visualizer initAnimation: 15 / bpm / 60 * (aNumberOfSteps / 16) ].
+			
+			].
+	   stepVisualizer pauseAnimation: 15 / perf bpm / 60 * (aNumberOfSteps / 16).
+		visualizer initAnimation: 15 / perf bpm / 60 * (aNumberOfSteps / 16) ].
 	perf resetAllSequencers
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 PerfTypeMooflod >> playPhaustEventAt: anIndex forSequencer: aSequencer [
 	"sends a message to Phausto / the DSP api must be written in a sensible way "
 
@@ -241,48 +248,56 @@ PerfTypeMooflod >> playPhaustEventAt: anIndex forSequencer: aSequencer [
 	^ true
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 PerfTypeMooflod >> stepVisualizer [
 
 	^ stepVisualizer
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 PerfTypeMooflod >> stepVisualizer: anObject [
 
 	stepVisualizer := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
+PerfTypeMooflod >> stop [
+
+	visualizer cleanVisualizer .
+	stepVisualizer animationIsRunning: false.
+	Performance uniqueInstance  activeProcess terminate.
+]
+
+{ #category : #accessing }
 PerfTypeMooflod >> trackVisualizers [
 
 	^ trackVisualizers
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 PerfTypeMooflod >> trackVisualizers: aDictionary [
 
 	trackVisualizers := aDictionary
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 PerfTypeMooflod >> visualizer [
 	^visualizer 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 PerfTypeMooflod >> visualizer: anObject [
 
 	visualizer := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 PerfTypeMooflod >> visualizerSpace [
 
 	^ visualizerSpace
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 PerfTypeMooflod >> visualizerSpace: anObject [
 
 	visualizerSpace := anObject

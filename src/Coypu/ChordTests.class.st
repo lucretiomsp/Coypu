@@ -1,12 +1,10 @@
 Class {
-	#name : 'ChordTests',
-	#superclass : 'TestCase',
-	#category : 'Coypu-Tests',
-	#package : 'Coypu',
-	#tag : 'Tests'
+	#name : #ChordTests,
+	#superclass : #TestCase,
+	#category : 'Coypu-Tests'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 ChordTests >> testChordsToArrays [
 
 	| result |
@@ -15,7 +13,7 @@ ChordTests >> testChordsToArrays [
 	self assert: 'C-minor D-major' chordsToArrays asArray equals: result
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 ChordTests >> testParseChord [
 
 self assert: 'D-Major' parseChord equals: #(2 6 9)

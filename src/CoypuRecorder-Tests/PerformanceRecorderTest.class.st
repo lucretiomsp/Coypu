@@ -20,7 +20,15 @@ PerformanceRecorderTest >> setUp [
 
 	super setUp.
 	performanceRecorder := PerformanceRecorder uniqueInstance.
-	performanceRecorder performer: PerformerSuperDirt new
+	performanceRecorder performer: PerformerSuperDirt new.
+	Performance uniqueInstance performanceType: PerfTypeMock new
+]
+
+{ #category : 'running' }
+PerformanceRecorderTest >> tearDown [
+
+	Performance uniqueInstance performanceType: PerfType new.
+	super tearDown 
 ]
 
 { #category : 'tests' }

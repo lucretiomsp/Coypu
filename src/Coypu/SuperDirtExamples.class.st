@@ -5,14 +5,12 @@ Check installation here:
 https://github.com/lucretiomsp/Coypu
 "
 Class {
-	#name : 'SuperDirtExamples',
-	#superclass : 'Object',
-	#category : 'Coypu-Examples',
-	#package : 'Coypu',
-	#tag : 'Examples'
+	#name : #SuperDirtExamples,
+	#superclass : #Object,
+	#category : 'Coypu-Examples'
 }
 
-{ #category : 'examples - simple' }
+{ #category : #'examples - simple' }
 SuperDirtExamples >> dirtNotes101 [
 
 	<script: ' self new dirtNotes101'>
@@ -79,7 +77,7 @@ p playFor: 16 bars.
 	^ StPlayground openContents: content
 ]
 
-{ #category : 'examples - simple' }
+{ #category : #'examples - simple' }
 SuperDirtExamples >> randomotes101 [
 
 	<script: ' self new dirtNotes101'>
@@ -149,7 +147,7 @@ p playFor: 32 bars.
 	^ StPlayground openContents: content
 ]
 
-{ #category : 'examples - simple' }
+{ #category : #'examples - simple' }
 SuperDirtExamples >> techno101 [
 
 	<script: ' self new techno101'>

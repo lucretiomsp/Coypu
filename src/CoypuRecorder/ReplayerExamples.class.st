@@ -1,5 +1,5 @@
 "
-## Class used to do exemples of usage for CoypuRecorder.
+## Class containing examples of use of the replayer.
 "
 Class {
 	#name : 'ReplayerExamples',
@@ -10,7 +10,7 @@ Class {
 }
 
 { #category : 'exemples' }
-ReplayerExamples >> displayPerformanceInStonFile [
+ReplayerExamples >> WriteAPerformanceInStonFile [
 
 	<script: ' self new displayPerformanceInStonFile'>
 	| content |

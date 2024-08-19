@@ -1,15 +1,13 @@
 Class {
-	#name : 'SequencerTest',
-	#superclass : 'TestCase',
+	#name : #SequencerTest,
+	#superclass : #TestCase,
 	#instVars : [
 		'sequencer'
 	],
-	#category : 'Coypu-Tests',
-	#package : 'Coypu',
-	#tag : 'Tests'
+	#category : 'Coypu-Tests'
 }
 
-{ #category : 'running' }
+{ #category : #running }
 SequencerTest >> setUp [
 
 	sequencer := 8 downbeats.
@@ -18,7 +16,7 @@ SequencerTest >> setUp [
 	"Put here a common initialization logic for tests"
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 SequencerTest >> testAddAssociationForDirtMesage [
 
 | seq |
@@ -29,7 +27,7 @@ self assert: (seq dirtMessage includesKey: #squiz) equals: true.
 self assert: (seq dirtMessage includes: #( 0 1  2) ) equals: true.
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 SequencerTest >> testAddExtraParamsForKyma [
 
 | seq |
@@ -39,7 +37,7 @@ self assert: (seq extraParams at: #Cutoff) equals: #(300 400 500).
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 SequencerTest >> testArpeggiateArray [
 
 | initial  result|
@@ -49,7 +47,7 @@ result := #(60 61 62 63 61 62 63 64 62 63 64 65 63 64 65 66).
 self assert: (initial arp: #(0 1 2 3)) equals: result
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 SequencerTest >> testAsPolySeq [
 
 | monoseq polyseq |
@@ -67,7 +65,7 @@ self assert: (polyseq dirtMessage includesKey: 'n') equals: false.
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 SequencerTest >> testChangeSequencerGatesSize [
 
 	| seq |
@@ -76,7 +74,7 @@ SequencerTest >> testChangeSequencerGatesSize [
 	self assert: (seq gatesSize) equals: 1
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 SequencerTest >> testChords: aChordOrAnArrayOfChords [
 
 | polySeq |
@@ -86,7 +84,7 @@ self assert: (polySeq dirtMessage at: 'n') equals: ( 'c-major d-minor e-major' c
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 SequencerTest >> testEuclideanRhythmFromArray [
 
 	| tresillo seq |
@@ -95,7 +93,7 @@ SequencerTest >> testEuclideanRhythmFromArray [
 	self assert: tresillo equals: seq
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 SequencerTest >> testFlipSequencer [
 
 	| tresillo seq |
@@ -104,12 +102,12 @@ SequencerTest >> testFlipSequencer [
 	self assert: tresillo equals: seq
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 SequencerTest >> testInitialize [
 self assert: (Sequencer new orbit > 0) & (Sequencer new orbit < 12) equals: true
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 SequencerTest >> testReverse [
 
 | seq |
@@ -119,7 +117,7 @@ self assert: (seq reverse dirtMessage at: 'n') equals: #( 3 2 1).
 self assert: (seq reverse dirtMessage at: 's') equals: #('cp' 'sd').
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 SequencerTest >> testSequencerArpeggiate [
 | seq |
 seq := 8 semiquavers .
@@ -128,7 +126,7 @@ seq arpeggiate: 'c-minor7 d-minor7'.
 self assert: (seq dirtMessage at: 'n') equals: #(0 3 7 10 2 5 9 12) asArray .
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 SequencerTest >> testSequencerOffset [
 
 | seq1 seq2 result1 result2 |
@@ -142,7 +140,7 @@ self assert: (seq1 offset: 2) gates  equals: result1 gates.
 self assert: (seq2 offset: -1) gates equals: result2 gates.
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 SequencerTest >> testSequencerSound [
 
 | seq |
@@ -152,7 +150,7 @@ self assert: seq soundPattern  equals: #('bd' 'cp').
 self assert: seq samplesIndex equals: #(0 2).
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 SequencerTest >> testSequencerToPerformance [
 
 sequencer to: #track.
