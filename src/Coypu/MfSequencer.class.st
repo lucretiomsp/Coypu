@@ -1,11 +1,13 @@
 Class {
-	#name : #MfSequencer,
-	#superclass : #Sequencer,
-	#type : #variable,
-	#category : 'Coypu-Sequencers'
+	#name : 'MfSequencer',
+	#superclass : 'Sequencer',
+	#type : 'variable',
+	#category : 'Coypu-Sequencers',
+	#package : 'Coypu',
+	#tag : 'Sequencers'
 }
 
-{ #category : #'LiveCoding - Performance' }
+{ #category : 'LiveCoding - Performance' }
 MfSequencer >> to: aSymbol [
 	" assign sequencer to the performance at aSymbol. if a sound for SuperDirt is not specified, the symbol is used for sound name"
 
