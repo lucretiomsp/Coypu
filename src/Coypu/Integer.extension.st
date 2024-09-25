@@ -425,7 +425,7 @@ Integer >> randomTrigsWithProbability: anIntegerProbability [
 	"generates an Array of random 0s and 1s of size: aNumber with a probability of having a trig of anIntegerProbability "
 
 	| r rytm announcement|
-	announcement := RhythmAnnouncement new rhythm: (self asString,' randomTrigsWithProbability: ', anIntegerProbability ).
+	announcement := RhythmAnnouncement new rhythm: (self asString,' randomTrigsWithProbability: ', anIntegerProbability asString).
 PerformanceRecorder uniqueInstance announce: announcement.
 	rytm := Array new: self.
 	r := Random new.

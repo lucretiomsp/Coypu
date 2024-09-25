@@ -1,10 +1,12 @@
 Class {
-	#name : #MfTimerElementTest,
-	#superclass : #TestCase,
-	#category : 'Mooflod-TimerWidget'
+	#name : 'MfTimerElementTest',
+	#superclass : 'TestCase',
+	#category : 'Mooflod-TimerWidget',
+	#package : 'Mooflod',
+	#tag : 'TimerWidget'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MfTimerElementTest >> testDefaultValueIsCorrectlyInitialized [
 
 	| timer |

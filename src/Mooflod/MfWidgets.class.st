@@ -1,10 +1,12 @@
 Class {
-	#name : #MfWidgets,
-	#superclass : #Object,
-	#category : #'Mooflod-Widgets'
+	#name : 'MfWidgets',
+	#superclass : 'Object',
+	#category : 'Mooflod-Widgets',
+	#package : 'Mooflod',
+	#tag : 'Widgets'
 }
 
-{ #category : #example }
+{ #category : 'example' }
 MfWidgets class >> exampleDisplayingAllWidgets [
 
 	<script>
@@ -22,7 +24,7 @@ MfWidgets class >> exampleDisplayingAllWidgets [
 		     max: 16;
 		     nbsteps: 12.
 	s := MfPerformanceStepsDisplayer new.
-	aPiano := MfPianoElement new.
+	aPiano := ICPianoKeyboardElement new.
 	s addSteps: 189.
 	timer := MfTimerElement new value: 18.
 	k := MfKeyboardElement new.

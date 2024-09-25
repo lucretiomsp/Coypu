@@ -1206,7 +1206,7 @@ Sequencer >> sounds: aStringForDirt [
 		'Pharo-11.0.0+build.688.sha.cf3d3fd1805673a058ddf99229edb72ef062c890 (64 Bit)'.
 	soundsAndIndexs := aStringForDirt findBetweenSubstrings: ' '.
 	sounds := OrderedCollection new.
-	(1 to: soundsAndIndexs size) do: [ :i |
+	1 to: soundsAndIndexs size do: [ :i |
 		sounds add:
 			(((soundsAndIndexs at: i) findBetweenSubstrings: ':') at: 1) ].
 	indexes := OrderedCollection new.
