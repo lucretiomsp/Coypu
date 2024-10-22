@@ -14,8 +14,9 @@ Number >> bars: aNumber [
 
 { #category : '*Coypu' }
 Number >> bpm [
-"returns time in milliseconds of one bar at self bpm"
-^ (60 / self) / 4
+	"returns time in milliseconds of one bar at self bpm"
+
+	^ 60 / self / 4
 ]
 
 { #category : '*Coypu' }

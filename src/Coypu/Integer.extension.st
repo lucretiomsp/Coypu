@@ -153,12 +153,6 @@ PerformanceRecorder uniqueInstance announce: announcement.
 ]
 
 { #category : '*Coypu' }
-Integer >> bpm [
-"return the duration of 1/16th at self bpm"
-^ ((60/  self) /4).
-]
-
-{ #category : '*Coypu' }
 Integer >> breves [
 	" returns self number of brevesin the first position of the bars"
 
