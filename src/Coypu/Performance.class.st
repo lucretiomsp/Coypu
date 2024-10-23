@@ -67,11 +67,26 @@ Performance class >> reset [
 Performance class >> uniqueInstance [
 
 	self orbit: 0.
+	
+	^ uniqueInstance ifNil: [ uniqueInstance := super new . self performanceType: PerfType new. ]
+]
 
-	^ uniqueInstance ifNil: [
-		  uniqueInstance := super new.
-		  self performanceType: PerfType new.
-		  uniqueInstance ]
+{ #category : 'as yet unclassified' }
+Performance >> Dictionary [  Variable or expression expected -><< #Performance
+	layout: VariableLayout;
+	slots: {
+			 #visualization .
+			 #performer .
+			 #canvas .
+			 #rsGroupDictionary .
+			 #freq .
+			 #backup .
+			 #bpm .
+			 #transportStep .
+			 #activeProcess.
+			 };
+	tag: 'Performance';
+	package: 'LiveCoding'
 ]
 
 { #category : 'accessing' }
@@ -99,8 +114,8 @@ Performance >> activeProcess: anObject [
 { #category : 'performance  - adding' }
 Performance >> add: aSequencer channel: anIntegerBetween1And16 [
 
-	aSequencer midiChannel: anIntegerBetween1And16.
-	self add: aSequencer
+	aSequencer midiChannel: anIntegerBetween1And16. 
+	super add: aSequencer.
 ]
 
 { #category : 'accessing' }
@@ -153,23 +168,29 @@ Performance >> dirtMIDIDevice: aString [
 	dirtMIDIDevice := aString
 ]
 
-{ #category : 'modifying' }
-Performance >> doBackup [
+{ #category : 'as yet unclassified' }
+Performance >> forDsp: aDsp [
 
-	backup := self asDictionary
+| p |
+
+p := self class uniqueInstance .
+p performer: PerformerPhaust new.
+p activeDSP: aDsp.
+
+^ p
 ]
 
 { #category : 'accessing' }
 Performance >> freq [
-	"better to convert it to Float to avoid OSC sending issues"
-	^ freq asFloat
+	
+	^ freq 
 ]
 
 { #category : 'accessing' }
 Performance >> freq: aDurationInSeconds [
 	"use for playback speed"
 
-	freq := aDurationInSeconds asFloat
+	freq := aDurationInSeconds 
 ]
 
 { #category : 'LiveCoding - Performance' }
@@ -197,7 +218,8 @@ Performance >> length [
 	"return the number of steps of the largest array contained in the performance values"
 
 	| valuesSizes maxLength |
-	valuesSizes := (1 to: self values size) collect: [ :i | ((self values at: i) at: 1) size ].
+	valuesSizes := (1 to: self values size) collect: [ :i |
+		               ((self values at: i) at: 1) size ].
 	maxLength := valuesSizes inject: 0 into: [ :a :c | a max: c ].
 	^ maxLength
 ]
@@ -209,20 +231,25 @@ Performance >> mute: aKeyOrAnArrayOfKeys [
 	| tracks |
 	tracks := #( #Kick #TpSampler #Fm2Op #PsgPlus #Chordy ).
 
-	aKeyOrAnArrayOfKeys isArray ifTrue: [
+	aKeyOrAnArrayOfKeys isArray
+		ifTrue: [
 		aKeyOrAnArrayOfKeys do: [ :i | self removeKey: i ifAbsent: [  ] ] ]
 		ifFalse: [
 			self removeKey: aKeyOrAnArrayOfKeys.
 			self performanceType class = PerfTypeMooflod ifTrue: [
-				self performanceType visualizer cleanRow: (tracks indexOf: aKeyOrAnArrayOfKeys) ] ]
+				self performanceType visualizer cleanRow:
+					(tracks indexOf: aKeyOrAnArrayOfKeys) ] ]
 ]
 
 { #category : 'muting and soloing' }
 Performance >> muteAll [
-	"remove all keys from the Performance"
+	" remove all keys from the Performance"
 
-	self doBackup.
-	self keysDo: [ :i | self removeKey: i ifAbsent: [ nil ] ]
+	| anArrayOfKeys |
+	backup := self asDictionary.
+	self keysDo: [ :i | self removeKey: i ifAbsent: [ nil ] ].
+
+
 ]
 
 { #category : 'LiveCoding - satelliteEvent' }
@@ -318,23 +345,27 @@ Performance >> performer [
 
 { #category : 'accessing' }
 Performance >> performer: aPerformer [
-	"choose a Performer for the Performance"
-	"to be safe, it clear the performance"
-
-	self muteAll.
-	performer := aPerformer.
-	self muteAll
+"choose a Performer for the Performance"
+" to be safe, it clear the performance"
+	Performance uniqueInstance muteAll.
+	performer := aPerformer. 
+	Performance uniqueInstance muteAll.
 ]
 
 { #category : 'playing' }
 Performance >> play [
-	"reset all the Sequencers"
-
+	" reset all the Sequencers"
 	self resetAllSequencers.
 
 	"just on performance at once"
-	self activeProcess ifNil: [ self performer play ]
-		ifNotNil: [ self activeProcess isTerminated ifTrue: [ self performer play ] ]
+	self activeProcess  
+		ifNil:  [ self performer play ] 
+		ifNotNil: [ (self activeProcess isTerminated )
+							 ifTrue: [ self performer play ] ]
+.
+
+
+	
 ]
 
 { #category : 'playing' }
@@ -589,7 +620,7 @@ Performance >> solo: aKeyOrAnArrayOfKeys [
 	" remove all keys from the Performance except aKey or anArrayOfKeys"
 
 	| anArrayOfKeys |
-	self doBackup.
+	backup := self asDictionary. "do the backup"
 	anArrayOfKeys := self keys.
 	aKeyOrAnArrayOfKeys isArray
 		ifTrue: [ 

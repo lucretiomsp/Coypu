@@ -7,6 +7,25 @@ Number >> asDirtArray [
 ]
 
 { #category : '*Coypu' }
+Number >> asMidiData1 [
+"Gets the first byte of the MIDI message aMessage."
+	^ ((self >> 8) & 16rFF)
+]
+
+{ #category : '*Coypu' }
+Number >> asMidiData2 [
+"Gets the second byte of the MIDI message aMessage."
+	^ (self  >> 16) & 16rFF
+]
+
+{ #category : '*Coypu' }
+Number >> asMidiStatusByte [
+"Gets the status of the MIDI message aMessage."
+
+^ (self  & 16rFF)
+]
+
+{ #category : '*Coypu' }
 Number >> bars: aNumber [
 "use it with anInteger bpm to have a cycle of the Iteration of a duration of aNumber of bars(or a fraction)"
 ^ (Delay forSeconds: ((self * aNumber) /100)) wait.

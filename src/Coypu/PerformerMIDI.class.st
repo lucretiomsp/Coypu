@@ -31,7 +31,7 @@ PerformerMIDI >> play [
 
 { #category : 'playing' }
 PerformerMIDI >> playFor: aNumberOfSteps [
-	"play the performance to SuperDIrt/SuperCollider audio engine - default freq is 132 bpm 
+	"play the performance with an external MIDI devices - default freq is 132 bpm 
 	Performance speed can be changed with p freq: a bpm"
 
 	performance bpm: 60 / (performance freq * 4).
@@ -47,7 +47,7 @@ PerformerMIDI >> playFor: aNumberOfSteps [
 						 seq playMIDIEventAt: seq noteIndex. "delta!!!!"
 						 "increment note Index"
 						 seq noteIndex: seq noteIndex + 1 ]
-						 ] ] forkAt: Processor timingPriority.
+						 ] ] forkAt: Processor highIOPriority .
 
 			 "step is incremented anyway"
 			 performance incrementTransportStep ] ] forkAt:

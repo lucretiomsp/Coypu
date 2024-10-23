@@ -139,6 +139,12 @@ PortMidi >> initialize [
 ]
 
 { #category : 'accessing - platform' }
+PortMidi >> macLibraryName [
+
+	^ FFIMacLibraryFinder findLibrary: 'libportmidi.2.0.3.dylib'
+]
+
+{ #category : 'accessing - platform' }
 PortMidi >> macModuleName [
 	"Returns the name of the PortMidi library for Mac."
 	^ 'libportmidi.2.0.3.dylib'

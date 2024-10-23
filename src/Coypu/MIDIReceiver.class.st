@@ -7,7 +7,8 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'midiIn',
-		'defaultInput'
+		'defaultInput',
+		'receivinProcess'
 	],
 	#category : 'Coypu-MIDI',
 	#package : 'Coypu',
@@ -97,24 +98,37 @@ MIDIReceiver >> readIncomingMessageSize: aNumberOfEvents [
 		fork
 ]
 
+{ #category : 'accessing' }
+MIDIReceiver >> receivinProcess [
+
+	^ receivinProcess
+]
+
+{ #category : 'accessing' }
+MIDIReceiver >> receivinProcess: aProcess [
+
+	receivinProcess := aProcess
+]
+
 { #category : 'as yet unclassified' }
 MIDIReceiver >> traceIncomingMessage [
 
-	| instance buffer proc |
+	| instance buffer  |
 	instance := PortMidiLibrary uniqueInstance.
 	buffer := PortMidiEvent new.
-	proc := [ [
+	receivinProcess := [ [
 		        instance
 			        advancedReadOn: self midiInput value
 			        inBuffer: buffer
 			        withSize: 512.
+			('I am the buffer message' , buffer message asString )traceCr.
 		        (instance portMidiGetStatusFromMessage: buffer message)
 			        traceCr.
 		        (instance portMidiGetFirstDataFromMessage: buffer message)
 			        traceCr.
 		        (instance portMidiGetSecondDataFromMessage: buffer message)
 			        traceCr ] repeat  ] fork.
-	^ proc
+	^ receivinProcess 
 ]
 
 { #category : 'as yet unclassified' }

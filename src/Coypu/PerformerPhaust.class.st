@@ -42,7 +42,7 @@ PerformerPhaust >> playFor: aNumberOfSteps [
 								 seq playPhaustEventAt: seq noteIndex. "delta!!!!"
 								 "increment note Index"
 								 seq noteIndex: seq noteIndex + 1 ]
-								 ] ] forkAt: Processor timingPriority.
+								 ] ] forkAt: Processor highIOPriority .
 
 					 "step is incremented anyway"
 					 performance incrementTransportStep ] ] forkAt:

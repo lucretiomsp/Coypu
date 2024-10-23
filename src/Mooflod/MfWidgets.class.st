@@ -24,7 +24,7 @@ MfWidgets class >> exampleDisplayingAllWidgets [
 		     max: 16;
 		     nbsteps: 12.
 	s := MfPerformanceStepsDisplayer new.
-	aPiano := ICPianoKeyboardElement new.
+	aPiano := MfPianoElement new.
 	s addSteps: 189.
 	timer := MfTimerElement new value: 18.
 	k := MfKeyboardElement new.
