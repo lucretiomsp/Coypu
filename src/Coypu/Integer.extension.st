@@ -300,6 +300,7 @@ Integer >> modulo: anInteger [
 
 { #category : '*Coypu' }
 Integer >> pattern [ 
+"to create hexBeat, use hexBeat instead"
 	| arrayOfCharacters s|
 	arrayOfCharacters := (self printStringBase: 2) asArray.
 	s := arrayOfCharacters size.
@@ -429,7 +430,7 @@ Integer >> randomTrigsWithProbability: anIntegerProbability [
 PerformanceRecorder uniqueInstance announce: announcement.
 	rytm := Array new: self.
 	r := Random new.
-	(1 to: self) do: [ :i |
+	1 to: self do: [ :i |
 		r next < (anIntegerProbability / 100)
 			ifTrue: [ rytm at: i put: 1 ]
 			ifFalse: [ rytm at: i put: 0 ] ].
