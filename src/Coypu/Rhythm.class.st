@@ -1,27 +1,28 @@
 "
-Rhythm class is to be used to generate Arrays of values in the range 0,1 to be used mainly to feed sequencers.
-Deprecated at the moment, send message to Integers to create sequencer-like patterns.
-
-
-about OSC package in use: 
-Versions Stable	1.0
-###################	
-Repository
-Metacello script
-Metacello new
-	smalltalkhubUser: 'Pharo' project: 'MetaRepoForPharo50';
-	configuration: 'OSC';
-	version: #stable;
-	load. during: 
+The Rhythm class contains an Array with allRhythmNames and convenience methods
 "
 Class {
 	#name : 'Rhythm',
-	#superclass : 'Array',
+	#superclass : 'Object',
 	#type : 'variable',
+	#classInstVars : [
+		'allRhythmNames'
+	],
 	#category : 'Coypu-Sequencers',
 	#package : 'Coypu',
 	#tag : 'Sequencers'
 }
+
+{ #category : 'accessing' }
+Rhythm class >> allRhythmNames [
+
+	"return all the possible Rhythms obtainable sending messages to integers"
+
+	| rhythmList |
+	rhythmList := #( #adowa '#aksak #banda #bomba #bossa #breves  #semibreves #claveSon #downbeats #gahu #quavers' #semiquavers #rumba #shiko #sikyi #soukous #tresillo #trueAksak #tumbao #upbeats ).
+	
+^ rhythmList 
+]
 
 { #category : 'accessing' }
 Rhythm class >> list [
@@ -43,14 +44,6 @@ Rhythm class >> random: aNumber [
 	| r |
 	r := Random new.
 	^ (1 to: aNumber) collect: [ :i | (r next ) printShowingDecimalPlaces: 2].
-]
-
-{ #category : 'compose' }
-Rhythm >> >> anArray [
-	" same as and: anArray, but rewritten to test precedence improvement"
-	"returns Sequencer with default note 60nn and default durations 1/16th and noteIndex = 0"
-	
-	^ (Sequencer with: self with: anArray with: #(0.125) with: 0 )
 ]
 
 { #category : 'compose' }
@@ -84,19 +77,6 @@ Rhythm >> notes: anArray [
 		  notes: anArray
 ]
 
-{ #category : 'accessing' }
-Rhythm >> offset: aNumber [
-	"offset the rhythm by aNumber of 'steps' wrapping it around its size"
-	| newRhythm |
-	newRhythm := Rhythm new: self size.
-	0 to: ((self size) - 1) do: [ :i | 
-			newRhythm 
-				at: ((i + aNumber) modulo: self size) 
-				put: (self at: i + 1)].
-	^ newRhythm
-
-]
-
 { #category : 'printing' }
 Rhythm >> printOn: aStream [
 
@@ -115,31 +95,4 @@ Rhythm >> randomInts: anArrayWithRangeAndMin [
 	floatsArray := numberOfGates randoms * range + min.
 	result := floatsArray collect: [ :i | i rounded ].
 	^ Sequencer new gates: self; notes: result
-]
-
-{ #category : 'random' }
-Rhythm >> randomNotesFrom: anArray [
-
-	"return an array of self size of random notes from anArray"
-
-	| numberOfGates result |
-	numberOfGates := self gates.
-	result := (1 to: numberOfGates) collect: [ :i | 
-		          anArray at: (Random new nextInt: anArray size) ].
-	^ Sequencer new notes: self; gates: result
-]
-
-{ #category : 'random' }
-Rhythm >> randomNotesFrom: anArray octaves: aNumber [
-
-	"return an array of self size of a random note from anArray + a random octave between 0 and aNumber"
-
-	| numberOfGates result |
-	numberOfGates := self gates.
-	result := (1 to: numberOfGates) collect: [ :i | 
-		          (anArray at: (Random new nextInteger: anArray size))
-		          + ((Random new nextInteger: aNumber + 1) - 1 * 12) ].
-	^ Sequencer new
-		  notes: self;
-		  gates: result
 ]
