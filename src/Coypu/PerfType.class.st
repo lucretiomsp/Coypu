@@ -40,7 +40,7 @@ PerfType >> playFor: aNumberOfSteps [
 	" reset all the Sequencers , just on performance at once"
 
 	| perf |
-	Transcript clear; show: 'PERFORMANCE DI TIPO BASICO'; open.
+
 	perf := Performance uniqueInstance.
 	perf activeProcess isTerminated ifTrue: [
 		perf performer playFor: aNumberOfSteps ].
