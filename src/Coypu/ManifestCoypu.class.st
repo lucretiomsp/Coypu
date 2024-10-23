@@ -7,6 +7,13 @@ Class {
 }
 
 { #category : 'code-critics' }
+ManifestCoypu class >> ruleBadMessageRule2V1FalsePositive [
+
+	<ignoreForCoverage>
+	^ #(#(#(#RGMethodDefinition #(#Integer #randomRhythm #false)) #'2024-10-23T10:25:47.154478+02:00') )
+]
+
+{ #category : 'code-critics' }
 ManifestCoypu class >> ruleCollectionProtocolRuleV1FalsePositive [
 	^ #(#(#(#RGMethodDefinition #(#EsugVisual #visualizeAlanSpeech #false)) #'2022-08-05T10:59:38.794301+02:00') #(#(#RGClassDefinition #(#EsugVisual)) #'2022-08-05T10:59:46.630182+02:00') )
 ]

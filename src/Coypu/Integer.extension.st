@@ -432,6 +432,16 @@ Integer >> randomNotesFrom: anArray octaves: aNumber [
 ]
 
 { #category : '*Coypu' }
+Integer >> randomRhythm [
+	"return a Sequencer with a rhythhm choosen random from allRythmNames"
+
+	| rtm |
+	rtm := Rhythm allRhythmNames atRandom.
+	^ self perform: rtm
+	
+]
+
+{ #category : '*Coypu' }
 Integer >> randomSamplesFromFolder: aStringForAFolderOfSamples [
 "return a Sequencer witha random number (between 2 and 512) of trigs and of samples fro the selected folder"
 | randIndex folder folderSize|
