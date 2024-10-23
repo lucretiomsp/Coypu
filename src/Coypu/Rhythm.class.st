@@ -3,7 +3,7 @@ The Rhythm class contains an Array with allRhythmNames and convenience methods
 "
 Class {
 	#name : 'Rhythm',
-	#superclass : 'Object',
+	#superclass : 'Array',
 	#type : 'variable',
 	#classInstVars : [
 		'allRhythmNames'
@@ -15,13 +15,14 @@ Class {
 
 { #category : 'accessing' }
 Rhythm class >> allRhythmNames [
-
 	"return all the possible Rhythms obtainable sending messages to integers"
 
 	| rhythmList |
-	rhythmList := #( #adowa '#aksak #banda #bomba #bossa #breves  #semibreves #claveSon #downbeats #gahu #quavers' #semiquavers #rumba #shiko #sikyi #soukous #tresillo #trueAksak #tumbao #upbeats ).
-	
-^ rhythmList 
+	rhythmList := #( #adowa '#aksak #banda #bomba #bossa #breves  #semibreves #claveSon #downbeats #gahu #quavers'
+	                 #semiquavers #randomTrigs #rumba #shiko #sikyi #soukous #tresillo
+	                 #trueAksak #tumbao #upbeats ).
+
+	^ rhythmList
 ]
 
 { #category : 'accessing' }

@@ -278,6 +278,47 @@ Integer >> into: anArray [
 ]
 
 { #category : '*Coypu' }
+Integer >> jungleKick [
+	" create an array of self size of jungle kick rhythm. "
+
+	| pattern announcement |
+	announcement := RhythmAnnouncement new rhythm:
+		                self asString , ' jungleRim'.
+	PerformanceRecorder uniqueInstance announce: announcement.
+	pattern := '00145145' hexBeat gates.
+
+	^ pattern
+]
+
+{ #category : '*Coypu' }
+Integer >> jungleRim [
+	" create an array of self size of jungle rim rhythm. "
+
+	| pattern announcement |
+	announcement := RhythmAnnouncement new rhythm:
+		                self asString , ' jungleRim'.
+	PerformanceRecorder uniqueInstance announce: announcement.
+	pattern := '88000000' hexBeat gates.
+
+	^ pattern
+]
+
+{ #category : '*Coypu' }
+Integer >> jungleSnare [
+	" create an array of self size of jungle snare rhythm. "
+
+	| pattern announcement |
+	announcement := RhythmAnnouncement new rhythm:
+		                self asString , ' jungleSnare'.
+	PerformanceRecorder uniqueInstance announce: announcement.
+	pattern := '00820820' hexBeat gates.
+
+	^ pattern 
+
+	"implement shifting to the left"
+]
+
+{ #category : '*Coypu' }
 Integer >> melodyFrom: aScale [
 
 	| array |
