@@ -100,6 +100,13 @@ ByteSymbol >> number: anArrayOfNumbers [
 ]
 
 { #category : '*Coypu' }
+ByteSymbol >> rhythm [ 
+
+"creates a Sequencer with 16 steps of the named rhythm"
+^ 16 perform: self
+]
+
+{ #category : '*Coypu' }
 ByteSymbol >> solo [
 	"shorthand for p solo: aKeyInperformance"
 
