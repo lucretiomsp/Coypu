@@ -287,7 +287,7 @@ Integer >> jungleKick [
 	PerformanceRecorder uniqueInstance announce: announcement.
 	pattern := '00145145' hexBeat gates.
 
-	^ pattern
+	^ pattern asSeq
 ]
 
 { #category : '*Coypu' }
@@ -300,7 +300,7 @@ Integer >> jungleRim [
 	PerformanceRecorder uniqueInstance announce: announcement.
 	pattern := '88000000' hexBeat gates.
 
-	^ pattern
+	^ pattern asSeq
 ]
 
 { #category : '*Coypu' }
@@ -313,7 +313,7 @@ Integer >> jungleSnare [
 	PerformanceRecorder uniqueInstance announce: announcement.
 	pattern := '00820820' hexBeat gates.
 
-	^ pattern 
+	^ pattern asSeq
 
 	"implement shifting to the left"
 ]
