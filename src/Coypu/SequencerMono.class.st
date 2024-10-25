@@ -81,7 +81,7 @@ SequencerMono >> playFullDirtEventAt: anIndex [
 
 	"sends a mesaage to SuperDirt with all the desired OSC arguments and values" 
 	| message dur stepDuration|
-	stepDuration := Performance uniqueInstance freq.
+	stepDuration := Performance uniqueInstance freq asFloat.
 	message := OrderedCollection new.
 	message add: '/dirt/play'.
 	dur := self durations asDirtArray  wrap: anIndex .
