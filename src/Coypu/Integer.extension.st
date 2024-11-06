@@ -283,9 +283,9 @@ Integer >> jungleKick [
 
 	| pattern announcement |
 	announcement := RhythmAnnouncement new rhythm:
-		                self asString , ' jungleRim'.
+		                self asString , ' jungleKick'.
 	PerformanceRecorder uniqueInstance announce: announcement.
-	pattern := '00145145' hexBeat gates.
+	pattern := '88000000' hexBeat gates.
 
 	^ pattern asSeq
 ]
@@ -298,7 +298,7 @@ Integer >> jungleRim [
 	announcement := RhythmAnnouncement new rhythm:
 		                self asString , ' jungleRim'.
 	PerformanceRecorder uniqueInstance announce: announcement.
-	pattern := '88000000' hexBeat gates.
+	pattern := '00145145' hexBeat gates.
 
 	^ pattern asSeq
 ]

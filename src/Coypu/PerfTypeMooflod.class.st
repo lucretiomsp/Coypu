@@ -20,6 +20,36 @@ Class {
 	#tag : 'Performance'
 }
 
+{ #category : 'examples' }
+PerfTypeMooflod class >> example [
+| code |
+code := '
+dsp := (Kick new + TpSampler new + PsgPlus new + Fm2Op new ) stereo asDsp.
+dsp init.
+dsp start.
+
+p := Performance uniqueInstance .
+p performer: PerformerPhaust new.
+p performanceType: PerfTypeMooflod new .
+p freq: 143 bpm.
+p activeDSP: dsp.
+
+p performanceType visualizer level: 4.
+
+16 downbeats  to: #Kick.
+''1 3 5 ~  ~ 6'' asDirtIndex to: #TpSampler.
+	
+16 randomNotes: #(56 67 87); to: #PsgPlus. 
+
+
+p performanceType: PerfTypeMooflod.  
+
+p performanceType visualizer level: 4.
+p playFor: 128 bars.'.
+
+^ code
+]
+
 { #category : 'adding' }
 PerfTypeMooflod >> addMasterWidgets [
 
