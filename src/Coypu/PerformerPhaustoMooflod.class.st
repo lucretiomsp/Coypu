@@ -36,7 +36,7 @@ PerformerPhaustoMooflod >> playFor: aNumberOfSteps [
 					 performance valuesDo: [ :seq |
 						 (seq gates wrap: performance transportStep) = 1
 							 ifTrue: [
-								 seq playPhaustEventAt: seq noteIndex. "delta!!!!"
+								 seq playPhaustMooflodEventAt: seq noteIndex. "delta!!!!"
 								 "increment note Index"
 								 seq noteIndex: seq noteIndex + 1 ]
 								 ] ] forkAt: Processor highIOPriority .
