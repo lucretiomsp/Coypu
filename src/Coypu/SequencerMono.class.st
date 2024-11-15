@@ -210,6 +210,33 @@ SequencerMono >> playPhaustEventAt: anIndex perfType: aPerformanceType [
 	^ true
 ]
 
+{ #category : 'LiveCoding  - SuperDirt' }
+SequencerMono >> playPhaustMooflodEventAt: anIndex [
+	"sends a message to Phausto / the DSP api must be written in a sensible way "
+
+	| dur stepDuration assignedDsp |
+	assignedDsp := Performance uniqueInstance activeDSP.
+	stepDuration := Performance uniqueInstance freq.
+
+	" please use also duration for gate !!! - future implementation"
+	dur := self durations asDirtArray wrap: anIndex.
+
+	self extraParams keysAndValuesDo: [ :k :v |
+		assignedDsp
+			setValueMooflod: (v wrap: anIndex)
+			parameter: self seqKey , k asString ].
+
+	assignedDsp
+		setValueMooflod: (self notes wrap: anIndex) midiNoteToFreq "convert note Number to Frequency"
+		parameter: self phaustNoteDestination.
+	"as in early sequencers, standard gate time is 80% of duration"
+	assignedDsp
+		trigMooflod: self phaustGateDestination
+		for: dur * stepDuration * 0.8.
+
+	^ true
+]
+
 { #category : 'highlighting' }
 SequencerMono >> reverse [
 	" reverese gates"

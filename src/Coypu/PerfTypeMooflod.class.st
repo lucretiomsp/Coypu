@@ -239,7 +239,7 @@ PerfTypeMooflod >> playFor: aNumberOfSteps [
 	"Transcript
 		show: 'PERFOMOOFLOD';
 		open."
-	perf activeProcess isTerminated  ifTrue: [ perf performer playFor: aNumberOfSteps ].
+	perf activeProcess isTerminated  ifTrue: [ PerformerPhaustoMooflod playFor: aNumberOfSteps ].
 	self displayVisualizer ifTrue: [
 		self isVisualizerOpen ifFalse: [
 			stepVisualizer addSteps: perf transportStep.
