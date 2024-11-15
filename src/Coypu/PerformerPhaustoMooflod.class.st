@@ -4,9 +4,9 @@ Special type of Performer deseigned ad hoc for the Mooflod experimental Performa
 Class {
 	#name : 'PerformerPhaustoMooflod',
 	#superclass : 'Performer',
-	#category : 'Coypu-Performance',
+	#category : 'Coypu-Performer',
 	#package : 'Coypu',
-	#tag : 'Performance'
+	#tag : 'Performer'
 }
 
 { #category : 'playing' }

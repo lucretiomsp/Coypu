@@ -233,13 +233,14 @@ PerfTypeMooflod >> playFor: aNumberOfSteps [
 
 	"just on performance at once"
 
-	| perf bpm |
+	| perf bpm performer |
 	bpm := 10.
 	perf := Performance uniqueInstance.
+	performer := PerformerPhaustoMooflod new.
 	"Transcript
 		show: 'PERFOMOOFLOD';
 		open."
-	perf activeProcess isTerminated  ifTrue: [ PerformerPhaustoMooflod playFor: aNumberOfSteps ].
+	perf activeProcess isTerminated  ifTrue: [ performer playFor: aNumberOfSteps ].
 	self displayVisualizer ifTrue: [
 		self isVisualizerOpen ifFalse: [
 			stepVisualizer addSteps: perf transportStep.
