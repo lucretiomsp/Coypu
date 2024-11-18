@@ -222,10 +222,14 @@ MfKeyboardElement >> openInMooflod [
 { #category : 'as yet unclassified' }
 MfKeyboardElement >> receiveKeyEventsFromLastPlayground [
 
-StPlayground allSubInstances last millerList millerListPresenter pages first text eventHandler
-    whenKeyDownDo: [ :event | BlSpace simulateKeyDownOn: self key: event key];
-    whenKeyUpDo: [ :event | BlSpace simulateKeyUpOn: self key: event key ].
-
+	| eventHandler |
+	eventHandler := StPlaygroundPagePresenter allSubInstances last text
+		                eventHandler.
+	eventHandler
+		whenKeyDownDo: [ :event |
+			BlSpace simulateKeyDownOn: self key: event key ];
+		whenKeyUpDo: [ :event |
+			BlSpace simulateKeyUpOn: self key: event key ]
 ]
 
 { #category : 'geometry' }
