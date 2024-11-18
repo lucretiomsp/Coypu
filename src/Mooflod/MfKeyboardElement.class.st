@@ -49,23 +49,28 @@ MfKeyboardElement >> illuminateKey: aButton [
 
 	| illumination innerText |
 	"illuminate the pressed Key for 10 milliseconds"
-	innerText := aButton children first text.
+	innerText := aButton children first.
 	illumination := [
-	                aButton background: Color yellow. 
-	
+	                aButton background: Color yellow.
 
-		
-	aButton zIndex: 100.
+
+
+	                aButton zIndex: 100.
 	                aButton transformDo: [ :builder |
 		                builder scaleBy: 2.2 ].
-	               
+	                innerText transformDo: [ :builder |
+		                builder scaleBy: 2.2 ].
+
+
 	                (Delay forMilliseconds: 200) wait.
-	               
-	aButton transformDo: [ :builder |
-		                builder scaleBy: 1.0. ].
-	aButton zIndex: 1.
-	
+
+	                aButton transformDo: [ :builder |
+		                builder scaleBy: 1.0 ].
+	innerText transformDo: [ :builder | builder scaleBy: 1 ].
+	                aButton zIndex: 1.
+
 	                aButton background: Color black ].
+	
 	^ illumination
 ]
 
