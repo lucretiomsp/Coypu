@@ -47,17 +47,24 @@ MfKeyboardElement >> addButton: anElement key: aKey [
 { #category : 'as yet unclassified' }
 MfKeyboardElement >> illuminateKey: aButton [
 
-	| illumination |
+	| illumination innerText |
 	"illuminate the pressed Key for 10 milliseconds"
+	innerText := aButton children first text.
 	illumination := [
-	                aButton background: Color yellow. "veryVeryLightGray"
+	                aButton background: Color yellow. 
+	
+
+		
+	aButton zIndex: 100.
 	                aButton transformDo: [ :builder |
 		                builder scaleBy: 2.2 ].
-	                'premuto' traceCr.
+	               
 	                (Delay forMilliseconds: 200) wait.
-	                'alzato' traceCr.
+	               
 	aButton transformDo: [ :builder |
-		                builder scaleBy: 1.0 ].
+		                builder scaleBy: 1.0. ].
+	aButton zIndex: 1.
+	
 	                aButton background: Color black ].
 	^ illumination
 ]
@@ -269,9 +276,9 @@ MfKeyboardElement >> simpleKey: aString [
 	label := BlTextElement new.
 	label tightMeasurement.
 	label clipChildren: false.
-	label text: (aString asRopedText fontSize: 16).
+	label text: (aString asRopedText fontSize: 18).
 	label text  attributes:
-		{ (BlTextForegroundAttribute paint: Color white) }.
+		{ (BlTextForegroundAttribute paint: Color red) }.
 	label constraintsDo: [ :c |
 		c frame horizontal alignCenter.
 		c frame vertical alignCenter ].
@@ -301,7 +308,7 @@ MfKeyboardElement >> simpleSmallKey: aString [
 	label clipChildren: false.
 	label text: (aString asRopedText fontSize: 11).
 		label text attributes:
-		{ (BlTextForegroundAttribute paint: Color white) }.
+		{ (BlTextForegroundAttribute paint: Color red) }.
 	label constraintsDo: [ :c |
 		c frame horizontal alignCenter.
 		c frame vertical alignCenter ].
@@ -326,7 +333,7 @@ MfKeyboardElement >> wideKey: aString span: aNumber [
 	label clipChildren: false.
 	label text: (aString asRopedText fontSize: 13).
 		label text attributes:
-		{ (BlTextForegroundAttribute paint: Color white) }.
+		{ (BlTextForegroundAttribute paint: Color red) }.
 	label constraintsDo: [ :c |
 		c frame horizontal alignCenter.
 		c frame vertical alignCenter ].
@@ -346,7 +353,7 @@ MfKeyboardElement >> wideSmallKey: aString span: aNumber [
 	label clipChildren: false.
 	label text: (aString asRopedText fontSize: 11).
 		label text attributes:
-		{ (BlTextForegroundAttribute paint: Color white) }.
+		{ (BlTextForegroundAttribute paint: Color red) }.
 	label constraintsDo: [ :c |
 		c frame horizontal alignCenter.
 		c frame vertical alignCenter ].
