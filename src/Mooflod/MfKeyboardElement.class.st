@@ -51,10 +51,13 @@ MfKeyboardElement >> illuminateKey: aButton [
 	"illuminate the pressed Key for 10 milliseconds"
 	illumination := [
 	                aButton background: Color yellow. "veryVeryLightGray"
-aButton transformDo: [ :builder | builder scaleBy: 2.2 ].
+	                aButton transformDo: [ :builder |
+		                builder scaleBy: 2.2 ].
 	                'premuto' traceCr.
 	                (Delay forMilliseconds: 200) wait.
 	                'alzato' traceCr.
+	aButton transformDo: [ :builder |
+		                builder scaleBy: 1.0 ].
 	                aButton background: Color black ].
 	^ illumination
 ]
