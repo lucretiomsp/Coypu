@@ -44,6 +44,21 @@ MfKeyboardElement >> addButton: anElement key: aKey [
 	self addChild: anElement
 ]
 
+{ #category : 'as yet unclassified' }
+MfKeyboardElement >> illuminateKey: aButton [
+
+	| illumination |
+	"illuminate the pressed Key for 10 milliseconds"
+	illumination := [
+	                aButton background: Color yellow. "veryVeryLightGray"
+aButton transformDo: [ :builder | builder scaleBy: 2.2 ].
+	                'premuto' traceCr.
+	                (Delay forMilliseconds: 200) wait.
+	                'alzato' traceCr.
+	                aButton background: Color black ].
+	^ illumination
+]
+
 { #category : 'initialization' }
 MfKeyboardElement >> initialize [
 
@@ -82,20 +97,19 @@ MfKeyboardElement >> initializeBottomRow [
 MfKeyboardElement >> initializeEventListeners [
 	"when pressing a key, changes the color of it and notify a down/unknown if the key is not in the dico"
 
-	self addEventHandlerOn: BlKeyDownEvent do: [ :anEvent |
+	self
+		addEventHandlerOn: BlKeyDownEvent
+		do: [ :anEvent | "doing the same when keyup by reset the key color and sending up notification""self addEventHandlerOn: BlKeyUpEvent do: [ :anEvent |
 		keymap
 			at: anEvent key
-			ifPresent: [ :aButton | aButton background: Color veryVeryLightGray ]
-			ifAbsent: [
-				"self inform: 'Unknown: ' , anEvent key asString."
-				NonInteractiveTranscript stdout
-					show: 'Unknown: ' , anEvent key asString;
-					cr ] ].
-	"doing the same when keyup by reset the key color and sending up notification"
-	self addEventHandlerOn: BlKeyUpEvent do: [ :anEvent |
-		keymap
-			at: anEvent key
-			ifPresent: [ :aButton | aButton background: Color black ] ]
+			ifPresent: [ :aButton | aButton background: Color black ] ]"
+			keymap
+				at: anEvent key
+				ifPresent: [ :aButton | (self illuminateKey: aButton)fork ]
+				ifAbsent: [ "self inform: 'Unknown: ' , anEvent key asString."
+					NonInteractiveTranscript stdout
+						show: 'Unknown: ' , anEvent key asString;
+						cr ] ]
 ]
 
 { #category : 'initialization' }
