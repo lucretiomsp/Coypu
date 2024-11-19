@@ -87,48 +87,37 @@ PerfTypeMooflod >> addMasterWidgets [
 { #category : 'adding' }
 PerfTypeMooflod >> addSequencer: aSequencer to: aSymbol [
 
-	|isInKeys perf |
+	| isInKeys perf |
 	perf := Performance uniqueInstance.
 	isInKeys := false.
 	perf keysDo: [ :k |
 		k = aSymbol ifTrue: [
-			(self visualizer patternArray at: k) forSequencer: aSequencer .
+			(self visualizer patternArray at: k) forSequencer: aSequencer.
 			isInKeys := true.
 			(self visualizer squareArray at: k) changeAnimationTime:
 				Performance uniqueInstance freq * 4 ] ].
-
 	isInKeys ifFalse: [
 		self visualizer addInstrument: aSymbol.
-		"aSymbol = 'ht' ifTrue: [ self halt ]."
 		(self visualizer patternArray associationAt: aSymbol) value
 			forSequencer: aSequencer.
 		(self visualizer squareArray associationAt: aSymbol) value
 			initializeAnimation: perf freq * 4 ].
 	self visualizer level = 5 ifTrue: [ self addMasterWidgets ].
-
-	" common part"
 	aSequencer noteIndex: 1.
 	aSequencer seqKey: aSymbol asString.
-	"For SuperDirt"
 	aSequencer dirtMessage at: '_id' put: aSequencer seqKey.
 	aSequencer dirtMessage at: 'orbit' put: aSequencer orbit.
-
 	(aSequencer dirtMessage includesKey: 's')
 		ifFalse: [
 		aSequencer dirtMessage at: 's' put: aSymbol asString asDirtArray ]
 		ifTrue: [  ].
-
-	"For Polyphony"
 	aSequencer seqChords
 		ifNil: [ Performance uniqueInstance at: aSymbol put: aSequencer ]
 		ifNotNil: [
 		Performance uniqueInstance at: aSymbol put: aSequencer asPolySeq ].
-
-
-	"For PerformerPhaust"
-	perf performer class = PerformerPhaust ifTrue: [
-		aSequencer phaustGateDestination: aSequencer seqKey , 'Gate'.
-		aSequencer phaustNoteDestination: aSequencer seqKey , 'Note' ]
+	perf performer class = PerformerPhaust ifFalse: [ ^ self ].
+	aSequencer phaustGateDestination: aSequencer seqKey , 'Gate'.
+	aSequencer phaustNoteDestination: aSequencer seqKey , 'Note'
 ]
 
 { #category : 'accessing' }
@@ -198,7 +187,7 @@ PerfTypeMooflod >> levelOfDetail: anInteger [
 PerfTypeMooflod >> openVisualizers [
 
 	visualizerSpace := BlSpace new extent:
-		         World extent x * (5 / 12) @ World extent y.
+		                   World extent x * (5 / 15) @ World extent y.
 	visualizerSpace useMorphicHost.
 	stepVisualizer transformDo: [ :q | q translateBy: 100 @ 0 ].
 	visualizer transformDo: [ :q | q translateBy: 0 @ 60 ].
@@ -209,8 +198,7 @@ PerfTypeMooflod >> openVisualizers [
 	visualizerSpace position: World extent x * (10 / 12) @ 20.
 	visualizerSpace toTheme: MfMooflodTheme new.
 	visualizerSpace root background: (Color fromHexString: '#313339').
-	visualizerSpace show.
-
+	visualizerSpace show
 ]
 
 { #category : 'accessing' }
