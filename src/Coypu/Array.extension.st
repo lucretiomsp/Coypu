@@ -228,6 +228,34 @@ Array >> isSequencer [
 ]
 
 { #category : '*Coypu' }
+Array >> minDurationBetweenGates [
+
+	| onesIndices minDistance |
+	"this method finds the minimum duration distance in steps between two gates (1s) in an array""Find all the indices where the value is 1"
+ "Find all the indices where the value is 1"
+   
+    
+ 
+    
+    "Find all the indices where the value is 1"
+    onesIndices := (1 to: self size) select: [ :i | (self at: i) = 1 ].
+    
+    "If there are fewer than two ones, return 0 since no distance can be calculated"
+    onesIndices size < 2 ifTrue: [ ^ 0 ].
+    
+    "Initialize minDistance with a large number"
+    minDistance := self size.
+    
+    "Calculate the minimum distance between consecutive ones"
+    1 to: onesIndices size - 1 do: [ :i |
+        minDistance := minDistance min: (onesIndices at: i + 1) - (onesIndices at: i).
+    ].
+    
+    ^ minDistance
+
+]
+
+{ #category : '*Coypu' }
 Array >> numberOfGates [ 
 "return number of elements in the array that are greater than 0"
 | result size |

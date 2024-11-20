@@ -216,7 +216,7 @@ SequencerMono >> playPhaustMooflodEventAt: anIndex [
 
 	| dur stepDuration assignedDsp |
 	assignedDsp := Performance uniqueInstance activeDSP.
-	stepDuration := Performance uniqueInstance freq.
+	stepDuration := Performance uniqueInstance freq asFloat.
 
 	" please use also duration for gate !!! - future implementation"
 	dur := self durations asDirtArray wrap: anIndex.
@@ -227,13 +227,13 @@ SequencerMono >> playPhaustMooflodEventAt: anIndex [
 			parameter: self seqKey , k asString ].
 
 	assignedDsp
-		setValueMooflod: (self notes wrap: anIndex) midiNoteToFreq "convert note Number to Frequency"
-		parameter: self phaustNoteDestination.
+		setValueMooflod: (self notes wrap: anIndex) midiNoteToFreq
+		parameter: self phaustNoteDestination. "convert note Number to Frequency"
 	"as in early sequencers, standard gate time is 80% of duration"
 	assignedDsp
 		trigMooflod: self phaustGateDestination
 		for: dur * stepDuration * 0.8.
-
+(dur * stepDuration * 0.8) traceCr.
 	^ true
 ]
 

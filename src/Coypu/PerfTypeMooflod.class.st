@@ -248,7 +248,7 @@ PerfTypeMooflod >> playPhaustEventAt: anIndex forSequencer: aSequencer [
 	| dur stepDuration assignedDsp perf |
 	perf := Performance uniqueInstance.
 	assignedDsp := perf activeDSP.
-	stepDuration := perf freq.
+	stepDuration := perf freq asFloat.
 
 	" please use also duration for gate !!! - future implementation"
 	dur := aSequencer durations asDirtArray wrap: anIndex.
