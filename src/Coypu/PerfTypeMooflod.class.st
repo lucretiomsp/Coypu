@@ -92,14 +92,16 @@ PerfTypeMooflod >> addSequencer: aSequencer to: aSymbol [
 	isInKeys := false.
 	perf keysDo: [ :k |
 		k = aSymbol ifTrue: [
-			(self visualizer patternArray at: k) forSequencer: aSequencer.
+			self visualizer level > 1 ifTrue: [  
+			(self visualizer patternArray at: k) forSequencer: aSequencer].
 			isInKeys := true.
 			(self visualizer squareArray at: k) changeAnimationTime:
 				Performance uniqueInstance freq * 4 ] ].
 	isInKeys ifFalse: [
 		self visualizer addInstrument: aSymbol.
+		self visualizer level > 1 ifTrue: [  
 		(self visualizer patternArray associationAt: aSymbol) value
-			forSequencer: aSequencer.
+			forSequencer: aSequencer].
 		(self visualizer squareArray associationAt: aSymbol) value
 			initializeAnimation: perf freq * 4 ].
 	self visualizer level = 5 ifTrue: [ self addMasterWidgets ].
