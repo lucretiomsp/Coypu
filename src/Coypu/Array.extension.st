@@ -152,8 +152,10 @@ Array >> asSeq [
 		       notes: numberOfNotes;
 		       noteIndex: 1;
 		       midiChannel: 1.
-	(seq numberOfTrigs > 0) ifTrue: [dur := self size / seq numberOfTrigs].
-	seq durations: dur asDirtArray.
+	seq numberOfTrigs > 0 ifTrue: [ dur := self minDurationBetweenGates ].
+	self minDurationBetweenGates traceCr.
+	self traceCr.
+	seq durations: dur.
 	^ seq
 ]
 

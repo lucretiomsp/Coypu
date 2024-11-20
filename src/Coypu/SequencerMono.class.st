@@ -232,8 +232,9 @@ SequencerMono >> playPhaustMooflodEventAt: anIndex [
 	"as in early sequencers, standard gate time is 80% of duration"
 	assignedDsp
 		trigMooflod: self phaustGateDestination
-		for: dur * stepDuration * 0.8.
-(dur * stepDuration * 0.8) traceCr.
+		for: dur * stepDuration * 0.5.
+	
+
 	^ true
 ]
 
