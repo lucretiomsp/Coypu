@@ -44,6 +44,36 @@ MfKeyboardElement >> addButton: anElement key: aKey [
 	self addChild: anElement
 ]
 
+{ #category : 'as yet unclassified' }
+MfKeyboardElement >> illuminateKey: aButton [
+
+	| illumination innerText |
+	"illuminate the pressed Key for 10 milliseconds"
+	innerText := aButton children first.
+	illumination := [
+	                aButton background: Color yellow.
+
+
+
+	                aButton zIndex: 100.
+	                aButton transformDo: [ :builder |
+		                builder scaleBy: 2.2 ].
+	                innerText transformDo: [ :builder |
+		                builder scaleBy: 2.2 ].
+
+
+	                (Delay forMilliseconds: 200) wait.
+
+	                aButton transformDo: [ :builder |
+		                builder scaleBy: 1.0 ].
+	innerText transformDo: [ :builder | builder scaleBy: 1 ].
+	                aButton zIndex: 1.
+
+	                aButton background: Color black ].
+	
+	^ illumination
+]
+
 { #category : 'initialization' }
 MfKeyboardElement >> initialize [
 
@@ -82,20 +112,19 @@ MfKeyboardElement >> initializeBottomRow [
 MfKeyboardElement >> initializeEventListeners [
 	"when pressing a key, changes the color of it and notify a down/unknown if the key is not in the dico"
 
-	self addEventHandlerOn: BlKeyDownEvent do: [ :anEvent |
+	self
+		addEventHandlerOn: BlKeyDownEvent
+		do: [ :anEvent | "doing the same when keyup by reset the key color and sending up notification""self addEventHandlerOn: BlKeyUpEvent do: [ :anEvent |
 		keymap
 			at: anEvent key
-			ifPresent: [ :aButton | aButton background: Color veryVeryLightGray ]
-			ifAbsent: [
-				"self inform: 'Unknown: ' , anEvent key asString."
-				NonInteractiveTranscript stdout
-					show: 'Unknown: ' , anEvent key asString;
-					cr ] ].
-	"doing the same when keyup by reset the key color and sending up notification"
-	self addEventHandlerOn: BlKeyUpEvent do: [ :anEvent |
-		keymap
-			at: anEvent key
-			ifPresent: [ :aButton | aButton background: Color black ] ]
+			ifPresent: [ :aButton | aButton background: Color black ] ]"
+			keymap
+				at: anEvent key
+				ifPresent: [ :aButton | (self illuminateKey: aButton)fork ]
+				ifAbsent: [ "self inform: 'Unknown: ' , anEvent key asString."
+					NonInteractiveTranscript stdout
+						show: 'Unknown: ' , anEvent key asString;
+						cr ] ]
 ]
 
 { #category : 'initialization' }
@@ -207,6 +236,7 @@ MfKeyboardElement >> openInMooflod [
 	| space |
 	space := BlSpace new extent: World extent x / 6 @ World extent y.
 	space useMorphicHost.
+	space root background: Color black.
 	space toTheme: MfMooflodTheme new.
 
 	self transformDo: [ :c |
@@ -222,10 +252,14 @@ MfKeyboardElement >> openInMooflod [
 { #category : 'as yet unclassified' }
 MfKeyboardElement >> receiveKeyEventsFromLastPlayground [
 
-StPlayground allSubInstances last millerList millerListPresenter pages first text eventHandler
-    whenKeyDownDo: [ :event | BlSpace simulateKeyDownOn: self key: event key];
-    whenKeyUpDo: [ :event | BlSpace simulateKeyUpOn: self key: event key ].
-
+	| eventHandler |
+	eventHandler := StPlaygroundPagePresenter allSubInstances last text
+		                eventHandler.
+	eventHandler
+		whenKeyDownDo: [ :event |
+			BlSpace simulateKeyDownOn: self key: event key ];
+		whenKeyUpDo: [ :event |
+			BlSpace simulateKeyUpOn: self key: event key ]
 ]
 
 { #category : 'geometry' }
@@ -248,9 +282,9 @@ MfKeyboardElement >> simpleKey: aString [
 	label := BlTextElement new.
 	label tightMeasurement.
 	label clipChildren: false.
-	label text: (aString asRopedText fontSize: 16).
+	label text: (aString asRopedText fontSize: 18).
 	label text  attributes:
-		{ (BlTextForegroundAttribute paint: Color white) }.
+		{ (BlTextForegroundAttribute paint: Color red) }.
 	label constraintsDo: [ :c |
 		c frame horizontal alignCenter.
 		c frame vertical alignCenter ].
@@ -280,7 +314,7 @@ MfKeyboardElement >> simpleSmallKey: aString [
 	label clipChildren: false.
 	label text: (aString asRopedText fontSize: 11).
 		label text attributes:
-		{ (BlTextForegroundAttribute paint: Color white) }.
+		{ (BlTextForegroundAttribute paint: Color red) }.
 	label constraintsDo: [ :c |
 		c frame horizontal alignCenter.
 		c frame vertical alignCenter ].
@@ -305,7 +339,7 @@ MfKeyboardElement >> wideKey: aString span: aNumber [
 	label clipChildren: false.
 	label text: (aString asRopedText fontSize: 13).
 		label text attributes:
-		{ (BlTextForegroundAttribute paint: Color white) }.
+		{ (BlTextForegroundAttribute paint: Color red) }.
 	label constraintsDo: [ :c |
 		c frame horizontal alignCenter.
 		c frame vertical alignCenter ].
@@ -325,7 +359,7 @@ MfKeyboardElement >> wideSmallKey: aString span: aNumber [
 	label clipChildren: false.
 	label text: (aString asRopedText fontSize: 11).
 		label text attributes:
-		{ (BlTextForegroundAttribute paint: Color white) }.
+		{ (BlTextForegroundAttribute paint: Color red) }.
 	label constraintsDo: [ :c |
 		c frame horizontal alignCenter.
 		c frame vertical alignCenter ].

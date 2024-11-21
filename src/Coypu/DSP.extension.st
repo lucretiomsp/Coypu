@@ -12,7 +12,7 @@ DSP >> setValueMooflod: aFloat parameter: aParamAsString [
 			indexInteger ~= -1
 				ifTrue: [
 					self setValue: aFloat parameterIndex: indexInteger.
-					Performance uniqueInstance visualizer sliderArray
+					Performance uniqueInstance performanceType visualizer sliderArray
 						at: aParamAsString
 						ifPresent: [ :slider | slider setValue: aFloat ] ]
 				ifFalse: [ ^ self class invalidException ] ]

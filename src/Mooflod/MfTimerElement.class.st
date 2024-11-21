@@ -1,3 +1,8 @@
+"
+MFTimerElement is actually used as a note visualizer in the Mooflod.
+name should maybe changed.
+
+"
 Class {
 	#name : 'MfTimerElement',
 	#superclass : 'ToElement',

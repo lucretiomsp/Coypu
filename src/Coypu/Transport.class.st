@@ -38,6 +38,14 @@ Transport >> isRunning: aBoolean [
 	isRunning := aBoolean
 ]
 
+{ #category : 'playing' }
+Transport >> playFor: aNumberOfSteps [ 
+
+| p |
+p := Performance uniqueInstance .
+[ aNumberOfSteps timesRepeat: [(Delay forSeconds: p freq) wait. self increment ]] forkAt: Processor timingPriority - 1.
+]
+
 { #category : 'accessing' }
 Transport >> position [
 

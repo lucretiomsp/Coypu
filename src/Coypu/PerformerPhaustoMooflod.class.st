@@ -1,11 +1,8 @@
 "
-Performer for Phausto. 
-Phausto and its libraries must be loaded into your image.
-Find Phausto here:
-https://github.com/lucretiomsp/phausto
+Special type of Performer deseigned ad hoc for the Mooflod experimental Performance
 "
 Class {
-	#name : 'PerformerPhaust',
+	#name : 'PerformerPhaustoMooflod',
 	#superclass : 'Performer',
 	#category : 'Coypu-Performer',
 	#package : 'Coypu',
@@ -13,14 +10,14 @@ Class {
 }
 
 { #category : 'playing' }
-PerformerPhaust >> play [ 
+PerformerPhaustoMooflod >> play [ 
 	"play a Phaust performance for 4 days at 120 bpm"
 
 	self playFor: fourDaysAt120BPM 
 ]
 
 { #category : 'playing' }
-PerformerPhaust >> playFor: aNumberOfSteps [
+PerformerPhaustoMooflod >> playFor: aNumberOfSteps [
 	"play the performance to SuperDIrt/SuperCollider audio engine - default freq is 132 bpm 
 	Performance speed can be changed with p freq: a bpm"
 
@@ -34,12 +31,14 @@ PerformerPhaust >> playFor: aNumberOfSteps [
 			performance activeProcess: ([
 				 aNumberOfSteps timesRepeat: [
 					 (Delay forSeconds: performance freq) wait.
-					 [ "sequencers scan"
-						 performance valuesDo: [ :seq |
-							 (seq gates wrap: performance transportStep) = 1 ifTrue: [
-								 seq playPhaustEventAt: seq noteIndex. "delta!!!!"
-								 "increment note Index"
-								 seq noteIndex: seq noteIndex + 1 ] ] ] forkAt:
+					
+					 "sequencers scan"
+					 [
+					 performance valuesDo: [ :seq |
+						 (seq gates wrap: performance transportStep) = 1 ifTrue: [
+							 seq playPhaustMooflodEventAt: seq noteIndex. "delta!!!!"
+							 "increment note Index"
+							 seq noteIndex: seq noteIndex + 1 ] ] ] forkAt:
 						 Processor highIOPriority.
 
 					 "step is incremented anyway"

@@ -81,7 +81,7 @@ SequencerMono >> playFullDirtEventAt: anIndex [
 
 	"sends a mesaage to SuperDirt with all the desired OSC arguments and values" 
 	| message dur stepDuration|
-	stepDuration := Performance uniqueInstance freq.
+	stepDuration := Performance uniqueInstance freq asFloat.
 	message := OrderedCollection new.
 	message add: '/dirt/play'.
 	dur := self durations asDirtArray  wrap: anIndex .
@@ -206,6 +206,34 @@ SequencerMono >> playPhaustEventAt: anIndex perfType: aPerformanceType [
 	assignedDsp
 		trig: self phaustGateDestination
 		for: dur * stepDuration * 0.8.
+
+	^ true
+]
+
+{ #category : 'LiveCoding  - SuperDirt' }
+SequencerMono >> playPhaustMooflodEventAt: anIndex [
+	"sends a message to Phausto / the DSP api must be written in a sensible way "
+
+	| dur stepDuration assignedDsp |
+	assignedDsp := Performance uniqueInstance activeDSP.
+	stepDuration := Performance uniqueInstance freq asFloat.
+
+	" please use also duration for gate !!! - future implementation"
+	dur := self durations asDirtArray wrap: anIndex.
+
+	self extraParams keysAndValuesDo: [ :k :v |
+		assignedDsp
+			setValueMooflod: (v wrap: anIndex)
+			parameter: self seqKey , k asString ].
+
+	assignedDsp
+		setValueMooflod: (self notes wrap: anIndex) midiNoteToFreq
+		parameter: self phaustNoteDestination. "convert note Number to Frequency"
+	"as in early sequencers, standard gate time is 80% of duration"
+	assignedDsp
+		trigMooflod: self phaustGateDestination
+		for: dur * stepDuration * 0.5.
+	
 
 	^ true
 ]

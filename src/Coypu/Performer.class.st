@@ -10,7 +10,8 @@ Class {
 	#instVars : [
 		'performance',
 		'freq',
-		'fourDaysAt120BPM'
+		'fourDaysAt120BPM',
+		'transport'
 	],
 	#category : 'Coypu-Performer',
 	#package : 'Coypu',
@@ -22,7 +23,8 @@ Performer >> initialize [
 	super initialize.
 	performance := Performance uniqueInstance.
 	freq := performance freq.
-	fourDaysAt120BPM := 4 days asMilliSeconds / ((60/ 120) /4)
+	fourDaysAt120BPM := 4 days asMilliSeconds / ((60/ 120) /4).
+	transport := Transport new.
 ]
 
 { #category : 'playing' }

@@ -510,7 +510,7 @@ Sequencer >> initialize [
 	isPoly := false.
 	dirtMessage := Dictionary new.
    transportStep := 0.
-	dirtMessage at: 'cps' put: Performance uniqueInstance freq * 4.
+	dirtMessage at: 'cps' put: (Performance uniqueInstance freq * 4) asFloat.
 	"superdirt orbits are 12"
 	self class orbit: self class orbit + 1.
 	orbit := self class orbit.

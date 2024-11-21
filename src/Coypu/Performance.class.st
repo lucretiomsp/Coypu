@@ -616,23 +616,32 @@ Performance >> restore [
 
 { #category : 'muting and soloing' }
 Performance >> solo: aKeyOrAnArrayOfKeys [
-
 	" remove all keys from the Performance except aKey or anArrayOfKeys"
 
-	| anArrayOfKeys |
+	| anArrayOfKeys tracks |
+	tracks := #( #Kick #TpSampler #Fm2Op #PsgPlus #Chordy ).
 	backup := self asDictionary. "do the backup"
+
 	anArrayOfKeys := self keys.
 	aKeyOrAnArrayOfKeys isArray
-		ifTrue: [ 
-			self keysAndValuesRemove: [ :keys :values | 
-				(aKeyOrAnArrayOfKeys  includes: keys) not ] ]
-		ifFalse: [ 
-			self keysAndValuesRemove: [ :keys :values | "
-	[canvas isNotNil ifTrue: [ 
-		anArrayOfKeys do: [ :i | (i ~= aKey) ifTrue: [  
-			canvas removeShape: (rsGroupDictionary at: i) asShape ] ]] ] fork
-" 
-				keys ~= aKeyOrAnArrayOfKeys ] ]
+		ifTrue: [
+			self keysAndValuesRemove: [ :keys :values |
+				(aKeyOrAnArrayOfKeys includes: keys) not ] ]
+		ifFalse: [
+			self keysAndValuesRemove: [ :keys :values |
+				keys ~= aKeyOrAnArrayOfKeys ] ].
+	self performanceType class = PerfTypeMooflod ifTrue: [
+		self keysDo: [ :k | 
+    | indexOfK |
+    indexOfK := tracks indexOf: k.
+    tracks withIndexDo: [ :track :index | 
+        index ~= indexOfK ifTrue: [ 
+            self performanceType visualizer cleanRow: index 
+        ] 
+    ] 
+]
+		
+		]
 ]
 
 { #category : 'accessing' }
