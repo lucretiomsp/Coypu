@@ -9,8 +9,9 @@ Class {
 { #category : 'tests' }
 ParsingTests >> testCharacterMultiplication [
 
-
 	self assert: 'a' * 3 equals: 'a a a'.
+	self assert: '30 46' * 2 equals: '30 46 30 46'.
+	self assert: '38 ~' * 3 equals: '38 ~ 38 ~ 38 ~'
 ]
 
 { #category : 'tests' }
