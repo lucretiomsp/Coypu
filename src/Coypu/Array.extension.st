@@ -144,9 +144,12 @@ rhythm := Rhythm new: (self size).
 Array >> asSeq [
 	"returns Sequencer with default note 60nn and default durations = self size / numberOfTrigs and noteIndex = 0"
 
-	| numberOfNotes dur seq |
+	| numberOfNotes dur seq gts |
 	numberOfNotes := self class new: self trigs withAll: 60.
+	"all notes last 1 step by default"
 	dur := 1.
+	"with an 80% gate Time"
+	gts := 0.8.
 	seq := SequencerMono new
 		       gates: self;
 		       notes: numberOfNotes;
@@ -156,6 +159,7 @@ Array >> asSeq [
 	self minDurationBetweenGates traceCr.
 	self traceCr.
 	seq durations: dur.
+	seq gateTimes: gts.
 	^ seq
 ]
 

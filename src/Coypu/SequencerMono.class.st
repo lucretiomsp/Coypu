@@ -173,12 +173,12 @@ SequencerMono >> playPhaustEventAt: anIndex [
 			parameter: self seqKey , k asString ].
 
 	assignedDsp
-		setValue: (self notes wrap: anIndex) midiNoteToFreq "convert note Number to Frequency"
-		parameter: self phaustNoteDestination.
+		setValue: (self notes wrap: anIndex) midiNoteToFreq
+		parameter: self phaustNoteDestination. "convert note Number to Frequency"
 	"as in early sequencers, standard gate time is 80% of duration"
 	assignedDsp
 		trig: self phaustGateDestination
-		for: dur * stepDuration * 0.8.
+		for: dur * stepDuration * (self gateTimes wrap: anIndex).
 
 	^ true
 ]

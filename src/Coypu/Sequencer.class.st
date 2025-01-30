@@ -30,7 +30,8 @@ Class {
 		'phaustGateDestination',
 		'phaustNoteDestination',
 		'kymaMessage',
-		'transportStep'
+		'transportStep',
+		'gateTimes'
 	],
 	#classInstVars : [
 		'orbit'
@@ -429,6 +430,19 @@ Sequencer >> gain: aFloatOrAnArray [
 	self dirtMessage 
 		at: 'gain' 
 		put: aFloatOrAnArray asDirtArray
+]
+
+{ #category : 'accessing' }
+Sequencer >> gateTimes [
+
+	^ gateTimes
+]
+
+{ #category : 'modifying' }
+Sequencer >> gateTimes: anArrayOrANumber [
+	"a gate time value of 0.8 sets the duration to just under full value, i.e. plays notes that are connected sounding. A value of 1 produces a legato effect, a 0.5 produce a statccato sound"
+
+	gateTimes := anArrayOrANumber asDirtArray
 ]
 
 { #category : 'accessing' }
