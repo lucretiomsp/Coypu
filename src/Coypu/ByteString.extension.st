@@ -450,14 +450,28 @@ ByteString >> onceAtSpeed: aFloat withNote: aNote [
 
 { #category : '*Coypu' }
 ByteString >> parseChord [
-"chords can be xpressed both with letteres or with MIDI NoteNumbers"
-	|root chord notes|
-	root := (self findBetweenSubstrings: '-') at: 1.
-	chord :=(self findBetweenSubstrings: '-') at: 2.
+	"chords can be xpressed both with letteres or with MIDI NoteNumbers"
+
+	| root chord notes |
+	root := 0.
+	chord := self."if the root is specified"
+	(self includes: $-) ifTrue: [
+		root := (self findBetweenSubstrings: '-') at: 1.
+		chord := (self findBetweenSubstrings: '-') at: 2 ].
 	notes := Array new: 11.
-	notes := #('c' 'c#' 'd' 'd#' 'e' 'f' 'f#' 'g#' 'a' 'a#' 'b').
-	root asInteger ifNotNil: [ ^ (Chord list at: chord asLowercase  asSymbol) + root asInteger ] ifNil:
-		[^ (Chord list at: chord asLowercase  asSymbol) + (notes indexOf: root asLowercase  ) - 1].
+	notes := #( 'c' 'c#' 'd' 'd#' 'e' 'f' 'f#' 'g#' 'a' 'a#' 'b' ).
+	root asInteger
+		ifNotNil: [
+		^ (Chord list at: chord asLowercase asSymbol) + root asInteger ]
+		ifNil: [
+			^ (Chord list at: chord asLowercase asSymbol)
+			  + (notes indexOf: root asLowercase) - 1 ]
+]
+
+{ #category : '*Coypu' }
+ByteString >> parseChordWithoutRoot [
+
+	^ (Chord list at: self asLowercase asSymbol)
 ]
 
 { #category : '*Coypu' }

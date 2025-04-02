@@ -18,5 +18,13 @@ ChordTests >> testChordsToArrays [
 { #category : 'tests' }
 ChordTests >> testParseChord [
 
-self assert: 'D-Major' parseChord equals: #(2 6 9)
+	self assert: 'D-Major' parseChord equals: #( 2 6 9 ).
+	self assert: 'major' parseChord equals: #( 0 4 7 ).
+]
+
+{ #category : 'tests' }
+ChordTests >> testParseChordWithOutRoot [
+
+	self assert: 'major' parseChordWithoutRoot equals: #( 0 4 7 ).
+	self assert: 'minor' parseChordWithoutRoot equals: #( 0 3 7 ).
 ]

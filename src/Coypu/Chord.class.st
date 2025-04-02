@@ -17,7 +17,7 @@ Class {
 	#tag : 'ScalesAndChords'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 Chord class >> list [
 	"retrurn the list of all Chords"
 
@@ -85,7 +85,7 @@ Chord class >> list [
 	^ list
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'printing' }
 Chord class >> traceList [
 
 "open a Transcript and show a list of all available chords".
