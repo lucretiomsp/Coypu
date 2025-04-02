@@ -61,7 +61,7 @@ Sequencer >> * anInteger [
 	| newGates newNotes newDurations |
 	newGates := (self gates times: anInteger) asRhythm.
 	newNotes := self notes times: anInteger.
-	newDurations := self durations times: anInteger.
+	newDurations := self durations asDirtArray times: anInteger.
 
 
 
@@ -79,17 +79,18 @@ Sequencer >> + aString [
 
 { #category : 'combination' }
 Sequencer >> , anotherSequencer [
-
 	"combine the gates of two sequencers, returns a sequencer"
 
-	| newGates newNotes newDurations notes1 notes2|
-	PerformanceRecorder uniqueInstance announce: DoubleRhythmAnnouncement new.
+	| newGates newNotes newDurations notes1 notes2 |
+	PerformanceRecorder uniqueInstance announce:
+		DoubleRhythmAnnouncement new.
 
 	notes1 := self notes.
 	notes2 := anotherSequencer notes.
 	newGates := self gates , anotherSequencer gates.
-	newDurations := self durations , anotherSequencer durations.
-	PerformanceRecorder uniqueInstance savedPerformance collectionOfCommands.
+	newDurations := self durations asDirtArray , anotherSequencer durations asDirtArray .
+	PerformanceRecorder uniqueInstance savedPerformance
+		collectionOfCommands.
 	newNotes := notes1 , notes2.
 	^ self class new
 		  gates: newGates;
