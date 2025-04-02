@@ -25,30 +25,41 @@ Chord class >> list [
 	list := Dictionary new.
 	list
 		at: #major put: #( 0 4 7 );
-		at: #maj put: #( 0 4 7 ); "alias for major"
-		at: #minor put: #( 0 3 7 );
-		at: #min put: #( 0 3 7 ); "alias for minor"
-		at: #aug put: #( 0 4 8 );
+		at: #maj put: #( 0 4 7 );
+		"alias for major"at: #minor put: #( 0 3 7 );
+		at: #min put: #( 0 3 7 );
+		"alias for minor"at: #aug put: #( 0 4 8 );
 		at: #six put: #( 0 4 7 9 );
 		at: #six9 put: #( 0 4 7 9 14 );
 		at: #major7 put: #( 0 4 7 11 );
+		at: #maj7 put: #( 0 4 7 11 );
 		at: #major9 put: #( 0 4 7 11 14 );
+		at: #maj9 put: #( 0 4 7 11 14 );
 		at: #add9 put: #( 0 4 7 14 );
 		at: #major11 put: #( 0 4 7 11 14 17 );
+		at: #maj11 put: #( 0 4 7 11 14 17 );
 		at: #add11 put: #( 0 4 7 17 );
 		at: #major13 put: #( 0 4 7 11 14 17 21 );
+		at: #maj13 put: #( 0 4 7 11 14 17 21 );
 		at: #minor7 put: #( 0 3 7 10 );
+		at: #min7 put: #( 0 3 7 10 );
 		at: #diminished put: #( 0 3 6 );
 		at: #minorsharp5 put: #( 0 3 8 );
 		at: #minor5 put: #( 0 3 7 9 );
+		at: #min5 put: #( 0 3 7 9 );
 		at: #minoraixnine put: #( 0 3 7 9 14 );
 		at: #minor7flat5 put: #( 0 3 6 10 );
+		at: #min7flat5 put: #( 0 3 6 10 );
 		at: #minor7sharp5 put: #( 0 3 8 10 );
+		at: #min7sharp5 put: #( 0 3 8 10 );
 		at: #diminished7 put: #( 0 3 6 9 );
 		at: #minor9 put: #( 0 3 7 10 14 );
 		at: #minor11 put: #( 0 3 7 10 14 17 );
+		at: #min11 put: #( 0 3 7 10 14 17 );
 		at: #minor13 put: #( 0 3 7 10 14 17 21 );
+		at: #min13 put: #( 0 3 7 10 14 17 21 );
 		at: #minorMajor7 put: #( 0 3 7 11 );
+		at: #minMaj7 put: #( 0 3 7 11 );
 		at: #five put: #( 0 5 );
 		at: #sus2 put: #( 0 2 7 );
 		at: #sus4 put: #( 0 5 7 );
@@ -59,10 +70,13 @@ Chord class >> list [
 		at: #sevenflat10 put: #( 0 4 7 10 15 );
 		at: #ninesharp5 put: #( 0 1 13 );
 		at: #minor9sharp5 put: #( 0 1 14 );
+		at: #min9sharp5 put: #( 0 1 14 );
 		at: #sevensharp5flat9 put: #( 0 4 8 10 13 );
 		at: #minor7sharp5flat9 put: #( 0 3 8 10 13 );
+		at: #min7sharp5flat9 put: #( 0 3 8 10 13 );
 		at: #elevensharp put: #( 0 4 7 10 14 18 );
 		at: #minor11sharp put: #( 0 3 7 10 14 18 );
+		at: #min11sharp put: #( 0 3 7 10 14 18 );
 		at: #dom7 put: #( 0 4 7 10 );
 		at: #dom7 put: #( 0 4 7 10 );
 		at: #dom9 put: #( 0 4 7 14 );
