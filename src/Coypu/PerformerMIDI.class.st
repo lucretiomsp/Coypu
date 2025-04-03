@@ -26,7 +26,10 @@ PerformerMIDI class >> midiOut: aMIDISender [
 
 { #category : 'playing' }
 PerformerMIDI >> play [
-	self shouldBeImplemented 
+
+	"play a Phaust performance for 4 days at 120 bpm"
+
+	self playFor: fourDaysAt120BPM
 ]
 
 { #category : 'playing' }
