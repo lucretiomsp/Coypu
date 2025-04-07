@@ -25,25 +25,24 @@ SequencerMono >> - anInteger [
 ]
 
 { #category : 'as yet unclassified' }
-SequencerMono >> arpeggiate: aStringOfChords [ 
-	
+SequencerMono >> arpeggiate: aStringOfChords [
+
 	| arpNotes |
 	arpNotes := OrderedCollection new.
 	aStringOfChords chordsToArrays do: [ :i | arpNotes addAll: i ].
-	self dirtMessage 
-		at: 'n' 
-		put: arpNotes
+	self dirtMessage at: 'n' put: arpNotes.
+	self notes: arpNotes asArray + 60.
 ]
 
 { #category : 'as yet unclassified' }
 SequencerMono >> arpeggiate: aStringOfChords octave: anIntegerOrAnArray [
-	
-	| arpNotes |
+
+	| arpNotes octave |
 	arpNotes := OrderedCollection new.
 	aStringOfChords chordsToArrays do: [ :i | arpNotes addAll: i ].
-	self dirtMessage 
-		at: 'n' 
-		put: arpNotes + (anIntegerOrAnArray * 12)
+	octave := (anIntegerOrAnArray * 12).
+	self dirtMessage at: 'n' put: arpNotes + octave.
+	self notes: arpNotes asArray + 60 + octave
 ]
 
 { #category : 'converting' }
