@@ -195,8 +195,9 @@ Integer >> breves [
 	" returns self number of brevesin the first position of the bars"
 
 	| result |
-	result := '80000000' hexBeat * self.
+	result := ('80000000' hexBeat * self) .
 	result durations: 32.
+	result gateTimes: 0.8.
 	^ result
 ]
 
@@ -646,11 +647,13 @@ Integer >> rumba: aStringOfNotes [
 Integer >> semibreves [
 	" returns self number of semibrevesin the first position of the bars"
 
-	| result announcement|
-	announcement := RhythmAnnouncement new rhythm: (self asString,' semibreves').
-PerformanceRecorder uniqueInstance announce: announcement.
+	| result announcement |
+	announcement := RhythmAnnouncement new rhythm:
+		                self asString , ' semibreves'.
+	PerformanceRecorder uniqueInstance announce: announcement.
 	result := '8000' hexBeat times: self.
 	result durations: 16.
+	result gateTimes: 0.9.
 	^ result
 ]
 
