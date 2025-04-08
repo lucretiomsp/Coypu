@@ -651,7 +651,7 @@ Integer >> semibreves [
 	announcement := RhythmAnnouncement new rhythm:
 		                self asString , ' semibreves'.
 	PerformanceRecorder uniqueInstance announce: announcement.
-	result := '8000' hexBeat times: self.
+	result := '8000' hexBeat *  self.
 	result durations: 16.
 	result gateTimes: 0.9.
 	^ result
