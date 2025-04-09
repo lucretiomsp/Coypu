@@ -7,6 +7,12 @@ Number >> asDirtArray [
 ]
 
 { #category : '*Coypu' }
+Number >> asDirtArrayOfValues [ 
+
+self asDirtArray asDirtArrayOfValues 
+]
+
+{ #category : '*Coypu' }
 Number >> asMidiData1 [
 "Gets the first byte of the MIDI message aMessage."
 	^ ((self >> 8) & 16rFF)
