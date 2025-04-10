@@ -258,7 +258,7 @@ Sequencer >> delayTime: aFloatOrAnArray [
 		put: aFloatOrAnArray asDirtArray
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> dirt: anArrayForSuperDirt [
 	"fills the OSC dirtmessage for SuperDirt with suitable values"
 	| keys values msgExtension msgExtensionSize  |
@@ -281,7 +281,7 @@ Sequencer >> dirt: anArrayForSuperDirt [
 			put: (values at: i)]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> dirt: anArrayForSuperDirt to: aKeyInPerformance [
 	"convenience method to avoid extra parenthesis"
 	(self dirt: anArrayForSuperDirt) to: aKeyInPerformance 
@@ -750,17 +750,6 @@ Sequencer >> notes: anArrayOfNotesOrANoteorAstring [
 						         withAll: anArrayOfNotesOrANoteorAstring ] ]
 ]
 
-{ #category : 'as yet unclassified' }
-Sequencer >> notes: anArrayOfNotes durs: anArrayOfDurations [
-	" change notes in the sequencer"
-
-	^ Sequencer 
-			with: (self at: 1) 
-			with: anArrayOfNotes 
-			with: anArrayOfDurations  
-			with: 0
-]
-
 { #category : 'LiveCoding - Performance' }
 Sequencer >> notes: anArrayOfNotes index: anArrayOfIndexes to: aKeyInPerformance [
 	"convenience method to avoid extra parenthesis while declaring a sequencer of gates with its notes and its sample indexes"
@@ -1047,7 +1036,7 @@ Sequencer >> progression: anArrayOfIntervals [
 	^ newSeq
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'Sequencer - transformation' }
 Sequencer >> randomCounterPoint [
 	" creates aSequencer of trigs randomly counterpointed with self array"
 
@@ -1335,7 +1324,7 @@ Sequencer >> transpose: aNumberOfSemitones [
 		  noteIndex: self noteIndex 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 Sequencer >> trigs [
 	"return the number of trigs, i.e. gates = 1,  of the sequencer"
 	
@@ -1347,13 +1336,13 @@ Sequencer >> trigs [
 	^ result.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'visualization' }
 Sequencer >> visualGroup [
 
 	^ visualGroup
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'visualization' }
 Sequencer >> visualGroup: aRSGroup [
 
 	visualGroup := aRSGroup
