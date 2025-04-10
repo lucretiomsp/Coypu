@@ -117,7 +117,7 @@ PerfTypeMooflod >> addSequencer: aSequencer to: aSymbol [
 		ifNil: [ Performance uniqueInstance at: aSymbol put: aSequencer ]
 		ifNotNil: [
 		Performance uniqueInstance at: aSymbol put: aSequencer asPolySeq ].
-	perf performer class = PerformerPhaust ifFalse: [ ^ self ].
+	perf performer class = PerformerPhausto ifFalse: [ ^ self ].
 	aSequencer phaustGateDestination: aSequencer seqKey , 'Gate'.
 	aSequencer phaustNoteDestination: aSequencer seqKey , 'Note'
 ]

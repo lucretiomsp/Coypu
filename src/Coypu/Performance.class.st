@@ -174,7 +174,7 @@ Performance >> forDsp: aDsp [
 | p |
 
 p := self class uniqueInstance .
-p performer: PerformerPhaust new.
+p performer: PerformerPhausto new.
 p activeDSP: aDsp.
 
 ^ p

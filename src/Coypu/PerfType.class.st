@@ -30,7 +30,7 @@ PerfType >> addSequencer: aSequencer to: aSymbol [
 
 
 	"For PerformerPhaust"
-	Performance uniqueInstance performer class = PerformerPhaust ifTrue: [
+	Performance uniqueInstance performer class = PerformerPhausto ifTrue: [
 		aSequencer phaustGateDestination: aSequencer seqKey , 'Gate'.
 		aSequencer phaustNoteDestination: aSequencer seqKey , 'Note' ]
 ]

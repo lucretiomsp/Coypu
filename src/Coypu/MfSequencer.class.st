@@ -63,7 +63,7 @@ MfSequencer >> to: aSymbol [
 
 
 	"For PerformerPhaust"
-	(PerfTypeMooflod - Old) uniqueInstance performer class = PerformerPhaust ifTrue: [
+	(PerfTypeMooflod - Old) uniqueInstance performer class = PerformerPhausto ifTrue: [
 		self phaustGateDestination: self seqKey , 'Gate'.
 		self phaustNoteDestination: self seqKey , 'Note' ]
 ]

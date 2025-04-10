@@ -5,7 +5,7 @@ Find Phausto here:
 https://github.com/lucretiomsp/phausto
 "
 Class {
-	#name : 'PerformerPhaust',
+	#name : 'PerformerPhausto',
 	#superclass : 'Performer',
 	#category : 'Coypu-Performer',
 	#package : 'Coypu',
@@ -13,14 +13,14 @@ Class {
 }
 
 { #category : 'playing' }
-PerformerPhaust >> play [ 
+PerformerPhausto >> play [ 
 	"play a Phaust performance for 4 days at 120 bpm"
 
 	self playFor: fourDaysAt120BPM 
 ]
 
 { #category : 'playing' }
-PerformerPhaust >> playFor: aNumberOfSteps [
+PerformerPhausto >> playFor: aNumberOfSteps [
 	"play the performance to SuperDIrt/SuperCollider audio engine - default freq is 132 bpm 
 	Performance speed can be changed with p freq: a bpm"
 
