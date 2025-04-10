@@ -42,7 +42,7 @@ Performer >> checkStepFor: aSequencer [
 
 	| currentStep |
 	currentStep := Performance uniqueInstance transportStep.
-	(aSequencer gates wrap: currentStep) = 1 ifTrue: [ self playNote ]
+	(aSequencer gates wrap: currentStep) = 1 ifTrue: [ self playNoteFor: aSequencer ]
 ]
 
 { #category : 'initialization' }
@@ -66,6 +66,12 @@ Performer >> playFor: aNumberOfSteps [
 
 { #category : 'playing' }
 Performer >> playNote [
+
+	self subclassResponsibility
+]
+
+{ #category : 'playing' }
+Performer >> playNoteFor: aSequencer [
 
 	self subclassResponsibility
 ]

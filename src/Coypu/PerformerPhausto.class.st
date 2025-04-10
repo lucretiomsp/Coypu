@@ -60,16 +60,15 @@ PerformerPhausto >> playForEXP: aNumberOfSteps [
 				  'There must be an active DSP for this performance' ]
 		ifNotNil: [
 			self resetPerformance.
+			self advanceTransportInBackgroundFor: aNumberOfSteps .
 			performance activeProcess: ([
 				 aNumberOfSteps timesRepeat: [
 					 (Delay forSeconds: performance freq) wait.
 					 [ "sequencers scan"
-					 performance valuesDo: [ :seq |
-						 self checkStepFor: seq] ]
-						 forkAt: Processor highIOPriority.
+					 performance valuesDo: [ :seq | self checkStepFor: seq ] ]
+						 forkAt: Processor timingPriority .
 
-					 "step is incremented anyway"
-					 performance incrementTransportStep ] ] forkAt:
+					 ] ] forkAt:
 					 Processor timingPriority) ]
 ]
 
