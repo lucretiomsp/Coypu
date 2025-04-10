@@ -107,12 +107,30 @@ ByteSymbol >> rhythm [
 ]
 
 { #category : '*Coypu' }
+ByteSymbol >> ritmo [ 	
+	"creates a Sequencer with 16 steps of the named rhythm - alias of rhythm for non english speaker :)"
+
+	^ 16 perform: self
+]
+
+{ #category : '*Coypu' }
 ByteSymbol >> solo [
 	"shorthand for p solo: aKeyInperformance"
 
 	| p |
 	p := PerformanceRecorder uniqueInstance.
 	p solo: self
+]
+
+{ #category : '*Coypu' }
+ByteSymbol >> swapWith: aSymbol [
+	"swap the current sequencer sound to the sound represented by a symbol . or viceversa! please refer to Coypu performer for connecting sequencer names to actual audio server sounds"
+
+	| p |
+	p := Performance uniqueInstance.
+	(p includesKey: self) ifTrue: [
+		(p at: self) to: aSymbol.
+		p mute: self ] ifFalse: [ (p at:  aSymbol) to: self. p mute: aSymbol. ]
 ]
 
 { #category : '*Coypu' }
