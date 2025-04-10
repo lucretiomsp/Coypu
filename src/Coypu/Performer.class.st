@@ -18,6 +18,25 @@ Class {
 	#tag : 'Performer'
 }
 
+{ #category : 'as yet unclassified' }
+Performer >> advanceTransportInBackground [
+
+ [performance incrementTransportStep ] forkAt:
+			 Processor timingPriority
+]
+
+{ #category : 'as yet unclassified' }
+Performer >> advanceTransportInBackgroundFor: aNumberOfSteps [
+
+| updateInterval |
+updateInterval := (Delay forSeconds: performance freq) .
+	[
+	aNumberOfSteps timesRepeat: [
+		performance incrementTransportStep.
+		updateInterval wait ] ] forkAt:
+		Processor timingPriority
+]
+
 { #category : 'initialization' }
 Performer >> initialize [ 
 	super initialize.
@@ -35,4 +54,12 @@ Performer >> play [
 { #category : 'playing' }
 Performer >> playFor: aNumberOfSteps [ 
 	self subclassResponsibility 
+]
+
+{ #category : 'initialization' }
+Performer >> resetPerformance [
+
+performance bpm: 60 / (performance freq * 4).
+			performance transportStep: 0.
+			
 ]

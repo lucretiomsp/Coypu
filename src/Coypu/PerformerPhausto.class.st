@@ -46,3 +46,51 @@ PerformerPhausto >> playFor: aNumberOfSteps [
 					 performance incrementTransportStep ] ] forkAt:
 					 Processor timingPriority) ]
 ]
+
+{ #category : 'playing' }
+PerformerPhausto >> playForEXP: aNumberOfSteps [
+	" experimental method to decrease jitter and improve timing 
+	########################################################
+	play the performance to SuperDIrt/SuperCollider audio engine - default freq is 132 bpm 
+	Performance speed can be changed with p freq: a bpm"
+
+	Performance uniqueInstance activeDSP
+		ifNil: [
+			^ Error new signal:
+				  'There must be an active DSP for this performance' ]
+		ifNotNil: [
+			self resetPerformance.
+			performance activeProcess: ([
+				 aNumberOfSteps timesRepeat: [
+					 (Delay forSeconds: performance freq) wait.
+					 [ "sequencers scan"
+					 performance valuesDo: [ :seq |
+						 (seq gates wrap: performance transportStep) = 1 ifTrue: [
+							 seq playPhaustEventAt: seq noteIndex. "delta!!!!"
+							 "increment note Index"
+							 seq noteIndex: seq noteIndex + 1 ] ] ] forkAt:
+						 Processor highIOPriority.
+
+					 "step is incremented anyway"
+					 performance incrementTransportStep ] ] forkAt:
+					 Processor timingPriority) ]
+]
+
+{ #category : 'as yet unclassified' }
+PerformerPhausto >> runSequencersWithSteps: aNumberOfSteps [
+
+	performance activeProcess: ([
+				 aNumberOfSteps timesRepeat: [
+					 (Delay forSeconds: performance freq) wait.
+					 [ "sequencers scan"
+					 performance valuesDo: [ :seq |
+						 (seq gates wrap: performance transportStep) = 1 ifTrue: [
+							 seq playPhaustEventAt: seq noteIndex. "delta!!!!"
+							 "increment note Index"
+							 seq noteIndex: seq noteIndex + 1 ] ] ] forkAt:
+						 Processor highIOPriority.
+
+					 "step is incremented anyway"
+					 performance incrementTransportStep ] ] forkAt:
+					 Processor timingPriority) 
+]
