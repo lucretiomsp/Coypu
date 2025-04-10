@@ -523,9 +523,13 @@ Sequencer >> initialize [
 
 	super initialize.
 	isPoly := false.
+	"by defaul gateTime is 0.9"
+	gateTimes := #(0.9).
 	dirtMessage := Dictionary new.
-   transportStep := 0.
-	dirtMessage at: 'cps' put: (Performance uniqueInstance freq * 4) asFloat.
+	transportStep := 0.
+	dirtMessage
+		at: 'cps'
+		put: (Performance uniqueInstance freq * 4) asFloat.
 	"superdirt orbits are 12"
 	self class orbit: self class orbit + 1.
 	orbit := self class orbit.
@@ -534,6 +538,7 @@ Sequencer >> initialize [
 	extraParams := Dictionary new
 
 	"dirtMessage addAll: { '_id' -> 1 . 'cps' -> 0.56 .  'orbit' -> 0 }"
+	
 ]
 
 { #category : 'accessing' }
