@@ -37,6 +37,14 @@ updateInterval := (Delay forSeconds: performance freq) .
 		Processor timingPriority
 ]
 
+{ #category : 'as yet unclassified' }
+Performer >> checkStepFor: aSequencer [
+
+	| currentStep |
+	currentStep := Performance uniqueInstance transportStep.
+	(aSequencer gates wrap: currentStep) = 1 ifTrue: [ self playNote ]
+]
+
 { #category : 'initialization' }
 Performer >> initialize [ 
 	super initialize.
@@ -54,6 +62,12 @@ Performer >> play [
 { #category : 'playing' }
 Performer >> playFor: aNumberOfSteps [ 
 	self subclassResponsibility 
+]
+
+{ #category : 'playing' }
+Performer >> playNote [
+
+	self subclassResponsibility
 ]
 
 { #category : 'initialization' }

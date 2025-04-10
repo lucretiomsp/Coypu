@@ -65,15 +65,24 @@ PerformerPhausto >> playForEXP: aNumberOfSteps [
 					 (Delay forSeconds: performance freq) wait.
 					 [ "sequencers scan"
 					 performance valuesDo: [ :seq |
-						 (seq gates wrap: performance transportStep) = 1 ifTrue: [
-							 seq playPhaustEventAt: seq noteIndex. "delta!!!!"
-							 "increment note Index"
-							 seq noteIndex: seq noteIndex + 1 ] ] ] forkAt:
-						 Processor highIOPriority.
+						 self checkStepFor: seq] ]
+						 forkAt: Processor highIOPriority.
 
 					 "step is incremented anyway"
 					 performance incrementTransportStep ] ] forkAt:
 					 Processor timingPriority) ]
+]
+
+{ #category : 'playing' }
+PerformerPhausto >> playNote [
+]
+
+{ #category : 'playing' }
+PerformerPhausto >> playNoteFor: aSequencer [
+
+	 aSequencer playPhaustEventAt: aSequencer noteIndex. 
+							 "increment note Index"
+							 aSequencer noteIndex: aSequencer noteIndex + 1
 ]
 
 { #category : 'as yet unclassified' }
