@@ -54,22 +54,21 @@ PerformerPhausto >> playForEXP: aNumberOfSteps [
 	play the performance to SuperDIrt/SuperCollider audio engine - default freq is 132 bpm 
 	Performance speed can be changed with p freq: a bpm"
 
+	
 	Performance uniqueInstance activeDSP
 		ifNil: [
 			^ Error new signal:
 				  'There must be an active DSP for this performance' ]
 		ifNotNil: [
 			self resetPerformance.
-			self advanceTransportInBackgroundFor: aNumberOfSteps .
+			self advanceTransportInBackgroundFor: aNumberOfSteps.
+			
 			performance activeProcess: ([
 				 aNumberOfSteps timesRepeat: [
-					 (Delay forSeconds: performance freq) wait.
+					 
 					 [ "sequencers scan"
-					 performance valuesDo: [ :seq | self checkStepFor: seq ] ]
-						 forkAt: Processor timingPriority .
-
-					 ] ] forkAt:
-					 Processor timingPriority) ]
+					 performance valuesDo: [ :seq | self checkStepFor: seq ] .(Delay forSeconds: performance freq) wait ]
+						 forkAt: Processor timingPriority ]  ])].
 ]
 
 { #category : 'playing' }

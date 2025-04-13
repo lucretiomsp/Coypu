@@ -28,13 +28,22 @@ Performer >> advanceTransportInBackground [
 { #category : 'as yet unclassified' }
 Performer >> advanceTransportInBackgroundFor: aNumberOfSteps [
 
-| updateInterval |
-updateInterval := (Delay forSeconds: performance freq) .
-	[
+	| updateInterval |
+	updateInterval := Delay forSeconds: performance freq.
+[
+    aNumberOfSteps timesRepeat: [  | targetTime |
+        performance incrementTransportStep.
+        
+        "High-precision wait using Smalltalk highResClock"
+      
+        targetTime := Smalltalk highResClock + (updateInterval asMicroseconds * 1000).
+        [Smalltalk highResClock < targetTime] whileTrue. "Busy-wait"
+    ]
+] forkAt: Processor highestPriority.
+	"[
 	aNumberOfSteps timesRepeat: [
 		performance incrementTransportStep.
-		updateInterval wait ] ] forkAt:
-		Processor timingPriority
+		updateInterval wait ] ] forkAt: Processor timingPriority"
 ]
 
 { #category : 'as yet unclassified' }
