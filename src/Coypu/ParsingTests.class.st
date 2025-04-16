@@ -15,6 +15,14 @@ ParsingTests >> testCharacterMultiplication [
 ]
 
 { #category : 'tests' }
+ParsingTests >> testCumbiaClave [
+
+	self
+		assert: 16 cumbiaClave gates
+		equals: #(1 0 0 0 1 0 1 0 1 0 0 0 1 0 1 0) asRhythm 
+]
+
+{ #category : 'tests' }
 ParsingTests >> testMultiplyStringsInString [
 
 	self 

@@ -28,23 +28,23 @@ PerformerPhausto >> playFor: aNumberOfSteps [
 		ifNil: [
 			^ Error new signal:
 				  'There must be an active DSP for this performance' ]
-		ifNotNil: [
-			performance bpm: 60 / (performance freq * 4).
+		ifNotNil: [ performance bpm: 60 / (performance freq * 4).
 			performance transportStep: 0.
 			performance activeProcess: ([
 				 aNumberOfSteps timesRepeat: [
 					 (Delay forSeconds: performance freq) wait.
 					 [ "sequencers scan"
-						 performance valuesDo: [ :seq |
-							 (seq gates wrap: performance transportStep) = 1 ifTrue: [
-								 seq playPhaustEventAt: seq noteIndex. "delta!!!!"
-								 "increment note Index"
-								 seq noteIndex: seq noteIndex + 1 ] ] ] forkAt:
+					 performance valuesDo: [ :seq |
+						 (seq gates wrap: performance transportStep) = 1 ifTrue: [
+							 seq playPhaustEventAt: seq noteIndex. "delta!!!!"
+							 "increment note Index"
+							 seq noteIndex: seq noteIndex + 1 ] ] ] forkAt:
 						 Processor highIOPriority.
 
 					 "step is incremented anyway"
 					 performance incrementTransportStep ] ] forkAt:
-					 Processor timingPriority) ]
+					 Processor timingPriority)]
+			
 ]
 
 { #category : 'playing' }

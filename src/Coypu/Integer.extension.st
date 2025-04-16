@@ -259,6 +259,21 @@ resultSize := result  size.
 ]
 
 { #category : '*Coypu' }
+Integer >> cumbiaClave [
+
+	"^ SequencerMono new gates: #(1 0 0 0 1  0 1 0 1 0 0 0 1 0 1 0)"
+	| pattern announcement|
+	announcement := RhythmAnnouncement new rhythm: (self asString,' cumbiaClave').
+PerformanceRecorder uniqueInstance announce: announcement.
+	pattern := ##(1 0 0 0 1 0 1 0 1 0 0 0 1 0 1 0).
+
+	^ ((0 to: self - 1) collect: [ :i |
+		   pattern at: (i rem: pattern size) + 1 ]) asRhythm asSeq
+
+	"implement shifting to the left"
+]
+
+{ #category : '*Coypu' }
 Integer >> dirtNoteToSpeed [
 " for SUperDirt, convert a note into speed, for sample playback"
 ^ 2 raisedTo: (self /12)
