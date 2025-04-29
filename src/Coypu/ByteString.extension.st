@@ -81,7 +81,8 @@ ByteString >> asDirtIndex [
 { #category : '*Coypu' }
 ByteString >> asDirtNotes [
 	" returns a sequencer containing a trig for each integer and a rest for whatever other character and with the notes coresponding to the integeres inside the string - tokens must be separated by string"
-| seq tokens gates notesAStrings notesAsNumbers dirtString announcement |
+
+	| seq tokens gates notesAStrings notesAsNumbers dirtString announcement |
 	announcement := RhythmAnnouncement new.
 	announcement rhythm: '''' , self asString , ''' asDirtNotes'.
 	PerformanceRecorder uniqueInstance announce: announcement.
@@ -101,7 +102,8 @@ ByteString >> asDirtNotes [
 		                 findBetweenSubstrings: ' '.
 
 	notesAsNumbers := notesAStrings collect: [ :i |
-		                  i ~= ' ' ifTrue: [ i asNumber ] ].
+		"note cant be higher than higher MIDI note"
+		                  i ~= ' ' ifTrue: [ i asNumber min: 127] ].
 
 	notesAsNumbers do: [ :i |
 		dirtString := dirtString , i asString , ' ' ].
