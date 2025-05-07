@@ -379,6 +379,13 @@ Sequencer >> effect: aStringOrAnArray [
 ]
 
 { #category : 'LiveCoding-ExtraParams' }
+Sequencer >> envMod: aStringOrAnArray [
+	"convenience method to avoid extra typing when we want to modify the envMod, "
+
+	self extra: #EnvMod values: aStringOrAnArray asDirtArrayOfValues
+]
+
+{ #category : 'LiveCoding-ExtraParams' }
 Sequencer >> extra: aSymbol values: aStringWithIndexes [
 	"stores extra values to control synths parameters on Kyma values can be a Number, an Array or  a valid string of Coypu Notation"
 
