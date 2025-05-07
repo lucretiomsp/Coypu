@@ -1,3 +1,6 @@
+"
+Special sequencer fo Mooflod type Performance / should be re-designed
+"
 Class {
 	#name : 'MfSequencer',
 	#superclass : 'Sequencer',

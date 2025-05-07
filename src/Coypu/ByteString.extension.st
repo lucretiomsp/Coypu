@@ -139,7 +139,7 @@ ByteString >> asDirtPureNotes [
 		                 findBetweenSubstrings: ' '.
 
 	notesAsNumbers := notesAStrings collect: [ :i |
-		                  i ~= ' ' ifTrue: [ i asInteger ] ].
+		                  i ~= ' ' ifTrue: [ i asNumber ] ].
 
 	notesAsNumbers do: [ :i |
 		dirtString := dirtString , i asString , ' ' ].
