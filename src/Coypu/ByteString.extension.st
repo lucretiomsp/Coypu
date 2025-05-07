@@ -56,13 +56,12 @@ ByteString >> asDirtIndex [
 		(i includes: $*)
 			ifTrue: [ gates := gates , i multiplyStringsInString ]
 			ifFalse: [
-
 				gates := (i includes: $/)
 					         ifTrue: [ gates , i withNRests ]
 					         ifFalse: [ gates , i ] ] ].
 
 
-	notesAStrings := (gates copyReplaceAll: '~' with: '')
+	notesAStrings := ((gates copyReplaceAll: '~' with: '') copyReplaceAll: '-' with: '' )
 		                 findBetweenSubstrings: ' '.
 
 	notesAsNumbers := notesAStrings collect: [ :i |
@@ -97,13 +96,12 @@ ByteString >> asDirtNotes [
 				gates := (i includes: $/)
 					         ifTrue: [ gates , i withNRests ]
 					         ifFalse: [ gates , i ] ] ].
-
-	notesAStrings := (gates copyReplaceAll: '~' with: '')
+"tildes or - can be used as rests"
+	notesAStrings := ((gates copyReplaceAll: '~' with: '') copyReplaceAll: '-' with: '' )
 		                 findBetweenSubstrings: ' '.
 
-	notesAsNumbers := notesAStrings collect: [ :i |
-		"note cant be higher than higher MIDI note"
-		                  i ~= ' ' ifTrue: [ i asNumber min: 127] ].
+	notesAsNumbers := notesAStrings collect: [ :i | "note cant be higher than higher MIDI note"
+		                  i ~= ' ' ifTrue: [ i asNumber min: 127 ] ].
 
 	notesAsNumbers do: [ :i |
 		dirtString := dirtString , i asString , ' ' ].
@@ -153,30 +151,30 @@ ByteString >> asDirtPureNotes [
 
 { #category : '*Coypu' }
 ByteString >> asDirtSounds [
-
 	" parse a String into a Sequencer containing information to end to the SuperDirt synth for SuperCollider"
 
+	| seq tokens gates soundsAsStrings |
+	gates := ''.
+	tokens := self splitOn: ','.
+	tokens do: [ :i |
+		(i includes: $*)
+			ifTrue: [ gates := gates , i multiplyStringsInString ]
+			ifFalse: [
+				(i includes: $/)
+					ifTrue: [ gates := gates , i withNRests ]
+					ifFalse: [ gates := gates , i ] ] ].
+
+	soundsAsStrings := ((gates copyReplaceAll: '~' with: '')
+		                    copyReplaceAll: '-'
+		                    with: '') findBetweenSubstrings: ' '.
 
 
 
 
-| seq tokens gates soundsAsStrings |
+	seq := gates asSeqGates asSeq.
+	seq sound: soundsAsStrings.
 
-gates := ''.
-tokens := self splitOn: ','.
-tokens do: [ :i | (i  includes: $* ) ifTrue: [gates := gates,  i multiplyStringsInString ] ifFalse: [(i includes: $/) ifTrue: [gates := gates,  i withNRests ]
-	ifFalse:  [gates := gates,  i]
-	]].
-
-soundsAsStrings := (gates copyReplaceAll: '~' with: '') . 
-
-
-
-
-seq := gates asSeqGates  asSeq.
-seq sound: soundsAsStrings  .
-
-^ seq
+	^ seq
 ]
 
 { #category : '*Coypu' }
