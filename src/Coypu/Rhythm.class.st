@@ -15,9 +15,15 @@ Class {
 
 { #category : 'accessing' }
 Rhythm class >> list [
-	
 
-^ (Integer selectorsInProtocol: 'rhythm creation') reject: [ :i | i includesSubstring: ':' ]
+	| methods dicList |
+	dicList := Dictionary new.
+	methods := (Integer selectorsInProtocol: 'rhythm creation') reject: [
+		           :i | i includesSubstring: ':' ].
+
+	methods do: [ :i | dicList add: i -> (Integer >> i) comments first ].
+
+	^ dicList
 ]
 
 { #category : 'responses' }
@@ -26,13 +32,6 @@ Rhythm class >> random: aNumber [
 	| r |
 	r := Random new.
 	^ (1 to: aNumber) collect: [ :i | (r next ) printShowingDecimalPlaces: 2].
-]
-
-{ #category : 'accessing' }
-Rhythm class >> traceList [
-	
-Transcript clear; open.
-self list do: [ :i  | Transcript show: i ; cr. ]
 ]
 
 { #category : 'compose' }

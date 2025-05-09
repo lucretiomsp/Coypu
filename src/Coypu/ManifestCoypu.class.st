@@ -15,7 +15,9 @@ ManifestCoypu class >> ruleBadMessageRule2V1FalsePositive [
 
 { #category : 'code-critics' }
 ManifestCoypu class >> ruleCollectionProtocolRuleV1FalsePositive [
-	^ #(#(#(#RGMethodDefinition #(#EsugVisual #visualizeAlanSpeech #false)) #'2022-08-05T10:59:38.794301+02:00') #(#(#RGClassDefinition #(#EsugVisual)) #'2022-08-05T10:59:46.630182+02:00') )
+
+	<ignoreForCoverage>
+	^ #(#(#(#RGMethodDefinition #(#EsugVisual #visualizeAlanSpeech #false)) #'2022-08-05T10:59:38.794301+02:00') #(#(#RGClassDefinition #(#EsugVisual)) #'2022-08-05T10:59:46.630182+02:00') #(#(#RGMethodDefinition #(#'Rhythm class' #list #true)) #'2025-05-09T08:52:37.514423+02:00') )
 ]
 
 { #category : 'code-critics' }
