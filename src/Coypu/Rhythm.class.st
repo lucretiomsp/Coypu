@@ -14,29 +14,10 @@ Class {
 }
 
 { #category : 'accessing' }
-Rhythm class >> allRhythmNames [
-	"return all the possible Rhythms obtainable sending messages to integers"
-
-	| rhythmList |
-	rhythmList := #( #adowa '#aksak #banda #bomba #bossa #breves  #semibreves #claveSon #downbeats #gahu #quavers'
-	                 #semiquavers #randomTrigs #rumba #shiko #sikyi #soukous #tresillo
-	                 #trueAksak #tumbao #upbeats ).
-
-	^ rhythmList
-]
-
-{ #category : 'accessing' }
 Rhythm class >> list [
-
-	"return all the possible Rhythms obtainable sending messages to integers"
-
-	| rhythmList |
-	rhythmList := #( 'adowa' 'aksak' 'banda' 'bomba' 'bossa' 'breves'
-	                 'semibreves' 'claveSon' 'downbeats' 'gahu' 'ones'
-	                 'quavers' 'semiquavers' 'rumba' 'shiko' 'sikyi'
-	                 'soukous' 'tresillo' 'trueAksak' 'tumbao' 'upbeats' ).
 	
-Transcript clear. rhythmList do: [ :i | i traceCr  ]. Transcript open.
+
+^ (Integer selectorsInProtocol: 'rhythm creation') reject: [ :i | i includesSubstring: ':' ]
 ]
 
 { #category : 'responses' }
@@ -45,6 +26,13 @@ Rhythm class >> random: aNumber [
 	| r |
 	r := Random new.
 	^ (1 to: aNumber) collect: [ :i | (r next ) printShowingDecimalPlaces: 2].
+]
+
+{ #category : 'accessing' }
+Rhythm class >> traceList [
+	
+Transcript clear; open.
+self list do: [ :i  | Transcript show: i ; cr. ]
 ]
 
 { #category : 'compose' }
