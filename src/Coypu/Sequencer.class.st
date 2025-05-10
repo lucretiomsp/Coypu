@@ -179,9 +179,11 @@ Sequencer >> bw: aStringOrAnArray [
 { #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> ccn: anIntOrAnArray ccv: anotherIntOrArray [
 	" add a cc value/array of values to a cc number - to use with MIDI"
-	
+
 	self dirtMessage at: 'ccn' put: anIntOrAnArray asDirtArray.
-	self dirtMessage at: 'ccv' put: anotherIntOrArray asDirtArray
+	self dirtMessage at: 'ccv' put: anotherIntOrArray asDirtArray.
+	
+   self extra: anIntOrAnArray values: anotherIntOrArray 
 ]
 
 { #category : 'accessing' }
