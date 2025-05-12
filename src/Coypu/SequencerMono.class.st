@@ -206,6 +206,34 @@ SequencerMono >> playPhaustEventAt: anIndex [
 ]
 
 { #category : 'LiveCoding  - SuperDirt' }
+SequencerMono >> playPhaustEventAt: anIndex parameters: aParameterList dsp: aDsp freq: aFrequency [
+	"sends a message to Phausto / the DSP api must be written in a sensible way "
+
+	" please use also duration for gate !!! - future implementation"
+
+	| dur |
+	dur := self durations asDirtArray wrap: anIndex.
+
+	self  extraParams keysAndValuesDo: [ :k :v |
+		aParameterList
+			setValue: (v wrap: anIndex)
+			parameter: self seqKey , k asString
+			forDsp: aDsp ].
+
+	aParameterList
+		setValue: (self notes wrap: anIndex) midiNoteToFreq
+		parameter: self phaustNoteDestination
+		forDsp: aDsp. "convert note Number to Frequency"
+	"as in early sequencers, standard gate time is 80% of duration"
+	aParameterList
+		trig: self phaustGateDestination
+		for: dur * aFrequency * (self gateTimes wrap: anIndex)
+		forDsp: aDsp.
+
+	^ true
+]
+
+{ #category : 'LiveCoding  - SuperDirt' }
 SequencerMono >> playPhaustEventAt: anIndex perfType: aPerformanceType [
 	"sends a message to Phausto / the DSP api must be written in a sensible way "
 

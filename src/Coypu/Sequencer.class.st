@@ -1088,6 +1088,13 @@ Sequencer >> rel: aFloatOrAnArray [
 		put:  aFloatOrAnArray   asDirtArray
 ]
 
+{ #category : 'LiveCoding-ExtraParams' }
+Sequencer >> resonance: aStringOrAnArray [
+	"set the ratio to a collection of value in array or to to the number"
+
+	self extra: #Resonance values: aStringOrAnArray asDirtArrayOfValues
+]
+
 { #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> room: aFloatOrAnArray [
 	" add room size reverb pattern to the Sequencer"
