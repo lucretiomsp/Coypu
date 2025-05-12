@@ -8,10 +8,13 @@ ByteSymbol >> asDirtArray [
 ]
 
 { #category : '*Coypu' }
-ByteSymbol >> asRhythm [ 
+ByteSymbol >> asRhythm [
+	"creates a Sequencer with 16 steps of the rhythm with name self. if the rhythm do not exist, an empty sequencer of 16 values is created and a notification is sent"
 
-"creates a Sequencer with 16 steps of the named rhythm"
-^ 16 perform: self
+	| seq |
+	seq := 16 rests.
+	(Rhythm list includesKey: self) ifTrue: [ seq := 16 perform: self ].
+	^ seq
 ]
 
 { #category : '*Coypu' }
@@ -131,6 +134,12 @@ ByteSymbol >> swapWith: aSymbol [
 	(p includesKey: self) ifTrue: [
 		(p at: self) to: aSymbol.
 		p mute: self ] ifFalse: [ (p at:  aSymbol) to: self. p mute: aSymbol. ]
+]
+
+{ #category : '*Coypu' }
+ByteSymbol >> to: aSymbol [
+
+	^ self asRhythm to: aSymbol
 ]
 
 { #category : '*Coypu' }

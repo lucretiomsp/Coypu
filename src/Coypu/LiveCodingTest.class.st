@@ -53,6 +53,16 @@ LiveCodingTest >> testMultiplyString [
 ]
 
 { #category : 'tests' }
+LiveCodingTest >> testRhythmSymbolToPerformance [
+
+	| p |
+	p := Performance uniqueInstance.
+	#downbeats to: #tabla.
+(p at: #tabla) traceCr.
+	self assert: (p at: #tabla) numberOfTrigs equals: 4
+]
+
+{ #category : 'tests' }
 LiveCodingTest >> testSawtoothTable [
 
 | array result increment|.
