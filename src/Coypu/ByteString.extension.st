@@ -549,7 +549,7 @@ ByteString >> to: aKeyInPerformance [
 | p |
 
 p := Performance uniqueInstance .
-self pattern to: aKeyInPerformance 
+self hexBeat to: aKeyInPerformance 
 ]
 
 { #category : '*Coypu' }
