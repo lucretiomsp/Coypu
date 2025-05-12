@@ -215,6 +215,13 @@ Sequencer >> cutoff: aStringOrAnArray [
 	self extra: #Cutoff values:aStringOrAnArray asDirtArrayOfValues 
 ]
 
+{ #category : 'LiveCoding-ExtraParams' }
+Sequencer >> cutoffFreq: aStringOrAnArray [
+	"set the cutoffFreq to a collection of value in array or to to the numbe"
+
+	self extra: #CutoffFreq values: aStringOrAnArray asDirtArrayOfValues
+]
+
 { #category : 'sequencer - cycles' }
 Sequencer >> cycleDurations [
 	" return the duration of each event in the cycle"
