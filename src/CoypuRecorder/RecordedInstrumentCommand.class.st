@@ -51,6 +51,12 @@ Class {
 	#tag : 'RecordedCommand'
 }
 
+{ #category : 'instance creation' }
+RecordedInstrumentCommand >> asRhythm [
+
+	^ rhythm
+]
+
 { #category : 'accessing' }
 RecordedInstrumentCommand >> dirtNotes [
 
@@ -154,12 +160,6 @@ RecordedInstrumentCommand >> print [
 	dirtNotes ifNotNil: [
 		m := m allButLast , '; ' , 'dirtNotes: ''' , dirtNotes , '''.' ].
 	^ m
-]
-
-{ #category : 'instance creation' }
-RecordedInstrumentCommand >> rhythm [
-
-	^ rhythm
 ]
 
 { #category : 'instance creation' }

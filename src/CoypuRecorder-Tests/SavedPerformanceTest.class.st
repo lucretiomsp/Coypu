@@ -92,7 +92,7 @@ SavedPerformanceTest >> testAddInstrument [
 
 	self denyEmpty: self commands.
 
-	self assert: self commands last rhythm equals: '16 upbeats'
+	self assert: self commands last asRhythm equals: '16 upbeats'
 ]
 
 { #category : 'tests' }
@@ -177,7 +177,7 @@ SavedPerformanceTest >> testOnceCatched [
 
 	self denyEmpty: self commands.
 
-	self assert: self commands last rhythm equals: nil.
+	self assert: self commands last asRhythm equals: nil.
 	self assert: self commands last symbol equals: ' ''bass3'' once'
 ]
 

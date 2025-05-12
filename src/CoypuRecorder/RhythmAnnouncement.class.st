@@ -27,7 +27,7 @@ Class {
 }
 
 { #category : 'accessing' }
-RhythmAnnouncement >> rhythm [
+RhythmAnnouncement >> asRhythm [
 
 	^ rythm
 ]

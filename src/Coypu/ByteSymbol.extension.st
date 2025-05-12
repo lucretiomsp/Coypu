@@ -8,6 +8,13 @@ ByteSymbol >> asDirtArray [
 ]
 
 { #category : '*Coypu' }
+ByteSymbol >> asRhythm [ 
+
+"creates a Sequencer with 16 steps of the named rhythm"
+^ 16 perform: self
+]
+
+{ #category : '*Coypu' }
 ByteSymbol >> bw: anArrayOfBw [
 
 	"set anArrayOfBw as extra1 of the sequencer in the performance at self"
@@ -97,13 +104,6 @@ ByteSymbol >> number: anArrayOfNumbers [
 	(p at: self) extra2: { 
 			#Number.
 			anArrayOfNumbers }
-]
-
-{ #category : '*Coypu' }
-ByteSymbol >> rhythm [ 
-
-"creates a Sequencer with 16 steps of the named rhythm"
-^ 16 perform: self
 ]
 
 { #category : '*Coypu' }

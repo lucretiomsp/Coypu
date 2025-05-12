@@ -82,7 +82,7 @@ SavedPerformance >> addInstrument: anAnnouncement [
 	"Add a new RecordedInstrumentCommand in the collectionOfCommands. This message is called when a RythmAnnouncement is announced"
 
 	collectionOfCommands add:
-		(RecordedInstrumentCommand new rhythm: anAnnouncement rhythm)
+		(RecordedInstrumentCommand new rhythm: anAnnouncement asRhythm)
 ]
 
 { #category : 'calculating' }
@@ -133,8 +133,8 @@ collectionOfCommands := anOrderedCollection
 { #category : 'adding' }
 SavedPerformance >> doubleRhythmsAnnounced [
 | x y |
-					x := collectionOfCommands allButLast last rhythm , ', '
-					     , collectionOfCommands last rhythm.
+					x := collectionOfCommands allButLast last asRhythm , ', '
+					     , collectionOfCommands last asRhythm.
 					y := collectionOfCommands last symbol.
 					self collectionOfCommands: collectionOfCommands allButLast.
 					collectionOfCommands last
