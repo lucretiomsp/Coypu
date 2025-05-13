@@ -164,18 +164,21 @@ SequencerMono >> playMIDIEvent2At: anIndex [
 { #category : 'LiveCoding  - SuperDirt' }
 SequencerMono >> playMIDIEventAt: anIndex [
 
-	"sends a mesaage to SuperDirt with all the desired OSC arguments and values" 
+
 	| gateTime dur midiNote mch stepDuration midiSender freq |
 	freq := Performance uniqueInstance freq.
 	gateTime := 0.9. "must be changeable"
 	midiSender := PerformerMIDI midiOut.
 	mch := self midiChannel.
 	stepDuration := Performance uniqueInstance freq.
-	midiNote := self notes asDirtArray  wrap: anIndex.
-	dur := self durations asDirtArray  wrap: anIndex.
-	midiSender playNote:  midiNote   onChannel: mch duration: dur * freq * gateTime.
+	midiNote := self notes asDirtArray wrap: anIndex.
+	dur := self durations asDirtArray wrap: anIndex.
+	midiSender
+		playNote: midiNote
+		onChannel: mch
+		duration: dur * freq * gateTime.
 
-	^ true 
+	^ true
 ]
 
 { #category : 'LiveCoding  - SuperDirt' }
