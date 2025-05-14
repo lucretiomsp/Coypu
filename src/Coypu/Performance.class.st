@@ -191,7 +191,8 @@ Performance >> freq [
 Performance >> freq: aDurationInSeconds [
 	"use for playback speed"
 
-	freq := aDurationInSeconds 
+	freq := aDurationInSeconds.
+	self performer freq: aDurationInSeconds 
 ]
 
 { #category : 'LiveCoding - Performance' }
@@ -346,11 +347,14 @@ Performance >> performer [
 
 { #category : 'accessing' }
 Performance >> performer: aPerformer [
-"choose a Performer for the Performance"
-" to be safe, it clear the performance"
+	"choose a Performer for the Performance"
+
+	" to be safe, it clear the performance"
+
 	Performance uniqueInstance muteAll.
-	performer := aPerformer. 
+	performer := aPerformer.
 	Performance uniqueInstance muteAll.
+	
 ]
 
 { #category : 'playing' }
