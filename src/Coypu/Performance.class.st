@@ -14,7 +14,8 @@ Class {
 		'transportStep',
 		'activeProcess',
 		'dirtMIDIDevice',
-		'activeDSP'
+		'activeDSP',
+		'stepAdvancement'
 	],
 	#classInstVars : [
 		'uniqueInstance',
@@ -642,6 +643,18 @@ Performance >> solo: aKeyOrAnArrayOfKeys [
 ]
 		
 		]
+]
+
+{ #category : 'accessing' }
+Performance >> stepAdvancement [
+
+	^ stepAdvancement
+]
+
+{ #category : 'accessing' }
+Performance >> stepAdvancement: aProcess [
+
+	stepAdvancement := aProcess
 ]
 
 { #category : 'accessing' }

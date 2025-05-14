@@ -75,32 +75,28 @@ PerformerSuperDirt >> playDirtFor: aNumberOfSteps [
 	
 ]
 
-{ #category : 'playing' }
-PerformerSuperDirt >> playFor: aNumberOfSteps [
-	"play the performance to SuperDIrt/SuperCollider audio engine - default freq is 132 bpm 
-	Performance speed can be changed with p freq: a bpm"
+{ #category : 'accessing' }
+PerformerSuperDirt >> playEventAt: anIndex in: aSequencer [
+	"sends a mesaage to SuperDirt with all the desired OSC arguments and values"
+
+	| message dur stepDuration |
+	stepDuration := Performance uniqueInstance freq asFloat.
+	message := OrderedCollection new.
+	message add: '/dirt/play'.
+	dur := aSequencer durations asDirtArray wrap: anIndex.
+
+	message
+		add: 'delta';
+		add: (stepDuration * dur) asFloat. "delta should change"
+	aSequencer dirtMessage keysAndValuesDo: [ :key :value |
+		message
+			add: key;
+			add: (value asDirtArray wrap: anIndex) ].
 
 
 
-	performance bpm: 60 / (performance freq * 4).
-	performance transportStep: 0.
-	performance activeProcess: ([
-		 aNumberOfSteps timesRepeat: [
-			 (Delay forSeconds: performance freq) wait.
-			
-			 "sequencers scan"
-			[
-			 performance valuesDo: [ :seq |
-				 (seq gates wrap: performance transportStep) = 1
-					 ifTrue: [
-						 seq playFullDirtEventAt: seq noteIndex. 
-						
-						 "increment note Index"
-						seq noteIndex: seq noteIndex + 1 ]
-					  ] ] forkAt: Processor timingPriority - 2.
-
-			 "step is incremented anyway"
-			
-			performance incrementTransportStep ] ] forkAt:
-			 Processor timingPriority) 
+	(OSCBundle for: { (OSCMessage for: message) })
+		sendToAddressString: '127.0.0.1'
+		port: 57120.
+	^ true
 ]
