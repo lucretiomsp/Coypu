@@ -67,9 +67,13 @@ Performance class >> reset [
 { #category : 'instance creation' }
 Performance class >> uniqueInstance [
 
-	self orbit: 0.
-	
-	^ uniqueInstance ifNil: [ uniqueInstance := super new . self performanceType: PerfType new. ]
+
+
+	^ uniqueInstance ifNil: [
+			self orbit: 0.
+			uniqueInstance := super new
+				performanceType: PerfType new;
+				yourself ]
 ]
 
 { #category : 'as yet unclassified' }
