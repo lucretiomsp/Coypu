@@ -192,7 +192,7 @@ Performance >> freq: aDurationInSeconds [
 	"use for playback speed"
 
 	freq := aDurationInSeconds.
-	self performer freq: aDurationInSeconds 
+"	self performer freq: aDurationInSeconds "
 ]
 
 { #category : 'LiveCoding - Performance' }

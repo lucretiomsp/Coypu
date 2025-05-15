@@ -20,9 +20,34 @@ PerformerPhausto >> play [
 ]
 
 { #category : 'accessing' }
+PerformerPhausto >> playEventAt: anIndex dsp: aDsp freq: aFrequency in: aSequencer [
+
+	| dur aParameterList |
+	dur := aSequencer durations asDirtArray wrap: anIndex.
+	aParameterList := self performance activeDSP allParameters.
+
+	aSequencer extraParams keysAndValuesDo: [ :k :v |
+		aParameterList
+			setValue: (v wrap: anIndex)
+			parameter: aSequencer seqKey , k asString
+			forDsp: aDsp ].
+
+	aParameterList
+		setValue: (aSequencer notes wrap: anIndex) midiNoteToFreq
+		parameter: aSequencer phaustNoteDestination
+		forDsp: aDsp. 
+	aParameterList
+		trig: aSequencer phaustGateDestination
+		for: dur * aFrequency * (aSequencer gateTimes wrap: anIndex)
+		forDsp: aDsp.
+
+
+]
+
+{ #category : 'accessing' }
 PerformerPhausto >> playEventAt: anIndex in: aSequencer [
 
-	self playPhaustoEventAt: anIndex dsp: self performance activeDSP  freq: self performance freq  in: aSequencer 
+	self playEventAt: anIndex dsp: self performance activeDSP  freq: self performance freq  in: aSequencer 
 ]
 
 { #category : 'playing' }
@@ -68,32 +93,6 @@ PerformerPhausto >> playNoteFor: aSequencer [
 	 aSequencer playPhaustEventAt: aSequencer noteIndex. 
 							 "increment note Index"
 							 aSequencer noteIndex: aSequencer noteIndex + 1
-]
-
-{ #category : 'accessing' }
-PerformerPhausto >> playPhaustoEventAt: anIndex dsp: aDsp freq: aFrequency in: aSequencer [
-
-	| dur aParameterList |
-	dur := aSequencer durations asDirtArray wrap: anIndex.
-	aParameterList := self performance activeDSP allParameters.
-
-	aSequencer extraParams keysAndValuesDo: [ :k :v |
-		aParameterList
-			setValue: (v wrap: anIndex)
-			parameter: aSequencer seqKey , k asString
-			forDsp: aDsp ].
-
-	aParameterList
-		setValue: (aSequencer notes wrap: anIndex) midiNoteToFreq
-		parameter: aSequencer phaustNoteDestination
-		forDsp: aDsp. "convert note Number to Frequency"
-	"as in early sequencers, standard gate time is 80% of duration"
-	aParameterList
-		trig: aSequencer phaustGateDestination
-		for: dur * aFrequency * (aSequencer gateTimes wrap: anIndex)
-		forDsp: aDsp.
-
-	^ true
 ]
 
 { #category : 'as yet unclassified' }
