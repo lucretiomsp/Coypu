@@ -137,6 +137,19 @@ Scale class >> istrian: aMidiNoteNumber [
 	^ #(0 1 3 4 6) + aMidiNoteNumber 
 ]
 
+{ #category : 'accessing' }
+Scale class >> list [
+
+	| methods dicList |
+	dicList := Dictionary new.
+	methods := (self  class selectorsInProtocol: 'creating - withoutRoot')
+		           reject: [ :i | i includesSubstring: ':' ].
+
+	methods do: [ :i | dicList add: i -> (self class  >> i) comments" first" ].
+
+	^ methods
+]
+
 { #category : 'creating - withoutRoot' }
 Scale class >> major [ 
 
