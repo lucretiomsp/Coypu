@@ -226,19 +226,19 @@ PerfTypeMooflod >> playFor: aNumberOfSteps [
 	| perf bpm performer |
 	bpm := 10.
 	perf := Performance uniqueInstance.
-	performer := PerformerPhaustoMooflod new.
+	performer := PerformerPhausto"Mooflod" new.
 	"Transcript
 		show: 'PERFOMOOFLOD';
 		open."
-	perf activeProcess isTerminated  ifTrue: [ performer playFor: aNumberOfSteps ].
+	perf activeProcess isTerminated ifTrue: [
+		performer playFor: aNumberOfSteps ].
 	self displayVisualizer ifTrue: [
 		self isVisualizerOpen ifFalse: [
 			stepVisualizer addSteps: perf transportStep.
 			stepVisualizer initializeAnimation: perf freq.
-			self openVisualizers.
-			
-			].
-	   stepVisualizer pauseAnimation: 15 / perf bpm / 60 * (aNumberOfSteps / 16).
+			self openVisualizers ].
+		stepVisualizer pauseAnimation:
+			15 / perf bpm / 60 * (aNumberOfSteps / 16).
 		visualizer initAnimation: 15 / perf bpm / 60 * (aNumberOfSteps / 16) ].
 	perf resetAllSequencers
 ]
