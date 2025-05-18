@@ -115,13 +115,13 @@ MfTimerElement >> initializeTimerValue [
 	currentAngle := 360.
 	timerValue := BlTextElement new.
 	timerValue text: value asString asRopedText.
-	timerValue text fontSize: 11.
+	timerValue text fontSize: 21.
 	timerValue text attributes:
-		{ (BlTextForegroundAttribute paint: Color yellow) }.
+		{ (BlTextForegroundAttribute paint: Color red) }.
 	timerValue constraintsDo: [ :c |
 		c frame horizontal alignCenter.
 		c frame vertical alignCenter ].
-	textArray at: 'text' put: timerValue .
+	textArray at: 'text' put: timerValue.
 	self addChild: timerValue
 ]
 
@@ -140,13 +140,13 @@ MfTimerElement >> replaceTimerTextValue: aValue [
 
 	timerValue := BlTextElement new.
 	timerValue text: aValue asString asRopedText.
-	timerValue text fontSize: 11.
+	timerValue text fontSize: 21.
 	timerValue text attributes:
 		{ (BlTextForegroundAttribute paint: Color yellow) }.
 	timerValue constraintsDo: [ :c |
 		c frame horizontal alignCenter.
 		c frame vertical alignCenter ].
-		textArray at: 'text' put: timerValue.
+	textArray at: 'text' put: timerValue.
 	self addChild: timerValue
 ]
 
