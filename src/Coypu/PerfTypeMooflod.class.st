@@ -226,7 +226,7 @@ PerfTypeMooflod >> playFor: aNumberOfSteps [
 	| perf bpm performer |
 	bpm := 10.
 	perf := Performance uniqueInstance.
-	performer := PerformerPhausto"Mooflod" new.
+	performer := PerformerPhaustoMooflod new. "Mooflod"
 	"Transcript
 		show: 'PERFOMOOFLOD';
 		open."

@@ -28,6 +28,7 @@ MfTimerElement class >> exampleSimpleTimer [
 	<script>
 	| timer space |
 	space := BlSpace new.
+	space root background: Color black.
 	space root layout: BlBasicLayout new.
 	timer := MfTimerElement new value: 18.
 	timer transformDo: [ :c | c translateBy: 200 @ 150 ].
@@ -152,7 +153,7 @@ MfTimerElement >> replaceTimerTextValue: aValue [
 { #category : 'accessing' }
 MfTimerElement >> setValue: aValue [
 
-	self value:  69 + (12 * ((aValue / 440) log: 2)).
+self value: (69 + (12 * (aValue / 440 log: 2))) asInteger.
 ]
 
 { #category : 'accessing' }
