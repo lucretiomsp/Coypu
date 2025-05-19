@@ -42,8 +42,8 @@ MfVisualizerElement >> addElementsLevelFour: aName [
 	| sect slider1 slider2 |
 	self addElementsLevelThree: aName.
 	sect := self children at: nbTracks.
-	slider1 := ICSlider new .
-	slider2 := ICSlider new.
+	slider1 := ICSlider2 new.
+	slider2 := ICSlider2 new.
 	slider1 transformDo: [ :q | q translateBy: 10 @ 75 ].
 	slider2 transformDo: [ :q | q translateBy: 210 @ 75 ].
 	sect addChild: slider1.

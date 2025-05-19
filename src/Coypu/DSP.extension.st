@@ -4,18 +4,15 @@ Extension { #name : 'DSP' }
 DSP >> setValueMooflod: aFloat parameter: aParamAsString [
 	"  set the value of the parameter named aParamAsString"
 
-	| indexInteger |
 	self isNull
 		ifTrue: [ ^ self class invalidException ]
-		ifFalse: [
-			indexInteger := self getParamIndex: aParamAsString.
-			indexInteger ~= -1
-				ifTrue: [
-					self setValue: aFloat parameterIndex: indexInteger.
-					Performance uniqueInstance performanceType visualizer sliderArray
-						at: aParamAsString
-						ifPresent: [ :slider | slider setValue: aFloat ] ]
-				ifFalse: [ ^ self class invalidException ] ]
+		ifFalse: [ self
+				setValue: aFloat
+				parameterIndex: (self parameters at: aParamAsString).
+			Performance uniqueInstance performanceType visualizer sliderArray
+				at: aParamAsString
+				ifPresent: [ :slider | slider setValue: aFloat
+			 ]]
 ]
 
 { #category : '*Coypu' }
