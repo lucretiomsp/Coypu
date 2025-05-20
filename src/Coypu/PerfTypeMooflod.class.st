@@ -92,16 +92,16 @@ PerfTypeMooflod >> addSequencer: aSequencer to: aSymbol [
 	isInKeys := false.
 	perf keysDo: [ :k |
 		k = aSymbol ifTrue: [
-			self visualizer level > 1 ifTrue: [  
-			(self visualizer patternArray at: k) forSequencer: aSequencer].
+			self visualizer level > 1 ifTrue: [
+				(self visualizer patternArray at: k) forSequencer: aSequencer ].
 			isInKeys := true.
 			(self visualizer squareArray at: k) changeAnimationTime:
 				Performance uniqueInstance freq * 4 ] ].
 	isInKeys ifFalse: [
 		self visualizer addInstrument: aSymbol.
-		self visualizer level > 1 ifTrue: [  
-		(self visualizer patternArray associationAt: aSymbol) value
-			forSequencer: aSequencer].
+		self visualizer level > 1 ifTrue: [
+			(self visualizer patternArray associationAt: aSymbol) value
+				forSequencer: aSequencer ].
 		(self visualizer squareArray associationAt: aSymbol) value
 			initializeAnimation: perf freq * 4 ].
 	self visualizer level = 5 ifTrue: [ self addMasterWidgets ].
@@ -119,7 +119,9 @@ PerfTypeMooflod >> addSequencer: aSequencer to: aSymbol [
 		Performance uniqueInstance at: aSymbol put: aSequencer asPolySeq ].
 	perf performer class = PerformerPhausto ifFalse: [ ^ self ].
 	aSequencer phaustGateDestination: aSequencer seqKey , 'Gate'.
-	aSequencer phaustNoteDestination: aSequencer seqKey , 'Note'
+	aSequencer phaustNoteDestination: aSequencer seqKey , 'Note'.
+	
+	
 ]
 
 { #category : 'accessing' }
@@ -188,8 +190,10 @@ PerfTypeMooflod >> levelOfDetail: anInteger [
 { #category : 'accessing' }
 PerfTypeMooflod >> openVisualizers [
 
+	visualizerSpace root removeChildren.
 	visualizerSpace := BlSpace new extent:
 		                   World extent x * (5 / 15) @ World extent y.
+	visualizerSpace position: 500 @ 0.
 	visualizerSpace useMorphicHost.
 	stepVisualizer transformDo: [ :q | q translateBy: 100 @ 0 ].
 	visualizer transformDo: [ :q | q translateBy: 0 @ 60 ].
@@ -224,7 +228,7 @@ PerfTypeMooflod >> playFor: aNumberOfSteps [
 	"just on performance at once"
 
 	| perf bpm performer |
-	bpm := 10.
+	bpm := 60 / (Performance uniqueInstance freq * 4) .
 	perf := Performance uniqueInstance.
 	performer := PerformerPhaustoMooflod new. "Mooflod"
 	"Transcript
