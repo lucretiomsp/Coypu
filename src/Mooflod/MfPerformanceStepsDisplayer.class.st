@@ -1,3 +1,6 @@
+"
+I display the elapsed steps of A Mooflod Performance
+"
 Class {
 	#name : 'MfPerformanceStepsDisplayer',
 	#superclass : 'ToElement',
@@ -84,22 +87,22 @@ MfPerformanceStepsDisplayer >> initializeAnimation: aBpm [
 { #category : 'initialization' }
 MfPerformanceStepsDisplayer >> initializeStepsLabel [
 
-	    text := BlTextElement new.
-    text text:
-        ('Performance elapsed number of steps' asRopedText attributes:
-             { (BlTextForegroundAttribute paint: Color green) }).
-    text text fontSize: 14.
-    text transformDo: [ :t | t translateBy: 15 @ 18 ].
+self removeChildren .
+	text := BlTextElement new.
+	text text: ('STEP COUNTER' asRopedText attributes:
+			 { (BlTextForegroundAttribute paint: Color red) }).
+	text text fontSize: 14.
+	text transformDo: [ :t | t translateBy: 15 @ 18 ].
 
 
-    label := BlTextElement new.
-    label text: (nbSteps asString asRopedText attributes:
-             { (BlTextForegroundAttribute paint: Color green) }).
-    label text fontSize: 16.
-    label transformDo: [ :t | t translateBy: 250 @ 19 ].
-    self addChild: label.
-    self addChild: text.
-    self initializeAnimation: 139
+	label := BlTextElement new.
+	label text: (nbSteps asString asRopedText attributes:
+			 { (BlTextForegroundAttribute paint: Color red) }).
+	label text fontSize: 16.
+	label transformDo: [ :t | t translateBy: 250 @ 19 ].
+	self addChild: label.
+	self addChild: text.
+	self initializeAnimation: 139
 ]
 
 { #category : 'accessing' }
@@ -136,7 +139,7 @@ MfPerformanceStepsDisplayer >> pauseAnimation: aDuration [
 MfPerformanceStepsDisplayer >> setStepsLabel: aNbOfSteps [
 
 	label text: (nbSteps asString asRopedText attributes:
-			 { (BlTextForegroundAttribute paint: Color green) }).
+			 { (BlTextForegroundAttribute paint: Color red) }).
 	label text fontSize: 16
 ]
 

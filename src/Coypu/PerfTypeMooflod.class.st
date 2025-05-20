@@ -228,7 +228,7 @@ PerfTypeMooflod >> playFor: aNumberOfSteps [
 	"just on performance at once"
 
 	| perf bpm performer |
-	bpm := 60 / (Performance uniqueInstance freq * 4) .
+	bpm := 60 / (Performance uniqueInstance freq * 4).
 	perf := Performance uniqueInstance.
 	performer := PerformerPhaustoMooflod new. "Mooflod"
 	"Transcript
@@ -241,10 +241,13 @@ PerfTypeMooflod >> playFor: aNumberOfSteps [
 			stepVisualizer addSteps: perf transportStep.
 			stepVisualizer initializeAnimation: perf freq.
 			self openVisualizers ].
+
 		stepVisualizer pauseAnimation:
 			15 / perf bpm / 60 * (aNumberOfSteps / 16).
+
 		visualizer initAnimation: 15 / perf bpm / 60 * (aNumberOfSteps / 16) ].
-	perf resetAllSequencers
+	perf resetAllSequencers.
+	
 ]
 
 { #category : 'accessing' }

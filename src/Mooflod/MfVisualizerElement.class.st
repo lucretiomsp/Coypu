@@ -1,3 +1,6 @@
+"
+I am the visualizer for a Sequencer inside the Mooflod Performance
+"
 Class {
 	#name : 'MfVisualizerElement',
 	#superclass : 'ToElement',
