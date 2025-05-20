@@ -55,7 +55,7 @@ PerfTypeMooflod >> addMasterWidgets [
 
 	| delayW cutoffW container slider textElt |
 	delayW := MfMasterDelayElement new.
-	slider := ICLogarithmicSlider new.
+	"slider := ICSlider2 new."
 	delayW transformDo: [ :q | q translateBy: 300 @ 610 ].
 	cutoffW := ICMasterCutoff new.
 	container := BlElement new
@@ -65,11 +65,11 @@ PerfTypeMooflod >> addMasterWidgets [
 			             c vertical fitContent ].
 
 	container addChild: cutoffW.
-	container addChild: slider.
+	"container addChild: slider."
 	container childrenDo: [ :child |
 		child margin: (BlInsets vertical: 10) ].
 	container transformDo: [ :q | q translateBy: 50 @ 610 ].
-	slider minValue: cutoffW minValue.
+	"slider minValue: cutoffW minValue.
 	slider maxValue: cutoffW maxValue.
 
 	textElt := BlTextElement new text: slider minValue asRopedText.
@@ -77,7 +77,7 @@ PerfTypeMooflod >> addMasterWidgets [
 
 	slider callBack: [ :value |
 		cutoffW setValue: value.
-		textElt text: value asRopedText ].
+		textElt text: value asRopedText ]."
 	self visualizer sliderArray at: 'MasterDelay' put: delayW.
 	self visualizer sliderArray at: 'MasterCutoff' put: cutoffW.
 	visualizerSpace root addChild: container.
