@@ -363,7 +363,7 @@ MfVisualizerElement >> squareArray [
 MfVisualizerElement >> textFrom: aName [
 
 	^ aName asRopedText attributes:
-		  { (BlTextForegroundAttribute paint: Color green) }
+		  { (BlTextForegroundAttribute paint: Color red) }
 ]
 
 { #category : 'accessing' }
