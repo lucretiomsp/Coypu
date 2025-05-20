@@ -1,5 +1,5 @@
 "
-I display the elapsed steps of A Mooflod Performance
+I display the Seconds to the end of the Performance. my default time is 30 minutes = 1800 seconds
 "
 Class {
 	#name : 'MfPerformanceStepsDisplayer',
@@ -36,7 +36,8 @@ MfPerformanceStepsDisplayer class >> exampleNbSteps [
 MfPerformanceStepsDisplayer >> addSteps: aNbOfSteps [
 
 	(aNbOfSteps between: 0 and: 30000) ifFalse: [ ^ self ].
-	nbSteps := aNbOfSteps.
+	"we count the seconds to the end of the Performance - standard 30 minutes = 1800 seconds"
+	nbSteps := 1800. "aNbOfSteps"
 	self initializeStepsLabel
 ]
 
@@ -79,7 +80,8 @@ MfPerformanceStepsDisplayer >> initializeAnimation: aBpm [
 			 do: [ :e |
 				 animationIsRunning ifTrue: [
 					 nbSteps < 30000 ifTrue: [
-						 nbSteps := nbSteps + 1.
+						"now is set to cuntDown"
+						 nbSteps := nbSteps - 1.
 						 self setStepsLabel: nbSteps ] ] ]).
 	self addAnimation: animation
 ]
@@ -87,22 +89,22 @@ MfPerformanceStepsDisplayer >> initializeAnimation: aBpm [
 { #category : 'initialization' }
 MfPerformanceStepsDisplayer >> initializeStepsLabel [
 
-self removeChildren .
+	self removeChildren.
 	text := BlTextElement new.
-	text text: ('STEP COUNTER' asRopedText attributes:
+	text text: ('SECONDS TO GO' asRopedText attributes:
 			 { (BlTextForegroundAttribute paint: Color red) }).
-	text text fontSize: 14.
-	text transformDo: [ :t | t translateBy: 15 @ 18 ].
+	text text fontSize: 20.
+	text transformDo: [ :t | t translateBy: 20 @ 18 ].
 
 
 	label := BlTextElement new.
 	label text: (nbSteps asString asRopedText attributes:
 			 { (BlTextForegroundAttribute paint: Color red) }).
-	label text fontSize: 16.
-	label transformDo: [ :t | t translateBy: 250 @ 19 ].
+	label text fontSize: 36.
+	label transformDo: [ :t | t translateBy: 220 @ 11 ].
 	self addChild: label.
 	self addChild: text.
-	self initializeAnimation: 139
+	self initializeAnimation: 15
 ]
 
 { #category : 'accessing' }
@@ -140,7 +142,7 @@ MfPerformanceStepsDisplayer >> setStepsLabel: aNbOfSteps [
 
 	label text: (nbSteps asString asRopedText attributes:
 			 { (BlTextForegroundAttribute paint: Color red) }).
-	label text fontSize: 16
+	label text fontSize: 36
 ]
 
 { #category : 'accessing' }
