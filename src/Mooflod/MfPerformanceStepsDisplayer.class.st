@@ -35,7 +35,7 @@ MfPerformanceStepsDisplayer class >> exampleNbSteps [
 { #category : 'adding' }
 MfPerformanceStepsDisplayer >> addSteps: aNbOfSteps [
 
-	(aNbOfSteps between: 0 and: 30000) ifFalse: [ ^ self ].
+	
 	"we count the seconds to the end of the Performance - standard 30 minutes = 1800 seconds"
 	nbSteps := 1800. "aNbOfSteps"
 	self initializeStepsLabel

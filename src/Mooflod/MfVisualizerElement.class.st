@@ -61,10 +61,10 @@ MfVisualizerElement >> addElementsLevelFour: aName [
 MfVisualizerElement >> addElementsLevelOne: aName [
 
 	| label name sect square |
-	sect := self children at: nbTracks .
+	sect := self children at: nbTracks.
 	name := BlTextElement new.
 	name text: (self textFrom: aName).
-	name text fontSize: 12.
+	name text fontSize: 14.
 	square := MfPulsingSquare new.
 	label := BlTextElement new.
 	label text: (self textFrom: 'Instrument :').

@@ -181,7 +181,7 @@ PerfTypeMooflod >> level: anObject [
 			 ]"
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing - ui' }
 PerfTypeMooflod >> levelOfDetail: anInteger [
 
 	visualizer level: anInteger 
@@ -239,10 +239,10 @@ PerfTypeMooflod >> playFor: aNumberOfSteps [
 	self displayVisualizer ifTrue: [
 		self isVisualizerOpen ifFalse: [
 			stepVisualizer addSteps: perf transportStep.
-			stepVisualizer initializeAnimation: perf freq.
+			"stepVisualizer initializeAnimation: perf freq"
 			self openVisualizers ].
 
-		stepVisualizer pauseAnimation: 15.
+		
 		"if we want to increment steps"
 		"15 / perf bpm / 60 * (aNumberOfSteps / 16)"
 
