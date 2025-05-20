@@ -242,9 +242,9 @@ PerfTypeMooflod >> playFor: aNumberOfSteps [
 			stepVisualizer initializeAnimation: perf freq.
 			self openVisualizers ].
 
-		stepVisualizer pauseAnimation: 1.
+		stepVisualizer pauseAnimation: 15.
 		"if we want to increment steps"
-			"15 / perf bpm / 60 * (aNumberOfSteps / 16)".
+		"15 / perf bpm / 60 * (aNumberOfSteps / 16)"
 
 		visualizer initAnimation: 15 / perf bpm / 60 * (aNumberOfSteps / 16) ].
 	perf resetAllSequencers
