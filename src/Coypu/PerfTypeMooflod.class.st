@@ -296,7 +296,7 @@ PerfTypeMooflod >> stop [
 	visualizer cleanVisualizer.
 	stepVisualizer animationIsRunning: false.
 	Performance uniqueInstance activeProcess terminate.
-	Performance uniqueInstance stepAdvancement terminate.
+	"Performance uniqueInstance stepAdvancement terminate".
 ]
 
 { #category : 'accessing' }
