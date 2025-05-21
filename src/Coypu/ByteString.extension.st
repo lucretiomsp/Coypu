@@ -172,7 +172,7 @@ ByteString >> asDirtSounds [
 
 
 	seq := gates asSeqGates asSeq.
-	seq sound: soundsAsStrings.
+	seq sound: (soundsAsStrings joinUsing: ' ').
 
 	^ seq
 ]
