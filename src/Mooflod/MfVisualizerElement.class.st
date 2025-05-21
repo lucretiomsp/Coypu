@@ -1,3 +1,6 @@
+"
+I am the visualizer for a Sequencer inside the Mooflod Performance
+"
 Class {
 	#name : 'MfVisualizerElement',
 	#superclass : 'ToElement',
@@ -41,9 +44,9 @@ MfVisualizerElement >> addElementsLevelFour: aName [
 
 	| sect slider1 slider2 |
 	self addElementsLevelThree: aName.
-	sect := self children at: nbTracks .
-	slider1 := ICSlider new name: 'aaa'.
-	slider2 := ICSlider new.
+	sect := self children at: nbTracks.
+	slider1 := ICSlider2 new.
+	slider2 := ICSlider2 new.
 	slider1 transformDo: [ :q | q translateBy: 10 @ 75 ].
 	slider2 transformDo: [ :q | q translateBy: 210 @ 75 ].
 	sect addChild: slider1.
@@ -58,10 +61,10 @@ MfVisualizerElement >> addElementsLevelFour: aName [
 MfVisualizerElement >> addElementsLevelOne: aName [
 
 	| label name sect square |
-	sect := self children at: nbTracks .
+	sect := self children at: nbTracks.
 	name := BlTextElement new.
 	name text: (self textFrom: aName).
-	name text fontSize: 12.
+	name text fontSize: 14.
 	square := MfPulsingSquare new.
 	label := BlTextElement new.
 	label text: (self textFrom: 'Instrument :').
@@ -360,7 +363,7 @@ MfVisualizerElement >> squareArray [
 MfVisualizerElement >> textFrom: aName [
 
 	^ aName asRopedText attributes:
-		  { (BlTextForegroundAttribute paint: Color green) }
+		  { (BlTextForegroundAttribute paint: Color red) }
 ]
 
 { #category : 'accessing' }

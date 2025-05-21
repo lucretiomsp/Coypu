@@ -14,7 +14,8 @@ Class {
 		'transportStep',
 		'activeProcess',
 		'dirtMIDIDevice',
-		'activeDSP'
+		'activeDSP',
+		'stepAdvancement'
 	],
 	#classInstVars : [
 		'uniqueInstance',
@@ -66,9 +67,13 @@ Performance class >> reset [
 { #category : 'instance creation' }
 Performance class >> uniqueInstance [
 
-	self orbit: 0.
-	
-	^ uniqueInstance ifNil: [ uniqueInstance := super new . self performanceType: PerfType new. ]
+
+
+	^ uniqueInstance ifNil: [
+			self orbit: 0.
+			uniqueInstance := super new
+				performanceType: PerfType new;
+				yourself ]
 ]
 
 { #category : 'as yet unclassified' }
@@ -190,7 +195,8 @@ Performance >> freq [
 Performance >> freq: aDurationInSeconds [
 	"use for playback speed"
 
-	freq := aDurationInSeconds 
+	freq := aDurationInSeconds.
+"	self performer freq: aDurationInSeconds "
 ]
 
 { #category : 'LiveCoding - Performance' }
@@ -345,11 +351,14 @@ Performance >> performer [
 
 { #category : 'accessing' }
 Performance >> performer: aPerformer [
-"choose a Performer for the Performance"
-" to be safe, it clear the performance"
+	"choose a Performer for the Performance"
+
+	" to be safe, it clear the performance"
+
 	Performance uniqueInstance muteAll.
-	performer := aPerformer. 
+	performer := aPerformer.
 	Performance uniqueInstance muteAll.
+	
 ]
 
 { #category : 'playing' }
@@ -642,6 +651,18 @@ Performance >> solo: aKeyOrAnArrayOfKeys [
 ]
 		
 		]
+]
+
+{ #category : 'accessing' }
+Performance >> stepAdvancement [
+
+	^ stepAdvancement
+]
+
+{ #category : 'accessing' }
+Performance >> stepAdvancement: aProcess [
+
+	stepAdvancement := aProcess
 ]
 
 { #category : 'accessing' }

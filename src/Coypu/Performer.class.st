@@ -63,14 +63,45 @@ Performer >> initialize [
 	transport := Transport new.
 ]
 
-{ #category : 'playing' }
-Performer >> play [ 
-	self subclassResponsibility 
+{ #category : 'accessing' }
+Performer >> performance [
+^ performance
 ]
 
 { #category : 'playing' }
-Performer >> playFor: aNumberOfSteps [ 
-	self subclassResponsibility 
+Performer >> play [
+
+	self playFor: fourDaysAt120BPM
+]
+
+{ #category : 'accessing' }
+Performer >> playEventAt: anIndex in: aSequencer [
+
+self subclassResponsibility 
+]
+
+{ #category : 'playing' }
+Performer >> playFor: aNumberOfSteps [
+	performance bpm: 60 / (performance freq * 4).
+	performance transportStep: 0.
+	performance activeProcess: ([
+		 aNumberOfSteps timesRepeat: [
+			 (Delay forSeconds: performance freq) wait.
+
+			 "sequencers scan"
+			 [
+			 performance valuesDo: [ :seq |
+				 (seq gates wrap: performance transportStep) = 1 ifTrue: [
+					 self playEventAt:  seq noteIndex in: seq.
+
+					 "increment note Index"
+					 seq noteIndex: seq noteIndex + 1 ] ] ] forkAt:
+				 Processor timingPriority - 2.
+
+			 "step is incremented anyway"
+
+			 performance incrementTransportStep ] ] forkAt:
+			 Processor timingPriority - 1)
 ]
 
 { #category : 'playing' }

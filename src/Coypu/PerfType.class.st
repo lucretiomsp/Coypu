@@ -77,8 +77,8 @@ PerfType >> playPhaustEventAt: anIndex forSequencer: aSequencer [
 ]
 
 { #category : 'accessing' }
-PerfType >> stop [ 
+PerfType >> stop [
 
-	Performance uniqueInstance  activeProcess terminate.
-
+	Performance uniqueInstance activeProcess terminate.
+	Performance uniqueInstance stepAdvancement terminate
 ]

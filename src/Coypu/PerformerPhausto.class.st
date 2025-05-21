@@ -19,38 +19,44 @@ PerformerPhausto >> play [
 	self playFor: fourDaysAt120BPM 
 ]
 
+{ #category : 'accessing' }
+PerformerPhausto >> playEventAt: anIndex dsp: aDsp freq: aFrequency in: aSequencer [
+
+	| dur aParameterList |
+	dur := aSequencer durations asDirtArray wrap: anIndex.
+	aParameterList := self performance activeDSP allParameters.
+
+	aSequencer extraParams keysAndValuesDo: [ :k :v |
+		aParameterList
+			setValue: (v wrap: anIndex)
+			parameter: aSequencer seqKey , k asString
+			forDsp: aDsp ].
+
+	aParameterList
+		setValue: (aSequencer notes wrap: anIndex) midiNoteToFreq
+		parameter: aSequencer phaustNoteDestination
+		forDsp: aDsp. 
+	aParameterList
+		trig: aSequencer phaustGateDestination
+		for: dur * aFrequency * (aSequencer gateTimes wrap: anIndex)
+		forDsp: aDsp.
+
+
+]
+
+{ #category : 'accessing' }
+PerformerPhausto >> playEventAt: anIndex in: aSequencer [
+
+	self playEventAt: anIndex dsp: self performance activeDSP  freq: self performance freq  in: aSequencer 
+]
+
 { #category : 'playing' }
 PerformerPhausto >> playFor: aNumberOfSteps [
-	"play the performance to SuperDIrt/SuperCollider audio engine - default freq is 132 bpm 
-	Performance speed can be changed with p freq: a bpm"
-
-	| allParams runningDsp activeFreq |
-	Performance uniqueInstance activeDSP
+	self performance activeDSP
 		ifNil: [
 			^ Error new signal:
 				  'There must be an active DSP for this performance' ]
-		ifNotNil: [
-			performance bpm: 60 / (performance freq * 4).
-			activeFreq := performance freq.
-			runningDsp := Performance uniqueInstance activeDSP .
-			allParams := runningDsp allParameters.
-			performance transportStep: 0.
-			performance activeProcess: ([
-				 aNumberOfSteps timesRepeat: [
-					 (Delay forSeconds: performance freq) wait.
-					 [ "sequencers scan"
-					 performance valuesDo: [ :seq |
-						 (seq gates wrap: performance transportStep) = 1 ifTrue: [
-							 "seq playPhaustEventAt: seq noteIndex. "
-							seq playPhaustEventAt: seq noteIndex parameters: allParams  dsp: runningDsp freq: activeFreq.
-							
-							 "increment note Index"
-							 seq noteIndex: seq noteIndex + 1 ] ] ] forkAt:
-						 Processor highIOPriority.
-
-					 "step is incremented anyway"
-					 performance incrementTransportStep ] ] forkAt:
-					 Processor timingPriority) ]
+		ifNotNil: [ super playFor: aNumberOfSteps ]
 ]
 
 { #category : 'playing' }

@@ -55,7 +55,7 @@ PerfTypeMooflod >> addMasterWidgets [
 
 	| delayW cutoffW container slider textElt |
 	delayW := MfMasterDelayElement new.
-	slider := ICLogarithmicSlider new.
+	"slider := ICSlider2 new."
 	delayW transformDo: [ :q | q translateBy: 300 @ 610 ].
 	cutoffW := ICMasterCutoff new.
 	container := BlElement new
@@ -65,11 +65,11 @@ PerfTypeMooflod >> addMasterWidgets [
 			             c vertical fitContent ].
 
 	container addChild: cutoffW.
-	container addChild: slider.
+	"container addChild: slider."
 	container childrenDo: [ :child |
 		child margin: (BlInsets vertical: 10) ].
 	container transformDo: [ :q | q translateBy: 50 @ 610 ].
-	slider minValue: cutoffW minValue.
+	"slider minValue: cutoffW minValue.
 	slider maxValue: cutoffW maxValue.
 
 	textElt := BlTextElement new text: slider minValue asRopedText.
@@ -77,7 +77,7 @@ PerfTypeMooflod >> addMasterWidgets [
 
 	slider callBack: [ :value |
 		cutoffW setValue: value.
-		textElt text: value asRopedText ].
+		textElt text: value asRopedText ]."
 	self visualizer sliderArray at: 'MasterDelay' put: delayW.
 	self visualizer sliderArray at: 'MasterCutoff' put: cutoffW.
 	visualizerSpace root addChild: container.
@@ -92,16 +92,16 @@ PerfTypeMooflod >> addSequencer: aSequencer to: aSymbol [
 	isInKeys := false.
 	perf keysDo: [ :k |
 		k = aSymbol ifTrue: [
-			self visualizer level > 1 ifTrue: [  
-			(self visualizer patternArray at: k) forSequencer: aSequencer].
+			self visualizer level > 1 ifTrue: [
+				(self visualizer patternArray at: k) forSequencer: aSequencer ].
 			isInKeys := true.
 			(self visualizer squareArray at: k) changeAnimationTime:
 				Performance uniqueInstance freq * 4 ] ].
 	isInKeys ifFalse: [
 		self visualizer addInstrument: aSymbol.
-		self visualizer level > 1 ifTrue: [  
-		(self visualizer patternArray associationAt: aSymbol) value
-			forSequencer: aSequencer].
+		self visualizer level > 1 ifTrue: [
+			(self visualizer patternArray associationAt: aSymbol) value
+				forSequencer: aSequencer ].
 		(self visualizer squareArray associationAt: aSymbol) value
 			initializeAnimation: perf freq * 4 ].
 	self visualizer level = 5 ifTrue: [ self addMasterWidgets ].
@@ -119,7 +119,9 @@ PerfTypeMooflod >> addSequencer: aSequencer to: aSymbol [
 		Performance uniqueInstance at: aSymbol put: aSequencer asPolySeq ].
 	perf performer class = PerformerPhausto ifFalse: [ ^ self ].
 	aSequencer phaustGateDestination: aSequencer seqKey , 'Gate'.
-	aSequencer phaustNoteDestination: aSequencer seqKey , 'Note'
+	aSequencer phaustNoteDestination: aSequencer seqKey , 'Note'.
+	
+	
 ]
 
 { #category : 'accessing' }
@@ -179,7 +181,7 @@ PerfTypeMooflod >> level: anObject [
 			 ]"
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing - ui' }
 PerfTypeMooflod >> levelOfDetail: anInteger [
 
 	visualizer level: anInteger 
@@ -188,8 +190,10 @@ PerfTypeMooflod >> levelOfDetail: anInteger [
 { #category : 'accessing' }
 PerfTypeMooflod >> openVisualizers [
 
+	visualizerSpace root removeChildren.
 	visualizerSpace := BlSpace new extent:
 		                   World extent x * (5 / 15) @ World extent y.
+	visualizerSpace position: 500 @ 0.
 	visualizerSpace useMorphicHost.
 	stepVisualizer transformDo: [ :q | q translateBy: 100 @ 0 ].
 	visualizer transformDo: [ :q | q translateBy: 0 @ 60 ].
@@ -224,21 +228,24 @@ PerfTypeMooflod >> playFor: aNumberOfSteps [
 	"just on performance at once"
 
 	| perf bpm performer |
-	bpm := 10.
+	bpm := 60 / (Performance uniqueInstance freq * 4).
 	perf := Performance uniqueInstance.
-	performer := PerformerPhaustoMooflod new.
+	performer := PerformerPhaustoMooflod new. "Mooflod"
 	"Transcript
 		show: 'PERFOMOOFLOD';
 		open."
-	perf activeProcess isTerminated  ifTrue: [ performer playFor: aNumberOfSteps ].
+	perf activeProcess isTerminated ifTrue: [
+		performer playFor: aNumberOfSteps ].
 	self displayVisualizer ifTrue: [
 		self isVisualizerOpen ifFalse: [
 			stepVisualizer addSteps: perf transportStep.
-			stepVisualizer initializeAnimation: perf freq.
-			self openVisualizers.
-			
-			].
-	   stepVisualizer pauseAnimation: 15 / perf bpm / 60 * (aNumberOfSteps / 16).
+			"stepVisualizer initializeAnimation: perf freq"
+			self openVisualizers ].
+
+		
+		"if we want to increment steps"
+		"15 / perf bpm / 60 * (aNumberOfSteps / 16)"
+
 		visualizer initAnimation: 15 / perf bpm / 60 * (aNumberOfSteps / 16) ].
 	perf resetAllSequencers
 ]
@@ -286,9 +293,10 @@ PerfTypeMooflod >> stepVisualizer: anObject [
 { #category : 'accessing' }
 PerfTypeMooflod >> stop [
 
-	visualizer cleanVisualizer .
+	visualizer cleanVisualizer.
 	stepVisualizer animationIsRunning: false.
-	Performance uniqueInstance  activeProcess terminate.
+	Performance uniqueInstance activeProcess terminate.
+	Performance uniqueInstance stepAdvancement terminate.
 ]
 
 { #category : 'accessing' }
