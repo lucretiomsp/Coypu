@@ -129,7 +129,7 @@ PortMidi >> getDeviceNameid: aDeviceID [
 		        utf8Decoded.
 	(self getDeviceInfo: aDeviceID) input = 0
 		ifTrue: [ type := ' is OUTPUT' ]
-		ifFalse: [ type := 'is INPUT' ].
+		ifFalse: [ type := ' is INPUT' ].
 	^ name , type
 ]
 
