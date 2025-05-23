@@ -91,7 +91,7 @@ MfPerformanceStepsDisplayer >> initializeStepsLabel [
 
 	self removeChildren.
 	text := BlTextElement new.
-	text text: ('SECONDS TO GO' asRopedText attributes:
+	text text: ('MOOFSECONDS TO GO' asRopedText attributes:
 			 { (BlTextForegroundAttribute paint: Color red) }).
 	text text fontSize: 20.
 	text transformDo: [ :t | t translateBy: 20 @ 18 ].

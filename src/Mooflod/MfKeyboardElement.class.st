@@ -234,14 +234,15 @@ MfKeyboardElement >> newButton: anExtent [
 MfKeyboardElement >> openInMooflod [
 
 	| space |
-	space := BlSpace new extent: World extent x / 6 @ World extent y.
+	space := BlSpace new extent: 800 @ 300.
 	space useMorphicHost.
 	space root background: Color black.
 	space toTheme: MfMooflodTheme new.
 
 	self transformDo: [ :c |
-		c rotateBy: 90.
-		c translateBy: -270 @ 250 ].
+		c rotateBy: 0.
+		c translateBy: 0 @ 0 .
+		c scaleBy: 0.8].
 	space root addChild: self.
 
 	space root position: 0 @ 20.
