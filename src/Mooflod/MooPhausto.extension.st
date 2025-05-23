@@ -3,13 +3,19 @@ Extension { #name : 'MooPhausto' }
 { #category : '*Mooflod' }
 MooPhausto >> masterCutoff: aMIDIValue [
 
-	self midiSender sendCC: 22 withValue: aMIDIValue onChannel: 15
+	self midiSender sendCC: 22 withValue: aMIDIValue onChannel: 15.
+	Performance uniqueInstance performanceType visualizer sliderArray
+				at: 'MasterCutoff'
+				ifPresent: [ :slider | slider setValue: aMIDIValue ] 
 ]
 
 { #category : '*Mooflod' }
 MooPhausto >> masterDelayAmount: aMIDIValue [
 
-	self midiSender sendCC: 113 withValue: aMIDIValue onChannel: 16
+	self midiSender sendCC: 113 withValue: aMIDIValue onChannel: 16.
+	Performance uniqueInstance performanceType visualizer sliderArray
+				at: 'MasterDelay'
+				ifPresent: [ :slider | slider setValue: aMIDIValue ] 
 ]
 
 { #category : '*Mooflod' }

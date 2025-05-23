@@ -1170,27 +1170,33 @@ Sequencer >> sound: soundsAndIndexs [
 	//// what if using symbools insteda of strings?
 	 
 	"
-	
-	|  soundsAndIndexsSeparated  indexes sounds |
-	soundsAndIndexsSeparated:= soundsAndIndexs findBetweenSubstrings: ' '.
-	
-	
+
+	| soundsAndIndexsSeparated indexes sounds |
+	soundsAndIndexsSeparated := soundsAndIndexs findBetweenSubstrings:
+		                            ' '.
+
+
 	sounds := OrderedCollection new.
-	1 to: soundsAndIndexsSeparated size do: [ :i | 
+	1 to: soundsAndIndexsSeparated size do: [ :i |
 		sounds add:
-			(((soundsAndIndexsSeparated at: i) findBetweenSubstrings: ':') at: 1) ].
+			(((soundsAndIndexsSeparated at: i) findBetweenSubstrings: ':') at:
+				 1) ].
 	indexes := OrderedCollection new.
-	(1 to: soundsAndIndexsSeparated size) do: [ :i | 
-		((soundsAndIndexsSeparated at: i) findBetweenSubstrings: ':') size > 1
-			ifTrue: [ 
+	(1 to: soundsAndIndexsSeparated size) do: [ :i |
+		((soundsAndIndexsSeparated at: i) findBetweenSubstrings: ':') size
+		> 1
+			ifTrue: [
 				indexes add:
-					(((soundsAndIndexsSeparated at: i) findBetweenSubstrings: ':') at: 2)
-						asInteger ]
+					(((soundsAndIndexsSeparated at: i) findBetweenSubstrings: ':')
+						 at: 2) asInteger ]
 			ifFalse: [ indexes add: 0 ] ].
 
 
-self dirtMessage at: 's' put: (sounds asDirtArray); at: 'n' put:  indexes asDirtArray.
-		  
+	self dirtMessage
+		at: 's' put: sounds asDirtArray;
+		at: 'n' put: indexes asDirtArray.
+	"needs refactoring"
+	self soundPattern: sounds asDirtArray 
 ]
 
 { #category : 'LiveCoding  - SuperDirt' }
@@ -1300,7 +1306,7 @@ Sequencer >> times: anInteger [
 Sequencer >> to: aSymbol [
 	" assign sequencer to the performance at aSymbol. if a sound for SuperDirt is not specified, the symbol is used for sound name"
 
-	| announcement |
+	| announcement perf allItems soundfiles myInstrument sampleNames samplesForSequencer |
 	"announcement := (self notesSize >= 8 and: [
 		                 (self notes at: 1) = 60 and: [
 			                 (self notes at: 5) = 60 ] ])
@@ -1311,7 +1317,28 @@ Sequencer >> to: aSymbol [
 	PerformanceRecorder uniqueInstance announce: announcement.
 
 
-	Performance performanceType addSequencer: self to: aSymbol
+
+
+	Performance performanceType addSequencer: self to: aSymbol.
+
+	"need cleaning and refactoring"
+	perf := Performance uniqueInstance.
+	perf performer class = PerformerPhausto ifTrue: [
+		allItems := (((STONJSON fromString: perf activeDSP getJSON) at: #ui)
+			             at: 1) at: #items.
+		soundfiles := allItems select: [ :i |
+			              i values includes: 'soundfile' ].
+
+		myInstrument := perf activeDSP soundfiles select: [ :i |
+			                i values includes: aSymbol ] ].
+	myInstrument ifNotEmpty: [
+		sampleNames := ((myInstrument first at: #url)
+			                findBetweenSubstrings: ';') collect: [ :i |
+			               (i afterLastSlash findBetweenSubstrings: '.') first ].
+		self soundPattern ifNotNil: [
+			samplesForSequencer := self soundPattern collect: [ :i |
+				                       (sampleNames indexOf: i ) - 1].
+			self index: samplesForSequencer ] ]
 ]
 
 { #category : 'addToPerformance' }
