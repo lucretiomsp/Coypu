@@ -80,5 +80,5 @@ PerfType >> playPhaustEventAt: anIndex forSequencer: aSequencer [
 PerfType >> stop [
 
 	Performance uniqueInstance activeProcess terminate.
-	Performance uniqueInstance stepAdvancement terminate
+	"Performance uniqueInstance stepAdvancement terminate"
 ]
