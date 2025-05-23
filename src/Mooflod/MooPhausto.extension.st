@@ -1,6 +1,12 @@
 Extension { #name : 'MooPhausto' }
 
 { #category : '*Mooflod' }
+MooPhausto >> cleanRow: aNumber [
+
+Performance uniqueInstance performanceType visualizer cleanRow: aNumber
+]
+
+{ #category : '*Mooflod' }
 MooPhausto >> masterCutoff: aMIDIValue [
 
 	self midiSender sendCC: 22 withValue: aMIDIValue onChannel: 15.
