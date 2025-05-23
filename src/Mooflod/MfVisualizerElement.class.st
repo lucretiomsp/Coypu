@@ -322,7 +322,7 @@ MfVisualizerElement >> setLabelToSlider: aName firstSlider: aSlider secondSlider
 		sliderArray at: 'TpSamplerEffect' put: anOtherSlider.
 		aSlider
 			changeMinValueLabelTo: 0;
-			changeMaxValueLabelTo: 22.
+			changeMaxValueLabelTo: 50.
 		anOtherSlider
 			changeMinValueLabelTo: 0;
 			changeMaxValueLabelTo: 1.
@@ -332,7 +332,7 @@ MfVisualizerElement >> setLabelToSlider: aName firstSlider: aSlider secondSlider
 		sliderArray at: 'PsgPlusLfoAmount' put: anOtherSlider.
 		aSlider
 			changeMinValueLabelTo: 0;
-			changeMaxValueLabelTo: 3.
+			changeMaxValueLabelTo: 1.
 		anOtherSlider
 			changeMinValueLabelTo: 0;
 			changeMaxValueLabelTo: 10.
