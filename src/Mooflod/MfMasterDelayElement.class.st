@@ -130,7 +130,7 @@ MfMasterDelayElement >> rColor [
 { #category : 'initialization' }
 MfMasterDelayElement >> setValue: aFloat [
 
-	self delayAmount: (aFloat * 98 ) + 0.1
+	self delayAmount: aFloat 
 ]
 
 { #category : 'internal' }

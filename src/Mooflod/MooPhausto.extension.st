@@ -20,8 +20,8 @@ MooPhausto >> masterDelayAmount: aMIDIValue [
 
 	self midiSender sendCC: 113 withValue: aMIDIValue onChannel: 16.
 	Performance uniqueInstance performanceType visualizer sliderArray
-				at: 'MasterDelay'
-				ifPresent: [ :slider | slider setValue: aMIDIValue ] 
+		at: 'MasterDelay'
+		ifPresent: [ :slider | slider delayAmount: aMIDIValue ]
 ]
 
 { #category : '*Mooflod' }
@@ -33,7 +33,10 @@ MooPhausto >> masterDelayFeedback: aMIDIValue [
 { #category : '*Mooflod' }
 MooPhausto >> masterDelayTime: aMIDIValue [
 
-	self midiSender sendCC: 107 withValue: aMIDIValue onChannel: 16
+	self midiSender sendCC: 107 withValue: aMIDIValue onChannel: 16.
+		Performance uniqueInstance performanceType visualizer sliderArray
+		at: 'MasterDelay'
+		ifPresent: [ :slider | slider delayTime: aMIDIValue ]
 ]
 
 { #category : '*Mooflod' }
