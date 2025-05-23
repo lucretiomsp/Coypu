@@ -55,7 +55,11 @@ MooPhausto >> masterFilterType: aFilterType [
 { #category : '*Mooflod' }
 MooPhausto >> masterResonance: aMIDIValue [
 
-	self midiSender sendCC: 23 withValue: aMIDIValue onChannel: 15
+	self midiSender sendCC: 23 withValue: aMIDIValue onChannel: 15.
+	Performance uniqueInstance performanceType visualizer sliderArray
+		at: 'MasterCutoff'
+		ifPresent: [ :slider | slider resonance: aMIDIValue ]
+
 ]
 
 { #category : '*Mooflod' }
