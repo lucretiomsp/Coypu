@@ -45,12 +45,13 @@ MfMasterDelayElement >> createCircle: x y: anY [
 ]
 
 { #category : 'internal' }
-MfMasterDelayElement >> createCircle: x y: anY color: aColor [
+MfMasterDelayElement >> createCircle: x y: anY border: aColor [
 
 	| c color |
-	color := Color r: aColor g: 255 b:0.
+	color := Color r: 255 - (aColor * 2 ) g: aColor * 2 b: 0.
 	c := MfCircleElement new size: x @ anY.
-	c background: color.
+	c background: BlPaint transparent.
+	c border: (BlBorder paint: color width: 1).
 	self addChild: c
 ]
 
@@ -80,9 +81,9 @@ MfMasterDelayElement >> delayAmount [
 { #category : 'public api' }
 MfMasterDelayElement >> delayAmount: aValue [
 
-	(aValue between: 0 and: 100)
+	(aValue between: 0 and: 127)
 		ifTrue: [ delayAmount := aValue ]
-		ifFalse: [ delayAmount := 100 ].
+		ifFalse: [ delayAmount := 127 ].
 	nbOfChilds := delayAmount / 4.
 	self updateCircles
 ]
@@ -97,8 +98,9 @@ MfMasterDelayElement >> delayTime [
 MfMasterDelayElement >> delayTime: aDelay [
 
 	delayTime := aDelay.
-	self background: (Color r: self rColor g: 255 b: 0).
-	^self rColor 
+	"self background: (Color r: self rColor g: 255 b: 0)."
+	self updateCircles .
+	^ self rColor
 ]
 
 { #category : 'initialization' }
@@ -122,7 +124,7 @@ MfMasterDelayElement >> numberOfCircles [
 { #category : 'accessing' }
 MfMasterDelayElement >> rColor [
 
-	^ 0 + (12.75 * (delayTime * 10))
+	^ 0 + delayTime 
 ]
 
 { #category : 'initialization' }
@@ -133,11 +135,12 @@ MfMasterDelayElement >> setValue: aFloat [
 
 { #category : 'internal' }
 MfMasterDelayElement >> updateCircles [
-
-	currentX := 104.
-	currentY := 104.
+   
+   self removeChildren.
+	currentX := 0.
+	currentY := 0.
 	1 to: delayAmount / 4 do: [ :i |
-		currentX := currentX - 4.
-		currentY := currentY - 4.
-		self createCircle: currentX y: currentY color: self rColor ]
+		currentX := currentX + 4.
+		currentY := currentY + 4.
+		self createCircle: currentX y: currentY border: self rColor ]
 ]
