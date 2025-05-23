@@ -87,8 +87,10 @@ PerfTypeMooflod >> addMasterWidgets [
 { #category : 'adding' }
 PerfTypeMooflod >> addSequencer: aSequencer to: aSymbol [
 
+"TOO LONG, NEED REFACTORING"
 	| isInKeys perf |
-	perf := Performance uniqueInstance.
+(	self visualizer instruments includes: aSymbol) ifTrue:
+[	perf := Performance uniqueInstance.
 	isInKeys := false.
 	perf keysDo: [ :k |
 		k = aSymbol ifTrue: [
@@ -119,9 +121,7 @@ PerfTypeMooflod >> addSequencer: aSequencer to: aSymbol [
 		Performance uniqueInstance at: aSymbol put: aSequencer asPolySeq ].
 	perf performer class = PerformerPhausto ifFalse: [ ^ self ].
 	aSequencer phaustGateDestination: aSequencer seqKey , 'Gate'.
-	aSequencer phaustNoteDestination: aSequencer seqKey , 'Note'.
-	
-	
+	aSequencer phaustNoteDestination: aSequencer seqKey , 'Note'] ifFalse: [ self inform: 'Instruments is not in MOOFLOD' ]
 ]
 
 { #category : 'accessing' }

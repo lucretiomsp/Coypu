@@ -10,7 +10,8 @@ Class {
 		'squareArray',
 		'patternArray',
 		'sliderArray',
-		'tracks'
+		'tracks',
+		'instruments'
 	],
 	#classVars : [
 		'level'
@@ -136,12 +137,13 @@ MfVisualizerElement >> addIconToInstrument: aName [
 	| sect icon |
 	sect := self children at: nbTracks.
 	aName = 'Kick' ifTrue: [ icon := ICBassDrumIcon new ].
-		aName = 'Fm2Op' ifTrue: [ icon := ICFm2OpIcon new ].
-			aName = 'TpSampler' ifTrue: [ icon := ICPercussionsIcon new ].
-				aName = 'PsgPlus' ifTrue: [ icon := ICWaveIcon new ].
-					aName = 'Chordy' ifTrue: [ icon := ICMonoLeadIcon  new ].
-	icon transformDo: [ :t | t translateBy: 400 @ 23 ].
-	sect addChild: icon
+	aName = 'Fm2Op' ifTrue: [ icon := ICFm2OpIcon new ].
+	aName = 'TpSampler' ifTrue: [ icon := ICPercussionsIcon new ].
+	aName = 'PsgPlus' ifTrue: [ icon := ICWaveIcon new ].
+	aName = 'Chordy' ifTrue: [ icon := ICMonoLeadIcon new ].
+	
+		icon transformDo: [ :t | t translateBy: 400 @ 23 ].
+		sect addChild: icon 
 ]
 
 { #category : 'adding' }
@@ -256,6 +258,18 @@ MfVisualizerElement >> initialize [
 		at: #PsgPlus put: 4;
 		at: #Chordy put: 5.
 	nbTracks := 0
+]
+
+{ #category : 'accessing' }
+MfVisualizerElement >> instruments [
+
+^ instruments ifNil: [ #( #Kick . #TpSampler . #PsgPlus . #Chordy . #Fm2Op.) ]
+]
+
+{ #category : 'accessing' }
+MfVisualizerElement >> instruments: anArrayOfSymbols [
+
+instruments := anArrayOfSymbols 
 ]
 
 { #category : 'accessing' }

@@ -3,6 +3,6 @@ Extension { #name : 'StDebugger' }
 { #category : '*Coypu' }
 StDebugger >> open [
 
-	super open
+	super open.
 	Performance uniqueInstance stop
 ]
