@@ -366,7 +366,7 @@ MfVisualizerElement >> setLabelToSlider: aName firstSlider: aSlider secondSlider
 		isValidName := true ].
 	aName = 'Fm2Op' ifTrue: [
 		sliderArray at: 'Fm2OpModIndex' put: aSlider.
-		sliderArray at: 'F2OpModRatio' put: anOtherSlider.
+		sliderArray at: 'Fm2OpModRatio' put: anOtherSlider.
 		aSlider
 			changeMinValueLabelTo: 1;
 			changeMaxValueLabelTo: 3.
