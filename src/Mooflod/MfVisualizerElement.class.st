@@ -11,7 +11,8 @@ Class {
 		'patternArray',
 		'sliderArray',
 		'tracks',
-		'instruments'
+		'instruments',
+		'activeRows'
 	],
 	#classVars : [
 		'level'
@@ -150,10 +151,13 @@ MfVisualizerElement >> addIconToInstrument: aName [
 MfVisualizerElement >> addInstrument: aName [
 
 	nbTracks < 5 ifFalse: [ ^ self ].
-   nbTracks := nbTracks + 1.
-	self initLevelRepresentation: aName.
-	
-	'ADDED INSTRUMENT' , nbTracks asString traceCr
+	nbTracks := nbTracks + 1.
+	(activeRows includes: nbTracks)
+		ifTrue: [ ]
+		ifFalse: [
+			self initLevelRepresentation: aName.
+
+			'ADDED INSTRUMENT' , nbTracks asString traceCr ]
 ]
 
 { #category : 'adding' }
@@ -257,7 +261,8 @@ MfVisualizerElement >> initialize [
 		at: #Fm2Op put: 3;
 		at: #PsgPlus put: 4;
 		at: #Chordy put: 5.
-	nbTracks := 0
+	nbTracks := 0.
+	activeRows := OrderedCollection new.
 ]
 
 { #category : 'accessing' }
@@ -294,6 +299,16 @@ MfVisualizerElement >> nbTracks [
 MfVisualizerElement >> nbTracks: anInteger [
 
 	nbTracks := anInteger 
+]
+
+{ #category : 'accessing' }
+MfVisualizerElement >> nextFreeRow [
+
+	^ (activeRows includes: nbTracks + 1)
+		  ifFalse: [ nbTracks + 1 modulo: 5 ]
+		  ifTrue: [
+			  self nbTracks: nbTracks + 1.
+			  self nextFreeRow ]
 ]
 
 { #category : 'accessing' }
