@@ -234,9 +234,9 @@ Performance >> length [
 Performance >> mute: aKeyOrAnArrayOfKeys [
 	"remove all the keys in the arrayOfKeys from the Performance or remove just a single key"
 
-	| tracks |
+	"| tracks |
 	tracks := #( #Kick #TpSampler #Fm2Op #PsgPlus #Chordy ).
-
+"
 	aKeyOrAnArrayOfKeys isArray
 		ifTrue: [
 		aKeyOrAnArrayOfKeys do: [ :i | self removeKey: i ifAbsent: [  ] ] ]
@@ -244,7 +244,7 @@ Performance >> mute: aKeyOrAnArrayOfKeys [
 			self removeKey: aKeyOrAnArrayOfKeys.
 			self performanceType class = PerfTypeMooflod ifTrue: [
 				self performanceType visualizer cleanRow:
-					(tracks indexOf: aKeyOrAnArrayOfKeys) ] ]
+					(self performanceType visualizer tracks at: aKeyOrAnArrayOfKeys) ] ]
 ]
 
 { #category : 'muting and soloing' }
@@ -627,8 +627,8 @@ Performance >> restore [
 Performance >> solo: aKeyOrAnArrayOfKeys [
 	" remove all keys from the Performance except aKey or anArrayOfKeys"
 
-	| anArrayOfKeys tracks |
-	tracks := #( #Kick #TpSampler #Fm2Op #PsgPlus #Chordy ).
+	| anArrayOfKeys "tracks" |
+	"tracks := #( #Kick #TpSampler #Fm2Op #PsgPlus #Chordy )."
 	backup := self asDictionary. "do the backup"
 
 	anArrayOfKeys := self keys.
@@ -640,17 +640,15 @@ Performance >> solo: aKeyOrAnArrayOfKeys [
 			self keysAndValuesRemove: [ :keys :values |
 				keys ~= aKeyOrAnArrayOfKeys ] ].
 	self performanceType class = PerfTypeMooflod ifTrue: [
-		self keysDo: [ :k | 
-    | indexOfK |
-    indexOfK := tracks indexOf: k.
-    tracks withIndexDo: [ :track :index | 
-        index ~= indexOfK ifTrue: [ 
-            self performanceType visualizer cleanRow: index 
-        ] 
-    ] 
-]
-		
-		]
+		self performanceType visualizer tracks removeKey: aKeyOrAnArrayOfKeys .
+		self performanceType visualizer tracks valuesDo: [ :v | self performanceType visualizer cleanRow: v.
+			 ]
+		"self keysDo: [ :k |
+			| indexOfK |
+			indexOfK := self tracks indexOf: k.
+			 tracks withIndexDo: [ :track :index |
+				index ~= indexOfK ifTrue: [
+					self performanceType visualizer cleanRow: index ] ] ] "]
 ]
 
 { #category : 'accessing' }

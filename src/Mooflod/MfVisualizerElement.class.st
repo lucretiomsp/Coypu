@@ -151,11 +151,12 @@ MfVisualizerElement >> addIconToInstrument: aName [
 MfVisualizerElement >> addInstrument: aName [
 
 	nbTracks < 5 ifFalse: [ ^ self ].
-	nbTracks := nbTracks + 1.
+	nbTracks := self nextFreeRow .
 	(activeRows includes: nbTracks)
-		ifTrue: [ ]
+		ifTrue: [  ]
 		ifFalse: [
 			self initLevelRepresentation: aName.
+			self tracks at: aName put: nbTracks.
 
 			'ADDED INSTRUMENT' , nbTracks asString traceCr ]
 ]
@@ -255,14 +256,15 @@ MfVisualizerElement >> initialize [
 	patternArray := Dictionary new.
 	sliderArray := Dictionary new.
 	tracks := Dictionary new.
-	tracks
+	
+	"tracks
 		at: #Kick put: 1;
 		at: #TpSampler put: 2;
 		at: #Fm2Op put: 3;
 		at: #PsgPlus put: 4;
-		at: #Chordy put: 5.
+		at: #Chordy put: 5."
 	nbTracks := 0.
-	activeRows := OrderedCollection new.
+	activeRows := OrderedCollection new
 ]
 
 { #category : 'accessing' }
