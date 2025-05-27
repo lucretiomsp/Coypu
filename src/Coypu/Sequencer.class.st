@@ -1330,15 +1330,15 @@ Sequencer >> to: aSymbol [
 			              i values includes: 'soundfile' ].
 
 		myInstrument := perf activeDSP soundfiles select: [ :i |
-			                i values includes: aSymbol ] ].
-	myInstrument ifNotEmpty: [
-		sampleNames := ((myInstrument first at: #url)
-			                findBetweenSubstrings: ';') collect: [ :i |
-			               (i afterLastSlash findBetweenSubstrings: '.') first ].
-		self soundPattern ifNotNil: [
-			samplesForSequencer := self soundPattern collect: [ :i |
-				                       (sampleNames indexOf: i ) - 1].
-			self index: samplesForSequencer ] ]
+			                i values includes: aSymbol ].
+		myInstrument ifNotEmpty: [
+			sampleNames := ((myInstrument first at: #url)
+				                findBetweenSubstrings: ';') collect: [ :i |
+				               (i afterLastSlash findBetweenSubstrings: '.') first ].
+			self soundPattern ifNotNil: [
+				samplesForSequencer := self soundPattern collect: [ :i |
+					                       (sampleNames indexOf: i) - 1 ].
+				self index: samplesForSequencer ] ] ]
 ]
 
 { #category : 'addToPerformance' }
