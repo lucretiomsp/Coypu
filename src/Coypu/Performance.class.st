@@ -625,12 +625,9 @@ Performance >> restore [
 
 { #category : 'muting and soloing' }
 Performance >> solo: aKeyOrAnArrayOfKeys [
-	" remove all keys from the Performance except aKey or anArrayOfKeys"
 
 	| anArrayOfKeys "tracks" |
-	"tracks := #( #Kick #TpSampler #Fm2Op #PsgPlus #Chordy )."
-	backup := self asDictionary. "do the backup"
-
+	backup := self asDictionary.
 	anArrayOfKeys := self keys.
 	aKeyOrAnArrayOfKeys isArray
 		ifTrue: [
@@ -639,16 +636,14 @@ Performance >> solo: aKeyOrAnArrayOfKeys [
 		ifFalse: [
 			self keysAndValuesRemove: [ :keys :values |
 				keys ~= aKeyOrAnArrayOfKeys ] ].
-	self performanceType class = PerfTypeMooflod ifTrue: [
-		self performanceType visualizer tracks removeKey: aKeyOrAnArrayOfKeys .
-		self performanceType visualizer tracks valuesDo: [ :v | self performanceType visualizer cleanRow: v.
-			 ]
-		"self keysDo: [ :k |
-			| indexOfK |
-			indexOfK := self tracks indexOf: k.
-			 tracks withIndexDo: [ :track :index |
-				index ~= indexOfK ifTrue: [
-					self performanceType visualizer cleanRow: index ] ] ] "]
+	self performanceType class = PerfTypeMooflod ifFalse: [ ^ self ].
+
+	self performanceType visualizer tracks keysAndValuesDo: [ :k :v |
+		k ~= aKeyOrAnArrayOfKeys ifTrue: [ self performanceType visualizer cleanRow: v] ].
+	"self performanceType visualizer tracks removeKey: aKeyOrAnArrayOfKeys"
+	self performanceType visualizer tracks:
+		(self performanceType visualizer tracks keysAndValuesRemove: [ :k :v |
+			 k ~= aKeyOrAnArrayOfKeys ])
 ]
 
 { #category : 'accessing' }

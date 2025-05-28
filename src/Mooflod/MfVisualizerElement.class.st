@@ -306,7 +306,7 @@ MfVisualizerElement >> nbTracks: anInteger [
 { #category : 'accessing' }
 MfVisualizerElement >> nextFreeRow [
 
-	^ (activeRows includes: nbTracks + 1)
+	^ (self tracks values includes: nbTracks + 1)
 		  ifFalse: [ nbTracks + 1 modulo: 5 ]
 		  ifTrue: [
 			  self nbTracks: nbTracks + 1.
