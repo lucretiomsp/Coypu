@@ -351,10 +351,10 @@ MfVisualizerElement >> setLabelToSlider: aName firstSlider: aSlider secondSlider
 		sliderArray at: 'PsgPlusLfoAmount' put: anOtherSlider.
 		aSlider
 			changeMinValueLabelTo: 0;
-			changeMaxValueLabelTo: 1.
+			changeMaxValueLabelTo: 3.
 		anOtherSlider
 			changeMinValueLabelTo: 0;
-			changeMaxValueLabelTo: 10.
+			changeMaxValueLabelTo: 1.
 		isValidName := true ].
 	aName = 'Chordy' ifTrue: [
 		sliderArray at: 'ChordyMode' put: aSlider.

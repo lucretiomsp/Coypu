@@ -79,10 +79,9 @@ MfPerformanceStepsDisplayer >> initializeAnimation: aBpm [
 			 on: BlAnimationLoopDoneEvent
 			 do: [ :e |
 				 animationIsRunning ifTrue: [
-					 nbSteps < 30000 ifTrue: [
-						"now is set to cuntDown"
+					 
 						 nbSteps := nbSteps - 1.
-						 self setStepsLabel: nbSteps ] ] ]).
+						 self setStepsLabel: nbSteps ] ] ).
 	self addAnimation: animation
 ]
 
