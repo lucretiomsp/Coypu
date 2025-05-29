@@ -306,11 +306,13 @@ MfVisualizerElement >> nbTracks: anInteger [
 { #category : 'accessing' }
 MfVisualizerElement >> nextFreeRow [
 
-	^ (self tracks values includes: nbTracks + 1)
+	^ ((1 to: 5 ) copyWithoutAll: self tracks values) min.
+	
+	"(self tracks values includes: (nbTracks + 1 modulo: 5))
 		  ifFalse: [ nbTracks + 1 modulo: 5 ]
 		  ifTrue: [
-			  self nbTracks: nbTracks + 1.
-			  self nextFreeRow ]
+			  self nbTracks: nbTracks + 1
+			  ""self nextFreeRow "" ]"
 ]
 
 { #category : 'accessing' }
