@@ -10,10 +10,9 @@ Performance uniqueInstance performanceType visualizer cleanRow: aNumber
 MooPhausto >> cutoffSweepTo: aMIDIValue in: aTimeInseconds [
 	"  sweep the value of the selected parameter in a TimeInSeconds - the value is update every 10 milliseconds"
 
-	| startValue currentValue range timeInDeciSec step numberOfSteps stepDelay incrementingProcess decrementingProcess aParamAsString aTargetValue |
-	startValue := self masterCutoff .
-	range := (startValue max: aMIDIValue )
-	         - (startValue min: aMIDIValue ).
+	| startValue currentValue range timeInDeciSec step numberOfSteps stepDelay incrementingProcess decrementingProcess  aTargetValue |
+	startValue := self masterCutoff.
+	range := (startValue max: aMIDIValue) - (startValue min: aMIDIValue).
 	timeInDeciSec := aTimeInseconds * 10.
 	step := range / timeInDeciSec.
 	stepDelay := Delay forSeconds: 0.1.
@@ -22,23 +21,77 @@ MooPhausto >> cutoffSweepTo: aMIDIValue in: aTimeInseconds [
 	decrementingProcess := [
 	                       numberOfSteps timesRepeat: [
 		                       currentValue := currentValue - step.
-		                       self
-			                       masterCutoff currentValue
-			                      
-		                       stepDelay wait ] ].
+		                       self masterCutoff currentValue stepDelay wait ] ].
 	incrementingProcess := incrementingProcess := [
 	                                              numberOfSteps
 		                                              timesRepeat: [
 			                                              currentValue := currentValue
 			                                                              +
 			                                                              step.
-			                                              self
-				                                              setValueMooflod:
-				                                              currentValue
-				                                              parameter:
-				                                              aParamAsString.
+			                                              self masterCutoff:
+				                                              currentValue.
 			                                              stepDelay wait ] ].
-	startValue < aTargetValue
+	startValue < aMIDIValue 
+		ifTrue: [ incrementingProcess fork ]
+		ifFalse: [ decrementingProcess fork ]
+]
+
+{ #category : '*Mooflod' }
+MooPhausto >> delayAmountTo: aMIDIValue in: aTimeInseconds [
+	"  sweep the value of the selected parameter in a TimeInSeconds - the value is update every 10 milliseconds"
+
+	| startValue currentValue range timeInDeciSec step numberOfSteps stepDelay incrementingProcess decrementingProcess  |
+	startValue := self masterCutoff.
+	range := (startValue max: aMIDIValue) - (startValue min: aMIDIValue).
+	timeInDeciSec := aTimeInseconds * 10.
+	step := range / timeInDeciSec.
+	stepDelay := Delay forSeconds: 0.1.
+	numberOfSteps := timeInDeciSec.
+	currentValue := startValue.
+	decrementingProcess := [
+	                       numberOfSteps timesRepeat: [
+		                       currentValue := currentValue - step.
+		                       self masterDelayAmount: currentValue stepDelay wait ] ].
+	incrementingProcess := incrementingProcess := [
+	                                              numberOfSteps
+		                                              timesRepeat: [
+			                                              currentValue := currentValue
+			                                                              +
+			                                                              step.
+			                                              self masterDelayAmount: 
+				                                              currentValue.
+			                                              stepDelay wait ] ].
+	startValue < aMIDIValue
+		ifTrue: [ incrementingProcess fork ]
+		ifFalse: [ decrementingProcess fork ]
+]
+
+{ #category : '*Mooflod' }
+MooPhausto >> delayTimeTo: aMIDIValue in: aTimeInseconds [
+	"  sweep the value of the selected parameter in a TimeInSeconds - the value is update every 10 milliseconds"
+
+	| startValue currentValue range timeInDeciSec step numberOfSteps stepDelay incrementingProcess decrementingProcess  |
+	startValue := self masterCutoff.
+	range := (startValue max: aMIDIValue) - (startValue min: aMIDIValue).
+	timeInDeciSec := aTimeInseconds * 10.
+	step := range / timeInDeciSec.
+	stepDelay := Delay forSeconds: 0.1.
+	numberOfSteps := timeInDeciSec.
+	currentValue := startValue.
+	decrementingProcess := [
+	                       numberOfSteps timesRepeat: [
+		                       currentValue := currentValue - step.
+		                       self masterDelayTime: currentValue stepDelay wait ] ].
+	incrementingProcess := incrementingProcess := [
+	                                              numberOfSteps
+		                                              timesRepeat: [
+			                                              currentValue := currentValue
+			                                                              +
+			                                                              step.
+			                                              self masterDelayTime: 
+				                                              currentValue.
+			                                              stepDelay wait ] ].
+	startValue < aMIDIValue
 		ifTrue: [ incrementingProcess fork ]
 		ifFalse: [ decrementingProcess fork ]
 ]
