@@ -10,7 +10,7 @@ Performance uniqueInstance performanceType visualizer cleanRow: aNumber
 MooPhausto >> cutoffSweepTo: aMIDIValue in: aTimeInseconds [
 	"  sweep the value of the selected parameter in a TimeInSeconds - the value is update every 10 milliseconds"
 
-	| startValue currentValue range timeInDeciSec step numberOfSteps stepDelay incrementingProcess decrementingProcess  aTargetValue |
+	| startValue currentValue range timeInDeciSec step numberOfSteps stepDelay incrementingProcess decrementingProcess |
 	startValue := self masterCutoff.
 	range := (startValue max: aMIDIValue) - (startValue min: aMIDIValue).
 	timeInDeciSec := aTimeInseconds * 10.
@@ -21,7 +21,8 @@ MooPhausto >> cutoffSweepTo: aMIDIValue in: aTimeInseconds [
 	decrementingProcess := [
 	                       numberOfSteps timesRepeat: [
 		                       currentValue := currentValue - step.
-		                       self masterCutoff currentValue stepDelay wait ] ].
+		                       self masterCutoff: currentValue asInteger .
+		                       stepDelay wait ] ].
 	incrementingProcess := incrementingProcess := [
 	                                              numberOfSteps
 		                                              timesRepeat: [
@@ -29,19 +30,18 @@ MooPhausto >> cutoffSweepTo: aMIDIValue in: aTimeInseconds [
 			                                                              +
 			                                                              step.
 			                                              self masterCutoff:
-				                                              currentValue.
+				                                              currentValue asInteger.
 			                                              stepDelay wait ] ].
-	startValue < aMIDIValue 
+	startValue < aMIDIValue
 		ifTrue: [ incrementingProcess fork ]
 		ifFalse: [ decrementingProcess fork ]
 ]
 
 { #category : '*Mooflod' }
 MooPhausto >> delayAmountTo: aMIDIValue in: aTimeInseconds [
-	"  sweep the value of the selected parameter in a TimeInSeconds - the value is update every 10 milliseconds"
 
-	| startValue currentValue range timeInDeciSec step numberOfSteps stepDelay incrementingProcess decrementingProcess  |
-	startValue := self masterCutoff.
+	| startValue currentValue range timeInDeciSec step numberOfSteps stepDelay incrementingProcess decrementingProcess |
+	startValue := self masterDelayAmount.
 	range := (startValue max: aMIDIValue) - (startValue min: aMIDIValue).
 	timeInDeciSec := aTimeInseconds * 10.
 	step := range / timeInDeciSec.
@@ -51,15 +51,18 @@ MooPhausto >> delayAmountTo: aMIDIValue in: aTimeInseconds [
 	decrementingProcess := [
 	                       numberOfSteps timesRepeat: [
 		                       currentValue := currentValue - step.
-		                       self masterDelayAmount: currentValue stepDelay wait ] ].
+		                       self masterDelayAmount: currentValue asInteger .
+		                       stepDelay wait ] ].
 	incrementingProcess := incrementingProcess := [
 	                                              numberOfSteps
 		                                              timesRepeat: [
 			                                              currentValue := currentValue
 			                                                              +
 			                                                              step.
-			                                              self masterDelayAmount: 
-				                                              currentValue.
+			                                              self
+				                                              masterDelayAmount:
+				                                              currentValue
+					                                              asInteger.
 			                                              stepDelay wait ] ].
 	startValue < aMIDIValue
 		ifTrue: [ incrementingProcess fork ]
@@ -68,10 +71,9 @@ MooPhausto >> delayAmountTo: aMIDIValue in: aTimeInseconds [
 
 { #category : '*Mooflod' }
 MooPhausto >> delayTimeTo: aMIDIValue in: aTimeInseconds [
-	"  sweep the value of the selected parameter in a TimeInSeconds - the value is update every 10 milliseconds"
 
-	| startValue currentValue range timeInDeciSec step numberOfSteps stepDelay incrementingProcess decrementingProcess  |
-	startValue := self masterCutoff.
+	| startValue currentValue range timeInDeciSec step numberOfSteps stepDelay incrementingProcess decrementingProcess |
+	startValue := self masterDelayTime .
 	range := (startValue max: aMIDIValue) - (startValue min: aMIDIValue).
 	timeInDeciSec := aTimeInseconds * 10.
 	step := range / timeInDeciSec.
@@ -81,25 +83,23 @@ MooPhausto >> delayTimeTo: aMIDIValue in: aTimeInseconds [
 	decrementingProcess := [
 	                       numberOfSteps timesRepeat: [
 		                       currentValue := currentValue - step.
-		                       self masterDelayTime: currentValue stepDelay wait ] ].
+		                       self masterDelayTime:
+			                       currentValue asInteger.
+		                       stepDelay wait ] ].
 	incrementingProcess := incrementingProcess := [
 	                                              numberOfSteps
 		                                              timesRepeat: [
 			                                              currentValue := currentValue
 			                                                              +
 			                                                              step.
-			                                              self masterDelayTime: 
-				                                              currentValue.
+			                                              self
+				                                              masterDelayTime:
+				                                              currentValue
+					                                              asInteger.
 			                                              stepDelay wait ] ].
 	startValue < aMIDIValue
 		ifTrue: [ incrementingProcess fork ]
 		ifFalse: [ decrementingProcess fork ]
-]
-
-{ #category : '*Mooflod' }
-MooPhausto >> masterCutoff [
-
-^ masterCutoff 
 ]
 
 { #category : '*Mooflod' }
