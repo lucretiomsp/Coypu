@@ -237,6 +237,7 @@ Performance >> mute: aKeyOrAnArrayOfKeys [
 	"| tracks |
 	tracks := #( #Kick #TpSampler #Fm2Op #PsgPlus #Chordy ).
 "
+
 	aKeyOrAnArrayOfKeys isArray
 		ifTrue: [
 		aKeyOrAnArrayOfKeys do: [ :i | self removeKey: i ifAbsent: [  ] ] ]
@@ -244,7 +245,9 @@ Performance >> mute: aKeyOrAnArrayOfKeys [
 			self removeKey: aKeyOrAnArrayOfKeys.
 			self performanceType class = PerfTypeMooflod ifTrue: [
 				self performanceType visualizer cleanRow:
-					(self performanceType visualizer tracks at: aKeyOrAnArrayOfKeys) ] ]
+					(self performanceType visualizer tracks at:  aKeyOrAnArrayOfKeys).
+					self performanceType visualizer tracks removeKey: aKeyOrAnArrayOfKeys
+					 ] ]
 ]
 
 { #category : 'muting and soloing' }
