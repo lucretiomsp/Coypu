@@ -4,8 +4,8 @@ Extension { #name : 'Dictionary' }
 Dictionary >> errorKeyNotFound: aKey [
 
 "we also stop the Performance"
-self inform: aKey asString , ' bit found in Dictionary'.
+self inform: aKey asString , ' not found in Dictionary'.
 "Performance uniqueInstance stop."
-	"KeyNotFound signalFor: aKey."
+KeyNotFound signalFor: aKey.
 	
 ]
