@@ -36,7 +36,7 @@ LiveCodingTest >> testArrayWrap [
 LiveCodingTest >> testFullScale [
 
 	| result |
-	result := (Scale chromatic: 60) fullScale.
+	result := (Scale chromatic: 0) fullScale.
 	self assert: result equals: (0 to: 127) asArray
 ]
 
@@ -58,7 +58,7 @@ LiveCodingTest >> testRhythmSymbolToPerformance [
 	| p |
 	p := Performance uniqueInstance.
 	#downbeats to: #tabla.
-(p at: #tabla) traceCr.
+	
 	self assert: (p at: #tabla) numberOfTrigs equals: 4
 ]
 
@@ -76,21 +76,12 @@ self assert: array equals: result.
 { #category : 'tests' }
 LiveCodingTest >> testStringAsDirtNotes [
 
+	| case |
+	case := '0 , 2*3 , ~ , 5/4 , ~*2' asDirtNotes.
 
-
-| case |
-
-case := '0 , 2*3 , ~ , 5 ~*2' asDirtNotes.
-
-self assert: (case dirtMessage at: 'n') equals: #(0 2 2 2 5 5).
-self assert: case gates equals: #(1 1 1 1 0 1 0 1 0)
-
-
-
-
-
-
-
+	self assert: (case dirtMessage at: 'n') equals: #( 0 2 2 2 5 ).
+	self assert: case gates equals: #( 1 1 1 1 0 1 0 0 0 0 0 ).
+	self assert: case durations equals: #(1 1 1 1 4)
 ]
 
 { #category : 'tests' }

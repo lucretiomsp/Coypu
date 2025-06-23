@@ -81,24 +81,33 @@ ByteString >> asDirtIndex [
 ByteString >> asDirtNotes [
 	" returns a sequencer containing a trig for each integer and a rest for whatever other character and with the notes coresponding to the integeres inside the string - tokens must be separated by string"
 
-	| seq tokens gates notesAStrings notesAsNumbers dirtString announcement |
+	| seq tokens gates durs notesAStrings notesAsNumbers dirtString announcement |
 	announcement := RhythmAnnouncement new.
 	announcement rhythm: '''' , self asString , ''' asDirtNotes'.
 	PerformanceRecorder uniqueInstance announce: announcement.
 
 	gates := ''.
+	durs := OrderedCollection new.
 	tokens := self splitOn: ','.
 	dirtString := ''.
 	tokens do: [ :i |
-		(i includes: $*)
-			ifTrue: [ gates := gates , i multiplyStringsInString ]
-			ifFalse: [
-				gates := (i includes: $/)
-					         ifTrue: [ gates , i withNRests ]
-					         ifFalse: [ gates , i ] ] ].
-"tildes or - can be used as rests"
-	notesAStrings := ((gates copyReplaceAll: '~' with: '') copyReplaceAll: '-' with: '' )
-		                 findBetweenSubstrings: ' '.
+			(i includes: $*)
+				ifTrue: [
+						gates := gates , i multiplyStringsInString.
+						(i includes: $~) ifFalse: [
+							i getMultiplier timesRepeat: [ durs add: 1 ] ] ]
+				ifFalse: [
+						(i includes: $/)
+							ifTrue: [
+									gates := gates , i withNRests.
+									(i includes: $~) ifFalse: [ durs add: i getDivisor ] ]
+							ifFalse: [
+									gates := gates , i.
+									(i includes: $~) ifFalse: [ durs add: 1 ] ] ] ].
+	"tildes or - can be used as rests"
+	notesAStrings := ((gates copyReplaceAll: '~' with: '')
+		                  copyReplaceAll: '-'
+		                  with: '') findBetweenSubstrings: ' '.
 
 	notesAsNumbers := notesAStrings collect: [ :i | "note cant be higher than higher MIDI note"
 		                  i ~= ' ' ifTrue: [ i asNumber min: 127 ] ].
@@ -109,6 +118,7 @@ ByteString >> asDirtNotes [
 	seq := gates asSeqGates asSeq.
 	seq dirtNotes: dirtString.
 	seq notes: notesAsNumbers asArray.
+	seq durations: durs asArray.
 
 	^ seq
 ]
@@ -252,6 +262,24 @@ ByteString >> every: anInteger [
 	(2 to: anInteger) do: [ :i | result add: ' ';  add: '~' ].
 	^ result
 	
+]
+
+{ #category : '*Coypu' }
+ByteString >> getDivisor [
+
+	| tokens |
+	tokens := self splitOn: '/'.
+
+	^ tokens second asInteger
+]
+
+{ #category : '*Coypu' }
+ByteString >> getMultiplier [
+
+	| tokens |
+	tokens := self splitOn: '*'.
+
+	^ tokens second asInteger
 ]
 
 { #category : '*Coypu' }

@@ -77,13 +77,16 @@ SequencerTest >> testChangeSequencerGatesSize [
 ]
 
 { #category : 'tests' }
-SequencerTest >> testChords: aChordOrAnArrayOfChords [
+SequencerTest >> testChords [
 
-| polySeq |
-polySeq := 4 breves sound: 'superpiano'; chords: 'c-major d-minor e-major'. 
+	| polySeq |
+	polySeq := 4 breves
+		           sound: 'superpiano';
+		           chords: 'c-major d-minor e-major'.
 
-self assert: (polySeq dirtMessage at: 'n') equals: ( 'c-major d-minor e-major' chordsToArrays ).
-
+	self
+		assert: (polySeq dirtMessage at: 'n')
+		equals: 'c-major d-minor e-major' chordsToArrays
 ]
 
 { #category : 'tests' }
@@ -121,11 +124,14 @@ self assert: (seq reverse dirtMessage at: 's') equals: #('cp' 'sd').
 
 { #category : 'tests' }
 SequencerTest >> testSequencerArpeggiate [
-| seq |
-seq := 8 semiquavers .
-seq arpeggiate: 'c-minor7 d-minor7'.
 
-self assert: (seq dirtMessage at: 'n') equals: #(0 3 7 10 2 5 9 12) asArray .
+	| seq |
+	seq := 8 semiquavers.
+	seq arpeggiate: 'c-minor7 d-minor7'.
+
+	self
+		assert: (seq dirtMessage at: 'n') asArray
+		equals: #( 0 3 7 10 2 5 9 12 ) 
 ]
 
 { #category : 'tests' }
@@ -145,11 +151,11 @@ self assert: (seq2 offset: -1) gates equals: result2 gates.
 { #category : 'tests' }
 SequencerTest >> testSequencerSound [
 
-| seq |
-seq := 16 downbeats sound: #('bd' 'cp:2').
+	| seq |
+	seq := 16 downbeats sound: 'bd'  , 'cp:2' .
 
-self assert: seq soundPattern  equals: #('bd' 'cp').
-self assert: seq samplesIndex equals: #(0 2).
+	self assert: seq soundPattern equals: #( 'bd' 'cp' ).
+	self assert: seq samplesIndex equals: #( 0 2 )
 ]
 
 { #category : 'tests' }

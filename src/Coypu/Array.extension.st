@@ -203,14 +203,15 @@ algorithm based on the Bresenham approach"
 
 { #category : '*Coypu' }
 Array >> fullScale [
+	"expands a Scale into the full MIDI keyboard range"
 
-"expands a Scale into the full MIDI keyboard range"
-	| x numberOfOctaves |
-	numberOfOctaves := 6.
+	| fs fsMIDIRange numberOfOctaves |
+	numberOfOctaves := 10.
 
-	x := OrderedCollection new.
-	1 to: numberOfOctaves do: [ :i | x addAll: self + (self size * i) ].
-	^ x
+	fs := OrderedCollection new.
+	0 to: numberOfOctaves do: [ :i | fs addAll: self + (self size * i) ].
+	fsMIDIRange := fs truncateTo: 128.
+	^ fsMIDIRange asArray
 ]
 
 { #category : '*Coypu' }
