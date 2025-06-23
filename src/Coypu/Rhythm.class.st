@@ -18,12 +18,13 @@ Rhythm class >> list [
 
 	| methods dicList |
 	dicList := Dictionary new.
-	methods := (Integer selectorsInProtocol: 'rhythm creation') reject: [
-		           :i | i includesSubstring: ':' ].
+	methods := (Pragma allNamed: 'rhythmCreation') collect: [ :i |
+		           i method ].
 
-	methods do: [ :i | dicList add: i -> (Integer >> i) comments first ].
+	methods do: [ :i |
+		dicList add: i method selector -> i comments first ].
 
-	^ dicList
+	^ dicList 
 ]
 
 { #category : 'responses' }
