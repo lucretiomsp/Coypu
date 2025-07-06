@@ -1305,7 +1305,7 @@ Sequencer >> times: anInteger [
 { #category : 'LiveCoding - Performance' }
 Sequencer >> to: aSymbol [
 	" assign sequencer to the performance at aSymbol. if a sound for SuperDirt is not specified, the symbol is used for sound name"
-
+<onTheFlyEssentials>
 	| announcement perf allItems soundfiles myInstrument sampleNames samplesForSequencer |
 	"announcement := (self notesSize >= 8 and: [
 		                 (self notes at: 1) = 60 and: [
@@ -1369,14 +1369,14 @@ Sequencer >> transportStep: anObject [
 
 { #category : 'modifying' }
 Sequencer >> transpose: aNumberOfSemitones [
-
+<onTheFlyEssentials>
 	| melody |
 	melody := self notes.
 	^ self class new
 		  gates: self gates;
 		  notes: melody + aNumberOfSemitones;
 		  durations: self durations;
-		  noteIndex: self noteIndex 
+		  noteIndex: self noteIndex
 ]
 
 { #category : 'accessing' }

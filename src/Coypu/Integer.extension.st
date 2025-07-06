@@ -326,7 +326,9 @@ PerformanceRecorder uniqueInstance announce: announcement.
 { #category : '*Coypu' }
 Integer >> gahu [
 	" create an array of self size of gahu (from Ewe people) rhytm pulses. Better if used with self = 8 x anInteger "
-<rhythmCreation>
+
+	<rhythmCreation>
+	<onTheFlyEssentials>
 	| pattern announcement |
 	announcement := RhythmAnnouncement new rhythm:
 		                self asString , ' gahu'.
@@ -346,7 +348,9 @@ Integer >> into: anArray [
 { #category : '*Coypu' }
 Integer >> jungleKick [
 	" create an array of self size of jungle kick rhythm. "
-<rhythmCreation>
+
+	<rhythmCreation>
+	<onTheFlyEssentials>
 	| pattern announcement |
 	announcement := RhythmAnnouncement new rhythm:
 		                self asString , ' jungleKick'.
@@ -359,7 +363,9 @@ Integer >> jungleKick [
 { #category : '*Coypu' }
 Integer >> jungleRim [
 	" create an array of self size of jungle rim rhythm. "
-<rhythmCreation>
+
+	<rhythmCreation>
+	<onTheFlyEssentials>
 	| pattern announcement |
 	announcement := RhythmAnnouncement new rhythm:
 		                self asString , ' jungleRim'.
@@ -372,7 +378,9 @@ Integer >> jungleRim [
 { #category : '*Coypu' }
 Integer >> jungleSnare [
 	" create an array of self size of jungle snare rhythm. "
-<rhythmCreation>
+
+	<rhythmCreation>
+	<onTheFlyEssentials>
 	| pattern announcement |
 	announcement := RhythmAnnouncement new rhythm:
 		                self asString , ' jungleSnare'.
@@ -416,7 +424,9 @@ Integer >> pattern [
 { #category : '*Coypu' }
 Integer >> quavers [
 	"creates an Array of aNumber of values (0,1) with 1 to the position corresponding to a rhtyhm of quavers (downbeat + upbeat)"
-<rhythmCreation>
+
+	<rhythmCreation>
+	<onTheFlyEssentials>
 	| announcement |
 	announcement := RhythmAnnouncement new rhythm:
 		                self asString , ' quavers'.
@@ -467,32 +477,29 @@ result := floatsArray collect: [ :i | i rounded ].
 
 { #category : '*Coypu' }
 Integer >> randomNotes: anArray [
-
 	"answer an Array of size=self with random note numbers between "
-
+<onTheFlyEssentials>
 	| max min range |
 	min := anArray at: 1.
 	max := anArray at: 2.
 	range := 1 + max - min.
-	^ (1 to: self) collect: [ :i | 
+	^ (1 to: self) collect: [ :i |
 		  (Random new nextInteger: range) + min - 1 ]
 ]
 
 { #category : '*Coypu' }
 Integer >> randomNotesFrom: anArray [
-
 	"return an array of self size of random notes from anArray"
-
-	^ (1 to: self) collect: [ :i | 
+<onTheFlyEssentials>
+	^ (1 to: self) collect: [ :i |
 		  anArray at: (Random new nextInteger: anArray size) ]
 ]
 
 { #category : '*Coypu' }
 Integer >> randomNotesFrom: anArray octaves: aNumber [
-
 	"return an array of self size of a random note from anArray + a random octave between 0 and aNumber"
-
-	^ (1 to: self) collect: [ :i | 
+<onTheFlyEssentials>
+	^ (1 to: self) collect: [ :i |
 		  (anArray at: (Random new nextInteger: anArray size))
 		  + ((Random new nextInteger: aNumber + 1) - 1 * 12) ]
 ]
@@ -500,11 +507,10 @@ Integer >> randomNotesFrom: anArray octaves: aNumber [
 { #category : '*Coypu' }
 Integer >> randomRhythm [
 	"return a Sequencer with a rhythhm choosen random from allRythmNames"
-
+<onTheFlyEssentials>
 	| rtm |
-	rtm := Rhythm allRhythmNames atRandom.
+	rtm := Rhythm list keys atRandom.
 	^ self perform: rtm
-	
 ]
 
 { #category : '*Coypu' }
@@ -530,7 +536,9 @@ Integer >> randomSamplesFromFolder: aStringForAFolderOfSamples withProbability: 
 { #category : '*Coypu' }
 Integer >> randomTrigs [
 	"generates an Array of random 0s and 1s of size: aNumber"
-<rhythmCreation>
+
+	<rhythmCreation>
+	<onTheFlyEssentials>
 	| r announcement |
 	announcement := RhythmAnnouncement new rhythm:
 		                self asString , ' randomTrigs'.
@@ -542,10 +550,13 @@ Integer >> randomTrigs [
 { #category : '*Coypu' }
 Integer >> randomTrigsWithProbability: anIntegerProbability [
 	"generates an Array of random 0s and 1s of size: aNumber with a probability of having a trig of anIntegerProbability "
-
-	| r rytm announcement|
-	announcement := RhythmAnnouncement new rhythm: (self asString,' randomTrigsWithProbability: ', anIntegerProbability asString).
-PerformanceRecorder uniqueInstance announce: announcement.
+<rhythmCreation>
+	<onTheFlyEssentials>
+	| r rytm announcement |
+	announcement := RhythmAnnouncement new rhythm:
+		                self asString , ' randomTrigsWithProbability: '
+		                , anIntegerProbability asString.
+	PerformanceRecorder uniqueInstance announce: announcement.
 	rytm := Array new: self.
 	r := Random new.
 	1 to: self do: [ :i |
@@ -559,36 +570,36 @@ PerformanceRecorder uniqueInstance announce: announcement.
 { #category : '*Coypu' }
 Integer >> randomWalksOn: anArrayOfNotes [
 	"random walk inside an array of notes"
-
+<onTheFlyEssentials>
 	| start nix randomWalker r |
 	start := anArrayOfNotes at: (anArrayOfNotes size / 2) rounded.
 	nix := anArrayOfNotes indexOf: start.
 	randomWalker := (1 to: self) collect: [ :i |
 		                r := Random new next.
 		                r > 0.5
-		 ifTrue: [ nix := nix + 1 min: anArrayOfNotes size ]
-			                ifFalse: [ nix := nix - 1 max: 1 ]..
-		
-		"
+			                ifTrue: [ nix := nix + 1 min: anArrayOfNotes size ]
+			                ifFalse: [ nix := nix - 1 max: 1 ].
+
+
+		                anArrayOfNotes at: nix
+
+		                "
 			                ifTrue: [ nix := nix + 1 min: anArrayOfNotes size ]
 			                ifFalse: [ nix := nix - 1 max: 1 ].
 			
-			"
-
-
-		                anArrayOfNotes at: nix ].
+			" ].
 	^ randomWalker
 ]
 
 { #category : '*Coypu' }
 Integer >> randomWalksOn: anArrayOfNotes octaves: aNumberOfOctaves [
 	"random walk inside an array of notes extended for aNumberOfOctaves range"
-
-	| start nix randomWalker r extendedArray |
+<onTheFlyEssentials>
+	| start nix randomWalker r  |
 	2 to: aNumberOfOctaves do: [ :i |
-	                 anArrayOfNotes , anArrayOfNotes + (i * 12) ].
-	start := anArrayOfNotes  at: (anArrayOfNotes   size / 2) rounded.
-	nix := anArrayOfNotes  indexOf: start.
+	anArrayOfNotes , anArrayOfNotes + (i * 12) ].
+	start := anArrayOfNotes at: (anArrayOfNotes size / 2) rounded.
+	nix := anArrayOfNotes indexOf: start.
 	randomWalker := (1 to: self) collect: [ :i |
 		                r := Random new next.
 		                r > 0.5
@@ -609,7 +620,7 @@ Integer >> randomWalksOn: anArrayOfNotes octaves: aNumberOfOctaves [
 { #category : '*Coypu' }
 Integer >> randomWalksOn: anArrayOfNotes octaves: aNumberOfOctaves root: aRootNoteNumber [
 	"random walk inside an array of notes extended for aNumberOfOctaves range and with a RootNote"
-
+<onTheFlyEssentials>
 	| start nix randomWalker r |
 	2 to: aNumberOfOctaves do: [ :i |
 	anArrayOfNotes , anArrayOfNotes + (i * 12) ].
@@ -622,10 +633,8 @@ Integer >> randomWalksOn: anArrayOfNotes octaves: aNumberOfOctaves root: aRootNo
 			                ifFalse: [ nix := nix - 1 max: 1 ].
 
 
-		                anArrayOfNotes at: nix
-
-		             ].
-	^ randomWalker + aRootNoteNumber  
+		                anArrayOfNotes at: nix ].
+	^ randomWalker + aRootNoteNumber
 ]
 
 { #category : '*Coypu' }
@@ -639,7 +648,9 @@ Integer >> randoms [
 { #category : '*Coypu' }
 Integer >> rests [
 	" retuns a Sequencer of gates size = self with all zeros / to create long rests "
-<rhythmCreation>
+
+	<rhythmCreation>
+	<onTheFlyEssentials>
 	| announcement |
 	announcement := RhythmAnnouncement new rhythm:
 		                self asString , ' rests'.
@@ -650,7 +661,9 @@ Integer >> rests [
 { #category : '*Coypu' }
 Integer >> rumba [
 	" create an array of self size of Cuban rumba rhytm pulses. Better if used with self = 16 x anInteger "
-<rhythmCreation>
+
+	<rhythmCreation>
+	<onTheFlyEssentials>
 	| pattern announcement |
 	announcement := RhythmAnnouncement new rhythm:
 		                self asString , ' rumba'.
@@ -680,12 +693,12 @@ Integer >> rumba: aStringOfNotes [
 { #category : '*Coypu' }
 Integer >> semibreves [
 	" returns self number of semibrevesin the first position of the bars"
-
+<onTheFlyEssentials>
 	| result announcement |
 	announcement := RhythmAnnouncement new rhythm:
 		                self asString , ' semibreves'.
 	PerformanceRecorder uniqueInstance announce: announcement.
-	result := '8000' hexBeat *  self.
+	result := '8000' hexBeat * self.
 	result durations: 16.
 	result gateTimes: 0.9.
 	^ result
@@ -708,7 +721,9 @@ PerformanceRecorder uniqueInstance announce: announcement.
 { #category : '*Coypu' }
 Integer >> semiquavers [
 	"1/16 rhythm"
-<rhythmCreation>
+
+	<rhythmCreation>
+	<onTheFlyEssentials>
 	| announcement |
 	announcement := RhythmAnnouncement new rhythm:
 		                self asString , ' semiquavers'.
@@ -744,7 +759,9 @@ Integer >> semitonesToSpeed [
 { #category : '*Coypu' }
 Integer >> shiko [
 	" create an array of self size of shiko (West-African / Caribbean) rhytm pulses. Better if used with self = 16 x anInteger "
-<rhythmCreation>
+
+	<rhythmCreation>
+	<onTheFlyEssentials>
 	| pattern announcement |
 	announcement := RhythmAnnouncement new rhythm:
 		                self asString , ' shiko'.
@@ -775,7 +792,9 @@ PerformanceRecorder uniqueInstance announce: announcement.
 { #category : '*Coypu' }
 Integer >> sikyi [
 	" create an array of self size of  sikyi (by Ashanti people of Ghana) rhytm pulses. Better if the receiever is a multiple of 8."
-<rhythmCreation>
+
+	<rhythmCreation>
+	<onTheFlyEssentials>
 	| pattern announcement |
 	announcement := RhythmAnnouncement new rhythm:
 		                self asString , ' sikyi'.
@@ -804,10 +823,12 @@ Integer >> soukous [
 
 { #category : '*Coypu' }
 Integer >> spreadOver: anInteger [
-
-| result |
-result := (0 to: self by: self/anInteger) asArray collect: [:i | i asFloat].
-^ result
+"Returns an array of floats from 0 to self, evenly divided into anInteger steps."
+<onTheFlyEssentials>
+	| result |
+	result := (0 to: self by: self / anInteger) asArray collect: [ :i |
+		          i asFloat ].
+	^ result
 ]
 
 { #category : '*Coypu' }
@@ -864,7 +885,9 @@ Integer >> toSCAsGate: aDurationInSeconds note: aNoteNumber [
 { #category : '*Coypu' }
 Integer >> tresillo [
 	" create an array of self size of  tresillo rhytm pulses. Better if used with self = 8 x anInteger "
-<rhythmCreation>
+
+	<rhythmCreation>
+	<onTheFlyEssentials>
 	| pattern newArray rhythm announcement |
 	announcement := RhythmAnnouncement new rhythm:
 		                self asString , ' tresillo'.
@@ -907,7 +930,9 @@ pattern := #(1 0 0 1 0 0 1 0 ).
 { #category : '*Coypu' }
 Integer >> trigs [
 	" retuns a Sequencer of gates size = self with all ones - same as semiquavers"
-<rhythmCreation>
+
+	<rhythmCreation>
+	<onTheFlyEssentials>
 	| announcement |
 	announcement := RhythmAnnouncement new rhythm:
 		                self asString , ' trigs'.
@@ -917,8 +942,10 @@ Integer >> trigs [
 
 { #category : '*Coypu' }
 Integer >> trueAksak [
-	" create an array of self size of Balcan aksak rhytm pulses. Better if used with self = 13 x anInteger "
-<rhythmCreation>
+	"Balcan aksak rhytm pulses. Better if used with self = 13 x anInteger "
+
+	<rhythmCreation>
+	<onTheFlyEssentials>
 	| pattern announcement |
 	announcement := RhythmAnnouncement new rhythm:
 		                self asString , ' trueAksak'.
@@ -931,8 +958,10 @@ Integer >> trueAksak [
 
 { #category : '*Coypu' }
 Integer >> tumbao [
-	" create an array of self size of  habanera/tumbao rhytm pulses. Better if the receiever is a multiple of eight."
-<rhythmCreation>
+	"Habanera/tumbao rhytm pulses. Better if the receiever is a multiple of eight."
+
+	<rhythmCreation>
+	<onTheFlyEssentials>
 	| pattern rhythm announcement |
 	announcement := RhythmAnnouncement new rhythm:
 		                self asString , ' tumbao'.
@@ -987,8 +1016,11 @@ Integer >> upbeats: aStringOfNotes [
 
 { #category : '*Coypu' }
 Integer >> wholes [
-	" returns self number of whole notes (= 4 quarter Notes) the first position of the bars"
-<rhythmCreation>
+"Returns a rhythm sequence of whole notes (i.e., 4 quarter notes each), starting at the beginning of each bar. 
+The number of whole notes is determined by self."
+
+<onTheFlyEssentials>
+	<rhythmCreation>
 	| result |
 	result := '8000' hexBeat * self.
 	result durations: 16.

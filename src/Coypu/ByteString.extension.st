@@ -80,7 +80,7 @@ ByteString >> asDirtIndex [
 { #category : '*Coypu' }
 ByteString >> asDirtNotes [
 	" returns a sequencer containing a trig for each integer and a rest for whatever other character and with the notes coresponding to the integeres inside the string - tokens must be separated by string"
-
+<onTheFlyEssentials>
 	| seq tokens gates durs notesAStrings notesAsNumbers dirtString announcement |
 	announcement := RhythmAnnouncement new.
 	announcement rhythm: '''' , self asString , ''' asDirtNotes'.
@@ -91,19 +91,19 @@ ByteString >> asDirtNotes [
 	tokens := self splitOn: ','.
 	dirtString := ''.
 	tokens do: [ :i |
-			(i includes: $*)
-				ifTrue: [
-						gates := gates , i multiplyStringsInString.
-						(i includes: $~) ifFalse: [
-							i getMultiplier timesRepeat: [ durs add: 1 ] ] ]
-				ifFalse: [
-						(i includes: $/)
-							ifTrue: [
-									gates := gates , i withNRests.
-									(i includes: $~) ifFalse: [ durs add: i getDivisor ] ]
-							ifFalse: [
-									gates := gates , i.
-									(i includes: $~) ifFalse: [ durs add: 1 ] ] ] ].
+		(i includes: $*)
+			ifTrue: [
+				gates := gates , i multiplyStringsInString.
+				(i includes: $~) ifFalse: [
+					i getMultiplier timesRepeat: [ durs add: 1 ] ] ]
+			ifFalse: [
+				(i includes: $/)
+					ifTrue: [
+						gates := gates , i withNRests.
+						(i includes: $~) ifFalse: [ durs add: i getDivisor ] ]
+					ifFalse: [
+						gates := gates , i.
+						(i includes: $~) ifFalse: [ durs add: 1 ] ] ] ].
 	"tildes or - can be used as rests"
 	notesAStrings := ((gates copyReplaceAll: '~' with: '')
 		                  copyReplaceAll: '-'
@@ -162,7 +162,7 @@ ByteString >> asDirtPureNotes [
 { #category : '*Coypu' }
 ByteString >> asDirtSounds [
 	" parse a String into a Sequencer containing information to end to the SuperDirt synth for SuperCollider"
-
+<onTheFlyEssentials>
 	| seq tokens gates soundsAsStrings |
 	gates := ''.
 	tokens := self splitOn: ','.
@@ -285,12 +285,12 @@ ByteString >> getMultiplier [
 { #category : '*Coypu' }
 ByteString >> hexBeat [
 	" convert a string with an Hexadecimal number to the Kyma array correspondong to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex)"
-
-	| strings flat rhythm announcement|
+<onTheFlyEssentials>
+	| strings flat rhythm announcement |
 	thisContext sender selector asString = 'semibreves' ifFalse: [
 		announcement := RhythmAnnouncement new.
 		announcement rhythm: '''' , self asString , ''' hexBeat'.
-			PerformanceRecorder uniqueInstance announce: announcement.].
+		PerformanceRecorder uniqueInstance announce: announcement ].
 	strings := (1 to: self size) collect: [ :i |
 		           (self at: i) digitValue
 			           printStringBase: 2

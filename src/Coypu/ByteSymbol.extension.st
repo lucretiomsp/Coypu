@@ -138,7 +138,7 @@ ByteSymbol >> swapWith: aSymbol [
 
 { #category : '*Coypu' }
 ByteSymbol >> to: aSymbol [
-
+<onTheFlyEssentials>
 	^ self asRhythm to: aSymbol
 ]
 

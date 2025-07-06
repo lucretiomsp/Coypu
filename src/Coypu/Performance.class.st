@@ -66,14 +66,12 @@ Performance class >> reset [
 
 { #category : 'instance creation' }
 Performance class >> uniqueInstance [
-
-
-
+<onTheFlyEssentials>
 	^ uniqueInstance ifNil: [
-			self orbit: 0.
-			uniqueInstance := super new
-				performanceType: PerfType new;
-				yourself ]
+		  self orbit: 0.
+		  uniqueInstance := super new
+			                    performanceType: PerfType new;
+			                    yourself ]
 ]
 
 { #category : 'as yet unclassified' }
@@ -194,9 +192,9 @@ Performance >> freq [
 { #category : 'accessing' }
 Performance >> freq: aDurationInSeconds [
 	"use for playback speed"
-
-	freq := aDurationInSeconds.
-"	self performer freq: aDurationInSeconds "
+<onTheFlyEssentials>
+	freq := aDurationInSeconds
+	"	self performer freq: aDurationInSeconds "
 ]
 
 { #category : 'LiveCoding - Performance' }
@@ -234,9 +232,7 @@ Performance >> length [
 Performance >> mute: aKeyOrAnArrayOfKeys [
 	"remove all the keys in the arrayOfKeys from the Performance or remove just a single key"
 
-	"| tracks |
-	tracks := #( #Kick #TpSampler #Fm2Op #PsgPlus #Chordy ).
-"
+<onTheFlyEssentials>
 
 	aKeyOrAnArrayOfKeys isArray
 		ifTrue: [
@@ -245,20 +241,18 @@ Performance >> mute: aKeyOrAnArrayOfKeys [
 			self removeKey: aKeyOrAnArrayOfKeys.
 			self performanceType class = PerfTypeMooflod ifTrue: [
 				self performanceType visualizer cleanRow:
-					(self performanceType visualizer tracks at:  aKeyOrAnArrayOfKeys).
-					self performanceType visualizer tracks removeKey: aKeyOrAnArrayOfKeys
-					 ] ]
+					(self performanceType visualizer tracks at: aKeyOrAnArrayOfKeys).
+				self performanceType visualizer tracks removeKey:
+					aKeyOrAnArrayOfKeys ] ]
 ]
 
 { #category : 'muting and soloing' }
 Performance >> muteAll [
 	" remove all keys from the Performance"
 
-	| anArrayOfKeys |
+
 	backup := self asDictionary.
-	self keysDo: [ :i | self removeKey: i ifAbsent: [ nil ] ].
-
-
+	self keysDo: [ :i | self removeKey: i ifAbsent: [ nil ] ]
 ]
 
 { #category : 'LiveCoding - satelliteEvent' }
@@ -629,6 +623,7 @@ Performance >> restore [
 { #category : 'muting and soloing' }
 Performance >> solo: aKeyOrAnArrayOfKeys [
 
+<onTheFlyEssentials>
 	| anArrayOfKeys "tracks" |
 	backup := self asDictionary.
 	anArrayOfKeys := self keys.
@@ -642,7 +637,8 @@ Performance >> solo: aKeyOrAnArrayOfKeys [
 	self performanceType class = PerfTypeMooflod ifFalse: [ ^ self ].
 
 	self performanceType visualizer tracks keysAndValuesDo: [ :k :v |
-		k ~= aKeyOrAnArrayOfKeys ifTrue: [ self performanceType visualizer cleanRow: v] ].
+		k ~= aKeyOrAnArrayOfKeys ifTrue: [
+			self performanceType visualizer cleanRow: v ] ].
 	"self performanceType visualizer tracks removeKey: aKeyOrAnArrayOfKeys"
 	self performanceType visualizer tracks:
 		(self performanceType visualizer tracks keysAndValuesRemove: [ :k :v |
