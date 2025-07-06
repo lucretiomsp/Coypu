@@ -377,9 +377,9 @@ Performance >> play [
 { #category : 'playing' }
 Performance >> playFor: aNumberOfSteps [
 	"what happens depends on the Performance type! "
-
+<inTheFlyEssentials>
 	self class performanceType playFor: aNumberOfSteps.
-	self class performanceType asString traceCr 
+	self class performanceType asString traceCr
 ]
 
 { #category : 'as yet unclassified' }

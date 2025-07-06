@@ -2,8 +2,9 @@ Extension { #name : 'Random' }
 
 { #category : '*Coypu' }
 Random >> nextIntFromZero: anInteger [
-"returns a new random number in the range [0 aNumber]"
-^ (self nextInt: (anInteger + 1)) -1.
+	"returns a new random number in the range [0 aNumber]"
+
+	^ ( self nextIntegerBetween: 0 and: anInteger )
 ]
 
 { #category : '*Coypu' }

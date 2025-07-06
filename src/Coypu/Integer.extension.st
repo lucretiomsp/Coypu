@@ -693,7 +693,9 @@ Integer >> rumba: aStringOfNotes [
 { #category : '*Coypu' }
 Integer >> semibreves [
 	" returns self number of semibrevesin the first position of the bars"
-<onTheFlyEssentials>
+
+	<rhythmCreation>
+	<onTheFlyEssentials>
 	| result announcement |
 	announcement := RhythmAnnouncement new rhythm:
 		                self asString , ' semibreves'.

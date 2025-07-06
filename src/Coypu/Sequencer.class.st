@@ -434,11 +434,12 @@ value := anArrayWithASymbolAndAnrrayOfValues at: 2.
 
 { #category : 'Sequencer - transformation' }
 Sequencer >> flip [
-	" flip the gates in a Sequener: rests become gates, gates become rests"
+	"Inverts the gate/rest pattern of the sequence — turning active steps (gates) into rests and vice versa."
 
+<onTheFlyEssentials>
 	| result |
 	result := self gates collect: [ :i | (i ~= 1) asInteger ].
-	^ result asRhythm asSeq.
+	^ result asRhythm asSeq
 ]
 
 { #category : 'LiveCoding  - SuperDirt' }
@@ -833,13 +834,15 @@ Sequencer >> numberOfTrigs [
 
 { #category : 'Sequencer - transformation' }
 Sequencer >> offset: aNumber [
-	"offset the rhythm by aNumber of 'steps' wrapping it around its size"
+	"Offsets the rhythm by aNumber of steps, rotating the sequence circularly so that elements wrap around."
 
+
+<onTheFlyEssentials>
 	| newArray |
 	newArray := Array new: self gates size.
-	1 to: self gates size do: [ :i | 
-		newArray 
-			at: ((i + aNumber ) modulo: self gates size) 
+	1 to: self gates size do: [ :i |
+		newArray
+			at: (i + aNumber modulo: self gates size)
 			put: (self gates at: i) ].
 	self gates: newArray
 ]
@@ -1059,15 +1062,14 @@ Sequencer >> progression: anArrayOfIntervals [
 
 { #category : 'Sequencer - transformation' }
 Sequencer >> randomCounterPoint [
-	" creates aSequencer of trigs randomly counterpointed with self array"
+    "Creates a sequencer of trigs randomly placed only where self has rests (i.e., where gates = 0).
+    This is a basic form of rhythmic counterpoint — avoiding overlap with the original."
+<onTheFlyEssentials>
+    | rand newGates |
+    rand := Random new.
+    newGates := self gates collect: [:g | g = 1 ifTrue: [0] ifFalse: [rand nextTrig]].
+    ^  newGates asSeq
 
-	| newArray |
-	newArray := Array new: self gates size.
-	1 to: self gates size do: [ :i | 
-		(self gates at: i) = 1
-			ifTrue: [ newArray at: i put: 0 ]
-			ifFalse: [ newArray at: i put: Random new nextTrig ] ].
-	^ newArray asSeq
 ]
 
 { #category : 'LiveCoding  - SuperDirt' }
