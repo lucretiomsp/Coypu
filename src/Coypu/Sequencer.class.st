@@ -190,11 +190,13 @@ Sequencer >> ccn: anIntOrAnArray ccv: anotherIntOrArray [
 Sequencer >> chords: aStringWithOneOrMoreChords [
 	" note and chord type separated by an hyphen for example 'c-maj d#-min f-sus4 e-min7') - can be expressed with a letter or with a note number."
 
-	| arrayOfChords |
+	| arrayOfChords poly|
 	arrayOfChords := aStringWithOneOrMoreChords chordsToArrays.
 	seqChords := arrayOfChords.
-   ^ self asPolySeq 
 	
+	poly := self asPolySeq .
+	poly dirtMessage add: 'n' -> arrayOfChords .
+	^ poly
 ]
 
 { #category : 'accessing' }
@@ -1175,7 +1177,7 @@ Sequencer >> sound: soundsAndIndexs [
 
 	| soundsAndIndexsSeparated indexes sounds |
 	soundsAndIndexsSeparated := soundsAndIndexs findBetweenSubstrings:
-		                            ' '.
+		                            ','.
 
 
 	sounds := OrderedCollection new.

@@ -68,12 +68,12 @@ self assert: (polyseq dirtMessage includesKey: 'n') equals: false.
 ]
 
 { #category : 'tests' }
-SequencerTest >> testChangeSequencerGatesSize [
+SequencerTest >> testChangeSequencerGateTimes [
 
 	| seq |
 	seq := 16 downbeats.
-	seq gatesSize: 1.
-	self assert: (seq gatesSize) equals: 1
+	seq gateTimes: 1.
+	self assert: seq gateTimes equals: #(1)
 ]
 
 { #category : 'tests' }
@@ -125,7 +125,7 @@ SequencerTest >> testRandomNotesOfGatesSizefromScaleAndOctave [
 SequencerTest >> testReverse [
 
 | seq |
-seq := '000F' hexBeat sound: 'sd cp'; dirtNotes: #(1 2 3) .
+seq := '000F' hexBeat sound: 'sd cp'; dirtNotes: '1 2 3'.
 self assert: seq reverse gates  equals: #( 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0) asRhythm .
 self assert: (seq reverse dirtMessage at: 'n') equals: #( 3 2 1).
 self assert: (seq reverse dirtMessage at: 's') equals: #('cp' 'sd').
@@ -161,10 +161,10 @@ self assert: (seq2 offset: -1) gates equals: result2 gates.
 SequencerTest >> testSequencerSound [
 
 	| seq |
-	seq := 16 downbeats sound: 'bd'  , 'cp:2' .
+	seq := 16 downbeats sound: 'bd,cp:2'.
 
 	self assert: seq soundPattern equals: #( 'bd' 'cp' ).
-	self assert: seq samplesIndex equals: #( 0 2 )
+	self assert: (seq extraParams at: #index ) asArray equals: #( 0 2 )
 ]
 
 { #category : 'tests' }
