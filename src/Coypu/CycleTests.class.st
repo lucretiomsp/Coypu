@@ -34,13 +34,13 @@ CycleTests >> testCycleOf3QuarterNotesAnd2Quavers [
 { #category : 'tests' }
 CycleTests >> testCycleOfQuarterNotes [
 
-	| s  expectedResult |
-	s := #( 60 60 60 60 ) asCycle.
+	| s expectedResult |
+	s := #( 60 60 60 60 ) asCycleDurations.
 	expectedResult := Array
 		                  with: 1 / 4
 		                  with: 1 / 4
 		                  with: 1 / 4
 		                  with: 1 / 4.
 
-	self assert: s cycleDurations equals: expectedResult
+	self assert: s  equals: expectedResult
 ]
