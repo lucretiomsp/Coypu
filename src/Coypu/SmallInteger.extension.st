@@ -50,7 +50,7 @@ SmallInteger >> saw [
 
 	"fill an array of self steps with values representing a sawtooth with range 0 - 1"
 
-	^ (0 to: 1 by: 1 / (self -1)) asDirtArray
+	^ (0 to: 1 by: 1 / (self -1)) asArray asDirtArray
 ]
 
 { #category : '*Coypu' }
@@ -74,7 +74,7 @@ SmallInteger >> triangle [
 
 	| increment up down result |
 	increment := 1 / (self / 2 - 1).
-	up := (0 to: 1 by: increment) asDirtArray.
+	up := (0 to: 1 by: increment) asArray asDirtArray.
 	down := up reverse.
 	result := up , down.
 	^ result
