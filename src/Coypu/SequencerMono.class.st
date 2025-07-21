@@ -291,6 +291,14 @@ SequencerMono >> playPhaustMooflodEventAt: anIndex [
 	^ true
 ]
 
+{ #category : 'as yet unclassified' }
+SequencerMono >> randomNotesFrom: anArrayOfNotes octaves: anInteger [
+
+	self notes: (self trigs randomNotesFrom: anArrayOfNotes octaves: anInteger).
+	
+
+]
+
 { #category : 'highlighting' }
 SequencerMono >> reverse [
 	" reverese gates"

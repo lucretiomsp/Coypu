@@ -113,6 +113,15 @@ self assert: (Sequencer new orbit > 0) & (Sequencer new orbit < 12) equals: true
 ]
 
 { #category : 'tests' }
+SequencerTest >> testRandomNotesOfGatesSizefromScaleAndOctave [
+
+	| seq |
+	seq := 16 downbeats randomNotesFrom: Scale chromatic octaves: 2.
+
+	self assert: seq notes size equals: 4
+]
+
+{ #category : 'tests' }
 SequencerTest >> testReverse [
 
 | seq |
