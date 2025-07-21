@@ -1180,25 +1180,27 @@ Sequencer >> sound: soundsAndIndexs [
 
 	sounds := OrderedCollection new.
 	1 to: soundsAndIndexsSeparated size do: [ :i |
-		sounds add:
-			(((soundsAndIndexsSeparated at: i) findBetweenSubstrings: ':') at:
-				 1) ].
+			sounds add:
+				(((soundsAndIndexsSeparated at: i) findBetweenSubstrings: ':')
+					 at: 1) ].
 	indexes := OrderedCollection new.
 	(1 to: soundsAndIndexsSeparated size) do: [ :i |
-		((soundsAndIndexsSeparated at: i) findBetweenSubstrings: ':') size
-		> 1
-			ifTrue: [
-				indexes add:
-					(((soundsAndIndexsSeparated at: i) findBetweenSubstrings: ':')
-						 at: 2) asInteger ]
-			ifFalse: [ indexes add: 0 ] ].
+			((soundsAndIndexsSeparated at: i) findBetweenSubstrings: ':') size
+			> 1
+				ifTrue: [
+						indexes add:
+							(((soundsAndIndexsSeparated at: i) findBetweenSubstrings: ':')
+								 at: 2) asInteger ]
+				ifFalse: [ indexes add: 0 ] ].
 
 
 	self dirtMessage
 		at: 's' put: sounds asDirtArray;
 		at: 'n' put: indexes asDirtArray.
+
+	self extraParams add: #index -> indexes.
 	"needs refactoring"
-	self soundPattern: sounds asDirtArray 
+	self soundPattern: sounds asDirtArray
 ]
 
 { #category : 'LiveCoding  - SuperDirt' }

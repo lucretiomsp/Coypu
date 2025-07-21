@@ -114,12 +114,17 @@ DirtSingleEvent >> size: anInteger [
 { #category : 'LiveCoding  - SuperDirt' }
 DirtSingleEvent >> sound: aString [
 	"select a sound for the single event with the name of a folder in the SuperDirt sample folder"
+
 	"for DirtSingleEventss folder inex after colons is discarded - use note: to set noteIndex"
-	
+
 	| parsedString sound |
 	parsedString := aString findBetweenSubstrings: ':'.
-	sound := parsedString at: 1. 
-	self dirtMessage add: 's'; add: sound.
+	sound := parsedString at: 1.
+	self dirtMessage
+		add: 's';
+		add: sound.
+
+	
 ]
 
 { #category : 'LiveCoding  - SuperDirt' }
