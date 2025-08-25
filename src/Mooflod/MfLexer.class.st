@@ -9,8 +9,9 @@ Class {
 { #category : 'parsing' }
 MfLexer >> parse: aString [
 
-	| tokens result |
+	| tokens result arrayOfTokens |
 	tokens := aString findBetweenSubstrings: ' '.
-	result := tokens collect: [ :i | MfCodeToken fromString: i ].
+	arrayOfTokens := tokens collect: [ :i | MfCodeToken fromString: i ].
+	result := MfTokenCollection new tokens: arrayOfTokens .
 	^ result
 ]
