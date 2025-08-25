@@ -5,3 +5,9 @@ Class {
 	#package : 'Mooflod',
 	#tag : 'CodeDisplay'
 }
+
+{ #category : 'accessing' }
+MfNumberToken >> color [
+
+	^ Color yellow
+]

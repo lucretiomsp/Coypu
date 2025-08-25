@@ -3,12 +3,22 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'string',
-		'tokens'
+		'tokens',
+		'ropedText'
 	],
 	#category : 'Mooflod-CodeDisplay',
 	#package : 'Mooflod',
 	#tag : 'CodeDisplay'
 }
+
+{ #category : 'converting' }
+MfTokenCollection >> asMfRopedText [
+
+	ropedText := '' asRopedText foreground: Color white.
+	self tokens do: [ :i |
+		ropedText := ropedText , (i string asRopedText foreground: i color) , (' ' asRopedText foreground: Color white )].
+	^ ropedText
+]
 
 { #category : 'initialization' }
 MfTokenCollection >> initialize [ 

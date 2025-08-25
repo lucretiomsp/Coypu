@@ -31,7 +31,7 @@ MfCodeToken class >> fromString: aString [
         ^ MfNumberToken new string: aString ].
 
     aString isQuotedString ifTrue: [ 
-        ^ MfQUotedString new string: aString ].
+        ^ MfQuotedString new string: aString ].
 
     ^ self new string: aString
 ]
@@ -40,6 +40,12 @@ MfCodeToken class >> fromString: aString [
 MfCodeToken >> color [
 
 ^ Color white
+]
+
+{ #category : 'accessing' }
+MfCodeToken >> string [
+
+^ string
 ]
 
 { #category : 'accessing' }

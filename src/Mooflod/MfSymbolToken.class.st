@@ -5,3 +5,9 @@ Class {
 	#package : 'Mooflod',
 	#tag : 'CodeDisplay'
 }
+
+{ #category : 'accessing' }
+MfSymbolToken >> color [
+
+	^ Color red
+]
