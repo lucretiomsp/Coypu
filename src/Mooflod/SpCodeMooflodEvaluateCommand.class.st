@@ -1,9 +1,9 @@
 Class {
 	#name : 'SpCodeMooflodEvaluateCommand',
 	#superclass : 'SpCodeSelectionCommand',
-	#category : 'Mooflod-Commands',
+	#category : 'Mooflod-CodeDisplay',
 	#package : 'Mooflod',
-	#tag : 'Commands'
+	#tag : 'CodeDisplay'
 }
 
 { #category : 'defaults' }
@@ -30,5 +30,6 @@ SpCodeMooflodEvaluateCommand >> execute [
 
 	"self evaluateSelectionAndDo: [ :result |  ]"
 
-	Object inform: self context selectedTextOrLine 
+	Object inform: self context selectedTextOrLine.
+	self context selectedTextOrLine inspect.
 ]
