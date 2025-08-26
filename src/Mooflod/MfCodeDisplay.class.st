@@ -4,12 +4,24 @@ Class {
 	#instVars : [
 		'textElement',
 		'fontSize',
-		'mcdSize'
+		'mcdSize',
+		'mcdSpace'
 	],
 	#category : 'Mooflod-CodeDisplay',
 	#package : 'Mooflod',
 	#tag : 'CodeDisplay'
 }
+
+{ #category : 'adding' }
+MfCodeDisplay >> addLineOfText: aRopedText [
+
+	| myRoot |
+	myRoot := self mcdSpace root.
+	myRoot addChild: (BlTextElement new
+			 background: Color green;
+			 text: (aRopedText fontSize: 30)).
+	"myRoot children size = 10 ifTrue: (myRoot removeChildAt: 1)"
+]
 
 { #category : 'accessing' }
 MfCodeDisplay >> fontSize [ 
@@ -22,6 +34,11 @@ MfCodeDisplay >> initialize [
 
 	super initialize.
 	fontSize := 28.
+	mcdSpace := BlSpace new
+		            extent: self mcdSize;
+		            title: 'Mooflod Code Display'.
+	mcdSpace root background: Color black; layout: BlLinearLayout vertical.
+
 	textElement := BlTextElement new
 		               background: Color black;
 		               extent: self mcdSize
@@ -33,16 +50,18 @@ MfCodeDisplay >> mcdSize [
 ^ 600 @ 300.
 ]
 
+{ #category : 'accessing' }
+MfCodeDisplay >> mcdSpace [
+
+	^ mcdSpace 
+]
+
 { #category : 'instance creation' }
 MfCodeDisplay >> open [
 
-	| cdSpace  |
+
 	
-	cdSpace := BlSpace new
-		           extent: self mcdSize;
-		           title: 'Mooflod Code Display'.
-	cdSpace root addChild: self textElement.
-	cdSpace show
+	mcdSpace show
 ]
 
 { #category : 'accessing' }
