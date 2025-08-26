@@ -29,7 +29,10 @@ SpCodeMooflodEvaluateCommand >> execute [
 	"Treat the current text selection as an expression; evaluate it."
 
 	"self evaluateSelectionAndDo: [ :result |  ]"
-
+   | ropedText |
+ropedText :=  (MfLexer new parse: self context selectedTextOrLine) asMfRopedText .
 	Object inform: self context selectedTextOrLine.
-	self context selectedTextOrLine inspect.
+	MfCodeDisplay allInstancesDo: [ :i | "self context selectedTextOrLine inspect"
+			i textElement background: Color black.
+			i text: ropedText ]
 ]
