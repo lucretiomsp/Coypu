@@ -572,27 +572,30 @@ ByteString >> randomNotesFromFolder [
 
 { #category : '*Coypu' }
 ByteString >> splitRespectingQuotes [
+    | result token inQuotes |
+    result := OrderedCollection new.
+    token := WriteStream on: String new.
+    inQuotes := false.
 
-	| result current inQuotes |
-	result := OrderedCollection new.
-	current := ''.
-	inQuotes := false.
+    self do: [:ch |
+        (ch = $') 
+            ifTrue: [
+                inQuotes := inQuotes not.
+                token nextPut: ch  "Keep the quote"
+            ]
+            ifFalse: [
+                (ch = Character space and: [inQuotes not])
+                    ifTrue: [
+                        token position > 0 ifTrue: [   "WriteStream not empty"
+                            result add: token contents.
+                            token := WriteStream on: String new ].
+                    ]
+                    ifFalse: [
+                        token nextPut: ch ]]].
 
-	self do: [ :char |
-			char = $'
-				ifTrue: [
-						inQuotes := inQuotes not.
-						current := current , char "Keep the quote" ]
-				ifFalse: [
-						(char = Character space and: [ inQuotes not ])
-							ifTrue: [
-									current isEmpty ifFalse: [
-											result add: current.
-											current := '' ] ]
-							ifFalse: [ current := current , char ] ] ].
+    token position > 0 ifTrue: [ result add: token contents ].
+    ^ result
 
-	current isEmpty ifFalse: [ result add: current ].
-	^ result
 ]
 
 { #category : '*Coypu' }

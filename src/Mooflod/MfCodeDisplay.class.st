@@ -18,6 +18,7 @@ MfCodeDisplay >> addLineOfText: aRopedText [
 	| myRoot |
 	myRoot := self mcdSpace root.
 	myRoot addChild: (BlTextElement new
+	size: 600@40;
 			 background: Color black;
 			 text: (aRopedText fontSize: 30)).
 	myRoot children size > 10
@@ -49,7 +50,7 @@ MfCodeDisplay >> initialize [
 { #category : 'accessing' }
 MfCodeDisplay >> mcdSize [
 
-^ 600 @ 300.
+	^ 600 @ 400
 ]
 
 { #category : 'accessing' }

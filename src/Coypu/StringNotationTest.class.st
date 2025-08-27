@@ -17,3 +17,12 @@ StringNotationTest >> testGetMultiplier [
 
 self assert: '36*4' getMultiplier equals: 4.
 ]
+
+{ #category : 'tests' }
+StringNotationTest >> testSplitRespectingQuotes [
+
+	| testString result |
+	testString := ' ''65 , ~ * 4 , 63 ,57 '' asDirtNotes to: #lead .' .
+	result := #('''65 , ~ * 4 , 63 ,57''' 'asDirtNotes' 'to:' '#lead' '.').
+self assert: testString splitRespectingQuotes equals: result asOrderedCollection 
+]
