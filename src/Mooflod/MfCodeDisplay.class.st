@@ -18,9 +18,11 @@ MfCodeDisplay >> addLineOfText: aRopedText [
 	| myRoot |
 	myRoot := self mcdSpace root.
 	myRoot addChild: (BlTextElement new
-			 background: Color green;
+			 background: Color black;
 			 text: (aRopedText fontSize: 30)).
-	(myRoot children size > 10) ifTrue: [myRoot  removeChildAt: 1] ifFalse:[] 
+	myRoot children size > 10
+		ifTrue: [ myRoot removeChildAt: 1 ]
+		ifFalse: [ ]
 ]
 
 { #category : 'accessing' }

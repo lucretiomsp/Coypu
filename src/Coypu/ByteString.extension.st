@@ -571,6 +571,31 @@ ByteString >> randomNotesFromFolder [
 ]
 
 { #category : '*Coypu' }
+ByteString >> splitRespectingQuotes [
+
+	| result current inQuotes |
+	result := OrderedCollection new.
+	current := ''.
+	inQuotes := false.
+
+	self do: [ :char |
+			char = $'
+				ifTrue: [
+						inQuotes := inQuotes not.
+						current := current , char "Keep the quote" ]
+				ifFalse: [
+						(char = Character space and: [ inQuotes not ])
+							ifTrue: [
+									current isEmpty ifFalse: [
+											result add: current.
+											current := '' ] ]
+							ifFalse: [ current := current , char ] ] ].
+
+	current isEmpty ifFalse: [ result add: current ].
+	^ result
+]
+
+{ #category : '*Coypu' }
 ByteString >> to: aKeyInPerformance [ 
 	"convenience method to insert at aKeyInPerformance a pattern from the hex string"
 	
