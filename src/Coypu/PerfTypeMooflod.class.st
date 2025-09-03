@@ -194,7 +194,7 @@ PerfTypeMooflod >> openVisualizers [
 	visualizerSpace := BlSpace new extent:
 		                   World extent x * (5 / 12) @ World extent y.
 	visualizerSpace position: 500 @ 0.
-	visualizerSpace useMorphicHost.
+	"visualizerSpace useMorphicHost."
 	stepVisualizer transformDo: [ :q | q translateBy: 100 @ 0 ].
 	visualizer transformDo: [ :q | q translateBy: 0 @ 60 ].
 	visualizerSpace root addChild: stepVisualizer.
@@ -228,6 +228,7 @@ PerfTypeMooflod >> playFor: aNumberOfSteps [
 	"just on performance at once"
 
 	| perf bpm performer |
+
 	bpm := 60 / (Performance uniqueInstance freq * 4).
 	perf := Performance uniqueInstance.
 	performer := PerformerPhaustoMooflod new. "Mooflod"
@@ -242,7 +243,7 @@ PerfTypeMooflod >> playFor: aNumberOfSteps [
 			"stepVisualizer initializeAnimation: perf freq"
 			self openVisualizers ].
 
-		
+
 		"if we want to increment steps"
 		"15 / perf bpm / 60 * (aNumberOfSteps / 16)"
 

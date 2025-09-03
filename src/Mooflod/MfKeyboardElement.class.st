@@ -235,7 +235,7 @@ MfKeyboardElement >> openInMooflod [
 
 	| space |
 	space := BlSpace new extent: 610 @ 200.
-	space useMorphicHost.
+	"space useMorphicHost."
 	space root background: Color black.
 	space toTheme: MfMooflodTheme new.
 
