@@ -72,7 +72,7 @@ MfVisualizerElement >> addElementsLevelOne: aName [
 	label text: (self textFrom: 'Instrument :').
 	label text fontSize: 12.
 	label transformDo: [ :t | t translateBy: 20 @ 17 ].
-	square transformDo: [ :q | q translateBy: 450 @ 2 ].
+	square transformDo: [ :q | q translateBy: 500 @ 2 ].
 	name transformDo: [ :t | t translateBy: 90 @ 17 ].
 	squareArray at: aName put: square.
 	self addIconToInstrument: aName.
@@ -142,9 +142,9 @@ MfVisualizerElement >> addIconToInstrument: aName [
 	aName = 'TpSampler' ifTrue: [ icon := ICPercussionsIcon new ].
 	aName = 'PsgPlus' ifTrue: [ icon := ICWaveIcon new ].
 	aName = 'Chordy' ifTrue: [ icon := ICMonoLeadIcon new ].
-	
-		icon transformDo: [ :t | t translateBy: 400 @ 23 ].
-		sect addChild: icon 
+
+	icon transformDo: [ :t | t translateBy: 470 @ 23 ].
+	sect addChild: icon
 ]
 
 { #category : 'adding' }

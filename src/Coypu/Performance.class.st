@@ -377,7 +377,8 @@ Performance >> play [
 { #category : 'playing' }
 Performance >> playFor: aNumberOfSteps [
 	"what happens depends on the Performance type! "
-<inTheFlyEssentials>
+
+	<onTheFlyEssentials>
 	self class performanceType playFor: aNumberOfSteps.
 	self class performanceType asString traceCr
 ]

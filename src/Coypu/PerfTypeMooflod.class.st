@@ -193,6 +193,7 @@ PerfTypeMooflod >> openVisualizers [
 	visualizerSpace root removeChildren.
 	visualizerSpace := BlSpace new extent:
 		                   World extent x * (5 / 12) @ World extent y.
+	visualizerSpace root background: Color black.
 	visualizerSpace position: 500 @ 0.
 	"visualizerSpace useMorphicHost."
 	stepVisualizer transformDo: [ :q | q translateBy: 100 @ 0 ].
