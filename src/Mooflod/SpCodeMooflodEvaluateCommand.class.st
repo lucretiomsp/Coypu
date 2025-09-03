@@ -33,6 +33,7 @@ SpCodeMooflodEvaluateCommand >> execute [
 	| ropedText |
 	ropedText := (MfLexer new parse: self context selectedTextOrLine)
 		             asMfRopedText.
-	Object inform: self context selectedTextOrLine.
-	MfCodeDisplay allInstances last  addLineOfText: ropedText 
+	"Object inform: self context selectedTextOrLine."
+	self evaluateSelectionAndDo: [ :result |  ].
+	MfCodeDisplay allInstances last addLineOfText: ropedText
 ]
