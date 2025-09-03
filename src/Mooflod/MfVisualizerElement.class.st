@@ -90,8 +90,8 @@ MfVisualizerElement >> addElementsLevelThree: aName [
 	number := MfTimerElement new value: 60.
 	label := BlTextElement new.
 	label text fontSize: 12.
-	label transformDo: [ :t | t translateBy: 315 @ 3 ].
-	number transformDo: [ :q | q translateBy: 320 @ 20 ].
+	label transformDo: [ :t | t translateBy: 385 @ 3 ].
+	number transformDo: [ :q | q translateBy: 380 @ 20 ].
 	sect addChild: number.
 	sect addChild: label.
 	aName = 'Kick' ifTrue: [
@@ -143,7 +143,7 @@ MfVisualizerElement >> addIconToInstrument: aName [
 	aName = 'PsgPlus' ifTrue: [ icon := ICWaveIcon new ].
 	aName = 'Chordy' ifTrue: [ icon := ICMonoLeadIcon new ].
 
-	icon transformDo: [ :t | t translateBy: 470 @ 23 ].
+	icon transformDo: [ :t | t translateBy: 450 @ 23 ].
 	sect addChild: icon
 ]
 
