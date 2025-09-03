@@ -365,6 +365,12 @@ self pattern index: anArrayOfIndexes to: aKeyInAPerformance
 ]
 
 { #category : '*Coypu' }
+ByteString >> isQuotedString [
+	
+^ self includes: $'
+]
+
+{ #category : '*Coypu' }
 ByteString >> midiCh: anInteger to: aKeyInPerformance [
 	"conveneience method to avoid extra parenthesis"
 (self pattern  midiChannel: anInteger) to: aKeyInPerformance 

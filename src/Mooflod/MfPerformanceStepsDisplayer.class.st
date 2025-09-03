@@ -64,7 +64,7 @@ MfPerformanceStepsDisplayer >> initialize [
 
 	super initialize.
 	self geometry: (BlRoundedRectangleGeometry cornerRadius: 18).
-	self size: 300 @ 50.
+	self extent: 300 @ 50.
 	self background: Color black.
 	animationIsRunning := false
 ]

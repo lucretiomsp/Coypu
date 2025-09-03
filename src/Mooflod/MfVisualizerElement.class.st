@@ -233,15 +233,15 @@ MfVisualizerElement >> initSections [
 	| y |
 	y := 0.
 	1 to: 5 do: [ :s |
-		| sect |
-		sect := BlElement new.
-		sect geometry: BlRectangleGeometry new.
-		sect size: 600 @ 110.
-		sect border: (BlBorder paint: Color black width: 2).
-		sect layout: BlFrameLayout new.
-		sect transformDo: [ :t | t translateBy: 0 @ y ].
-		y := y + 110.
-		self addChild: sect ]
+			| sect |
+			sect := BlElement new.
+			sect geometry: BlRectangleGeometry new.
+			sect extent: 600 @ 110.
+			sect border: (BlBorder paint: Color black width: 2).
+			sect layout: BlFrameLayout new.
+			sect transformDo: [ :t | t translateBy: 0 @ y ].
+			y := y + 110.
+			self addChild: sect ]
 ]
 
 { #category : 'initialization' }
@@ -249,14 +249,14 @@ MfVisualizerElement >> initialize [
 
 	super initialize.
 	self geometry: BlRectangleGeometry new.
-	self size: 600 @ 550.
+	self extent: 600 @ 550.
 	self border: (BlBorder paint: Color lightGray width: 2).
 	self initSections.
 	squareArray := Dictionary new.
 	patternArray := Dictionary new.
 	sliderArray := Dictionary new.
 	tracks := Dictionary new.
-	
+
 	"tracks
 		at: #Kick put: 1;
 		at: #TpSampler put: 2;
