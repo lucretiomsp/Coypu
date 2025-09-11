@@ -53,10 +53,10 @@ p playFor: 128 bars.'.
 { #category : 'adding' }
 PerfTypeMooflod >> addMasterWidgets [
 
-	| delayW cutoffW container slider textElt |
+	| delayW cutoffW container  |
 	delayW := MfMasterDelayElement new.
 	"slider := ICSlider2 new."
-	delayW transformDo: [ :q | q translateBy: 300 @ 610 ].
+	delayW transformDo: [ :q | q translateBy: 330 @ 620 ].
 	cutoffW := ICMasterCutoff new.
 	container := BlElement new
 		             layout: BlLinearLayout vertical;

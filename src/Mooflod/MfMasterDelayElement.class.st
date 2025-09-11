@@ -33,7 +33,7 @@ MfMasterDelayElement class >> exampleSimpleFractalCircle [
 { #category : 'initialization' }
 MfMasterDelayElement >> circleExtent [
 
-	^ 104 @ 104
+	^ 200 @ 200
 ]
 
 { #category : 'internal' }
@@ -135,12 +135,14 @@ MfMasterDelayElement >> setValue: aFloat [
 
 { #category : 'internal' }
 MfMasterDelayElement >> updateCircles [
-   
-   self removeChildren.
+
+| incFactor |
+	self removeChildren.
 	currentX := 0.
 	currentY := 0.
-	1 to: delayAmount / 4 do: [ :i |
-		currentX := currentX + 4.
-		currentY := currentY + 4.
+	incFactor := delayAmount / 7.
+	1 to: delayAmount / 3 do: [ :i |
+		currentX := currentX + (22 - incFactor).
+		currentY := currentY + (22 - incFactor).
 		self createCircle: currentX y: currentY border: self rColor ]
 ]
