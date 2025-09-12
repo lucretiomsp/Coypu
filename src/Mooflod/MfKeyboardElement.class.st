@@ -1,6 +1,8 @@
 "
 This is copy of the original bloc BlDevKeyboardElement.
 In particular this keyboard works independently from the language layout. 
+To change its size, change the value of _rowHeight_.
+To use it for a **Mooflod** performance, use _openInMooflod_.
 "
 Class {
 	#name : 'MfKeyboardElement',
@@ -80,7 +82,7 @@ MfKeyboardElement >> initialize [
 	super initialize.
 
 	self layout: BlFlowLayout new.
-	self size: self keyboardWidth @ self keyboardHeight.
+	self extent: self keyboardWidth @ self keyboardHeight.
 	self background: Color gray.
 
 	keymap := Dictionary new.
@@ -88,7 +90,7 @@ MfKeyboardElement >> initialize [
 	self initializeKeys.
 	self initializeEventListeners.
 	self requestFocus.
-	self receiveKeyEventsFromLastPlayground 
+	self receiveKeyEventsFromLastPlayground
 ]
 
 { #category : 'initialization' }
@@ -218,7 +220,7 @@ MfKeyboardElement >> newButton: anExtent [
 	"creates an instance of button and give its graphical properties"
 
 	^ BlElement new
-		  size: anExtent;
+		  extent: anExtent;
 		  geometry: (BlRoundedRectangleGeometry cornerRadius: 4);
 		  border: (BlBorder paint: (Color gray alpha: 0.2) width: 1);
 		  layout: BlFrameLayout new;
@@ -234,14 +236,14 @@ MfKeyboardElement >> newButton: anExtent [
 MfKeyboardElement >> openInMooflod [
 
 	| space |
-	space := BlSpace new extent: 610 @ 200.
+	space := BlSpace new extent: 950 @ 350.
 	"space useMorphicHost."
 	space root background: Color black.
 	space toTheme: MfMooflodTheme new.
 
 	self transformDo: [ :c |
 		c rotateBy: 0.
-		c translateBy: -90 @ -47.
+		c translateBy: -100 @ -47.
 		c scaleBy: 0.8 ].
 	space root addChild: self.
 
@@ -265,7 +267,7 @@ MfKeyboardElement >> receiveKeyEventsFromLastPlayground [
 
 { #category : 'geometry' }
 MfKeyboardElement >> rowHeight [
-	^ 35
+	^ 35 * 1.65
 ]
 
 { #category : 'geometry' }

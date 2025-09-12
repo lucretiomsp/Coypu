@@ -50,7 +50,7 @@ MfCodeDisplay >> initialize [
 { #category : 'accessing' }
 MfCodeDisplay >> mcdSize [
 
-	^ 600 @ 400
+	^ 950 @ 500
 ]
 
 { #category : 'accessing' }
