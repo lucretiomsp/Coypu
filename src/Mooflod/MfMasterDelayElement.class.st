@@ -8,9 +8,9 @@ Class {
 		'delayTime',
 		'nbOfChilds'
 	],
-	#category : 'Mooflod-MasterDelayWidget',
+	#category : 'Mooflod-MasterWidgets',
 	#package : 'Mooflod',
-	#tag : 'MasterDelayWidget'
+	#tag : 'MasterWidgets'
 }
 
 { #category : 'example' }

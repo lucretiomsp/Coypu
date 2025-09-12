@@ -1,9 +1,9 @@
 Class {
 	#name : 'MfMasterDelayElementTest',
 	#superclass : 'TestCase',
-	#category : 'Mooflod-MasterDelayWidget',
+	#category : 'Mooflod-MasterWidgets',
 	#package : 'Mooflod',
-	#tag : 'MasterDelayWidget'
+	#tag : 'MasterWidgets'
 }
 
 { #category : 'tests' }
