@@ -422,6 +422,22 @@ Integer >> pattern [
 ]
 
 { #category : '*Coypu' }
+Integer >> plena [
+	" create an array of self size of  puertorican plena rhytm pulses."
+	<rhythmCreation>
+	<onTheFlyEssentials>
+	| pattern announcement |
+	announcement := RhythmAnnouncement new rhythm:
+		                self asString , ' plena'.
+	PerformanceRecorder uniqueInstance announce: announcement.
+	"X - - X | - X - - | X - - X | - X - -"
+	pattern := #( 1 0 0 1 0 1 0 0 1 0 0 1 0 1 0 0 ).
+
+	^ ((0 to: self - 1) collect: [ :i |
+		   pattern at: (i rem: pattern size) + 1 ]) asRhythm asSeq
+]
+
+{ #category : '*Coypu' }
 Integer >> quavers [
 	"creates an Array of aNumber of values (0,1) with 1 to the position corresponding to a rhtyhm of quavers (downbeat + upbeat)"
 

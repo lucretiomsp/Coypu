@@ -27,7 +27,7 @@ MfCodeToken class >> fromString: aString [
 								(aString includes: $#) ifTrue: [ 
         ^ MfSymbolToken new string: aString ].
 
-    ('\d+' asRegex matches: aString) ifTrue: [ 
+    ('^\d+' asRegex matches: aString) ifTrue: [ 
         ^ MfNumberToken new string: aString ].
 
     aString isQuotedString ifTrue: [ 
