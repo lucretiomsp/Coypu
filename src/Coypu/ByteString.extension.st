@@ -761,6 +761,21 @@ ByteString >> toKymaAsTrigWithDuration: aDurationInSeconds [
 ]
 
 { #category : '*Coypu' }
+ByteString >> toLocal: aString [
+	"comment stating purpose of instance-side message"
+
+	"scope: class-variables  &  instance-variables"
+
+	| localAddress |
+	localAddress := '127.0.0.1'.
+
+
+	(OSCMessage for: {
+			 ('/' , aString).
+			 self  }) sendToAddressString: localAddress port: 57120
+]
+
+{ #category : '*Coypu' }
 ByteString >> toLocalAsGate [
 
 	" send an OSC message that mimics the behaviour of MIDI note on message, note is held for a default duration of 0.25 second and midi NN is 60"
