@@ -76,6 +76,28 @@ SequencerMono >> isPolySeq [
 ]
 
 { #category : 'LiveCoding  - SuperDirt' }
+SequencerMono >> playDirtEventAt: anIndex [
+
+	"sends a mesaage to SuperDirt with all the desired OSC arguments and values" 
+	| message dur stepDuration|
+	stepDuration := Performance uniqueInstance freq.
+	message := OrderedCollection new.
+
+	dur := self durations asDirtArray  wrap: anIndex .
+
+	message add: 'delta'; add: stepDuration * dur. "delta should change"
+	dirtMessage keysAndValuesDo:  [ :key :value | 
+			message 
+				add: key; 
+				add: (value asDirtArray  wrap: anIndex ) ].
+
+
+
+	(OSCBundle for: {  OSCMessage for: message  }  )  sendToAddressString: '127.0.0.1' port: 57120.
+	^ true 
+]
+
+{ #category : 'LiveCoding  - SuperDirt' }
 SequencerMono >> playFullDirtEventAt: anIndex [
 
 	"sends a mesaage to SuperDirt with all the desired OSC arguments and values" 
@@ -119,23 +141,17 @@ SequencerMono >> playFullKymaEventAt: anIndex [
 { #category : 'LiveCoding  - SuperDirt' }
 SequencerMono >> playLocalEventAt: anIndex [
 
-	"sends a mesaage to SuperDirt with all the desired OSC arguments and values" 
-	| message dur stepDuration|
+
+	| gateTime dur midiNote  stepDuration  freq |
+	freq := Performance uniqueInstance freq.
+	gateTime := 0.9. "must be changeable"
+	
 	stepDuration := Performance uniqueInstance freq.
-	message := OrderedCollection new.
-
-	dur := self durations asDirtArray  wrap: anIndex .
-
-	message add: 'delta'; add: stepDuration * dur. "delta should change"
-	dirtMessage keysAndValuesDo:  [ :key :value | 
-			message 
-				add: key; 
-				add: (value asDirtArray  wrap: anIndex ) ].
+	midiNote := self notes asDirtArray wrap: anIndex.
+	dur := self durations asDirtArray wrap: anIndex.
+	self seqKey toLocalAsGate: stepDuration * gateTime .
 
 
-
-	(OSCBundle for: {  OSCMessage for: message  }  )  sendToAddressString: '127.0.0.1' port: 57120.
-	^ true 
 ]
 
 { #category : 'LiveCoding  - SuperDirt' }
