@@ -11,7 +11,45 @@ Class {
 
 { #category : 'playing' }
 PerformerLocal >> play [
-	self playLocalSequenceAt:  132 bpm for: fourDaysAt120BPM  
+
+	self playFor: fourDaysAt120BPM  
+]
+
+{ #category : 'accessing' }
+PerformerLocal >> playEventAt: anIndex in: aSequencer [
+
+| aSequence gateTime value note |
+aSequence key asString
+								  toLocalAsGate: gateTime
+									  *
+									  (value durations at:
+										   (value noteIndex modulo: value durationsSize))
+								  note: note.
+]
+
+{ #category : 'playing' }
+PerformerLocal >> playFor: aNumberOfSteps [
+	"play the performance with an external MIDI devices - default freq is 132 bpm 
+	Performance speed can be changed with p freq: a bpm"
+
+	performance bpm: 60 / (performance freq * 4).
+	performance transportStep: 0.
+	performance activeProcess: ([
+		 aNumberOfSteps timesRepeat: [
+			 (Delay forSeconds: performance freq) wait.
+			 "sequencers scan"
+			 [
+			 performance valuesDo: [ :seq |
+				 (seq gates wrap: performance transportStep) = 1
+					 ifTrue: [
+						 seq playLocalEventAt: seq noteIndex. "delta!!!!"
+						 "increment note Index"
+						 seq noteIndex: seq noteIndex + 1 ]
+						 ] ] forkAt: Processor highIOPriority .
+
+			 "step is incremented anyway"
+			 performance incrementTransportStep ] ] forkAt:
+			 Processor timingPriority)
 ]
 
 { #category : 'accessing' }

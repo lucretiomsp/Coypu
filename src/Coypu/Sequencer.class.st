@@ -948,6 +948,12 @@ if you want to send out ccs
 		  step := step + 1 ] ] forkAt: Processor timingPriority
 ]
 
+{ #category : 'LiveCoding - Performance' }
+Sequencer >> playDirtEventAt: anIndex [
+
+	self subclassResponsibility 
+]
+
 { #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> playFullDirtEventAt: anIndex [
 
@@ -1001,12 +1007,6 @@ message addAll: { '_id' . '1' . 'cps' . 0.56 . 'delta' . 0.125 . 'orbit' . 0 . '
 		sendToAddressString: '127.0.0.1' 
 		port: aPort.
 	^ true 
-]
-
-{ #category : 'LiveCoding - Performance' }
-Sequencer >> playLocalEventAt: anIndex [
-
-	self subclassResponsibility 
 ]
 
 { #category : 'LiveCoding - Performance' }
@@ -1325,7 +1325,7 @@ Sequencer >> to: aSymbol [
 
 
 
-	Performance performanceType addSequencer: self to: aSymbol.
+	Performance performanceType addSequencer: self to: aSymbol .
 
 	"need cleaning and refactoring"
 	perf := Performance uniqueInstance.
