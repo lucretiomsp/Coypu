@@ -395,18 +395,15 @@ Sequencer >> envMod: aStringOrAnArray [
 Sequencer >> extra: aSymbol values: aStringWithIndexes [
 	"stores extra values to control synths parameters on Kyma values can be a Number, an Array or  a valid string of Coypu Notation"
 
-	| announcement stringWithIndexes |
+	|  stringWithIndexes |
 	stringWithIndexes := aStringWithIndexes.
-	aStringWithIndexes class = Array ifTrue: [  
-	stringWithIndexes := String streamContents: [ :s |
-		                     aStringWithIndexes do: [ :each |
-			                     s
-				                     nextPutAll: each asString;
-				                     nextPutAll: ' ' ] ]].
-	announcement := ExtraValuesAnnouncement new extraValues:
-		                ' ' , thisContext sender selector asString , ''''
-		                , stringWithIndexes allButLast  asString ,''';'.
-	PerformanceRecorder uniqueInstance announce: announcement.
+	aStringWithIndexes class = Array ifTrue: [
+			stringWithIndexes := String streamContents: [ :s |
+					                     aStringWithIndexes do: [ :each |
+							                     s
+								                     nextPutAll: each asString;
+								                     nextPutAll: ' ' ] ] ].
+
 	self extraParams
 		at: aSymbol
 		put: aStringWithIndexes asDirtArrayOfValues
