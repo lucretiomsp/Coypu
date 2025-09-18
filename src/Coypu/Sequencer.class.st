@@ -82,15 +82,14 @@ Sequencer >> , anotherSequencer [
 	"combine the gates of two sequencers, returns a sequencer"
 
 	| newGates newNotes newDurations notes1 notes2 |
-	PerformanceRecorder uniqueInstance announce:
-		DoubleRhythmAnnouncement new.
+
 
 	notes1 := self notes.
 	notes2 := anotherSequencer notes.
 	newGates := self gates , anotherSequencer gates.
-	newDurations := self durations asDirtArray , anotherSequencer durations asDirtArray .
-	PerformanceRecorder uniqueInstance savedPerformance
-		collectionOfCommands.
+	newDurations := self durations asDirtArray
+	                , anotherSequencer durations asDirtArray.
+
 	newNotes := notes1 , notes2.
 	^ self class new
 		  gates: newGates;
@@ -315,18 +314,14 @@ Sequencer >> dirtMessage: anArrayOfAssociationForSuperDirt [
 Sequencer >> dirtNotes: aStringWithNotes [
 	"add into a Sequencer anotes from a String in which numbers can be multiplicated"
 
-	| tokens dNotes arrayOfNotes announcement selectors|
-	selectors := #( #DoIt #testLastDirtNotes).
-	(selectors includes: thisContext sender selector) ifTrue: [
-		announcement := DirtNotesAnnouncement new.
-		announcement newDirtNotes: aStringWithNotes.
-		PerformanceRecorder uniqueInstance announce: announcement ].
+	| tokens dNotes arrayOfNotes   |
+
 	tokens := aStringWithNotes splitOn: ','.
 	dNotes := ' '.
 	tokens do: [ :i |
-		dNotes := (i includes: $*)
-			          ifTrue: [ dNotes , i multiplyStringsInString ]
-			          ifFalse: [ dNotes , i ] ].
+			dNotes := (i includes: $*)
+				          ifTrue: [ dNotes , i multiplyStringsInString ]
+				          ifFalse: [ dNotes , i ] ].
 
 	arrayOfNotes := (dNotes findBetweenSubstrings: '  ') collect: [ :each |
 		                each asNumber ].
@@ -756,22 +751,18 @@ Sequencer >> notes1: anObject [
 Sequencer >> notes: anArrayOfNotesOrANoteorAstring [
 	" change notes in the sequencer"
 
-	| announcement |
-	thisContext sender selector = 'notes:' ifTrue: [
-		announcement := NotesAnnouncement new notes:
-			                ' notes: '
-			                , anArrayOfNotesOrANoteorAstring asString.
-		PerformanceRecorder uniqueInstance announce: announcement ].
-
+	
+		
 	anArrayOfNotesOrANoteorAstring isArray
 		ifTrue: [ notes := anArrayOfNotesOrANoteorAstring ]
 		ifFalse: [
-			anArrayOfNotesOrANoteorAstring isByteString
-				ifTrue: [ notes := anArrayOfNotesOrANoteorAstring asDirtPureNotes ]
-				ifFalse: [
-					notes := Array
-						         new: self numberOfTrigs
-						         withAll: anArrayOfNotesOrANoteorAstring ] ]
+				anArrayOfNotesOrANoteorAstring isByteString
+					ifTrue: [
+					notes := anArrayOfNotesOrANoteorAstring asDirtPureNotes ]
+					ifFalse: [
+							notes := Array
+								         new: self numberOfTrigs
+								         withAll: anArrayOfNotesOrANoteorAstring ] ]
 ]
 
 { #category : 'LiveCoding - Performance' }
@@ -1311,40 +1302,32 @@ Sequencer >> times: anInteger [
 { #category : 'LiveCoding - Performance' }
 Sequencer >> to: aSymbol [
 	" assign sequencer to the performance at aSymbol. if a sound for SuperDirt is not specified, the symbol is used for sound name"
-<onTheFlyEssentials>
-	| announcement perf allItems soundfiles myInstrument sampleNames samplesForSequencer |
-	"announcement := (self notesSize >= 8 and: [
-		                 (self notes at: 1) = 60 and: [
-			                 (self notes at: 5) = 60 ] ])
-		                ifTrue: [ DoubleRhythmAnnouncement new ]
-		                ifFalse: [ SymbolAnnouncement new ]."
-	announcement := SymbolAnnouncement new.
-	announcement symbol: aSymbol.
-	PerformanceRecorder uniqueInstance announce: announcement.
 
+	<onTheFlyEssentials>
+	|  perf allItems soundfiles myInstrument sampleNames samplesForSequencer |
+	
 
-
-
-	Performance performanceType addSequencer: self to: aSymbol .
+	Performance performanceType addSequencer: self to: aSymbol.
 
 	"need cleaning and refactoring"
 	perf := Performance uniqueInstance.
 	perf performer class = PerformerPhausto ifTrue: [
-		allItems := (((STONJSON fromString: perf activeDSP getJSON) at: #ui)
-			             at: 1) at: #items.
-		soundfiles := allItems select: [ :i |
-			              i values includes: 'soundfile' ].
+			allItems := (((STONJSON fromString: perf activeDSP getJSON) at: #ui)
+				             at: 1) at: #items.
+			soundfiles := allItems select: [ :i |
+				              i values includes: 'soundfile' ].
 
-		myInstrument := perf activeDSP soundfiles select: [ :i |
-			                i values includes: aSymbol ].
-		myInstrument ifNotEmpty: [
-			sampleNames := ((myInstrument first at: #url)
-				                findBetweenSubstrings: ';') collect: [ :i |
-				               (i afterLastSlash findBetweenSubstrings: '.') first ].
-			self soundPattern ifNotNil: [
-				samplesForSequencer := self soundPattern collect: [ :i |
-					                       (sampleNames indexOf: i) - 1 ].
-				self index: samplesForSequencer ] ] ]
+			myInstrument := perf activeDSP soundfiles select: [ :i |
+				                i values includes: aSymbol ].
+			myInstrument ifNotEmpty: [
+					sampleNames := ((myInstrument first at: #url)
+						                findBetweenSubstrings: ';') collect: [ :i |
+						               (i afterLastSlash findBetweenSubstrings: '.')
+							               first ].
+					self soundPattern ifNotNil: [
+							samplesForSequencer := self soundPattern collect: [ :i |
+								                       (sampleNames indexOf: i) - 1 ].
+							self index: samplesForSequencer ] ] ]
 ]
 
 { #category : 'addToPerformance' }
