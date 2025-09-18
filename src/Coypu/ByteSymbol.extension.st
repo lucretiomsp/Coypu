@@ -83,7 +83,7 @@ ByteSymbol >> mute [
 	" remove the key from the Performance, if any active key in the Performance correspond to the symbol"
 
 	| perf |
-	perf := PerformanceRecorder uniqueInstance.
+	perf := Performance uniqueInstance uniqueInstance.
 	perf removeKey: self ifAbsent: [ nil ]
 ]
 
@@ -120,9 +120,7 @@ ByteSymbol >> ritmo [
 ByteSymbol >> solo [
 	"shorthand for p solo: aKeyInperformance"
 
-	| p |
-	p := PerformanceRecorder uniqueInstance.
-	p solo: self
+	Performance uniqueInstance solo: self
 ]
 
 { #category : '*Coypu' }
@@ -146,9 +144,8 @@ ByteSymbol >> to: aSymbol [
 ByteSymbol >> unsolo [
 	"shorthand for p unsolo: aKeyInPerformance"
 
-	| p |
-	p := PerformanceRecorder uniqueInstance.
-	p unsolo: self
+
+	Performance uniqueInstance unsolo: self
 ]
 
 { #category : '*Coypu' }

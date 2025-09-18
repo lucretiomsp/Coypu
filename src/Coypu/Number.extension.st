@@ -74,12 +74,15 @@ Number >> secondsInStepAt: aDuration [
 { #category : '*Coypu' }
 Number >> toKyma: aString [
 	"comment stating purpose of instance-side message"
-	"scope: class-variables  &  instance-variables"	
-	| vcslabel "pacaAddress" |
-"	pacaAddress := NetNameResolver stringFromAddress: (NetNameResolver 	addressForName:'beslime-691.local'). "
 
-	vcslabel := '/vcs/', aString, '/1'.
-	(OSCMessage for: { vcslabel  . (self asFloat)  }) sendToAddressString: pacaAddress  port: 8000.
+	"scope: class-variables  &  instance-variables"
+
+	| vcslabel pacaAddress|
+	pacaAddress := NetNameResolver stringFromAddress: (NetNameResolver 	addressForName:'beslime-691.local'). 
+	vcslabel := '/vcs/' , aString , '/1'.
+	(OSCMessage for: {
+			 vcslabel.
+			 self asFloat }) sendToAddressString: pacaAddress port: 8000
 ]
 
 { #category : '*Coypu' }

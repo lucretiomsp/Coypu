@@ -43,26 +43,25 @@ ByteString >> asDirtArrayOfValues [
 ByteString >> asDirtIndex [
 	" returns a sequencer containing a trig for each integer and a rest for whatever other character and with indexes coresponding to the integeres inside the string - tokens must be separated by string"
 
-	| seq tokens gates notesAStrings notesAsNumbers dirtString announcement |
-	announcement := RhythmAnnouncement new.
-	announcement rhythm: '''' , self asString , ''' asDirtNotes'.
-	PerformanceRecorder uniqueInstance announce: announcement.
+	| seq tokens gates notesAStrings notesAsNumbers dirtString  |
+	
 
 
 	gates := ''.
 	tokens := self splitOn: ','.
 	dirtString := ''.
 	tokens do: [ :i |
-		(i includes: $*)
-			ifTrue: [ gates := gates , i multiplyStringsInString ]
-			ifFalse: [
-				gates := (i includes: $/)
-					         ifTrue: [ gates , i withNRests ]
-					         ifFalse: [ gates , i ] ] ].
+			(i includes: $*)
+				ifTrue: [ gates := gates , i multiplyStringsInString ]
+				ifFalse: [
+						gates := (i includes: $/)
+							         ifTrue: [ gates , i withNRests ]
+							         ifFalse: [ gates , i ] ] ].
 
 
-	notesAStrings := ((gates copyReplaceAll: '~' with: '') copyReplaceAll: '-' with: '' )
-		                 findBetweenSubstrings: ' '.
+	notesAStrings := ((gates copyReplaceAll: '~' with: '')
+		                  copyReplaceAll: '-'
+		                  with: '') findBetweenSubstrings: ' '.
 
 	notesAsNumbers := notesAStrings collect: [ :i |
 		                  i ~= ' ' ifTrue: [ i asNumber ] ].
@@ -80,30 +79,29 @@ ByteString >> asDirtIndex [
 { #category : '*Coypu' }
 ByteString >> asDirtNotes [
 	" returns a sequencer containing a trig for each integer and a rest for whatever other character and with the notes coresponding to the integeres inside the string - tokens must be separated by string"
-<onTheFlyEssentials>
-	| seq tokens gates durs notesAStrings notesAsNumbers dirtString announcement |
-	announcement := RhythmAnnouncement new.
-	announcement rhythm: '''' , self asString , ''' asDirtNotes'.
-	PerformanceRecorder uniqueInstance announce: announcement.
+
+	<onTheFlyEssentials>
+	| seq tokens gates durs notesAStrings notesAsNumbers dirtString  |
+	
 
 	gates := ''.
 	durs := OrderedCollection new.
 	tokens := self splitOn: ','.
 	dirtString := ''.
 	tokens do: [ :i |
-		(i includes: $*)
-			ifTrue: [
-				gates := gates , i multiplyStringsInString.
-				(i includes: $~) ifFalse: [
-					i getMultiplier timesRepeat: [ durs add: 1 ] ] ]
-			ifFalse: [
-				(i includes: $/)
-					ifTrue: [
-						gates := gates , i withNRests.
-						(i includes: $~) ifFalse: [ durs add: i getDivisor ] ]
-					ifFalse: [
-						gates := gates , i.
-						(i includes: $~) ifFalse: [ durs add: 1 ] ] ] ].
+			(i includes: $*)
+				ifTrue: [
+						gates := gates , i multiplyStringsInString.
+						(i includes: $~) ifFalse: [
+							i getMultiplier timesRepeat: [ durs add: 1 ] ] ]
+				ifFalse: [
+						(i includes: $/)
+							ifTrue: [
+									gates := gates , i withNRests.
+									(i includes: $~) ifFalse: [ durs add: i getDivisor ] ]
+							ifFalse: [
+									gates := gates , i.
+									(i includes: $~) ifFalse: [ durs add: 1 ] ] ] ].
 	"tildes or - can be used as rests"
 	notesAStrings := ((gates copyReplaceAll: '~' with: '')
 		                  copyReplaceAll: '-'
@@ -127,21 +125,18 @@ ByteString >> asDirtNotes [
 ByteString >> asDirtPureNotes [
 	" retruns just the note numbers parsed - tokens must be separated by string"
 
-	| seq tokens gates notesAStrings notesAsNumbers dirtString announcement |
-	thisContext sender selector = #DoIt ifTrue: [
-		announcement := RhythmAnnouncement new.
-		announcement rhythm: '''' , self asString , ''' asDirtPureNotes'.
-		PerformanceRecorder uniqueInstance announce: announcement ].
+	| seq tokens gates notesAStrings notesAsNumbers dirtString  |
+
 	gates := ''.
 	tokens := self splitOn: ','.
 	dirtString := ''.
 	tokens do: [ :i |
-		(i includes: $*)
-			ifTrue: [ gates := gates , i multiplyStringsInString ]
-			ifFalse: [
-				(i includes: $/)
-					ifTrue: [ gates := gates , i withNRests ]
-					ifFalse: [ gates := gates , i ] ] ].
+			(i includes: $*)
+				ifTrue: [ gates := gates , i multiplyStringsInString ]
+				ifFalse: [
+						(i includes: $/)
+							ifTrue: [ gates := gates , i withNRests ]
+							ifFalse: [ gates := gates , i ] ] ].
 
 	notesAStrings := (gates copyReplaceAll: '~' with: '')
 		                 findBetweenSubstrings: ' '.
@@ -285,12 +280,10 @@ ByteString >> getMultiplier [
 { #category : '*Coypu' }
 ByteString >> hexBeat [
 	" convert a string with an Hexadecimal number to the Kyma array correspondong to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex)"
-<onTheFlyEssentials>
-	| strings flat rhythm announcement |
-	thisContext sender selector asString = 'semibreves' ifFalse: [
-		announcement := RhythmAnnouncement new.
-		announcement rhythm: '''' , self asString , ''' hexBeat'.
-		PerformanceRecorder uniqueInstance announce: announcement ].
+
+	<onTheFlyEssentials>
+	| strings flat rhythm  |
+	
 	strings := (1 to: self size) collect: [ :i |
 		           (self at: i) digitValue
 			           printStringBase: 2
@@ -306,11 +299,7 @@ ByteString >> hexBeat [
 ByteString >> hexBeat: aStringOfNoteNumbers [
 	" convert a string with an Hexadecimal number to the Kyma array corresponding to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex) , and with  anArrayOfNoteNumbers as Notes"
 
-	| strings flat seq announcement|
-		thisContext sender selector asString = 'semibreves' ifFalse: [
-		announcement := RhythmAnnouncement new.
-		announcement rhythm: '''' , self asString , ''' hexBeat: ',aStringOfNoteNumbers .
-		PerformanceRecorder uniqueInstance announce: announcement ].
+	| strings flat seq |
 	strings := (1 to: self size) collect: [ :i |
 		           (self at: i) digitValue
 			           printStringBase: 2
@@ -327,10 +316,7 @@ ByteString >> hexBeat: aStringOfNoteNumbers [
 ByteString >> hexBeat: anArrayOfNoteNumbers dur: anArrayOfDurations [
 	" convert a string with an Hexadecimal number to the Kyma array corresponding to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex) , and with  anArrayOfNoteNumbers as Notes and anArrayOfDurations as Durations"
 
-	| strings flat announcement|
-		announcement := RhythmAnnouncement new.
-		announcement rhythm: '''' , self asString , ''' hexBeat: ',anArrayOfNoteNumbers, ' dur: ',anArrayOfDurations .
-		PerformanceRecorder uniqueInstance announce: announcement.
+	| strings flat |
 	strings := (1 to: self size) collect: [ :i |
 		           (self at: i) digitValue
 			           printStringBase: 2
@@ -407,11 +393,7 @@ ByteString >> once [
 	"play the sound from the SuperDirt audio engine once at the desired index if any -
 for exampe cp:4 sound the 3rd sample of the /Library/Application\ Support/SuperCollider/downloaded-quarks/Dirt-Samples/cp folder"
 
-	| sound note message parsedString announcement|
-
-		announcement := SymbolAnnouncement new.
-		announcement symbol: ' ''' , self , ''' once' .
-		PerformanceRecorder uniqueInstance announce: announcement.
+	| sound note message parsedString |
 	parsedString := self findBetweenSubstrings: ':'.
 	sound := parsedString at: 1.
 	parsedString size = 2
@@ -432,10 +414,8 @@ for exampe cp:4 sound the 3rd sample of the /Library/Application\ Support/SuperC
 ByteString >> onceAtSpeed: aFloat [
 	"play the soundfrom the SuperDirt audio engine once at the desired speed"
 
-	| sound note message parsedString condition announcement |
-	announcement := SymbolAnnouncement new.
-	announcement symbol: ' ''' , self , ''' onceAtSpeed: ',aFloat asString.
-	PerformanceRecorder uniqueInstance announce: announcement.
+	| sound note message parsedString condition  |
+
 	note := 0.
 	parsedString := self findBetweenSubstrings: ':'.
 	sound := parsedString at: 1.
@@ -460,11 +440,8 @@ ByteString >> onceAtSpeed: aFloat [
 ByteString >> onceAtSpeed: aFloat withNote: aNote [
 	"play the soundfrom the SuperDirt audio engine once at the desired speed"
 
-	| sound message parsedString condition announcement |
-	announcement := SymbolAnnouncement new.
-	announcement symbol:
-		' ''' , self , ''' onceAtSpeed: ' , aFloat asString, ' withNote: ',aNote asString.
-	PerformanceRecorder uniqueInstance announce: announcement.
+	| sound message parsedString condition  |
+	
 	parsedString := self findBetweenSubstrings: ':'.
 	sound := parsedString at: 1.
 	condition := parsedString size = 2.
@@ -514,10 +491,7 @@ ByteString >> parseChordWithoutRoot [
 ByteString >> pattern [
 	" convert a string with an Hexadecimal number to the Kyma array corresponding to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex)"
 
-	| strings flat announcement |
-	announcement := RhythmAnnouncement new.
-	announcement symbol: ' ''' , self , ''' pattern'.
-	PerformanceRecorder uniqueInstance announce: announcement.
+	| strings flat |
 	strings := (1 to: self size) collect: [ :i |
 		           (self at: i) digitValue
 			           printStringBase: 2
@@ -532,11 +506,7 @@ ByteString >> pattern [
 ByteString >> pattern: anArrayOfNoteNumbers [
 	" convert a string with an Hexadecimal number to the Kyma array corresponding to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex) , and with  anArrayOfNoteNumbers as Notes"
 
-	| strings flat announcement|
-		announcement := RhythmAnnouncement new.
-	announcement symbol:
-		' ''' , self , ''' pattern: ', anArrayOfNoteNumbers .
-	PerformanceRecorder uniqueInstance announce: announcement.
+	| strings flat |
 	strings := (1 to: self size) collect: [ :i |
 		           (self at: i) digitValue
 			           printStringBase: 2
@@ -551,11 +521,8 @@ ByteString >> pattern: anArrayOfNoteNumbers [
 ByteString >> pattern: anArrayOfNoteNumbers and: anArrayOfDurations [
 	" convert a string with an Hexadecimal number to the Kyma array corresponding to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex) , and with  anArrayOfNoteNumbers as Notes and anArrayOfDurations as Durations"
 
-	| strings flat announcement|
-		announcement := RhythmAnnouncement new.
-	announcement symbol:
-		' ''' , self , ''' pattern: ' , anArrayOfNoteNumbers, ' and: ', anArrayOfDurations.
-	PerformanceRecorder uniqueInstance announce: announcement.
+	| strings flat  |
+	
 	strings := (1 to: self size) collect: [ :i |
 		           (self at: i) digitValue
 			           printStringBase: 2
@@ -642,31 +609,30 @@ ByteString >> toKymaAsGate: gateTimeInSeconds [
 
 { #category : '*Coypu' }
 ByteString >> toKymaAsGate: gateTimeInSeconds note: aNoteNumber [
-
 	" send an OSC message that mimics the behaviour oa MIDI note on message.
 	gateTime is expressed in seconds"
 
-	| vcsGatelabel vcsNoteLabel sendNoteNumber sendNoteOn sendNoteOff |
-	"	pacaAddress := NetNameResolver stringFromAddress: (NetNameResolver 	addressForName:'beslime-691.local'). "
+	| vcsGatelabel vcsNoteLabel sendNoteNumber pacaAddress |
+    pacaAddress := NetNameResolver stringFromAddress: (NetNameResolver 	addressForName:'beslime-691.local'). 
 	vcsGatelabel := '/vcs/' , self , 'Gate' , '/1'.
 	vcsNoteLabel := '/vcs/' , self , 'Note' , '/1'.
-	sendNoteNumber := (OSCMessage for: { 
+	sendNoteNumber := (OSCMessage for: {
 			                   vcsNoteLabel.
 			                   aNoteNumber asFloat })
 		                  sendToAddressString: pacaAddress
 		                  port: 8000.
 	[ "first NoteOff for VoiceStealing"
-	(OSCMessage for: { 
-			 vcsGatelabel.
-			 0.0 }) sendToAddressString:  pacaAddress port: 8000."then note On"
-	(OSCMessage for: { 
-			 vcsGatelabel.
-			 1.0 }) sendToAddressString: pacaAddress port: 8000.
-	(Delay forSeconds: gateTimeInSeconds) wait.
-	"then note Off"
-	(OSCMessage for: { 
-			 vcsGatelabel.
-			 0.0 }) sendToAddressString: pacaAddress port: 8000 ] fork
+		(OSCMessage for: {
+				 vcsGatelabel.
+				 0.0 }) sendToAddressString: pacaAddress port: 8000. "then note On"
+		(OSCMessage for: {
+				 vcsGatelabel.
+				 1.0 }) sendToAddressString: pacaAddress port: 8000.
+		(Delay forSeconds: gateTimeInSeconds) wait.
+		"then note Off"
+		(OSCMessage for: {
+				 vcsGatelabel.
+				 0.0 }) sendToAddressString: pacaAddress port: 8000 ] fork
 ]
 
 { #category : '*Coypu' }
