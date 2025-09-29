@@ -149,6 +149,9 @@ SequencerMono >> playLocalEventAt: anIndex [
 	stepDuration := Performance uniqueInstance freq.
 	noteNumber := self notes asDirtArray wrap: anIndex.
 	dur := self durations asDirtArray wrap: anIndex.
+	self extraParams keysAndValuesDo: [ :k :v |
+		(v wrap: anIndex) toLocal: self seqKey , k asString .
+ ].
 	self seqKey toLocalAsGate: stepDuration * gateTime note: noteNumber .
 
 
