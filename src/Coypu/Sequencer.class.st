@@ -891,6 +891,13 @@ Sequencer >> pitch: anIntOrAnArray [
 		put:  speeds asDirtArray
 ]
 
+{ #category : 'LiveCoding-ExtraParams' }
+Sequencer >> pitchEnv: aStringOrAnArray [
+	"convenience method to avoid extra typing when we want to modify the pitchEnvelope r"
+
+	self extra: #PitchEnv values: aStringOrAnArray asDirtArrayOfValues
+]
+
 { #category : 'sequencer - cycles' }
 Sequencer >> playAsCycle [
 
@@ -1070,6 +1077,13 @@ Sequencer >> randomSamplesFromFolder: aStringForAFolderOfSamples [
 	folder := SuperDirt samplesFolder / aStringForAFolderOfSamples .
 	folderSize := folder asFileReference allChildren size. 
 	self sound: aStringForAFolderOfSamples ; dirtNotes: (randIndex  randomInts: folderSize) .
+]
+
+{ #category : 'LiveCoding-ExtraParams' }
+Sequencer >> rate: aStringOrAnArray [
+	"convenience method to avoid extra typing when we want to modify a rate parameter"
+
+	self extra: #Rate values: aStringOrAnArray asDirtArrayOfValues
 ]
 
 { #category : 'LiveCoding-ExtraParams' }
