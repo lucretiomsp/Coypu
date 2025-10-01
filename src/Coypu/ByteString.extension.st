@@ -768,7 +768,7 @@ ByteString >> toLocalAsGate: gateTimeInSeconds note: aNoteNumber [
 
 	oscGate := '/' , self , 'Gate'.
 	oscNote := '/' , self , 'Note'.
-	(OSCMessage for: { 
+	[(OSCMessage for: { 
 			 oscNote.
 			 aNoteNumber asFloat })
 		sendToAddressString: localAddress
@@ -779,7 +779,7 @@ ByteString >> toLocalAsGate: gateTimeInSeconds note: aNoteNumber [
 	(Delay forSeconds: gateTimeInSeconds) wait.
 	(OSCMessage for: { 
 			 oscGate.
-			 0.0 }) sendToAddressString: localAddress port: 57120
+			 0.0 }) sendToAddressString: localAddress port: 57120] fork
 ]
 
 { #category : '*Coypu' }
