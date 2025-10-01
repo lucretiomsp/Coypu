@@ -704,7 +704,7 @@ Sequencer >> modRatio: aStringOrAnArray [
 
 { #category : 'LiveCoding-ExtraParams' }
 Sequencer >> mode: aStringOrAnArray [
-	"convenience method to avoid extra typing when we want to modify the mode parameter, that usually correspond to chords mode "
+	"convenience method to avoid extra typing when we want to modify the mode"
 
 	self extra: #Mode values: aStringOrAnArray asDirtArrayOfValues
 ]
