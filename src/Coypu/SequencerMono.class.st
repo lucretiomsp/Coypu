@@ -321,13 +321,15 @@ SequencerMono >> randomNotesFrom: anArrayOfNotes octaves: anInteger [
 { #category : 'highlighting' }
 SequencerMono >> reverse [
 	" reverese gates"
+	| reversedSoundPattern |
 	self gates: self gates reverse.
 	"reverse notes"
 	self notes: self notes reverse.
 	self dirtMessage at: 'n' put: self notes reverse.
 	"revere index"
 	self extraParams at: #index put: ((self extraParams at: #index  )reverse).
-	self dirtMessage at: 's' put: self soundPattern reverse.
+	reversedSoundPattern := (self soundPattern first findBetweenSubstrings: ' ') reverse collect: [ :i | i ].
+	self dirtMessage at: 's' put: reversedSoundPattern asArray.
 	"reverse durations"
 	self durations: self durations reverse.
 	"reverse gateTimes"

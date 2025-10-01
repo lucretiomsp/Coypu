@@ -145,7 +145,7 @@ Array >> asSeq [
 	"returns Sequencer with default note 60nn and default durations = self size / numberOfTrigs and noteIndex = 0"
 
 	| numberOfNotes dur seq gts |
-	numberOfNotes := self class new: self trigs withAll: 60.
+	numberOfNotes := Array new: self trigs withAll: 60.
 	"all notes last 1 step by default"
 	dur := self class new: self trigs withAll: 1.
 
@@ -184,8 +184,7 @@ Array >> euclidean [
 algorithm based on the Bresenham approach"
 
 	| onsets pulses slope result previous current announcement |
-	announcement := RhythmAnnouncement new rhythm: self asString , ' euclidean'.
-	PerformanceRecorder uniqueInstance announce: announcement.
+
 	current := 0.
 	onsets := self at: 1.
 	pulses := self at: 2.
@@ -263,6 +262,12 @@ Array >> minDurationBetweenGates [
     
     ^ minDistance
 
+]
+
+{ #category : '*Coypu' }
+Array >> notesFor: aSequencer [
+
+aSequencer  fillNotes: self.
 ]
 
 { #category : '*Coypu' }

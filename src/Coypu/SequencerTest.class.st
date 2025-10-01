@@ -50,6 +50,15 @@ self assert: (initial arp: #(0 1 2 3)) equals: result
 ]
 
 { #category : 'tests' }
+SequencerTest >> testArrayAsNotesForSeq [
+
+| seq |
+seq := 16 downbeats .
+seq notes: #(60 61 62 63).
+self assert: seq notes equals: #(60 61 62 63).
+]
+
+{ #category : 'tests' }
 SequencerTest >> testAsPolySeq [
 
 | monoseq polyseq |
@@ -113,6 +122,15 @@ self assert: (Sequencer new orbit > 0) & (Sequencer new orbit < 12) equals: true
 ]
 
 { #category : 'tests' }
+SequencerTest >> testNumberAsNotesForSeq [
+
+| seq |
+seq := 16 downbeats .
+seq notes: 60.
+self assert: seq notes equals: #(60 60 60 60).
+]
+
+{ #category : 'tests' }
 SequencerTest >> testRandomNotesOfGatesSizefromScaleAndOctave [
 
 	| seq |
@@ -172,4 +190,13 @@ SequencerTest >> testSequencerToPerformance [
 
 sequencer to: #track.
 self assert: (Performance uniqueInstance at: #track) equals: sequencer
+]
+
+{ #category : 'tests' }
+SequencerTest >> testStringAsNotesForSeq [
+
+| seq |
+seq := 16 downbeats .
+seq notes: '60 , 61 , 62 , 63'.
+self assert: seq notes equals: #(60 61 62 63).
 ]

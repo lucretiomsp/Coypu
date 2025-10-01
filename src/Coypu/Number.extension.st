@@ -56,6 +56,15 @@ Number >> midiNoteToFreq [
 ]
 
 { #category : '*Coypu' }
+Number >> notesFor: aSequencer [
+
+
+| arrayOfNotes |
+arrayOfNotes := Array new: aSequencer trigs withAll: self.
+aSequencer notes: arrayOfNotes. 
+]
+
+{ #category : '*Coypu' }
 Number >> randomsFromArray: anArray [
 	" returns an array of self size with randomInts from anArray at: 1 to anArray at: 2"
 

@@ -426,6 +426,12 @@ value := anArrayWithASymbolAndAnrrayOfValues at: 2.
 	extraParams at: parameter put: value asDirtArray 
 ]
 
+{ #category : 'accessing' }
+Sequencer >> fillNotes: anArray [
+
+	notes := anArray
+]
+
 { #category : 'Sequencer - transformation' }
 Sequencer >> flip [
 	"Inverts the gate/rest pattern of the sequence — turning active steps (gates) into rests and vice versa."
@@ -738,19 +744,13 @@ Sequencer >> notes [
 	^ notes
 ]
 
-{ #category : 'accessing' }
-Sequencer >> notes1: anObject [
-
-	notes := anObject
-]
-
 { #category : 'modifying' }
 Sequencer >> notes: anArrayOfNotesOrANoteorAstring [
 	" change notes in the sequencer"
 
-	
+	anArrayOfNotesOrANoteorAstring notesFor: self.
 		
-	anArrayOfNotesOrANoteorAstring isArray
+	"anArrayOfNotesOrANoteorAstring isArray
 		ifTrue: [ notes := anArrayOfNotesOrANoteorAstring ]
 		ifFalse: [
 				anArrayOfNotesOrANoteorAstring isByteString
@@ -759,7 +759,7 @@ Sequencer >> notes: anArrayOfNotesOrANoteorAstring [
 					ifFalse: [
 							notes := Array
 								         new: self numberOfTrigs
-								         withAll: anArrayOfNotesOrANoteorAstring ] ]
+								         withAll: anArrayOfNotesOrANoteorAstring ] ]"
 ]
 
 { #category : 'LiveCoding - Performance' }

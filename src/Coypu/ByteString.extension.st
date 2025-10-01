@@ -389,6 +389,12 @@ self pattern notes: anArrayOfNotes to: aKeyInAPerformance .
 ]
 
 { #category : '*Coypu' }
+ByteString >> notesFor: aSequencer [
+
+aSequencer notes: self asDirtPureNotes 
+]
+
+{ #category : '*Coypu' }
 ByteString >> once [
 	"play the sound from the SuperDirt audio engine once at the desired index if any -
 for exampe cp:4 sound the 3rd sample of the /Library/Application\ Support/SuperCollider/downloaded-quarks/Dirt-Samples/cp folder"
