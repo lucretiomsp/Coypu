@@ -161,6 +161,7 @@ ByteString >> asDirtSounds [
 	| seq tokens gates soundsAsStrings |
 	gates := ''.
 	tokens := self splitOn: ','.
+
 	tokens do: [ :i |
 		(i includes: $*)
 			ifTrue: [ gates := gates , i multiplyStringsInString ]
@@ -169,15 +170,16 @@ ByteString >> asDirtSounds [
 					ifTrue: [ gates := gates , i withNRests ]
 					ifFalse: [ gates := gates , i ] ] ].
 
-	soundsAsStrings := ((gates copyReplaceAll: '~' with: '')
+	"soundsAsStrings := (((gates copyReplaceAll: '~' with: '')
 		                    copyReplaceAll: '-'
-		                    with: '') findBetweenSubstrings: ' '.
-
-
+		                    with: '') copyReplaceAll: ':' with: '') findBetweenSubstrings: ' '."
+soundsAsStrings := gates  select: [ :ch | ch isLetter or: ch isSeparator ].
+  soundsAsStrings inspect.
 
 
 	seq := gates asSeqGates asSeq.
-	seq sound: (soundsAsStrings joinUsing: ' ').
+	"seq sound: (soundsAsStrings joinUsing: ' ')."
+	seq sound: soundsAsStrings .
 
 	^ seq
 ]
@@ -275,6 +277,17 @@ ByteString >> getMultiplier [
 	tokens := self splitOn: '*'.
 
 	^ tokens second asInteger
+]
+
+{ #category : '*Coypu' }
+ByteString >> hasDigit [
+   "Return false if the receiver has no digits.
+     If digits exist, return the full number as an Integer."
+    
+    | digits |
+    digits := self select: [ :ch | ch isDigit ].
+    digits isEmpty ifTrue: [ ^ false ].
+    ^ digits asString asInteger
 ]
 
 { #category : '*Coypu' }

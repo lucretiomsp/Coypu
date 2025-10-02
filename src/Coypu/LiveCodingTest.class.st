@@ -95,15 +95,16 @@ LiveCodingTest >> testStringEveryInt [
 LiveCodingTest >> testStringForDirt [
 
 	| string gates seq soundsPattern samplesIndex |
-	string := 'bd:1 , sd , cp:2 , ~'.
+	string := 'bd, sd:3 , cp:2 , ~'.
 	gates := #( 1 1 1 0 ).
-	soundsPattern := #( 'bd' 'sd' 'cp' ).
+	soundsPattern := #('bd sd  cp  ').
 	samplesIndex := #( 1 0 2 ).
 	seq := string asDirtSounds.
 
 	self assert: seq gates equals: gates.
 	self assert: seq soundPattern equals: soundsPattern.
-	self assert: (seq extraParams at: #index) asArray  equals: samplesIndex
+	self assert: seq notes asArray equals: samplesIndex .
+	"self assert: (seq extraParams at: #index) asArray  equals: samplesIndex"
 ]
 
 { #category : 'tests' }
