@@ -10,8 +10,8 @@ Class {
 CycleTests >> testArrayAsCycleDuration [
 
 	| array expectedResult |
-	array := #( 60 60 60 #( 60 60 ) ).
-	expectedResult := Array with: 1/4 with: 1/4 with: 1/4 with: 1/8 with: 1/8.
+	array := #( 60 60 60 #( 60 #(60 60))).
+	expectedResult := Array with: 1/4 with: 1/4 with: 1/4 with: 1/8 with: 1/16 with: 1/16.
 	self assert: array asCycleDurations equals: expectedResult
 ]
 

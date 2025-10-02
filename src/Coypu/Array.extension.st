@@ -75,6 +75,21 @@ Array >> arp: anArrayOfIntervals [
 ]
 
 { #category : '*Coypu' }
+Array >> asCycleDurations [
+    ^ self asCycleDurationsWithFraction: 1
+]
+
+{ #category : '*Coypu' }
+Array >> asCycleDurationsWithFraction: fraction [
+    | part |
+    part := fraction / self size.
+    ^ self inject: #() into: [ :result :each |
+        each isArray
+            ifTrue: [ result , (each asCycleDurationsWithFraction: part) ]
+            ifFalse: [ result , { part } ] ]
+]
+
+{ #category : '*Coypu' }
 Array >> asDirtArray [
 	"convenience method to send OSC messages to SuperDirt - the same message sent to a Number converts it into an array with just that number as element"
 
