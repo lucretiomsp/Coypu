@@ -231,6 +231,17 @@ Array >> into: anotherArray [
 ]
 
 { #category : '*Coypu' }
+Array >> intoScale: aSymbol [
+
+" return an array of MIDI note numbers corresponding at differnt intervals in the scale starting from 60 (c4)"
+| scale result |
+scale := (Scale perform: aSymbol) fullScale.
+result :=  self collect: [ :i | scale at: ( i + 61) ].
+
+^ result .
+]
+
+{ #category : '*Coypu' }
 Array >> isSequencer [
 
 	^ false

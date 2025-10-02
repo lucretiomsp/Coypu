@@ -10,7 +10,7 @@ Class {
 ManifestCoypu class >> ruleBadMessageRule2V1FalsePositive [
 
 	<ignoreForCoverage>
-	^ #(#(#(#RGMethodDefinition #(#Integer #randomRhythm #false)) #'2024-10-23T10:25:47.154478+02:00') )
+	^ #(#(#(#RGMethodDefinition #(#Integer #randomRhythm #false)) #'2024-10-23T10:25:47.154478+02:00') #(#(#RGMethodDefinition #(#Array #intoScale: #false)) #'2025-10-02T09:49:53.958152+02:00') )
 ]
 
 { #category : 'code-critics' }
