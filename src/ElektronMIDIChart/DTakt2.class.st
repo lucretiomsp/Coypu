@@ -29,12 +29,27 @@ DTakt2 class >> decayTime [
 ^ 81
 ]
 
+{ #category : 'sendFX parameters' }
+DTakt2 class >> delayFeedback [
+^ 24
+]
+
+{ #category : 'sendFX parameters' }
+DTakt2 class >> delayHighPass [
+^ 26
+]
+
+{ #category : 'sendFX parameters' }
+DTakt2 class >> delayLowPass [
+^ 26
+]
+
 { #category : 'fx parameters' }
 DTakt2 class >> delaySend [ 
 ^ 84
 ]
 
-{ #category : 'fx parameters' }
+{ #category : 'sendFX parameters' }
 DTakt2 class >> delayTime [ 
 ^ 21
 ]
