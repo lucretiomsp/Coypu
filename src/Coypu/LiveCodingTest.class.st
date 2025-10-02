@@ -75,6 +75,22 @@ self assert: array equals: result.
 ]
 
 { #category : 'tests' }
+LiveCodingTest >> testStringAsDIrtSound [
+
+	| string gates seq soundsPattern samplesIndex |
+	string := 'bd, sd:3 , cp:2 , ~'.
+	gates := #( 1 1 1 0 ).
+	soundsPattern := #('bd sd  cp  ').
+	samplesIndex := #( 0 3 2 ).
+	seq := string asDirtSounds.
+
+	self assert: seq gates equals: gates.
+	self assert: seq soundPattern equals: soundsPattern.
+	self assert: seq notes asArray equals: samplesIndex .
+	"self assert: (seq extraParams at: #index) asArray  equals: samplesIndex"
+]
+
+{ #category : 'tests' }
 LiveCodingTest >> testStringAsDirtNotes [
 
 	| case |
@@ -92,46 +108,9 @@ LiveCodingTest >> testStringEveryInt [
 ]
 
 { #category : 'tests' }
-LiveCodingTest >> testStringForDirt [
-
-	| string gates seq soundsPattern samplesIndex |
-	string := 'bd, sd:3 , cp:2 , ~'.
-	gates := #( 1 1 1 0 ).
-	soundsPattern := #('bd sd  cp  ').
-	samplesIndex := #( 0 3 2 ).
-	seq := string asDirtSounds.
-
-	self assert: seq gates equals: gates.
-	self assert: seq soundPattern equals: soundsPattern.
-	self assert: seq notes asArray equals: samplesIndex .
-	"self assert: (seq extraParams at: #index) asArray  equals: samplesIndex"
-]
-
-{ #category : 'tests' }
 LiveCodingTest >> testStringInWords [
 
 	self assert: 'the needs of the many' inWords equals: #('the' 'needs' 'of' 'the' 'many') asOrderedCollection 
-]
-
-{ #category : 'tests' }
-LiveCodingTest >> testStringOfSoundsForDirt [
-
-	| case |
-	case := 'sd ,  cp*3 , ~ , bd ~*2' asDirtSounds.
-
-	self 
-		assert: (case dirtMessage at: 's') 
-		equals: #(sd cp cp cp bd bd).
-	self 
-		assert: case gates 
-		equals: #(1 1 1 1 0 1 0 1 0)
-
-
-
-
-
-
-
 ]
 
 { #category : 'tests' }
