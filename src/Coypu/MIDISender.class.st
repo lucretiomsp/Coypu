@@ -203,7 +203,7 @@ MIDISender >> playNote: aNoteNumber onChannel: aMIDIChannel duration: aDurationI
 { #category : 'as yet unclassified' }
 MIDISender >> sendCC: aCCNumber withValue: aValue onChannel: aMIDIChannel [
 " play aNoteNumber on channel aChannel with no corresponding noteOff - intended for drums"
-| instance cChange channel |
+| cChange channel |
 instance := PortMidiLibrary uniqueInstance . 
 channel := aMIDIChannel -1.
 cChange := PortMidi  message: 176 + channel and: aCCNumber  and: aValue.

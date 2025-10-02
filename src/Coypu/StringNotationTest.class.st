@@ -25,7 +25,7 @@ StringNotationTest >> testSplitRespectingQuotes [
 	testString := ' ''65 , ~ * 4 , 63 ,57 '' asDirtNotes to: #lead .'.
 	result := #( '''65 , ~ * 4 , 63 ,57 ''' 'asDirtNotes' 'to:' '#lead'
 	             '.' ).
-	result inspect.
+	
 	self
 		assert: testString splitRespectingQuotes asArray
 		equals: result 

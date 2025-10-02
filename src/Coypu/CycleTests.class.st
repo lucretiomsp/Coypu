@@ -35,7 +35,7 @@ CycleTests >> testCycleOf3QuarterNotesAnd2Quavers [
 CycleTests >> testCycleOfQuarterNotes [
 
 	| s expectedResult |
-	s := #( 60 60 60 60 ) asCycleDurations.
+	s := #( 48 59 76 88 ) asCycleDurations.
 	expectedResult := Array
 		                  with: 1 / 4
 		                  with: 1 / 4
