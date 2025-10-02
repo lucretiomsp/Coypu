@@ -98,7 +98,7 @@ LiveCodingTest >> testStringForDirt [
 	string := 'bd, sd:3 , cp:2 , ~'.
 	gates := #( 1 1 1 0 ).
 	soundsPattern := #('bd sd  cp  ').
-	samplesIndex := #( 1 0 2 ).
+	samplesIndex := #( 0 3 2 ).
 	seq := string asDirtSounds.
 
 	self assert: seq gates equals: gates.
