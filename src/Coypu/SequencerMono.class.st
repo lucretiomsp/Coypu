@@ -196,6 +196,9 @@ SequencerMono >> playMIDIEventAt: anIndex [
 		playNote: midiNote
 		onChannel: mch
 		duration: dur * freq * gateTime.
+	self extraParams keysAndValuesDo: [ :k :v |
+	midiSender sendCC: k  withValue: (v wrap: anIndex)  onChannel: mch.
+].
 
 	^ true
 ]
