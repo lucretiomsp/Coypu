@@ -837,6 +837,24 @@ Sequencer >> offset: aNumber [
 	self gates: newArray
 ]
 
+{ #category : 'Sequencer - transformation' }
+Sequencer >> offsetLeft [
+	"Offsets the sequencer left by aNumber of steps, rotating the sequence circularly so that elements wrap around."
+
+
+<onTheFlyEssentials>
+^ self offset: -1
+]
+
+{ #category : 'Sequencer - transformation' }
+Sequencer >> offsetRight [
+	"Offsets the sequencer right by aNumber of steps, rotating the sequence circularly so that elements wrap around."
+
+
+<onTheFlyEssentials>
+^ self offset: 1
+]
+
 { #category : 'accessing' }
 Sequencer >> orbit [
 
