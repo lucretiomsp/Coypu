@@ -234,6 +234,7 @@ Performance >> mute: aKeyOrAnArrayOfKeys [
 
 <onTheFlyEssentials>
 
+	backup := self asDictionary.
 	aKeyOrAnArrayOfKeys isArray
 		ifTrue: [
 		aKeyOrAnArrayOfKeys do: [ :i | self removeKey: i ifAbsent: [  ] ] ]
@@ -691,6 +692,13 @@ Performance >> type [
 { #category : 'accessing' }
 Performance >> type: aPerformanceType [ 
 	^ self class type: aPerformanceType 
+]
+
+{ #category : 'LiveCoding - Performance' }
+Performance >> unmute: aKeyInPerformance [
+	"convenience method to unsolo a key in the performance"
+	
+	self restore
 ]
 
 { #category : 'LiveCoding - Performance' }
