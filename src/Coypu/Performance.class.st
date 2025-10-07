@@ -674,6 +674,12 @@ Performance >> swap: firstKey with: secondKey [
 	self at: secondKey put: tempValue
 ]
 
+{ #category : 'modifying' }
+Performance >> temporarySave [
+
+backup := self asDictionary 
+]
+
 { #category : 'accessing' }
 Performance >> transportStep [
 	^ transportStep
