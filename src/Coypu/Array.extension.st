@@ -178,8 +178,8 @@ Array >> asSeq [
 
 	seq durations: dur.
 	seq gateTimes: gts.
-	seq extraParams at: #Index put: #(0).
 	seq soundPattern: #('nothing').
+
 	^ seq
 ]
 
