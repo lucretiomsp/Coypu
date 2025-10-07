@@ -160,7 +160,7 @@ Array >> asSeq [
 	"returns Sequencer with default note 60nn and default durations = self size / numberOfTrigs and noteIndex = 0"
 
 	| numberOfNotes dur seq gts |
-	numberOfNotes := Array new: self trigs withAll: 60.
+	numberOfNotes := self class new: self trigs withAll: 60.
 	"all notes last 1 step by default"
 	dur := self class new: self trigs withAll: 1.
 
@@ -178,6 +178,8 @@ Array >> asSeq [
 
 	seq durations: dur.
 	seq gateTimes: gts.
+	seq extraParams at: #Index put: #(0).
+	seq soundPattern: #('nothing').
 	^ seq
 ]
 

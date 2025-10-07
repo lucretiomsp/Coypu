@@ -330,7 +330,7 @@ SequencerMono >> reverse [
 	self notes: self notes reverse.
 	self dirtMessage at: 'n' put: self notes reverse.
 	"revere index"
-	self extraParams at: #index put: ((self extraParams at: #index  )reverse).
+	self extraParams at: #Index put: ((self extraParams at: #Index  )reverse).
 	reversedSoundPattern := (self soundPattern first findBetweenSubstrings: ' ') reverse collect: [ :i | i ].
 	self dirtMessage at: 's' put: reversedSoundPattern asArray.
 	"reverse durations"
