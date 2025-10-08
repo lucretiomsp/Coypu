@@ -9,7 +9,7 @@ Number >> asDirtArray [
 { #category : '*Coypu' }
 Number >> asDirtArrayOfValues [ 
 
-self asDirtArray asDirtArrayOfValues 
+^ Array with: self.
 ]
 
 { #category : '*Coypu' }
