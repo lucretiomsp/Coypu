@@ -121,6 +121,13 @@ Sequencer >> > aKeyInPerformance [
 self to: aKeyInPerformance 
 ]
 
+{ #category : 'LiveCoding-ExtraParams' }
+Sequencer >> accent: aStringOrAnArray [
+	"set the accent to a collection of value in array or to to the number"
+
+	self extra: #Accent values: aStringOrAnArray asDirtArrayOfValues
+]
+
 { #category : 'adding' }
 Sequencer >> add: anAssociation [
 	" add an associtation of a parameter and a value or an array of values to the dirtMessage"
@@ -329,6 +336,20 @@ Sequencer >> dirtNotes: aStringWithNotes [
 	self dirtMessage at: 'n' put: arrayOfNotes asDirtArray.
 
 	^ self
+]
+
+{ #category : 'LiveCoding-ExtraParams' }
+Sequencer >> disortion: aStringOrAnArray [
+	"set the ratio to a collection of value in array or to to the number"
+
+	self extra: #Distortion values: aStringOrAnArray asDirtArrayOfValues
+]
+
+{ #category : 'LiveCoding-ExtraParams' }
+Sequencer >> distortion: aStringOrAnArray [
+	"set distortion to a collection of value in array or to to the number"
+
+	self extra: #Distortion values: aStringOrAnArray asDirtArrayOfValues
 ]
 
 { #category : 'LiveCoding  - SuperDirt' }
