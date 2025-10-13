@@ -544,7 +544,9 @@ Sequencer >> index [
 Sequencer >> index: aStringOrAnArray [
 	"convenience method to avoid extra typing when we want to modify the index , i.e. the sample number of a sample player"
 
-	self extra: #Index values: aStringOrAnArray asDirtArrayOfValues
+	self extra: #Index values: aStringOrAnArray asDirtArrayOfValues.
+	"also add the index as ccvalue to an arbitrary ccnumber 20"
+	self extra: 20 values: aStringOrAnArray asDirtArrayOfValues
 ]
 
 { #category : 'LiveCoding - Performance' }
