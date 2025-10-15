@@ -54,6 +54,12 @@ Performer >> checkStepFor: aSequencer [
 	(aSequencer gates wrap: currentStep) = 1 ifTrue: [ self playNoteFor: aSequencer ]
 ]
 
+{ #category : 'LiveCoding-ExtraParams' }
+Performer >> index: aStringOrAnArray to: aSequencer [
+aSequencer extra: #Index values: aStringOrAnArray asDirtArrayOfValues.
+
+]
+
 { #category : 'initialization' }
 Performer >> initialize [ 
 	super initialize.

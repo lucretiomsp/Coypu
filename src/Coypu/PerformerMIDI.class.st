@@ -24,6 +24,14 @@ PerformerMIDI class >> midiOut: aMIDISender [
 	midiOut := aMIDISender 
 ]
 
+{ #category : 'LiveCoding-ExtraParams' }
+PerformerMIDI >> index: aStringOrAnArray to: aSequencer [
+
+
+	"add the index as ccvalue to ccnumber 20"
+	aSequencer extra: 19 values: aStringOrAnArray asDirtArrayOfValues
+]
+
 { #category : 'playing' }
 PerformerMIDI >> play [
 
