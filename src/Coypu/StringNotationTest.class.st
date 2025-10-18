@@ -7,6 +7,15 @@ Class {
 }
 
 { #category : 'tests' }
+StringNotationTest >> testAsDirtLevel [
+
+| seq |
+seq := '1 , 0.5*2 , ~ , 0.3/4 ' asDirtLevel.
+
+self assert: (seq extraParams at: #ULevel) equals: #( 1 0.5 0.5 0.3 )
+]
+
+{ #category : 'tests' }
 StringNotationTest >> testGetDivisor [
 
 self assert: '60/8' getDivisor equals: 8.

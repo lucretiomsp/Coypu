@@ -77,6 +77,53 @@ ByteString >> asDirtIndex [
 ]
 
 { #category : '*Coypu' }
+ByteString >> asDirtLevel [
+	
+	" returns a sequencer containing a trig for each integer and a rest for whatever other character and with the notes coresponding to the integeres inside the string - tokens must be separated by string"
+
+	<onTheFlyEssentials>
+	| seq tokens gates durs levelsAStrings levelsAsNumbers dirtString  |
+	
+
+	gates := ''.
+	durs := OrderedCollection new.
+	tokens := self splitOn: ','.
+	dirtString := ''.
+	tokens do: [ :i |
+			(i includes: $*)
+				ifTrue: [
+						gates := gates , i multiplyStringsInString.
+						(i includes: $~) ifFalse: [
+							i getMultiplier timesRepeat: [ durs add: 1 ] ] ]
+				ifFalse: [
+						(i includes: $/)
+							ifTrue: [
+									gates := gates , i withNRests.
+									(i includes: $~) ifFalse: [ durs add: i getDivisor ] ]
+							ifFalse: [
+									gates := gates , i.
+									(i includes: $~) ifFalse: [ durs add: 1 ] ] ] ].
+	"tildes or - can be used as rests"
+	levelsAStrings := ((gates copyReplaceAll: '~' with: '')
+		                  copyReplaceAll: '-'
+		                  with: '') findBetweenSubstrings: ' '.
+
+	levelsAsNumbers := levelsAStrings collect: [ :i | "note cant be higher than higher MIDI note"
+		                  i ~= ' ' ifTrue: [ i asNumber] ].
+
+	levelsAsNumbers do: [ :i |
+		dirtString := dirtString , i asString , ' ' ].
+
+	seq := gates asSeqGates asSeq.
+	seq dirtNotes: dirtString.
+	seq notes: 60.
+	seq durations: durs asArray.
+	seq level: levelsAsNumbers asArray.
+
+	^ seq
+]
+
+{ #category : '*Coypu' }
 ByteString >> asDirtNotes [
 	" returns a sequencer containing a trig for each integer and a rest for whatever other character and with the notes coresponding to the integeres inside the string - tokens must be separated by string"
 
