@@ -56,12 +56,7 @@ PerformerPhausto >> playEventAt: anIndex dsp: aDsp freq: aFrequency in: aSequenc
 	aParameterList := self performance activeDSP allParameters.
 
 	aSequencer extraParams keysAndValuesDo: [ :k :v |
-		aParameterList
-			setValue: (v wrap: anIndex)
-			parameter: aSequencer seqKey , k asString
-			forDsp: aDsp ].
-
-	"aParameterList
+		aParameterList setValue: (v wrap: anIndex) parameter: aSequencer seqKey , k asString forDsp: aDsp ]. aParameterList
 		setValue: (aSequencer notes wrap: anIndex) midiNoteToFreq
 		parameter: aSequencer phaustNoteDestination
 		forDsp: aDsp. 
@@ -69,8 +64,7 @@ PerformerPhausto >> playEventAt: anIndex dsp: aDsp freq: aFrequency in: aSequenc
 		trig: aSequencer phaustGateDestination
 		for: dur * aFrequency * (aSequencer gateTimes wrap: anIndex)
 		forDsp: aDsp.
-"
-[aDsp playNote:  (aSequencer notes wrap: anIndex)  prefix: aSequencer seqKey   dur: (aSequencer durations wrap: anIndex) ] forkAt: Processor highIOPriority 
+
 ]
 
 { #category : 'accessing' }
