@@ -1108,6 +1108,14 @@ Sequencer >> randomCounterPoint [
 
 ]
 
+{ #category : 'random' }
+Sequencer >> randomNotesFrom: anArray [
+	"return an array of self size of random notes from anArray"
+
+	<onTheFlyEssentials>
+	^ (1 to: self trigs) collect: [ :i | anArray at: (Random new nextInteger: anArray size) ]
+]
+
 { #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> randomSamplesFromFolder: aStringForAFolderOfSamples [
 	"returns a random number (between 2 and 512) of indexes from the selected folder inside Dirt-Samples"
@@ -1116,6 +1124,26 @@ Sequencer >> randomSamplesFromFolder: aStringForAFolderOfSamples [
 	folder := SuperDirt samplesFolder / aStringForAFolderOfSamples .
 	folderSize := folder asFileReference allChildren size. 
 	self sound: aStringForAFolderOfSamples ; dirtNotes: (randIndex  randomInts: folderSize) .
+]
+
+{ #category : 'random' }
+Sequencer >> randomWalksOn: anArrayOfNotes octaves: aNumberOfOctaves root: aRootNoteNumber [
+	"random walk inside an array of notes extended for aNumberOfOctaves range and with a RootNote"
+
+	<onTheFlyEssentials>
+	| start nix randomWalker r |
+	2 to: aNumberOfOctaves do: [ :i | anArrayOfNotes , anArrayOfNotes + (i * 12) ].
+	start := anArrayOfNotes at: (anArrayOfNotes size / 2) rounded.
+	nix := anArrayOfNotes indexOf: start.
+	randomWalker := (1 to: self trigs) collect: [ :i |
+			                r := Random new next.
+			                r > 0.5
+				                ifTrue: [ nix := nix + 1 min: anArrayOfNotes size ]
+				                ifFalse: [ nix := nix - 1 max: 1 ].
+
+
+			                anArrayOfNotes at: nix ].
+	^ randomWalker + aRootNoteNumber
 ]
 
 { #category : 'LiveCoding-ExtraParams' }
