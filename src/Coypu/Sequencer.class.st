@@ -1113,7 +1113,7 @@ Sequencer >> randomNotesFrom: anArray [
 	"return an array of self size of random notes from anArray"
 
 	<onTheFlyEssentials>
-	^ (1 to: self trigs) collect: [ :i | anArray at: (Random new nextInteger: anArray size) ]
+	^ self notes: (self trigs randomNotesFrom: anArray)
 ]
 
 { #category : 'LiveCoding  - SuperDirt' }
@@ -1131,19 +1131,9 @@ Sequencer >> randomWalksOn: anArrayOfNotes octaves: aNumberOfOctaves root: aRoot
 	"random walk inside an array of notes extended for aNumberOfOctaves range and with a RootNote"
 
 	<onTheFlyEssentials>
-	| start nix randomWalker r |
-	2 to: aNumberOfOctaves do: [ :i | anArrayOfNotes , anArrayOfNotes + (i * 12) ].
-	start := anArrayOfNotes at: (anArrayOfNotes size / 2) rounded.
-	nix := anArrayOfNotes indexOf: start.
-	randomWalker := (1 to: self trigs) collect: [ :i |
-			                r := Random new next.
-			                r > 0.5
-				                ifTrue: [ nix := nix + 1 min: anArrayOfNotes size ]
-				                ifFalse: [ nix := nix - 1 max: 1 ].
+	
 
-
-			                anArrayOfNotes at: nix ].
-	^ randomWalker + aRootNoteNumber
+^ self notes: (self trigs randomWalksOn: anArrayOfNotes octaves: aNumberOfOctaves root: aRootNoteNumber )
 ]
 
 { #category : 'LiveCoding-ExtraParams' }
