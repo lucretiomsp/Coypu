@@ -1116,6 +1116,14 @@ Sequencer >> randomNotesFrom: anArray [
 	^ self notes: (self trigs randomNotesFrom: anArray)
 ]
 
+{ #category : 'random' }
+Sequencer >> randomNotesIn: anArray [
+	"return an array of self size of random notes from anArray"
+
+	<onTheFlyEssentials>
+	^ self notes: (self trigs randomNotesIn: anArray)
+]
+
 { #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> randomSamplesFromFolder: aStringForAFolderOfSamples [
 	"returns a random number (between 2 and 512) of indexes from the selected folder inside Dirt-Samples"

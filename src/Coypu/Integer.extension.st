@@ -471,6 +471,13 @@ Integer >> randomNotesFrom: anArray octaves: aNumber [
 ]
 
 { #category : '*Coypu' }
+Integer >> randomNotesIn: anArray [
+	"return an array of self size of random notes between anArray first and anArray second"
+
+	^ (1 to: self) collect: [ :i | Random new nextIntegerBetween: anArray first  and: anArray second]
+]
+
+{ #category : '*Coypu' }
 Integer >> randomRhythm [
 	"return a Sequencer with a rhythhm choosen random from allRythmNames"
 <onTheFlyEssentials>
