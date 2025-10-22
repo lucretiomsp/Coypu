@@ -63,22 +63,23 @@ PerformerMIDI >> playFor: aNumberOfSteps [
 	"play the performance with an external MIDI devices - default freq is 132 bpm 
 	Performance speed can be changed with p freq: a bpm"
 
+	| midiClockInterval |
 	performance bpm: 60 / (performance freq * 4).
+	midiClockInterval := performance freq / 6.
 	performance transportStep: 0.
+	[
+		aNumberOfSteps timesRepeat: [
+				self class midiOut sendClock.
+				14 milliSeconds wait ] ] forkAt: 78.
+	self class midiOut sendStart.
 	performance activeProcess: ([
-		 aNumberOfSteps timesRepeat: [
-			 (Delay forSeconds: performance freq) wait.
-			 "sequencers scan"
-			 [
-			 performance valuesDo: [ :seq |
-				 (seq gates wrap: performance transportStep) = 1
-					 ifTrue: [
-						 seq playMIDIEventAt: seq noteIndex. "delta!!!!"
-						 "increment note Index"
-						 seq noteIndex: seq noteIndex + 1 ]
-						 ] ] forkAt: Processor highIOPriority .
-
-			 "step is incremented anyway"
-			 performance incrementTransportStep ] ] forkAt:
-			 Processor timingPriority)
+			 aNumberOfSteps timesRepeat: [
+					 (Delay forSeconds: performance freq) wait. "sequencers scan"
+					 [
+						 performance valuesDo: [ :seq |
+								 (seq gates wrap: performance transportStep) = 1 ifTrue: [
+										 seq playMIDIEventAt: seq noteIndex. "delta!!!!" "increment note Index"
+										 seq noteIndex: seq noteIndex + 1 ] ] ] forkAt: Processor highIOPriority. "step is incremented anyway"
+					 performance incrementTransportStep ] ] forkAt: Processor timingPriority).
+	
 ]
