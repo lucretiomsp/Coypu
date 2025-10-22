@@ -1,3 +1,19 @@
+"
+# MarkovJazzMelodyGenerator
+A lightweight generative melody engine using a 7-degree Markov chain.
+## Usage
+```language=Pharo
+| generator melody |
+gen := MarkovJazzMelodyGenerator new.
+melody := gen generateMelodyFromScaleDegrees: Scale bebop root: 60 startDegree: 0 length: 32.
+```
+[] Generates melodies as sequences of scale degrees.
+[] Supports any scale by providing a list of semitone offsets.
+[] Degree transitions are weighted, allowing probabilistic motion.
+[] Designed for jazz-style melodic patterns, but flexible for other styles.
+
+
+"
 Class {
 	#name : 'JazzMarkovMelody',
 	#superclass : 'Object',
@@ -10,7 +26,7 @@ Class {
 	#tag : 'ScalesAndChords'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'generating' }
 JazzMarkovMelody >> generateMelodyFromScaleDegrees: scaleDegrees
                                       root: rootMidiNote
                                       startDegree: start
@@ -33,6 +49,12 @@ JazzMarkovMelody >> generateMelodyFromScaleDegrees: scaleDegrees
 ]
 
 { #category : 'initialization' }
+JazzMarkovMelody >> initialize [
+    super initialize.
+    self initializeDegreeMarkovTable.
+]
+
+{ #category : 'initialization' }
 JazzMarkovMelody >> initializeDegreeMarkovTable [
   markovTable := Dictionary new.
 
@@ -46,7 +68,7 @@ JazzMarkovMelody >> initializeDegreeMarkovTable [
 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'private' }
 JazzMarkovMelody >> weightedNextFrom: degree [
 
 	| options total roll sum |
