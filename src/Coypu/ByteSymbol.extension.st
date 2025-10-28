@@ -52,6 +52,18 @@ ByteSymbol >> extra2: anArrayWithASymbolAndAnArray [
 ]
 
 { #category : '*Coypu' }
+ByteSymbol >> flip [
+	"Inverts the gate/rest pattern of the Sequencer stored at self — turning active steps (gates) into rests and vice versa."
+
+	<onTheFlyEssentials>
+	| p flipped |
+	p := Performance uniqueInstance.
+	flipped := (p at: self) flip.
+	flipped to: self.
+	^ flipped
+]
+
+{ #category : '*Coypu' }
 ByteSymbol >> for: anArray [
 
 "creates a Dictionary with the symbol as key and the array as value"

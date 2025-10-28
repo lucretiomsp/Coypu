@@ -457,7 +457,7 @@ Sequencer >> fillNotes: anArray [
 Sequencer >> flip [
 	"Inverts the gate/rest pattern of the sequence — turning active steps (gates) into rests and vice versa."
 
-<onTheFlyEssentials>
+	<onTheFlyEssentials>
 	| result |
 	result := self gates collect: [ :i | (i ~= 1) asInteger ].
 	^ result asRhythm asSeq
