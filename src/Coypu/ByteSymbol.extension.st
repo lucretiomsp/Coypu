@@ -129,9 +129,15 @@ ByteSymbol >> swapWith: aSymbol [
 
 	| p |
 	p := Performance uniqueInstance.
-	(p includesKey: self) ifTrue: [
-		(p at: self) to: aSymbol.
-		p mute: self ] ifFalse: [ (p at:  aSymbol) to: self. p mute: aSymbol. ]
+	(p includesKey: self)
+		ifTrue: [
+				| tempSeq |
+				tempSeq := p at: aSymbol.
+				(p at: self) to: aSymbol.
+				tempSeq to: self  ]
+		ifFalse: [
+				(p at: aSymbol) to: self.
+				(p at: self) to: aSymbol  ]
 ]
 
 { #category : '*Coypu' }
