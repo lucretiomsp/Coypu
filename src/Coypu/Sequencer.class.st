@@ -1098,14 +1098,16 @@ Sequencer >> progression: anArrayOfIntervals [
 
 { #category : 'Sequencer - transformation' }
 Sequencer >> randomCounterPoint [
-    "Creates a sequencer of trigs randomly placed only where self has rests (i.e., where gates = 0).
-    This is a basic form of rhythmic counterpoint — avoiding overlap with the original."
-<onTheFlyEssentials>
-    | rand newGates |
-    rand := Random new.
-    newGates := self gates collect: [:g | g = 1 ifTrue: [0] ifFalse: [rand nextTrig]].
-    ^  newGates asSeq
 
+self shouldBeImplemented .
+"	<onTheFlyEssentials>
+	| rand newGates |
+	rand := Random new.
+	newGates := self gates collect: [ :g |
+			            g = 1
+				            ifTrue: [ 0 ]
+				            ifFalse: [ rand nextTrig ] ].
+	^ newGates asSeq"
 ]
 
 { #category : 'random' }

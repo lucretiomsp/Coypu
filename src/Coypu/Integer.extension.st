@@ -182,7 +182,7 @@ Integer >> bpm [
 
 { #category : '*Coypu' }
 Integer >> breves [
-	" returns self number of brevesin the first position of the bars"
+	" returns self number of breves in the first position of the bars"
 
 	<rhythmCreation>
 	<onTheFlyEssentials>
