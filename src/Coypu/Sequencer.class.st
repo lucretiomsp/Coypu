@@ -544,16 +544,17 @@ Sequencer >> index [
 Sequencer >> index: aStringOrAnArray [
 	"convenience method to avoid extra typing when we want to modify the index , i.e. the sample number of a sample player"
 
-	Performance uniqueInstance performer extra: aStringOrAnArray to: self.
+	Performance uniqueInstance performer index: aStringOrAnArray to: self
 ]
 
 { #category : 'LiveCoding - Performance' }
 Sequencer >> index: anArrayOfIndexes to: aKeyInPerformance [
 	"convenience method to avoid extra parenthesis to put a sequencer of gates with sample indexes into a performance"
+
 	| p |
 	p := Performance uniqueInstance.
 	self to: aKeyInPerformance.
-	aKeyInPerformance indexes: anArrayOfIndexes 
+	self  index: anArrayOfIndexes
 ]
 
 { #category : 'initialization' }
