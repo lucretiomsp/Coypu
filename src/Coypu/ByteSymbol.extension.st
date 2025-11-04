@@ -91,6 +91,13 @@ ByteSymbol >> indexes: aStringOfIndexes [
 ]
 
 { #category : '*Coypu' }
+ByteSymbol >> midiCh: aMidiCh to: aSymbol [
+
+	<onTheFlyEssentials>
+	^ self asRhythm midiCh: aMidiCh  to: aSymbol
+]
+
+{ #category : '*Coypu' }
 ByteSymbol >> mute [
 	" remove the key from the Performance, if any active key in the Performance correspond to the symbol"
 
