@@ -618,9 +618,9 @@ Sequencer >> kymaMessage: anObject [
 
 { #category : 'LiveCoding-ExtraParams' }
 Sequencer >> level: aStringOrAnArray [
-	"set the decay to a collection of value in array or to to the number"
+	"set the level to a collection of value in array or to to the number"
 
-	self extra: #ULevel values: aStringOrAnArray asDirtArrayOfValues
+	Performance uniqueInstance performer level: aStringOrAnArray to: self
 ]
 
 { #category : 'LiveCoding-ExtraParams' }

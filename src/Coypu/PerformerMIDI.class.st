@@ -32,6 +32,13 @@ PerformerMIDI >> index: aStringOrAnArray to: aSequencer [
 	aSequencer extra: 19 values: aStringOrAnArray asDirtArrayOfValues
 ]
 
+{ #category : 'LiveCoding-ExtraParams' }
+PerformerMIDI >> level: aStringOrAnArray to: aSequencer [
+	"add the index as ccvalue to ccnumber 7"
+
+	aSequencer extra: 7  values: aStringOrAnArray asDirtArrayOfValues
+]
+
 { #category : 'playing' }
 PerformerMIDI >> play [
 

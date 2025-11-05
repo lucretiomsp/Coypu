@@ -69,6 +69,12 @@ Performer >> initialize [
 	transport := Transport new.
 ]
 
+{ #category : 'LiveCoding-ExtraParams' }
+Performer >> level: aStringOrAnArray to: aSequencer [
+
+	aSequencer extra: #ULevel values: aStringOrAnArray asDirtArrayOfValues
+]
+
 { #category : 'accessing' }
 Performer >> performance [
 ^ performance
