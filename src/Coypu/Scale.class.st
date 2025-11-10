@@ -68,6 +68,12 @@ Scale class >> chromatic: aMidiNoteNumber [
 ]
 
 { #category : 'creating - withoutRoot' }
+Scale class >> domenico [
+
+	^ #( 0 2 8 9 11 )
+]
+
+{ #category : 'creating - withoutRoot' }
 Scale class >> enigmatic [
 	^ #(0 1 4 6 8 10 11)
 ]
