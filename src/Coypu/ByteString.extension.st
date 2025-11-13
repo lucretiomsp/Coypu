@@ -128,9 +128,7 @@ ByteString >> asDirtNotes [
 	" returns a sequencer containing a trig for each integer and a rest for whatever other character and with the notes coresponding to the integeres inside the string - tokens must be separated by string"
 
 	<onTheFlyEssentials>
-	| seq tokens gates durs notesAStrings notesAsNumbers dirtString  |
-	
-
+	| seq tokens gates durs notesAStrings notesAsNumbers dirtString |
 	gates := ''.
 	durs := OrderedCollection new.
 	tokens := self splitOn: ','.
@@ -139,8 +137,7 @@ ByteString >> asDirtNotes [
 			(i includes: $*)
 				ifTrue: [
 						gates := gates , i multiplyStringsInString.
-						(i includes: $~) ifFalse: [
-							i getMultiplier timesRepeat: [ durs add: 1 ] ] ]
+						(i includes: $~) ifFalse: [ i getMultiplier timesRepeat: [ durs add: 1 ] ] ]
 				ifFalse: [
 						(i includes: $/)
 							ifTrue: [
@@ -148,21 +145,18 @@ ByteString >> asDirtNotes [
 									(i includes: $~) ifFalse: [ durs add: i getDivisor ] ]
 							ifFalse: [
 									gates := gates , i.
-									(i includes: $~) ifFalse: [ durs add: 1 ] ] ] ].
-	"tildes or - can be used as rests"
-	notesAStrings := ((gates copyReplaceAll: '~' with: '')
-		                  copyReplaceAll: '-'
-		                  with: '') findBetweenSubstrings: ' '.
+									(i includes: $~) ifFalse: [ durs add: 1 ] ] ] ]. "tildes or - can be used as rests"
+	notesAStrings := ((gates copyReplaceAll: '~' with: '') copyReplaceAll: '-' with: '') findBetweenSubstrings: ' '.
 
 	notesAsNumbers := notesAStrings collect: [ :i | "note cant be higher than higher MIDI note"
 		                  i ~= ' ' ifTrue: [ i asNumber min: 127 ] ].
 
-	notesAsNumbers do: [ :i |
-		dirtString := dirtString , i asString , ' ' ].
+	notesAsNumbers do: [ :i | dirtString := dirtString , i asString , ' ' ].
 
 	seq := gates asSeqGates asSeq.
 	seq dirtNotes: dirtString.
 	seq notes: notesAsNumbers asArray.
+	durs isEmpty ifTrue: [ durs add: 1 ].
 	seq durations: durs asArray.
 
 	^ seq

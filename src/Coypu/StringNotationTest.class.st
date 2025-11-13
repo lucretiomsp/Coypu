@@ -7,12 +7,24 @@ Class {
 }
 
 { #category : 'tests' }
-StringNotationTest >> testAsDirtLevel [
+StringNotationTest >> testAsDirtLevelForMidiPerfomer [
 
-| seq |
-seq := '1 , 0.5*2 , ~ , 0.3/4 ' asDirtLevel.
+	| seq p |
+	p := Performance uniqueInstance performer: PerformerMIDI  new.
+	seq := '1 , 0.5*2 , ~ , 0.3/4 ' asDirtLevel.
 
-self assert: (seq extraParams at: #ULevel) equals: #( 1 0.5 0.5 0.3 )
+	self assert: (seq extraParams at: 7  ) equals: #( 1 0.5 0.5 0.3 )
+]
+
+{ #category : 'tests' }
+StringNotationTest >> testAsDirtLevelForPerformer [
+
+	| seq p|
+	p := Performance uniqueInstance performer: PerformerLocal new.
+	seq := '1 , 0.5*2 , ~ , 0.3/4 ' asDirtLevel.
+	
+
+	self assert: (seq extraParams at: #ULevel) equals: #( 1 0.5 0.5 0.3 )
 ]
 
 { #category : 'tests' }
