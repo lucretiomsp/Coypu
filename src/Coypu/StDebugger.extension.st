@@ -4,5 +4,6 @@ Extension { #name : 'StDebugger' }
 StDebugger >> open [
 
 	super open.
-	"Performance uniqueInstance stop"
+	"prevents debugs explosion"
+	Performance uniqueInstance stop.
 ]

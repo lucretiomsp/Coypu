@@ -195,6 +195,17 @@ self assert: ( p at: #track) equals: sequencer
 ]
 
 { #category : 'tests' }
+SequencerTest >> testSetEmptyDurations [
+| seq |
+
+seq := Sequencer new.
+seq durations: Array new.
+
+self assert: seq durations equals: #(1).
+
+]
+
+{ #category : 'tests' }
 SequencerTest >> testStringAsNotesForSeq [
 
 | seq |

@@ -382,7 +382,8 @@ Sequencer >> durations [
 { #category : 'accessing' }
 Sequencer >> durations: anArray [
 
-	durations := anArray
+   durations := #(1).
+	anArray isNotEmpty ifTrue: [  durations  := anArray]
 ]
 
 { #category : 'accessing' }
@@ -771,17 +772,7 @@ Sequencer >> notes: anArrayOfNotesOrANoteorAstring [
 	" change notes in the sequencer"
 
 	anArrayOfNotesOrANoteorAstring notesFor: self.
-		
-	"anArrayOfNotesOrANoteorAstring isArray
-		ifTrue: [ notes := anArrayOfNotesOrANoteorAstring ]
-		ifFalse: [
-				anArrayOfNotesOrANoteorAstring isByteString
-					ifTrue: [
-					notes := anArrayOfNotesOrANoteorAstring asDirtPureNotes ]
-					ifFalse: [
-							notes := Array
-								         new: self numberOfTrigs
-								         withAll: anArrayOfNotesOrANoteorAstring ] ]"
+	
 ]
 
 { #category : 'LiveCoding - Performance' }
