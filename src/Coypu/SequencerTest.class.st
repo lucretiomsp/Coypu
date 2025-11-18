@@ -187,9 +187,11 @@ SequencerTest >> testSequencerSound [
 
 { #category : 'tests' }
 SequencerTest >> testSequencerToPerformance [
-
+| p |
+p := Performance uniqueInstance .
+p performer: PerformerLocal .
 sequencer to: #track.
-self assert: (Performance uniqueInstance at: #track) equals: sequencer
+self assert: ( p at: #track) equals: sequencer
 ]
 
 { #category : 'tests' }

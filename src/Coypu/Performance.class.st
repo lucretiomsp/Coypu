@@ -155,8 +155,11 @@ Performance >> bpm [
 ]
 
 { #category : 'accessing' }
-Performance >> bpm: aRateInSeconds [
-	bpm := 60 / 4 / (aRateInSeconds ).
+Performance >> bpm: aBpm [
+	freq := 60 / 4 / aBpm.
+	
+
+
 ]
 
 { #category : 'accessing' }

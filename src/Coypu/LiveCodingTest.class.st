@@ -57,7 +57,9 @@ LiveCodingTest >> testMultiplyString [
 LiveCodingTest >> testRhythmSymbolToPerformance [
 
 	| p |
-	p := Performance uniqueInstance.
+
+p := Performance uniqueInstance .
+p performer: PerformerLocal .
 	#downbeats to: #tabla.
 	
 	self assert: (p at: #tabla) numberOfTrigs equals: 4
