@@ -635,6 +635,40 @@ ByteString >> splitRespectingQuotes [
 ]
 
 { #category : '*Coypu' }
+ByteString >> sweepToLocalValue: anArrayWithStartAndEndValue in: aTimeInseconds [
+	" send a sweep of values to the OSC address equals to self in aTimeInSeconds"
+
+	| startValue currentValue range timeInDeciSec step numberOfSteps stepDelay incrementingProcess decrementingProcess targetValue |
+	startValue := anArrayWithStartAndEndValue first.
+	targetValue := anArrayWithStartAndEndValue second.
+	range := (startValue max: targetValue)
+	         - (startValue min: targetValue).
+	timeInDeciSec := aTimeInseconds * 10.
+	step := range / timeInDeciSec.
+	stepDelay := Delay forSeconds: 0.1.
+	numberOfSteps := timeInDeciSec.
+	currentValue := startValue.
+	decrementingProcess := [
+		                       numberOfSteps timesRepeat: [
+				                       currentValue := currentValue - step.
+				                       currentValue toLocal: self.
+
+				                       stepDelay wait ] ].
+	incrementingProcess := incrementingProcess := [
+		                                              numberOfSteps
+			                                              timesRepeat: [
+					                                              currentValue := currentValue
+					                                                              +
+					                                                              step.
+					                                              currentValue
+						                                              toLocal: self.
+					                                              stepDelay wait ] ].
+	startValue < targetValue 
+		ifTrue: [ incrementingProcess fork ]
+		ifFalse: [ decrementingProcess fork ]
+]
+
+{ #category : '*Coypu' }
 ByteString >> to: aKeyInPerformance [ 
 	"convenience method to insert at aKeyInPerformance a pattern from the hex string"
 	
