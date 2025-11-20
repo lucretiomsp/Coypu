@@ -14,7 +14,10 @@ Class {
 SequencerMono >> + anInteger [
 	"transpose up the sequencer notes by anInteger semitones"
 
-	self notes: self notes + anInteger
+	| newSeq |
+	newSeq := self deepCopy .
+	newSeq notes: self notes + anInteger.
+	^ newSeq
 ]
 
 { #category : 'arithmetic' }
