@@ -382,8 +382,8 @@ Sequencer >> durations [
 { #category : 'accessing' }
 Sequencer >> durations: anArray [
 
-   durations := #(1).
-	anArray isNotEmpty ifTrue: [  durations  := anArray]
+	durations := #( 1 ).
+	anArray isNotEmpty ifTrue: [ durations := anArray asDirtPureNotes ]
 ]
 
 { #category : 'accessing' }

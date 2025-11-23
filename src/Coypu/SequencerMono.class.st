@@ -144,20 +144,18 @@ SequencerMono >> playFullKymaEventAt: anIndex [
 { #category : 'event playing' }
 SequencerMono >> playLocalEventAt: anIndex [
 
-
-	| gateTime dur noteNumber  stepDuration  freq |
+	| gateTime dur noteNumber stepDuration freq |
 	freq := Performance uniqueInstance freq.
 	gateTime := 0.9. "must be changeable"
-	
+
 	stepDuration := Performance uniqueInstance freq.
 	noteNumber := self notes asDirtArray wrap: anIndex.
 	dur := self durations asDirtArray wrap: anIndex.
 	self extraParams keysAndValuesDo: [ :k :v |
-		(v wrap: anIndex) toLocal: self seqKey , k asString .
- ].
-	self seqKey toLocalAsGate: stepDuration * gateTime note: noteNumber .
+		(v wrap: anIndex) toLocal: self seqKey , k asString ].
 
-
+	self seqKey toLocalAsGate: dur * stepDuration * gateTime note: noteNumber.
+	
 ]
 
 { #category : 'event playing' }

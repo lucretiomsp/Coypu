@@ -104,6 +104,11 @@ Array >> asDirtArrayOfValues [
 ]
 
 { #category : '*Coypu' }
+Array >> asDirtPureNotes [
+	^ self 
+]
+
+{ #category : '*Coypu' }
 Array >> asMonoSeq [
 
 	"returns Sequencer with default note 60nn and default durations 1/16th and noteIndex = 0"
@@ -162,7 +167,7 @@ Array >> asSeq [
 	| numberOfNotes dur seq gts |
 	numberOfNotes := self class new: self trigs withAll: 60.
 	"all notes last 1 step by default"
-	dur := self class new: self trigs withAll: 1.
+	dur := Array new: self trigs withAll: 1.
 
 	"with an 80% gate Time"
 	gts := self class new: self trigs withAll: 0.8.
@@ -172,13 +177,11 @@ Array >> asSeq [
 		       noteIndex: 1;
 		       midiChannel: 1.
 	seq numberOfTrigs > 1 ifTrue: [
-		dur := self class
-			       new: self trigs
-			       withAll: self minDurationBetweenGates ].
+		dur := Array new: self trigs withAll: self minDurationBetweenGates ].
 
 	seq durations: dur.
 	seq gateTimes: gts.
-	seq soundPattern: #('nothing').
+	seq soundPattern: #( 'nothing' ).
 
 	^ seq
 ]

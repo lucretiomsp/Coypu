@@ -188,7 +188,7 @@ Integer >> breves [
 	<onTheFlyEssentials>
 	| result |
 	result := '80000000' hexBeat * self.
-	result durations: 32.
+	result durations: #(32).
 	result gateTimes: 0.8.
 	^ result
 ]
