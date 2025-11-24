@@ -998,6 +998,13 @@ ByteString >> toSCFor: gateTimeInSeconds note: aNoteNumber [
 ]
 
 { #category : '*Coypu' }
+ByteString >> trigLocal [
+	"trig sound on OSC server nameds self, with suffix Gate"
+
+	self toLocalAsGate: 0.25 note: 60
+]
+
+{ #category : '*Coypu' }
 ByteString >> withNRests [
 	" add rests to a string divided by an Integer inside a String"
 	

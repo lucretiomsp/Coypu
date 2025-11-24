@@ -166,6 +166,12 @@ ByteSymbol >> to: aSymbol [
 ]
 
 { #category : '*Coypu' }
+ByteSymbol >> trigLocal [ 
+
+self asString trigLocal 
+]
+
+{ #category : '*Coypu' }
 ByteSymbol >> unsolo [
 	"shorthand for p unsolo: aKeyInPerformance"
 
