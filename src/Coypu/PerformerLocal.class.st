@@ -32,24 +32,68 @@ PerformerLocal >> playFor: aNumberOfSteps [
 	"play the performance with an external MIDI devices - default freq is 132 bpm 
 	Performance speed can be changed with p freq: a bpm"
 
-	performance bpm: 60 / (performance freq * 4).
+	"performance bpm: 60 / (performance freq * 4).
 	performance transportStep: 0.
 	performance activeProcess: ([
-		 aNumberOfSteps timesRepeat: [
-			 (Delay forSeconds: performance freq) wait.
-			 "sequencers scan"
-			 [
-			 performance valuesDo: [ :seq |
-				 (seq gates wrap: performance transportStep) = 1
-					 ifTrue: [
-						 seq playLocalEventAt: seq noteIndex. "delta!!!!"
-						 "increment note Index"
-						 seq noteIndex: seq noteIndex + 1 ]
-						 ] ] forkAt: Processor highIOPriority .
+			 aNumberOfSteps timesRepeat: [
+					 (Delay forSeconds: performance freq) wait.
+					 ""sequencers scan""
+					 [
+						 performance valuesDo: [ :seq |
+								 (seq gates wrap: performance transportStep) = 1 ifTrue: [
+										 seq playLocalEventAt: seq noteIndex. ""delta!!!!""
+										 ""increment note Index""
+										 seq noteIndex: seq noteIndex + 1 ] ] ] forkAt:
+						 Processor highIOPriority.
 
-			 "step is incremented anyway"
-			 performance incrementTransportStep ] ] forkAt:
-			 Processor timingPriority)
+					 ""step is incremented anyway""
+					 performance incrementTransportStep ] ] forkAt:
+			 Processor timingPriority)"
+		
+
+    | startTime stepDurMicros targetMicros nowMicros waitMicros waitMillis |
+
+    "Duration of one transport step in microseconds"
+    stepDurMicros := (performance freq * 1_000_000) asInteger.
+
+    "Reset transport"
+    performance transportStep: 0.
+
+    "Start from monotonic clock (does not jump)"
+    startTime := Time microsecondClockValue.
+
+    performance activeProcess: (
+        [
+            1 to: aNumberOfSteps do: [:stepIndex |
+
+                "Absolute target time for this step"
+                targetMicros := startTime + (stepIndex * stepDurMicros).
+
+                "Time remaining until target"
+                nowMicros := Time microsecondClockValue.
+                waitMicros := targetMicros - nowMicros.
+                waitMicros := waitMicros max: 0.
+
+                "Delay only supports milliseconds"
+                waitMillis := waitMicros // 1000.
+
+                (Delay forMilliseconds: waitMillis) wait.
+
+                "Do work in separate high-priority task"
+                [
+                    performance valuesDo: [:seq |
+                        (seq gates wrap: performance transportStep) = 1 ifTrue: [
+                            seq playLocalEventAt: seq noteIndex.
+                            seq noteIndex: seq noteIndex + 1.
+                        ].
+                    ].
+                ] forkAt: Processor highIOPriority.
+
+                "Advance transport"
+                  performance incrementTransportStep.
+            ].
+        ] forkAt: Processor timingPriority
+    ).
 ]
 
 { #category : 'accessing' }

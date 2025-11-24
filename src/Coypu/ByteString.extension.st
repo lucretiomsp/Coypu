@@ -27,6 +27,13 @@ ByteString >> / anInteger [
 ]
 
 { #category : '*Coypu' }
+ByteString >> << aNumber [
+	"economic method to send a value to the parameter named self on the OSC audio server"
+
+	aNumber toLocal: self
+]
+
+{ #category : '*Coypu' }
 ByteString >> asDirtArray [
 "convenience method to send OSC messages to SuperDirt"
 ^ Array with: self

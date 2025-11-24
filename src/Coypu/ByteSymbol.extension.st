@@ -1,6 +1,12 @@
 Extension { #name : 'ByteSymbol' }
 
 { #category : '*Coypu' }
+ByteSymbol >> << aNumber [
+
+self asString << aNumber
+]
+
+{ #category : '*Coypu' }
 ByteSymbol >> asDirtArray [ 
 " convenience method to send messages to SuperDirt"
 
