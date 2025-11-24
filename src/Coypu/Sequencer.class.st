@@ -1070,9 +1070,11 @@ Sequencer >> printOn: aStream [
 
 	super printOn: aStream.
 	aStream nextPutAll: ' with gates: '.
-	aStream print: gates.
+	aStream nextPutAll: gates printString.
+
 	aStream nextPutAll: ' with notes: '.
-	aStream print: notes.
+	aStream nextPutAll: notes printString
+	
 ]
 
 { #category : 'progressions' }

@@ -131,6 +131,15 @@ self assert: seq notes equals: #(60 60 60 60).
 ]
 
 { #category : 'tests' }
+SequencerTest >> testPrinting [ 
+
+| result |
+result := 'a SequencerMono with gates: #(1 0 0 0 1 0 0 0 1 0 0 0 1 0 0 0) with notes: #(60 60 60 60)'.
+
+self assert: 16 downbeats printString equals: result.
+]
+
+{ #category : 'tests' }
 SequencerTest >> testRandomNotesOfGatesSizefromScaleAndOctave [
 
 	| seq |
