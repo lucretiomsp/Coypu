@@ -49,51 +49,41 @@ PerformerLocal >> playFor: aNumberOfSteps [
 					 ""step is incremented anyway""
 					 performance incrementTransportStep ] ] forkAt:
 			 Processor timingPriority)"
-		
 
-    | startTime stepDurMicros targetMicros nowMicros waitMicros waitMillis |
+	| startTime stepMicros nextTargetMicros nowMicros waitMicros waitMillis |
+	
+	"Reset transport"
+	performance transportStep: 0.
 
-    "Duration of one transport step in microseconds"
-    stepDurMicros := (performance freq * 1_000_000) asInteger.
+	"Start from monotonic clock (does not jump)"
+	startTime := Time microsecondClockValue.
 
-    "Reset transport"
-    performance transportStep: 0.
+	performance activeProcess: ([
+			 1 to: aNumberOfSteps do: [ :stepIndex | "Absolute target time for this step"
+					  "Get current tempo dynamically every step"
+    stepMicros := (performance freq * 1_000_000) asInteger.
 
-    "Start from monotonic clock (does not jump)"
-    startTime := Time microsecondClockValue.
+    "Add this step's duration to the accumulator"
+    nextTargetMicros := nextTargetMicros + stepMicros.
 
-    performance activeProcess: (
-        [
-            1 to: aNumberOfSteps do: [:stepIndex |
+    nowMicros := Time microsecondClockValue.
+    waitMicros := (nextTargetMicros - nowMicros) max: 0.
+    waitMillis := waitMicros // 1000.
 
-                "Absolute target time for this step"
-                targetMicros := startTime + (stepIndex * stepDurMicros).
 
-                "Time remaining until target"
-                nowMicros := Time microsecondClockValue.
-                waitMicros := targetMicros - nowMicros.
-                waitMicros := waitMicros max: 0.
+					 (Delay forMilliseconds: waitMillis) wait.
 
-                "Delay only supports milliseconds"
-                waitMillis := waitMicros // 1000.
+					 "Do work in separate high-priority task"
+					 [
+						 performance valuesDo: [ :seq |
+								 (seq gates wrap: performance transportStep) = 1 ifTrue: [
+										 seq playLocalEventAt: seq noteIndex.
+										 seq noteIndex: seq noteIndex + 1 ] ] ] forkAt:
+						 Processor highIOPriority.
 
-                (Delay forMilliseconds: waitMillis) wait.
-
-                "Do work in separate high-priority task"
-                [
-                    performance valuesDo: [:seq |
-                        (seq gates wrap: performance transportStep) = 1 ifTrue: [
-                            seq playLocalEventAt: seq noteIndex.
-                            seq noteIndex: seq noteIndex + 1.
-                        ].
-                    ].
-                ] forkAt: Processor highIOPriority.
-
-                "Advance transport"
-                  performance incrementTransportStep.
-            ].
-        ] forkAt: Processor timingPriority
-    ).
+					 "Advance transport"
+					 performance incrementTransportStep ] ] forkAt:
+			 Processor timingPriority)
 ]
 
 { #category : 'accessing' }

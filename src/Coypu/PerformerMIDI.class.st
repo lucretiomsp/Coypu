@@ -90,75 +90,88 @@ PerformerMIDI >> playFor: aNumberOfSteps [
 						 Processor highIOPriority. ""step is incremented anyway""
 					 performance incrementTransportStep ] ] forkAt:
 			 Processor timingPriority)"
-" ######################### MONOTONIC CLOCK"
-    "play the performance with an external MIDI devices - default freq is 132 bpm.
+
+	" ######################### MONOTONIC CLOCK"
+
+	"play the performance with an external MIDI devices - default freq is 132 bpm.
     Performance speed can be changed with p freq: a bpm"
+| nextStepMicros nextClockMicros
+  stepMicros clockMicros
+  nowMicros waitMicros waitMillis
+  startMicros |
 
-    | stepMicros clockMicros startMicros nowMicros targetMicros waitMicros waitMillis |
+"Initial BPM (will update automatically when freq changes)"
+performance bpm: 60 / (performance freq * 4).
+performance transportStep: 0.
 
-    "Original BPM computation"
-    performance bpm: 60 / (performance freq * 4).
+"Monotonic baseline time"
+startMicros := Time microsecondClockValue.
 
-    "Duration of one sequencer step in microseconds"
-    stepMicros := (performance freq * 1_000_000) asInteger.
+"===================================="
+"        MIDI CLOCK THREAD           "
+"===================================="
+[
+    nextClockMicros := startMicros.
 
-    "MIDI Clock: 6 MIDI clocks per sequencer step"
-    clockMicros := ((performance freq / 6) * 1_000_000) asInteger.
+    1 to: (aNumberOfSteps * 6) do: [:i |
 
-    performance transportStep: 0.
+        "Recompute clock duration dynamically"
+        clockMicros := ((performance freq / 6) * 1_000_000) asInteger.
 
-    "Monotonic start time for both clock and transport"
-    startMicros := Time microsecondClockValue.
+        "Accumulate next timestamp"
+        nextClockMicros := nextClockMicros + clockMicros.
+
+        nowMicros := Time microsecondClockValue.
+        waitMicros := (nextClockMicros - nowMicros) max: 0.
+        waitMillis := waitMicros // 1000.
+
+        (Delay forMilliseconds: waitMillis) wait.
+
+        self class midiOut sendClock.
+    ].
+
+] forkAt: 78.  "same priority you used"
 
 
-    "============================"
-    "  MIDI CLOCK THREAD (24PPQN)"
-    "============================"
+"Start the MIDI stream"
+self class midiOut sendStart.
+
+
+
+"===================================="
+"        TRANSPORT THREAD            "
+"===================================="
+performance activeProcess: (
+
     [
-        1 to: (aNumberOfSteps * 6) do: [:clockIndex |
+        nextStepMicros := startMicros.
 
-            targetMicros := startMicros + (clockIndex * clockMicros).
+        1 to: aNumberOfSteps do: [:stepIndex |
+
+            "Recompute step duration dynamically"
+            stepMicros := (performance freq * 1_000_000) asInteger.
+
+            "Accumulate next timestamp"
+            nextStepMicros := nextStepMicros + stepMicros.
 
             nowMicros := Time microsecondClockValue.
-            waitMicros := (targetMicros - nowMicros) max: 0.
+            waitMicros := (nextStepMicros - nowMicros) max: 0.
             waitMillis := waitMicros // 1000.
 
             (Delay forMilliseconds: waitMillis) wait.
 
-            self class midiOut sendClock.
-        ].
-    ] forkAt: 78.   "same priority as your code"
-
-    self class midiOut sendStart.
-
-
-    "============================"
-    "  SEQUENCER TRANSPORT THREAD"
-    "============================"
-    performance activeProcess: (
-        [
-            1 to: aNumberOfSteps do: [:stepIndex |
-
-                targetMicros := startMicros + (stepIndex * stepMicros).
-
-                nowMicros := Time microsecondClockValue.
-                waitMicros := (targetMicros - nowMicros) max: 0.
-                waitMillis := waitMicros // 1000.
-
-                (Delay forMilliseconds: waitMillis) wait.
-
-                [
-                    performance valuesDo: [:seq |
-                        (seq gates wrap: performance transportStep) = 1 ifTrue: [
-                            seq playMIDIEventAt: seq noteIndex.
-                            seq noteIndex: seq noteIndex + 1.
-                        ].
+            [
+                performance valuesDo: [:seq |
+                    (seq gates wrap: performance transportStep) = 1 ifTrue: [
+                        seq playMIDIEventAt: seq noteIndex.
+                        seq noteIndex: seq noteIndex + 1.
                     ].
-                ] forkAt: Processor highIOPriority.
+                ].
+            ] forkAt: Processor highIOPriority.
 
-                performance incrementTransportStep.
-            ].
-        ] forkAt: Processor timingPriority
-    ).
+            performance incrementTransportStep.
+        ].
+    ] forkAt: Processor timingPriority
+).
 
 ]
