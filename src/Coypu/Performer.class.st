@@ -11,7 +11,8 @@ Class {
 		'performance',
 		'freq',
 		'fourDaysAt120BPM',
-		'transport'
+		'transport',
+		'nextTargetMicros'
 	],
 	#category : 'Coypu-Performer',
 	#package : 'Coypu',
@@ -76,6 +77,18 @@ Performer >> level: aStringOrAnArray to: aSequencer [
 ]
 
 { #category : 'accessing' }
+Performer >> nextTargetMicros [
+
+^ nextTargetMicros 
+]
+
+{ #category : 'accessing' }
+Performer >> nextTargetMicros: aMicroSecondsValue [
+
+nextTargetMicros := aMicroSecondsValue 
+]
+
+{ #category : 'accessing' }
 Performer >> performance [
 ^ performance
 ]
@@ -134,4 +147,22 @@ Performer >> resetPerformance [
 performance bpm: 60 / (performance freq * 4).
 			performance transportStep: 0.
 			
+]
+
+{ #category : 'accessing' }
+Performer >> waitMillis [
+
+
+			  "Get current tempo dynamically every step"
+    | stepMicros nowMicros waitMicros waitMillis |
+stepMicros := (performance freq * 1_000_000) asInteger.
+
+    "Add this step's duration to the accumulator"
+    nextTargetMicros := nextTargetMicros + stepMicros.
+
+    nowMicros := Time microsecondClockValue.
+    waitMicros := (nextTargetMicros - nowMicros) max: 0.
+    waitMillis := waitMicros // 1000.
+
+^ waitMillis
 ]

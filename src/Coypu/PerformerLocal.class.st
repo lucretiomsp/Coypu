@@ -29,49 +29,22 @@ aSequence key asString
 
 { #category : 'playing' }
 PerformerLocal >> playFor: aNumberOfSteps [
-	"play the performance with an external MIDI devices - default freq is 132 bpm 
-	Performance speed can be changed with p freq: a bpm"
+	
 
-	"performance bpm: 60 / (performance freq * 4).
-	performance transportStep: 0.
-	performance activeProcess: ([
-			 aNumberOfSteps timesRepeat: [
-					 (Delay forSeconds: performance freq) wait.
-					 ""sequencers scan""
-					 [
-						 performance valuesDo: [ :seq |
-								 (seq gates wrap: performance transportStep) = 1 ifTrue: [
-										 seq playLocalEventAt: seq noteIndex. ""delta!!!!""
-										 ""increment note Index""
-										 seq noteIndex: seq noteIndex + 1 ] ] ] forkAt:
-						 Processor highIOPriority.
-
-					 ""step is incremented anyway""
-					 performance incrementTransportStep ] ] forkAt:
-			 Processor timingPriority)"
-
-	| startTime stepMicros nextTargetMicros nowMicros waitMicros waitMillis |
+	| startTime  |
 	
 	"Reset transport"
 	performance transportStep: 0.
 
 	"Start from monotonic clock (does not jump)"
 	startTime := Time microsecondClockValue.
+	self nextTargetMicros: startTime.
 
 	performance activeProcess: ([
 			 1 to: aNumberOfSteps do: [ :stepIndex | "Absolute target time for this step"
-					  "Get current tempo dynamically every step"
-    stepMicros := (performance freq * 1_000_000) asInteger.
+		
 
-    "Add this step's duration to the accumulator"
-    nextTargetMicros := nextTargetMicros + stepMicros.
-
-    nowMicros := Time microsecondClockValue.
-    waitMicros := (nextTargetMicros - nowMicros) max: 0.
-    waitMillis := waitMicros // 1000.
-
-
-					 (Delay forMilliseconds: waitMillis) wait.
+					 (Delay forMilliseconds: self waitMillis) wait.
 
 					 "Do work in separate high-priority task"
 					 [
