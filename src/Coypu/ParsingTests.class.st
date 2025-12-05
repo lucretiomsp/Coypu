@@ -41,6 +41,20 @@ ParsingTests >> testNotesFromNotatedString [
 ]
 
 { #category : 'tests' }
+ParsingTests >> testStringNoteNameToMidiNN [
+
+self assert: 'c3' asMidiNN equals: 60.
+self assert: 'c2' asMidiNN equals: 48.
+self assert: 'd3' asMidiNN equals: 62.
+self assert: 'c#3' asMidiNN equals: 61.
+self assert: 'e2' asMidiNN equals: 52.
+self assert: 'd#4' asMidiNN equals: 75.
+
+
+
+]
+
+{ #category : 'tests' }
 ParsingTests >> testStringsWitNRests [
 
 	self 

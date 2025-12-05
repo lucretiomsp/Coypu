@@ -99,6 +99,16 @@ Chord class >> list [
 	^ list
 ]
 
+{ #category : 'as yet unclassified' }
+Chord class >> notesNamesToNumbers [
+
+|dic|
+dic := Dictionary new.
+#('c' 'c#' 'd' 'd#' 'e' 'f' 'f#' 'g' 'g#' 'a' 'a#' 'b') doWithIndex: [ :n :i | dic at: n put: (i -1) ].
+^ dic
+
+]
+
 { #category : 'printing' }
 Chord class >> traceList [
 

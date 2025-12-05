@@ -253,6 +253,18 @@ ByteString >> asLocalGate: gateTimeInSeconds note: aNoteNumber [
 ]
 
 { #category : '*Coypu' }
+ByteString >> asMidiNN [
+
+| octave noteBaseNumber noteName |
+octave := ('(\d+)' asRegex matchesIn: self) first  asInteger.
+noteName := ('(\D+)' asRegex matchesIn: self) first .
+
+noteBaseNumber := Chord notesNamesToNumbers at: noteName .
+^ noteBaseNumber  + ((octave  + 2) * 12).
+
+]
+
+{ #category : '*Coypu' }
 ByteString >> asPacaAddress [
 
 
