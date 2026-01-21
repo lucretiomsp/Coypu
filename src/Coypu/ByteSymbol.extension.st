@@ -108,8 +108,8 @@ ByteSymbol >> mute [
 	" remove the key from the Performance, if any active key in the Performance correspond to the symbol"
 
 	| perf |
-	perf := Performance uniqueInstance uniqueInstance.
-	perf removeKey: self ifAbsent: [ nil ]
+	perf := Performance uniqueInstance.
+	perf mute: self.
 ]
 
 { #category : '*Coypu' }
@@ -175,6 +175,15 @@ ByteSymbol >> to: aSymbol [
 ByteSymbol >> trigLocal [ 
 
 self asString trigLocal 
+]
+
+{ #category : '*Coypu' }
+ByteSymbol >> unmute [
+	" restore the Performance state before the mute"
+
+	| perf |
+	perf := Performance uniqueInstance.
+	perf restore
 ]
 
 { #category : '*Coypu' }
