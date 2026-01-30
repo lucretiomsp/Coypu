@@ -191,8 +191,8 @@ PerfTypeMooflod >> levelOfDetail: anInteger [
 PerfTypeMooflod >> openVisualizers [
 
 	visualizerSpace root removeChildren.
-	visualizerSpace := BlSpace new extent:
-		                   World extent x * (5 / 12) @ World extent y.
+	visualizerSpace := BlSpace new extent: 300 @ 800.
+	" World extent x * (5 / 12) @ World extent y"
 	visualizerSpace root background: Color black.
 	visualizerSpace position: 500 @ 0.
 	"visualizerSpace useMorphicHost."
@@ -202,7 +202,7 @@ PerfTypeMooflod >> openVisualizers [
 	visualizerSpace root addChild: visualizer.
 	visualizerSpace root childrenDo: [ :child |
 		child margin: (BlInsets vertical: 10) ].
-	visualizerSpace position: World extent x * (10 / 12) @ 20.
+	visualizerSpace position: 400@800"World extent x * (10 / 12) @ 20".
 	visualizerSpace toTheme: MfMooflodTheme new.
 	visualizerSpace root background: (Color fromHexString: '#313339').
 	visualizerSpace show
