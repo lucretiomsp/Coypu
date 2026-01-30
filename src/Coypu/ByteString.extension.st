@@ -27,6 +27,13 @@ ByteString >> / anInteger [
 ]
 
 { #category : '*Coypu' }
+ByteString >> << aNumber [
+	"economic method to send a value to the parameter named self on the OSC audio server"
+
+	aNumber toLocal: self
+]
+
+{ #category : '*Coypu' }
 ByteString >> asDirtArray [
 "convenience method to send OSC messages to SuperDirt"
 ^ Array with: self
@@ -77,11 +84,12 @@ ByteString >> asDirtIndex [
 ]
 
 { #category : '*Coypu' }
-ByteString >> asDirtNotes [
+ByteString >> asDirtLevel [
+	
 	" returns a sequencer containing a trig for each integer and a rest for whatever other character and with the notes coresponding to the integeres inside the string - tokens must be separated by string"
 
 	<onTheFlyEssentials>
-	| seq tokens gates durs notesAStrings notesAsNumbers dirtString  |
+	| seq tokens gates durs levelsAStrings levelsAsNumbers dirtString  |
 	
 
 	gates := ''.
@@ -103,19 +111,59 @@ ByteString >> asDirtNotes [
 									gates := gates , i.
 									(i includes: $~) ifFalse: [ durs add: 1 ] ] ] ].
 	"tildes or - can be used as rests"
-	notesAStrings := ((gates copyReplaceAll: '~' with: '')
+	levelsAStrings := ((gates copyReplaceAll: '~' with: '')
 		                  copyReplaceAll: '-'
 		                  with: '') findBetweenSubstrings: ' '.
 
-	notesAsNumbers := notesAStrings collect: [ :i | "note cant be higher than higher MIDI note"
-		                  i ~= ' ' ifTrue: [ i asNumber min: 127 ] ].
+	levelsAsNumbers := levelsAStrings collect: [ :i | "note cant be higher than higher MIDI note"
+		                  i ~= ' ' ifTrue: [ i asNumber] ].
 
-	notesAsNumbers do: [ :i |
+	levelsAsNumbers do: [ :i |
 		dirtString := dirtString , i asString , ' ' ].
 
 	seq := gates asSeqGates asSeq.
 	seq dirtNotes: dirtString.
+	seq notes: 60.
+	seq durations: durs asArray.
+	seq level: levelsAsNumbers asArray.
+
+	^ seq
+]
+
+{ #category : '*Coypu' }
+ByteString >> asDirtNotes [
+	" returns a sequencer containing a trig for each integer and a rest for whatever other character and with the notes coresponding to the integeres inside the string - tokens must be separated by string"
+
+	<onTheFlyEssentials>
+	| seq tokens gates durs notesAStrings notesAsNumbers dirtString |
+	gates := ''.
+	durs := OrderedCollection new.
+	tokens := self splitOn: ','.
+	dirtString := ''.
+	tokens do: [ :i |
+			(i includes: $*)
+				ifTrue: [
+						gates := gates , i multiplyStringsInString.
+						(i includes: $~) ifFalse: [ i getMultiplier timesRepeat: [ durs add: 1 ] ] ]
+				ifFalse: [
+						(i includes: $/)
+							ifTrue: [
+									gates := gates , i withNRests.
+									(i includes: $~) ifFalse: [ durs add: i getDivisor ] ]
+							ifFalse: [
+									gates := gates , i.
+									(i includes: $~) ifFalse: [ durs add: 1 ] ] ] ]. "tildes or - can be used as rests"
+	notesAStrings := ((gates copyReplaceAll: '~' with: '') copyReplaceAll: '-' with: '') findBetweenSubstrings: ' '.
+
+	notesAsNumbers := notesAStrings collect: [ :i | "note cant be higher than higher MIDI note"
+		                  i ~= ' ' ifTrue: [ i asNumber min: 127 ] ].
+
+	notesAsNumbers do: [ :i | dirtString := dirtString , i asString , ' ' ].
+
+	seq := gates asSeqGates asSeq.
+	seq dirtNotes: dirtString.
 	seq notes: notesAsNumbers asArray.
+	durs isEmpty ifTrue: [ durs add: 1 ].
 	seq durations: durs asArray.
 
 	^ seq
@@ -157,27 +205,32 @@ ByteString >> asDirtPureNotes [
 { #category : '*Coypu' }
 ByteString >> asDirtSounds [
 	" parse a String into a Sequencer containing information to end to the SuperDirt synth for SuperCollider"
-<onTheFlyEssentials>
-	| seq tokens gates soundsAsStrings |
+
+	<onTheFlyEssentials>
+	| seq tokens gates soundsAsStrings  soundsAndDirtNotesArray soundAndDirtNotes notesAsIndex |
 	gates := ''.
 	tokens := self splitOn: ','.
+
 	tokens do: [ :i |
-		(i includes: $*)
-			ifTrue: [ gates := gates , i multiplyStringsInString ]
-			ifFalse: [
-				(i includes: $/)
-					ifTrue: [ gates := gates , i withNRests ]
-					ifFalse: [ gates := gates , i ] ] ].
-
-	soundsAsStrings := ((gates copyReplaceAll: '~' with: '')
+			(i includes: $*)
+				ifTrue: [ gates := gates , i multiplyStringsInString ]
+				ifFalse: [
+						(i includes: $/)
+							ifTrue: [ gates := gates , i withNRests ]
+							ifFalse: [ gates := gates , i ] ] ]. "soundsAsStrings := (((gates copyReplaceAll: '~' with: '')
 		                    copyReplaceAll: '-'
-		                    with: '') findBetweenSubstrings: ' '.
+		                    with: '') copyReplaceAll: ':' with: '') findBetweenSubstrings: ' '."
+	soundsAsStrings := gates select: [ :ch | ch isLetter or: ch isSeparator ].
+	soundAndDirtNotes  := gates select: [ :ch | (ch isLetter or: ch isDigit) or: ch isSeparator ].
+soundsAndDirtNotesArray := soundAndDirtNotes findBetweenSubstrings: ' '.
+notesAsIndex := soundsAndDirtNotesArray collect: [ :i | i hasDigit asInteger].
+	
 
 
 
-
-	seq := gates asSeqGates asSeq.
-	seq sound: (soundsAsStrings joinUsing: ' ').
+	seq := gates asSeqGates asSeq. "seq sound: (soundsAsStrings joinUsing: ' ')."
+	seq sound: soundsAsStrings.
+	seq notes: notesAsIndex asArray .
 
 	^ seq
 ]
@@ -197,6 +250,18 @@ ByteString >> asLocalGate: gateTimeInSeconds note: aNoteNumber [
 	(OSCMessage for: { label  . 1.0  }) sendToAddressString: localAddress  port: 8000.
 	(Delay forSeconds: gateTimeInSeconds ) wait.
 	(OSCMessage for: { label  . 0.0  }) sendToAddressString: localAddress  port: 8000.] fork
+]
+
+{ #category : '*Coypu' }
+ByteString >> asMidiNN [
+
+| octave noteBaseNumber noteName |
+octave := ('(\d+)' asRegex matchesIn: self) first  asInteger.
+noteName := ('(\D+)' asRegex matchesIn: self) first .
+
+noteBaseNumber := Chord notesNamesToNumbers at: noteName .
+^ noteBaseNumber  + ((octave  + 2) * 12).
+
 ]
 
 { #category : '*Coypu' }
@@ -275,6 +340,17 @@ ByteString >> getMultiplier [
 	tokens := self splitOn: '*'.
 
 	^ tokens second asInteger
+]
+
+{ #category : '*Coypu' }
+ByteString >> hasDigit [
+   "Return false if the receiver has no digits.
+     If digits exist, return the full number as an Integer."
+    
+    | digits |
+    digits := self select: [ :ch | ch isDigit ].
+    digits isEmpty ifTrue: [ ^ false ].
+    ^ digits asString asInteger
 ]
 
 { #category : '*Coypu' }
@@ -386,6 +462,12 @@ ByteString >> notes: anArrayOfNotes  to: aKeyInAPerformance [
 "convenience method to avoid extra parenthesis when sending an HEX rhythm pattern to aKeyInPerformance"
 
 self pattern notes: anArrayOfNotes to: aKeyInAPerformance .
+]
+
+{ #category : '*Coypu' }
+ByteString >> notesFor: aSequencer [
+
+aSequencer notes: self asDirtPureNotes 
 ]
 
 { #category : '*Coypu' }
@@ -569,6 +651,40 @@ ByteString >> splitRespectingQuotes [
     token position > 0 ifTrue: [ result add: token contents ].
     ^ result
 
+]
+
+{ #category : '*Coypu' }
+ByteString >> sweepToLocalValue: anArrayWithStartAndEndValue in: aTimeInseconds [
+	" send a sweep of values to the OSC address equals to self in aTimeInSeconds"
+
+	| startValue currentValue range timeInDeciSec step numberOfSteps stepDelay incrementingProcess decrementingProcess targetValue |
+	startValue := anArrayWithStartAndEndValue first.
+	targetValue := anArrayWithStartAndEndValue second.
+	range := (startValue max: targetValue)
+	         - (startValue min: targetValue).
+	timeInDeciSec := aTimeInseconds * 10.
+	step := range / timeInDeciSec.
+	stepDelay := Delay forSeconds: 0.1.
+	numberOfSteps := timeInDeciSec.
+	currentValue := startValue.
+	decrementingProcess := [
+		                       numberOfSteps timesRepeat: [
+				                       currentValue := currentValue - step.
+				                       currentValue toLocal: self.
+
+				                       stepDelay wait ] ].
+	incrementingProcess := incrementingProcess := [
+		                                              numberOfSteps
+			                                              timesRepeat: [
+					                                              currentValue := currentValue
+					                                                              +
+					                                                              step.
+					                                              currentValue
+						                                              toLocal: self.
+					                                              stepDelay wait ] ].
+	startValue < targetValue 
+		ifTrue: [ incrementingProcess fork ]
+		ifFalse: [ decrementingProcess fork ]
 ]
 
 { #category : '*Coypu' }
@@ -768,7 +884,7 @@ ByteString >> toLocalAsGate: gateTimeInSeconds note: aNoteNumber [
 
 	oscGate := '/' , self , 'Gate'.
 	oscNote := '/' , self , 'Note'.
-	(OSCMessage for: { 
+	[(OSCMessage for: { 
 			 oscNote.
 			 aNoteNumber asFloat })
 		sendToAddressString: localAddress
@@ -779,7 +895,7 @@ ByteString >> toLocalAsGate: gateTimeInSeconds note: aNoteNumber [
 	(Delay forSeconds: gateTimeInSeconds) wait.
 	(OSCMessage for: { 
 			 oscGate.
-			 0.0 }) sendToAddressString: localAddress port: 57120
+			 0.0 }) sendToAddressString: localAddress port: 57120] fork
 ]
 
 { #category : '*Coypu' }
@@ -898,6 +1014,13 @@ ByteString >> toSCFor: gateTimeInSeconds note: aNoteNumber [
 			   label.
 			   aNoteNumber asFloat.
 			   0.0 }) sendToAddressString: localAddress port: 57110 ] fork
+]
+
+{ #category : '*Coypu' }
+ByteString >> trigLocal [
+	"trig sound on OSC server nameds self, with suffix Gate"
+
+	self toLocalAsGate: 0.25 note: 60
 ]
 
 { #category : '*Coypu' }

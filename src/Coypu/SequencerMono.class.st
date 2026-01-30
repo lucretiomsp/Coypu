@@ -14,7 +14,10 @@ Class {
 SequencerMono >> + anInteger [
 	"transpose up the sequencer notes by anInteger semitones"
 
-	self notes: self notes + anInteger
+	| newSeq |
+	newSeq := self deepCopy .
+	newSeq notes: self notes + anInteger.
+	^ newSeq
 ]
 
 { #category : 'arithmetic' }
@@ -24,7 +27,7 @@ SequencerMono >> - anInteger [
 	self notes: self notes - anInteger
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'arpeggiate' }
 SequencerMono >> arpeggiate: aStringOfChords [
 
 	| arpNotes |
@@ -34,7 +37,7 @@ SequencerMono >> arpeggiate: aStringOfChords [
 	self notes: arpNotes asArray + 60.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'arpeggiate' }
 SequencerMono >> arpeggiate: aStringOfChords octave: anIntegerOrAnArray [
 
 	| arpNotes octave |
@@ -75,7 +78,7 @@ SequencerMono >> isPolySeq [
 	^ false
 ]
 
-{ #category : 'LiveCoding  - SuperDirt' }
+{ #category : 'event playing' }
 SequencerMono >> playDirtEventAt: anIndex [
 
 	"sends a mesaage to SuperDirt with all the desired OSC arguments and values" 
@@ -97,7 +100,7 @@ SequencerMono >> playDirtEventAt: anIndex [
 	^ true 
 ]
 
-{ #category : 'LiveCoding  - SuperDirt' }
+{ #category : 'event playing' }
 SequencerMono >> playFullDirtEventAt: anIndex [
 
 	"sends a mesaage to SuperDirt with all the desired OSC arguments and values" 
@@ -138,23 +141,24 @@ SequencerMono >> playFullKymaEventAt: anIndex [
 	^ true
 ]
 
-{ #category : 'LiveCoding  - SuperDirt' }
+{ #category : 'event playing' }
 SequencerMono >> playLocalEventAt: anIndex [
 
-
-	| gateTime dur midiNote  stepDuration  freq |
+	| gateTime dur noteNumber stepDuration freq |
 	freq := Performance uniqueInstance freq.
 	gateTime := 0.9. "must be changeable"
-	
+
 	stepDuration := Performance uniqueInstance freq.
-	midiNote := self notes asDirtArray wrap: anIndex.
+	noteNumber := self notes asDirtArray wrap: anIndex.
 	dur := self durations asDirtArray wrap: anIndex.
-	self seqKey toLocalAsGate: stepDuration * gateTime .
+	self extraParams keysAndValuesDo: [ :k :v |
+		(v wrap: anIndex) toLocal: self seqKey , k asString ].
 
-
+	self seqKey toLocalAsGate: dur * stepDuration * gateTime note: noteNumber.
+	
 ]
 
-{ #category : 'LiveCoding  - SuperDirt' }
+{ #category : 'event playing' }
 SequencerMono >> playMIDIEvent2At: anIndex [
 	"sends a mesaage to SuperDirt with all the desired OSC arguments and values"
 
@@ -177,7 +181,7 @@ SequencerMono >> playMIDIEvent2At: anIndex [
 	^ true
 ]
 
-{ #category : 'LiveCoding  - SuperDirt' }
+{ #category : 'event playing' }
 SequencerMono >> playMIDIEventAt: anIndex [
 
 
@@ -193,11 +197,14 @@ SequencerMono >> playMIDIEventAt: anIndex [
 		playNote: midiNote
 		onChannel: mch
 		duration: dur * freq * gateTime.
+	self extraParams keysAndValuesDo: [ :k :v |
+	midiSender sendCC: k  withValue: (v wrap: anIndex)  onChannel: mch.
+].
 
 	^ true
 ]
 
-{ #category : 'LiveCoding  - SuperDirt' }
+{ #category : 'event playing' }
 SequencerMono >> playPhaustEventAt: anIndex [
 	"sends a message to Phausto / the DSP api must be written in a sensible way "
 
@@ -224,7 +231,7 @@ SequencerMono >> playPhaustEventAt: anIndex [
 	^ true
 ]
 
-{ #category : 'LiveCoding  - SuperDirt' }
+{ #category : 'event playing' }
 SequencerMono >> playPhaustEventAt: anIndex parameters: aParameterList dsp: aDsp freq: aFrequency [
 	"sends a message to Phausto / the DSP api must be written in a sensible way "
 
@@ -252,7 +259,7 @@ SequencerMono >> playPhaustEventAt: anIndex parameters: aParameterList dsp: aDsp
 	^ true
 ]
 
-{ #category : 'LiveCoding  - SuperDirt' }
+{ #category : 'event playing' }
 SequencerMono >> playPhaustEventAt: anIndex perfType: aPerformanceType [
 	"sends a message to Phausto / the DSP api must be written in a sensible way "
 
@@ -279,7 +286,7 @@ SequencerMono >> playPhaustEventAt: anIndex perfType: aPerformanceType [
 	^ true
 ]
 
-{ #category : 'LiveCoding  - SuperDirt' }
+{ #category : 'event playing' }
 SequencerMono >> playPhaustMooflodEventAt: anIndex [
 	"sends a message to Phausto / the DSP api must be written in a sensible way "
 
@@ -307,7 +314,7 @@ SequencerMono >> playPhaustMooflodEventAt: anIndex [
 	^ true
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'random' }
 SequencerMono >> randomNotesFrom: anArrayOfNotes octaves: anInteger [
 
 	self notes: (self trigs randomNotesFrom: anArrayOfNotes octaves: anInteger).
@@ -318,13 +325,15 @@ SequencerMono >> randomNotesFrom: anArrayOfNotes octaves: anInteger [
 { #category : 'highlighting' }
 SequencerMono >> reverse [
 	" reverese gates"
+	| reversedSoundPattern |
 	self gates: self gates reverse.
 	"reverse notes"
 	self notes: self notes reverse.
 	self dirtMessage at: 'n' put: self notes reverse.
 	"revere index"
-	self extraParams at: #index put: ((self extraParams at: #index  )reverse).
-	self dirtMessage at: 's' put: self soundPattern reverse.
+	(self extraParams  includes: #Index ) ifTrue: [self extraParams at: #Index put: ((self extraParams at: #Index  )reverse)].
+	reversedSoundPattern := (self soundPattern first findBetweenSubstrings: ' ') reverse collect: [ :i | i ].
+	self dirtMessage at: 's' put: reversedSoundPattern asArray.
 	"reverse durations"
 	self durations: self durations reverse.
 	"reverse gateTimes"

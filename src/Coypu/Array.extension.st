@@ -75,6 +75,21 @@ Array >> arp: anArrayOfIntervals [
 ]
 
 { #category : '*Coypu' }
+Array >> asCycleDurations [
+    ^ self asCycleDurationsWithFraction: 1
+]
+
+{ #category : '*Coypu' }
+Array >> asCycleDurationsWithFraction: fraction [
+    | part |
+    part := fraction / self size.
+    ^ self inject: #() into: [ :result :each |
+        each isArray
+            ifTrue: [ result , (each asCycleDurationsWithFraction: part) ]
+            ifFalse: [ result , { part } ] ]
+]
+
+{ #category : '*Coypu' }
 Array >> asDirtArray [
 	"convenience method to send OSC messages to SuperDirt - the same message sent to a Number converts it into an array with just that number as element"
 
@@ -86,6 +101,11 @@ Array >> asDirtArrayOfValues [
 	"convenience method to send values to extra aparmeters of a Sequencer"
 
 	^ self
+]
+
+{ #category : '*Coypu' }
+Array >> asDirtPureNotes [
+	^ self 
 ]
 
 { #category : '*Coypu' }
@@ -147,7 +167,7 @@ Array >> asSeq [
 	| numberOfNotes dur seq gts |
 	numberOfNotes := self class new: self trigs withAll: 60.
 	"all notes last 1 step by default"
-	dur := self class new: self trigs withAll: 1.
+	dur := Array new: self trigs withAll: 1.
 
 	"with an 80% gate Time"
 	gts := self class new: self trigs withAll: 0.8.
@@ -157,12 +177,12 @@ Array >> asSeq [
 		       noteIndex: 1;
 		       midiChannel: 1.
 	seq numberOfTrigs > 1 ifTrue: [
-		dur := self class
-			       new: self trigs
-			       withAll: self minDurationBetweenGates ].
+		dur := Array new: self trigs withAll: self minDurationBetweenGates ].
 
 	seq durations: dur.
 	seq gateTimes: gts.
+	seq soundPattern: #( 'nothing' ).
+
 	^ seq
 ]
 
@@ -184,8 +204,7 @@ Array >> euclidean [
 algorithm based on the Bresenham approach"
 
 	| onsets pulses slope result previous current announcement |
-	announcement := RhythmAnnouncement new rhythm: self asString , ' euclidean'.
-	PerformanceRecorder uniqueInstance announce: announcement.
+
 	current := 0.
 	onsets := self at: 1.
 	pulses := self at: 2.
@@ -232,6 +251,17 @@ Array >> into: anotherArray [
 ]
 
 { #category : '*Coypu' }
+Array >> intoScale: aSymbol [
+
+" return an array of MIDI note numbers corresponding at differnt intervals in the scale starting from 60 (c4)"
+| scale result |
+scale := (Scale perform: aSymbol) fullScale.
+result :=  self collect: [ :i | scale at: ( i + 61) ].
+
+^ result .
+]
+
+{ #category : '*Coypu' }
 Array >> isSequencer [
 
 	^ false
@@ -263,6 +293,12 @@ Array >> minDurationBetweenGates [
     
     ^ minDistance
 
+]
+
+{ #category : '*Coypu' }
+Array >> notesFor: aSequencer [
+
+aSequencer  fillNotes: self.
 ]
 
 { #category : '*Coypu' }

@@ -5,7 +5,7 @@ Dictionary >> errorKeyNotFound: aKey [
 
 "we also stop the Performance"
 self inform: aKey asString , ' not found in Dictionary'.
-"Performance uniqueInstance stop."
+Performance uniqueInstance stop.
 KeyNotFound signalFor: aKey.
 	
 ]

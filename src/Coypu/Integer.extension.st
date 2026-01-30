@@ -182,13 +182,13 @@ Integer >> bpm [
 
 { #category : '*Coypu' }
 Integer >> breves [
-	" returns self number of brevesin the first position of the bars"
+	" returns self number of breves in the first position of the bars"
 
 	<rhythmCreation>
 	<onTheFlyEssentials>
 	| result |
 	result := '80000000' hexBeat * self.
-	result durations: 32.
+	result durations: #(32).
 	result gateTimes: 0.8.
 	^ result
 ]
@@ -468,6 +468,13 @@ Integer >> randomNotesFrom: anArray octaves: aNumber [
 	^ (1 to: self) collect: [ :i |
 		  (anArray at: (Random new nextInteger: anArray size))
 		  + ((Random new nextInteger: aNumber + 1) - 1 * 12) ]
+]
+
+{ #category : '*Coypu' }
+Integer >> randomNotesIn: anArray [
+	"return an array of self size of random notes between anArray first and anArray second"
+
+	^ (1 to: self) collect: [ :i | Random new nextIntegerBetween: anArray first  and: anArray second]
 ]
 
 { #category : '*Coypu' }

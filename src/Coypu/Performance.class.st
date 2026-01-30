@@ -155,8 +155,11 @@ Performance >> bpm [
 ]
 
 { #category : 'accessing' }
-Performance >> bpm: aRateInSeconds [
-	bpm := 60 / 4 / (aRateInSeconds ).
+Performance >> bpm: aBpm [
+	freq := 60 / 4 / aBpm.
+	
+
+
 ]
 
 { #category : 'accessing' }
@@ -234,6 +237,7 @@ Performance >> mute: aKeyOrAnArrayOfKeys [
 
 <onTheFlyEssentials>
 
+	backup := self asDictionary.
 	aKeyOrAnArrayOfKeys isArray
 		ifTrue: [
 		aKeyOrAnArrayOfKeys do: [ :i | self removeKey: i ifAbsent: [  ] ] ]
@@ -673,6 +677,12 @@ Performance >> swap: firstKey with: secondKey [
 	self at: secondKey put: tempValue
 ]
 
+{ #category : 'modifying' }
+Performance >> temporarySave [
+
+backup := self asDictionary 
+]
+
 { #category : 'accessing' }
 Performance >> transportStep [
 	^ transportStep
@@ -691,6 +701,13 @@ Performance >> type [
 { #category : 'accessing' }
 Performance >> type: aPerformanceType [ 
 	^ self class type: aPerformanceType 
+]
+
+{ #category : 'LiveCoding - Performance' }
+Performance >> unmute: aKeyInPerformance [
+	"convenience method to unsolo a key in the performance"
+	
+	self restore
 ]
 
 { #category : 'LiveCoding - Performance' }

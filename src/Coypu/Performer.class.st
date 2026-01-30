@@ -11,7 +11,8 @@ Class {
 		'performance',
 		'freq',
 		'fourDaysAt120BPM',
-		'transport'
+		'transport',
+		'nextTargetMicros'
 	],
 	#category : 'Coypu-Performer',
 	#package : 'Coypu',
@@ -54,6 +55,12 @@ Performer >> checkStepFor: aSequencer [
 	(aSequencer gates wrap: currentStep) = 1 ifTrue: [ self playNoteFor: aSequencer ]
 ]
 
+{ #category : 'LiveCoding-ExtraParams' }
+Performer >> index: aStringOrAnArray to: aSequencer [
+aSequencer extra: #Index values: aStringOrAnArray asDirtArrayOfValues.
+
+]
+
 { #category : 'initialization' }
 Performer >> initialize [ 
 	super initialize.
@@ -61,6 +68,24 @@ Performer >> initialize [
 	freq := performance freq.
 	fourDaysAt120BPM := 4 days asMilliSeconds / ((60/ 120) /4).
 	transport := Transport new.
+]
+
+{ #category : 'LiveCoding-ExtraParams' }
+Performer >> level: aStringOrAnArray to: aSequencer [
+
+	aSequencer extra: #ULevel values: aStringOrAnArray asDirtArrayOfValues
+]
+
+{ #category : 'accessing' }
+Performer >> nextTargetMicros [
+
+^ nextTargetMicros 
+]
+
+{ #category : 'accessing' }
+Performer >> nextTargetMicros: aMicroSecondsValue [
+
+nextTargetMicros := aMicroSecondsValue 
 ]
 
 { #category : 'accessing' }
@@ -122,4 +147,22 @@ Performer >> resetPerformance [
 performance bpm: 60 / (performance freq * 4).
 			performance transportStep: 0.
 			
+]
+
+{ #category : 'accessing' }
+Performer >> waitMillis [
+
+
+			  "Get current tempo dynamically every step"
+    | stepMicros nowMicros waitMicros waitMillis |
+stepMicros := (performance freq * 1_000_000) asInteger.
+
+    "Add this step's duration to the accumulator"
+    nextTargetMicros := nextTargetMicros + stepMicros.
+
+    nowMicros := Time microsecondClockValue.
+    waitMicros := (nextTargetMicros - nowMicros) max: 0.
+    waitMillis := waitMicros // 1000.
+
+^ waitMillis
 ]

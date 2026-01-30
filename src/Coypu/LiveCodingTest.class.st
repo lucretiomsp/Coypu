@@ -57,7 +57,9 @@ LiveCodingTest >> testMultiplyString [
 LiveCodingTest >> testRhythmSymbolToPerformance [
 
 	| p |
-	p := Performance uniqueInstance.
+
+p := Performance uniqueInstance .
+p performer: PerformerLocal .
 	#downbeats to: #tabla.
 	
 	self assert: (p at: #tabla) numberOfTrigs equals: 4
@@ -72,6 +74,22 @@ array := (0 to: 1 by: 1/63).
 result := 4 bars saw.
 
 self assert: array equals: result.
+]
+
+{ #category : 'tests' }
+LiveCodingTest >> testStringAsDIrtSound [
+
+	| string gates seq soundsPattern samplesIndex |
+	string := 'bd, sd:3 , cp:2 , ~'.
+	gates := #( 1 1 1 0 ).
+	soundsPattern := #('bd sd  cp  ').
+	samplesIndex := #( 0 3 2 ).
+	seq := string asDirtSounds.
+
+	self assert: seq gates equals: gates.
+	self assert: seq soundPattern equals: soundsPattern.
+	self assert: seq notes asArray equals: samplesIndex .
+	"self assert: (seq extraParams at: #index) asArray  equals: samplesIndex"
 ]
 
 { #category : 'tests' }
@@ -92,45 +110,9 @@ LiveCodingTest >> testStringEveryInt [
 ]
 
 { #category : 'tests' }
-LiveCodingTest >> testStringForDirt [
-
-	| string gates seq soundsPattern samplesIndex |
-	string := 'bd:1 , sd , cp:2 , ~'.
-	gates := #( 1 1 1 0 ).
-	soundsPattern := #( 'bd' 'sd' 'cp' ).
-	samplesIndex := #( 1 0 2 ).
-	seq := string asDirtSounds.
-
-	self assert: seq gates equals: gates.
-	self assert: seq soundPattern equals: soundsPattern.
-	self assert: (seq extraParams at: #index) asArray  equals: samplesIndex
-]
-
-{ #category : 'tests' }
 LiveCodingTest >> testStringInWords [
 
 	self assert: 'the needs of the many' inWords equals: #('the' 'needs' 'of' 'the' 'many') asOrderedCollection 
-]
-
-{ #category : 'tests' }
-LiveCodingTest >> testStringOfSoundsForDirt [
-
-	| case |
-	case := 'sd ,  cp*3 , ~ , bd ~*2' asDirtSounds.
-
-	self 
-		assert: (case dirtMessage at: 's') 
-		equals: #(sd cp cp cp bd bd).
-	self 
-		assert: case gates 
-		equals: #(1 1 1 1 0 1 0 1 0)
-
-
-
-
-
-
-
 ]
 
 { #category : 'tests' }

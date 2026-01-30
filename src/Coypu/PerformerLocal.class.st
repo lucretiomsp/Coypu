@@ -29,26 +29,33 @@ aSequence key asString
 
 { #category : 'playing' }
 PerformerLocal >> playFor: aNumberOfSteps [
-	"play the performance with an external MIDI devices - default freq is 132 bpm 
-	Performance speed can be changed with p freq: a bpm"
+	
 
-	performance bpm: 60 / (performance freq * 4).
+	| startTime  |
+	
+	"Reset transport"
 	performance transportStep: 0.
-	performance activeProcess: ([
-		 aNumberOfSteps timesRepeat: [
-			 (Delay forSeconds: performance freq) wait.
-			 "sequencers scan"
-			 [
-			 performance valuesDo: [ :seq |
-				 (seq gates wrap: performance transportStep) = 1
-					 ifTrue: [
-						 seq playLocalEventAt: seq noteIndex. "delta!!!!"
-						 "increment note Index"
-						 seq noteIndex: seq noteIndex + 1 ]
-						 ] ] forkAt: Processor highIOPriority .
 
-			 "step is incremented anyway"
-			 performance incrementTransportStep ] ] forkAt:
+	"Start from monotonic clock (does not jump)"
+	startTime := Time microsecondClockValue.
+	self nextTargetMicros: startTime.
+
+	performance activeProcess: ([
+			 1 to: aNumberOfSteps do: [ :stepIndex | "Absolute target time for this step"
+		
+
+					 (Delay forMilliseconds: self waitMillis) wait.
+
+					 "Do work in separate high-priority task"
+					 [
+						 performance valuesDo: [ :seq |
+								 (seq gates wrap: performance transportStep) = 1 ifTrue: [
+										 seq playLocalEventAt: seq noteIndex.
+										 seq noteIndex: seq noteIndex + 1 ] ] ] forkAt:
+						 Processor highIOPriority.
+
+					 "Advance transport"
+					 performance incrementTransportStep ] ] forkAt:
 			 Processor timingPriority)
 ]
 

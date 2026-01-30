@@ -1,6 +1,12 @@
 Extension { #name : 'ByteSymbol' }
 
 { #category : '*Coypu' }
+ByteSymbol >> << aNumber [
+
+self asString << aNumber
+]
+
+{ #category : '*Coypu' }
 ByteSymbol >> asDirtArray [ 
 " convenience method to send messages to SuperDirt"
 
@@ -52,6 +58,18 @@ ByteSymbol >> extra2: anArrayWithASymbolAndAnArray [
 ]
 
 { #category : '*Coypu' }
+ByteSymbol >> flip [
+	"Inverts the gate/rest pattern of the Sequencer stored at self — turning active steps (gates) into rests and vice versa."
+
+	<onTheFlyEssentials>
+	| p flipped |
+	p := Performance uniqueInstance.
+	flipped := (p at: self) flip.
+	flipped to: self.
+	^ flipped
+]
+
+{ #category : '*Coypu' }
 ByteSymbol >> for: anArray [
 
 "creates a Dictionary with the symbol as key and the array as value"
@@ -79,12 +97,19 @@ ByteSymbol >> indexes: aStringOfIndexes [
 ]
 
 { #category : '*Coypu' }
+ByteSymbol >> midiCh: aMidiCh to: aSymbol [
+
+	<onTheFlyEssentials>
+	^ self asRhythm midiCh: aMidiCh  to: aSymbol
+]
+
+{ #category : '*Coypu' }
 ByteSymbol >> mute [
 	" remove the key from the Performance, if any active key in the Performance correspond to the symbol"
 
 	| perf |
-	perf := Performance uniqueInstance uniqueInstance.
-	perf removeKey: self ifAbsent: [ nil ]
+	perf := Performance uniqueInstance.
+	perf mute: self.
 ]
 
 { #category : '*Coypu' }
@@ -129,15 +154,36 @@ ByteSymbol >> swapWith: aSymbol [
 
 	| p |
 	p := Performance uniqueInstance.
-	(p includesKey: self) ifTrue: [
-		(p at: self) to: aSymbol.
-		p mute: self ] ifFalse: [ (p at:  aSymbol) to: self. p mute: aSymbol. ]
+	(p includesKey: self)
+		ifTrue: [
+				| tempSeq |
+				tempSeq := p at: aSymbol.
+				(p at: self) to: aSymbol.
+				tempSeq to: self  ]
+		ifFalse: [
+				(p at: aSymbol) to: self.
+				(p at: self) to: aSymbol  ]
 ]
 
 { #category : '*Coypu' }
 ByteSymbol >> to: aSymbol [
 <onTheFlyEssentials>
 	^ self asRhythm to: aSymbol
+]
+
+{ #category : '*Coypu' }
+ByteSymbol >> trigLocal [ 
+
+self asString trigLocal 
+]
+
+{ #category : '*Coypu' }
+ByteSymbol >> unmute [
+	" restore the Performance state before the mute"
+
+	| perf |
+	perf := Performance uniqueInstance.
+	perf restore
 ]
 
 { #category : '*Coypu' }

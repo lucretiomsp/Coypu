@@ -19,7 +19,7 @@ Class {
 	#tag : 'MIDI'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'sending' }
 MIDISender >> allNotesOff [
 
 	1 to: 16 do: [ :i | 
@@ -142,7 +142,7 @@ MIDISender >> playChord: aNoteNumber type: aChordType onChannel: aMIDIChannel du
 			theMessage: (chordOff at: i) ] ] fork
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'sending' }
 MIDISender >> playDrum: aNoteNumber onChannel: aMIDIChannel [
 " play aNoteNumber on channel aChannel with no corresponding noteOff - intended for drums"
 | instance noteOn channel |
@@ -200,10 +200,10 @@ MIDISender >> playNote: aNoteNumber onChannel: aMIDIChannel duration: aDurationI
 		fork
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'sending' }
 MIDISender >> sendCC: aCCNumber withValue: aValue onChannel: aMIDIChannel [
 " play aNoteNumber on channel aChannel with no corresponding noteOff - intended for drums"
-| instance cChange channel |
+| cChange channel |
 instance := PortMidiLibrary uniqueInstance . 
 channel := aMIDIChannel -1.
 cChange := PortMidi  message: 176 + channel and: aCCNumber  and: aValue.
@@ -215,7 +215,19 @@ instance writeShortOn: self midiOut value when: 0 theMessage: cChange.
 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'sending' }
+MIDISender >> sendClock [
+	" send clock message to exteral MIDI device"
+
+	|  clockMsg |
+
+	clockMsg := PortMidi message: 248 and: 0 and: 0.
+
+	instance writeShortOn: self midiOut value when: 0 theMessage: clockMsg "
+"
+]
+
+{ #category : 'sending' }
 MIDISender >> sendStart [
 	" send Transport start message to exteral MIDI device"
 
@@ -232,4 +244,16 @@ MIDISender >> sendStart [
 		writeShortOn: self midiOut value
 		when: 0
 		theMessage: clockMsg "
+]
+
+{ #category : 'sending' }
+MIDISender >> sendStop [
+	" send Transport start message to exteral MIDI device"
+
+	| stopMsg  |
+	stopMsg := PortMidi message: 16rFC and: 0 and: 0.
+	
+
+	instance writeShortOn: self midiOut value when: 0 theMessage: stopMsg 
+
 ]

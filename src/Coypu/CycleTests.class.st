@@ -10,8 +10,8 @@ Class {
 CycleTests >> testArrayAsCycleDuration [
 
 	| array expectedResult |
-	array := #( 60 60 60 #( 60 60 ) ).
-	expectedResult := Array with: 1/4 with: 1/4 with: 1/4 with: 1/8 with: 1/8.
+	array := #( 60 60 60 #( 60 #(60 60))).
+	expectedResult := Array with: 1/4 with: 1/4 with: 1/4 with: 1/8 with: 1/16 with: 1/16.
 	self assert: array asCycleDurations equals: expectedResult
 ]
 
@@ -35,7 +35,7 @@ CycleTests >> testCycleOf3QuarterNotesAnd2Quavers [
 CycleTests >> testCycleOfQuarterNotes [
 
 	| s expectedResult |
-	s := #( 60 60 60 60 ) asCycleDurations.
+	s := #( 48 59 76 88 ) asCycleDurations.
 	expectedResult := Array
 		                  with: 1 / 4
 		                  with: 1 / 4

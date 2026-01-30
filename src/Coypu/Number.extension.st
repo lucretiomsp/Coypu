@@ -9,7 +9,7 @@ Number >> asDirtArray [
 { #category : '*Coypu' }
 Number >> asDirtArrayOfValues [ 
 
-self asDirtArray asDirtArrayOfValues 
+^ Array with: self.
 ]
 
 { #category : '*Coypu' }
@@ -53,6 +53,15 @@ Number >> midiNoteToFreq [
 	| baseFreq |
 	baseFreq := 440.0. "Standard tuning frequency for A4"
 	^ (baseFreq * (2 raisedTo: self - 69 / 12.0)) asFloat
+]
+
+{ #category : '*Coypu' }
+Number >> notesFor: aSequencer [
+
+
+| arrayOfNotes |
+arrayOfNotes := Array new: aSequencer trigs withAll: self.
+aSequencer notes: arrayOfNotes. 
 ]
 
 { #category : '*Coypu' }

@@ -121,6 +121,13 @@ Sequencer >> > aKeyInPerformance [
 self to: aKeyInPerformance 
 ]
 
+{ #category : 'LiveCoding-ExtraParams' }
+Sequencer >> accent: aStringOrAnArray [
+	"set the accent to a collection of value in array or to to the number"
+
+	self extra: #Accent values: aStringOrAnArray asDirtArrayOfValues
+]
+
 { #category : 'adding' }
 Sequencer >> add: anAssociation [
 	" add an associtation of a parameter and a value or an array of values to the dirtMessage"
@@ -331,6 +338,20 @@ Sequencer >> dirtNotes: aStringWithNotes [
 	^ self
 ]
 
+{ #category : 'LiveCoding-ExtraParams' }
+Sequencer >> disortion: aStringOrAnArray [
+	"set the ratio to a collection of value in array or to to the number"
+
+	self extra: #Distortion values: aStringOrAnArray asDirtArrayOfValues
+]
+
+{ #category : 'LiveCoding-ExtraParams' }
+Sequencer >> distortion: aStringOrAnArray [
+	"set distortion to a collection of value in array or to to the number"
+
+	self extra: #Distortion values: aStringOrAnArray asDirtArrayOfValues
+]
+
 { #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> djf: aFloatOrAnArray [
 	"Made by Alex McLean. A fun classic DJ Filter. Low pass filter for the first half of the range, high pass for the rest:"
@@ -361,7 +382,8 @@ Sequencer >> durations [
 { #category : 'accessing' }
 Sequencer >> durations: anArray [
 
-	durations := anArray
+	durations := #( 1 ).
+	anArray isNotEmpty ifTrue: [ durations := anArray asDirtPureNotes ]
 ]
 
 { #category : 'accessing' }
@@ -426,11 +448,17 @@ value := anArrayWithASymbolAndAnrrayOfValues at: 2.
 	extraParams at: parameter put: value asDirtArray 
 ]
 
+{ #category : 'accessing' }
+Sequencer >> fillNotes: anArray [
+
+	notes := anArray
+]
+
 { #category : 'Sequencer - transformation' }
 Sequencer >> flip [
 	"Inverts the gate/rest pattern of the sequence — turning active steps (gates) into rests and vice versa."
 
-<onTheFlyEssentials>
+	<onTheFlyEssentials>
 	| result |
 	result := self gates collect: [ :i | (i ~= 1) asInteger ].
 	^ result asRhythm asSeq
@@ -517,16 +545,17 @@ Sequencer >> index [
 Sequencer >> index: aStringOrAnArray [
 	"convenience method to avoid extra typing when we want to modify the index , i.e. the sample number of a sample player"
 
-	self extra: #Index values: aStringOrAnArray asDirtArrayOfValues
+	Performance uniqueInstance performer index: aStringOrAnArray to: self
 ]
 
 { #category : 'LiveCoding - Performance' }
 Sequencer >> index: anArrayOfIndexes to: aKeyInPerformance [
 	"convenience method to avoid extra parenthesis to put a sequencer of gates with sample indexes into a performance"
+
 	| p |
 	p := Performance uniqueInstance.
 	self to: aKeyInPerformance.
-	aKeyInPerformance indexes: anArrayOfIndexes 
+	self  index: anArrayOfIndexes
 ]
 
 { #category : 'initialization' }
@@ -590,9 +619,9 @@ Sequencer >> kymaMessage: anObject [
 
 { #category : 'LiveCoding-ExtraParams' }
 Sequencer >> level: aStringOrAnArray [
-	"set the decay to a collection of value in array or to to the number"
+	"set the level to a collection of value in array or to to the number"
 
-	self extra: #ULevel values: aStringOrAnArray asDirtArrayOfValues
+	Performance uniqueInstance performer level: aStringOrAnArray to: self
 ]
 
 { #category : 'LiveCoding-ExtraParams' }
@@ -704,7 +733,7 @@ Sequencer >> modRatio: aStringOrAnArray [
 
 { #category : 'LiveCoding-ExtraParams' }
 Sequencer >> mode: aStringOrAnArray [
-	"convenience method to avoid extra typing when we want to modify the mode parameter, that usually correspond to chords mode "
+	"convenience method to avoid extra typing when we want to modify the mode"
 
 	self extra: #Mode values: aStringOrAnArray asDirtArrayOfValues
 ]
@@ -738,28 +767,12 @@ Sequencer >> notes [
 	^ notes
 ]
 
-{ #category : 'accessing' }
-Sequencer >> notes1: anObject [
-
-	notes := anObject
-]
-
 { #category : 'modifying' }
 Sequencer >> notes: anArrayOfNotesOrANoteorAstring [
 	" change notes in the sequencer"
 
+	anArrayOfNotesOrANoteorAstring notesFor: self.
 	
-		
-	anArrayOfNotesOrANoteorAstring isArray
-		ifTrue: [ notes := anArrayOfNotesOrANoteorAstring ]
-		ifFalse: [
-				anArrayOfNotesOrANoteorAstring isByteString
-					ifTrue: [
-					notes := anArrayOfNotesOrANoteorAstring asDirtPureNotes ]
-					ifFalse: [
-							notes := Array
-								         new: self numberOfTrigs
-								         withAll: anArrayOfNotesOrANoteorAstring ] ]
 ]
 
 { #category : 'LiveCoding - Performance' }
@@ -837,6 +850,24 @@ Sequencer >> offset: aNumber [
 	self gates: newArray
 ]
 
+{ #category : 'Sequencer - transformation' }
+Sequencer >> offsetLeft [
+	"Offsets the sequencer left by aNumber of steps, rotating the sequence circularly so that elements wrap around."
+
+
+<onTheFlyEssentials>
+^ self offset: -1
+]
+
+{ #category : 'Sequencer - transformation' }
+Sequencer >> offsetRight [
+	"Offsets the sequencer right by aNumber of steps, rotating the sequence circularly so that elements wrap around."
+
+
+<onTheFlyEssentials>
+^ self offset: 1
+]
+
 { #category : 'accessing' }
 Sequencer >> orbit [
 
@@ -889,6 +920,13 @@ Sequencer >> pitch: anIntOrAnArray [
 	self dirtMessage 
 		at: 'speed' 
 		put:  speeds asDirtArray
+]
+
+{ #category : 'LiveCoding-ExtraParams' }
+Sequencer >> pitchEnv: aStringOrAnArray [
+	"convenience method to avoid extra typing when we want to modify the pitchEnvelope r"
+
+	self extra: #PitchEnv values: aStringOrAnArray asDirtArrayOfValues
 ]
 
 { #category : 'sequencer - cycles' }
@@ -1032,9 +1070,11 @@ Sequencer >> printOn: aStream [
 
 	super printOn: aStream.
 	aStream nextPutAll: ' with gates: '.
-	aStream print: gates.
+	aStream nextPutAll: gates printString.
+
 	aStream nextPutAll: ' with notes: '.
-	aStream print: notes.
+	aStream nextPutAll: notes printString
+	
 ]
 
 { #category : 'progressions' }
@@ -1052,14 +1092,32 @@ Sequencer >> progression: anArrayOfIntervals [
 
 { #category : 'Sequencer - transformation' }
 Sequencer >> randomCounterPoint [
-    "Creates a sequencer of trigs randomly placed only where self has rests (i.e., where gates = 0).
-    This is a basic form of rhythmic counterpoint — avoiding overlap with the original."
-<onTheFlyEssentials>
-    | rand newGates |
-    rand := Random new.
-    newGates := self gates collect: [:g | g = 1 ifTrue: [0] ifFalse: [rand nextTrig]].
-    ^  newGates asSeq
 
+self shouldBeImplemented .
+"	<onTheFlyEssentials>
+	| rand newGates |
+	rand := Random new.
+	newGates := self gates collect: [ :g |
+			            g = 1
+				            ifTrue: [ 0 ]
+				            ifFalse: [ rand nextTrig ] ].
+	^ newGates asSeq"
+]
+
+{ #category : 'random' }
+Sequencer >> randomNotesFrom: anArray [
+	"return an array of self size of random notes from anArray"
+
+	<onTheFlyEssentials>
+	^ self notes: (self trigs randomNotesFrom: anArray)
+]
+
+{ #category : 'random' }
+Sequencer >> randomNotesIn: anArray [
+	"return an array of self size of random notes from anArray"
+
+	<onTheFlyEssentials>
+	^ self notes: (self trigs randomNotesIn: anArray)
 ]
 
 { #category : 'LiveCoding  - SuperDirt' }
@@ -1070,6 +1128,23 @@ Sequencer >> randomSamplesFromFolder: aStringForAFolderOfSamples [
 	folder := SuperDirt samplesFolder / aStringForAFolderOfSamples .
 	folderSize := folder asFileReference allChildren size. 
 	self sound: aStringForAFolderOfSamples ; dirtNotes: (randIndex  randomInts: folderSize) .
+]
+
+{ #category : 'random' }
+Sequencer >> randomWalksOn: anArrayOfNotes octaves: aNumberOfOctaves root: aRootNoteNumber [
+	"random walk inside an array of notes extended for aNumberOfOctaves range and with a RootNote"
+
+	<onTheFlyEssentials>
+	
+
+^ self notes: (self trigs randomWalksOn: anArrayOfNotes octaves: aNumberOfOctaves root: aRootNoteNumber )
+]
+
+{ #category : 'LiveCoding-ExtraParams' }
+Sequencer >> rate: aStringOrAnArray [
+	"convenience method to avoid extra typing when we want to modify a rate parameter"
+
+	self extra: #Rate values: aStringOrAnArray asDirtArrayOfValues
 ]
 
 { #category : 'LiveCoding-ExtraParams' }
