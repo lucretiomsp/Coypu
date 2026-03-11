@@ -27,6 +27,12 @@ SequencerMono >> - anInteger [
 	self notes: self notes - anInteger
 ]
 
+{ #category : 'bit manipulation' }
+SequencerMono >> >> aSequencerMono [ 
+   
+	aSequencerMono gates: self gates.
+]
+
 { #category : 'arpeggiate' }
 SequencerMono >> arpeggiate: aStringOfChords [
 

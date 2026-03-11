@@ -171,6 +171,16 @@ SequencerTest >> testSequencerArpeggiate [
 ]
 
 { #category : 'tests' }
+SequencerTest >> testSequencerIntoSequencer [
+
+	| seq |
+	seq := 16 downbeats.
+   16 quavers >> seq.
+	self assert: seq gates equals: 16 quavers gates.
+	
+]
+
+{ #category : 'tests' }
 SequencerTest >> testSequencerOffset [
 
 | seq1 seq2 result1 result2 |
