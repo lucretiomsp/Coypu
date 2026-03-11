@@ -216,6 +216,12 @@ Performance >> length [
 	^ maxLength
 ]
 
+{ #category : 'LiveCoding - Performance' }
+Performance >> loop: anInteger [
+
+self maxStepNumber: anInteger
+]
+
 { #category : 'accessing' }
 Performance >> maxStepNumber [ 
 ^ maxStepNumber
@@ -644,6 +650,12 @@ Performance >> type [
 { #category : 'accessing' }
 Performance >> type: aPerformanceType [ 
 	^ self class type: aPerformanceType 
+]
+
+{ #category : 'LiveCoding - Performance' }
+Performance >> unloop [ 
+
+self maxStepNumber: SmallInteger maxVal 
 ]
 
 { #category : 'LiveCoding - Performance' }
