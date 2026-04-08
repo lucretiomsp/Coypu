@@ -16,7 +16,8 @@ Class {
 		'dirtMIDIDevice',
 		'activeDSP',
 		'stepAdvancement',
-		'maxStepNumber'
+		'maxStepNumber',
+		'logger'
 	],
 	#classInstVars : [
 		'uniqueInstance',
@@ -72,7 +73,9 @@ Performance class >> uniqueInstance [
 	^ uniqueInstance ifNil: [
 			  self orbit: 0.
 			  uniqueInstance := super new
-				                    performanceType: PerfType new; maxStepNumber: SmallInteger maxVal;
+				                    performanceType: PerfType new;
+				                    maxStepNumber: SmallInteger maxVal;
+				logger: MyoLogger new;
 				                    yourself ]
 ]
 
@@ -214,6 +217,18 @@ Performance >> length [
 		               ((self values at: i) at: 1) size ].
 	maxLength := valuesSizes inject: 0 into: [ :a :c | a max: c ].
 	^ maxLength
+]
+
+{ #category : 'accessing' }
+Performance >> logger [ 
+
+^ logger
+]
+
+{ #category : 'accessing' }
+Performance >> logger: aMyoLogger [
+
+logger := aMyoLogger 
 ]
 
 { #category : 'LiveCoding - Performance' }
