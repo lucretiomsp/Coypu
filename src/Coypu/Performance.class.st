@@ -402,7 +402,7 @@ Performance >> playFor: aNumberOfSteps [
 	<onTheFlyEssentials>
 	self class performanceType playFor: aNumberOfSteps.
 	"self class performanceType asString traceCr"
-	self logger << 'PERFORMANCE STARTED WITH: ' << self class performanceType asString.
+	self logger stream << 'PERFORMANCE STARTED WITH: ' << (self class performanceType asString)
 ]
 
 { #category : 'playing' }

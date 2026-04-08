@@ -12,12 +12,6 @@ Class {
 	#tag : 'Logger'
 }
 
-{ #category : 'streaming' }
-MyoLogger >> << aString [
-
-self stream << aString ; cr.
-]
-
 { #category : 'initialization' }
 MyoLogger >> initialize [ 
 
