@@ -28,6 +28,18 @@ self assert: (((p at: #kick ) extraParams ) at: #Index) equals: #(1 2 3).
 ]
 
 { #category : 'tests' }
+PerformanceTest >> testChangeNotesOfSeq [
+
+	| p |
+	p := Performance uniqueInstance.
+	16 downbeats to: #kick.
+	#kick notes: '48 50 60'.
+	self
+		assert: ((p at: #kick) notes)
+		equals: #( 48 50 60 )
+]
+
+{ #category : 'tests' }
 PerformanceTest >> testPlayFor1Bars [
 
 perf playFor: 1 bars.
