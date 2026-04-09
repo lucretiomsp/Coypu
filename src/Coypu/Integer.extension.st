@@ -369,6 +369,12 @@ Integer >> modulo: anInteger [
 ]
 
 { #category : '*Coypu' }
+Integer >> oneToSelf [ 
+
+^ ( 1to: self) asArray
+]
+
+{ #category : '*Coypu' }
 Integer >> pattern [ 
 "to create hexBeat, use hexBeat instead"
 	| arrayOfCharacters s|
