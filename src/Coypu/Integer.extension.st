@@ -58,6 +58,12 @@ Integer >> aksak: aStringOfNotes [
 ]
 
 { #category : '*Coypu' }
+Integer >> asRisingArray [ 
+
+^ ( 1to: self) asArray
+]
+
+{ #category : '*Coypu' }
 Integer >> banda [
 	" create an array of self size of Banda (Haiti/Vodoo) rhytm pulses. Better if used with self = 8 x anInteger . it is the same rhythm played in the moribayasa rhythm among the Malinke people of Guinea and in Cuba it is called cinquillo"
 
@@ -366,12 +372,6 @@ Integer >> modulo: anInteger [
 	"convenience method to index arrays after incrementing"
 
 	^ self - 1 % anInteger  + 1
-]
-
-{ #category : '*Coypu' }
-Integer >> oneToSelf [ 
-
-^ ( 1to: self) asArray
 ]
 
 { #category : '*Coypu' }
