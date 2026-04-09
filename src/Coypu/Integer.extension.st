@@ -783,6 +783,12 @@ Integer >> spreadOver: anInteger [
 ]
 
 { #category : '*Coypu' }
+Integer >> testOneToSelf [
+
+^ (1 to: self) asArray 
+]
+
+{ #category : '*Coypu' }
 Integer >> toSCAsGate [
 
 	" send an OSC message to superCollider that mimics the behaviour oa MIDI note on message, note is held for a default duration of 2 seconds"
