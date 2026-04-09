@@ -18,6 +18,16 @@ PerformanceTest >> setUp [
 ]
 
 { #category : 'tests' }
+PerformanceTest >> testChangeIndexOfSeq [
+
+| p |
+p := Performance uniqueInstance .
+16 downbeats to: #kick.
+#kick index: '1 2 3'.
+self assert: (((p at: #kick ) extraParams ) at: #Index) equals: #(1 2 3). 
+]
+
+{ #category : 'tests' }
 PerformanceTest >> testPlayFor1Bars [
 
 perf playFor: 1 bars.
