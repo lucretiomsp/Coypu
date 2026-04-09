@@ -32,11 +32,9 @@ PerformanceTest >> testChangeNotesOfSeq [
 
 	| p |
 	p := Performance uniqueInstance.
-	16 downbeats to: #kick.
-	#kick notes: '48 50 60'.
-	self
-		assert: ((p at: #kick) notes)
-		equals: #( 48 50 60 )
+	4 downbeats to: #kick.
+	#kick rhythm: 4 upbeats.
+	self assert: (p at: #kick) gates  equals: #(0 0 1 0 ) asArray 
 ]
 
 { #category : 'tests' }

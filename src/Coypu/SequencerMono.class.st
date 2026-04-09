@@ -71,6 +71,12 @@ SequencerMono >> asPolySeq [
 	^ polySeq 
 ]
 
+{ #category : 'converting' }
+SequencerMono >> asRhythm [
+
+	^ self
+]
+
 { #category : 'LiveCoding' }
 SequencerMono >> extra: anArray [
 

@@ -86,6 +86,13 @@ d add: self -> anArray.
 ]
 
 { #category : '*Coypu' }
+ByteSymbol >> index: aStringOrAnArrayOrANumber [
+	| p |
+	p := Performance uniqueInstance .
+	(p at: self ) index: aStringOrAnArrayOrANumber 
+]
+
+{ #category : '*Coypu' }
 ByteSymbol >> indexes: aStringOfIndexes [
 	"change the sample indexes of a seuquencer in a performance at self key"
 
@@ -132,6 +139,13 @@ ByteSymbol >> number: anArrayOfNumbers [
 	(p at: self) extra2: { 
 			#Number.
 			anArrayOfNumbers }
+]
+
+{ #category : '*Coypu' }
+ByteSymbol >> rhythm: aRhythmSymbol [ 
+	| p |
+	p := Performance uniqueInstance .
+	(p at: self ) gates: aRhythmSymbol  asRhythm gates
 ]
 
 { #category : '*Coypu' }
