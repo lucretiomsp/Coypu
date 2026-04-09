@@ -1,6 +1,12 @@
 Extension { #name : 'SmallInteger' }
 
 { #category : '*Coypu' }
+SmallInteger >> asFallingArray [
+
+^	( 1 to: self ) asArray reversed
+]
+
+{ #category : '*Coypu' }
 SmallInteger >> asInt8 [
 
 	| bitArray firsComplement binaryString secondComplementAsString secondComplement result |

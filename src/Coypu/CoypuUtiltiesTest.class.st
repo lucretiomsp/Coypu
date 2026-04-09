@@ -6,9 +6,15 @@ Class {
 	#tag : 'Tests'
 }
 
+{ #category : 'tests' }
+CoypuUtiltiesTest >> testAsFallingArray [
+
+self assert: 8 asFallingArray equals: #( 8 7 6 5 4 3 2 1 )
+]
+
 { #category : 'as yet unclassified' }
-CoypuUtiltiesTest >> testOneToSelf [ 
+CoypuUtiltiesTest >> testAsRisingArray [ 
 
 
-self assert: 8 testOneToSelf equals: #(1 2 3 4 5 6 7  8)
+self assert: 8 asRisingArray equals: #(1 2 3 4 5 6 7  8)
 ]

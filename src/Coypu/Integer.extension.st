@@ -789,7 +789,7 @@ Integer >> spreadOver: anInteger [
 ]
 
 { #category : '*Coypu' }
-Integer >> testOneToSelf [
+Integer >> testAsRisingArray [
 
 ^ (1 to: self) asArray 
 ]
