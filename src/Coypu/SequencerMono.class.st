@@ -28,9 +28,9 @@ SequencerMono >> - anInteger [
 ]
 
 { #category : 'bit manipulation' }
-SequencerMono >> >> aSequencerMono [ 
-   
-	aSequencerMono gates: self gates.
+SequencerMono >> >> aSequencerOrAKeyInPerf [
+
+	aSequencerOrAKeyInPerf gates: self gates
 ]
 
 { #category : 'arpeggiate' }

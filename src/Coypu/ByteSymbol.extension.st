@@ -86,6 +86,17 @@ d add: self -> anArray.
 ]
 
 { #category : '*Coypu' }
+ByteSymbol >> gates: aRhythm [
+
+| p seq |
+	p := Performance uniqueInstance .
+	seq := (p at: self ).
+	seq gates: aRhythm .
+	^ seq.
+	
+]
+
+{ #category : '*Coypu' }
 ByteSymbol >> index: aStringOrAnArrayOrANumber [
 	| p |
 	p := Performance uniqueInstance .
