@@ -98,9 +98,13 @@ ByteSymbol >> gates: aRhythm [
 
 { #category : '*Coypu' }
 ByteSymbol >> index: aStringOrAnArrayOrANumber [
-	| p |
-	p := Performance uniqueInstance .
-	(p at: self ) index: aStringOrAnArrayOrANumber 
+
+<onTheFlyEssentials>
+	| p seq |
+	p := Performance uniqueInstance.
+	seq := p at: self.
+seq index: aStringOrAnArrayOrANumber.
+^ seq.
 ]
 
 { #category : '*Coypu' }
@@ -132,12 +136,13 @@ ByteSymbol >> mute [
 
 { #category : '*Coypu' }
 ByteSymbol >> notes: anArrayOfNotes [
-
 	" change the notes of a Sequencer at self key in a Performance"
 
-	| p |
+	| p seq |
 	p := Performance uniqueInstance.
-	(p at: self) notes: anArrayOfNotes
+	seq := (p at: self).
+	seq notes: anArrayOfNotes.
+	^ seq
 ]
 
 { #category : '*Coypu' }
