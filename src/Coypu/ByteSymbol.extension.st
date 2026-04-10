@@ -7,6 +7,16 @@ self asString << aNumber
 ]
 
 { #category : '*Coypu' }
+ByteSymbol >> >> aKeyInSeq [ 
+	"very opaque but very economic method"
+	| seq |
+	self asRhythm >> aKeyInSeq.
+	seq := Performance uniqueInstance at: aKeyInSeq .
+	^ seq.
+
+]
+
+{ #category : '*Coypu' }
 ByteSymbol >> asDirtArray [ 
 " convenience method to send messages to SuperDirt"
 
@@ -116,6 +126,15 @@ ByteSymbol >> indexes: aStringOfIndexes [
 	(p at: self) extra: 
 			#Index
 			values: aStringOfIndexes asDirtPureNotes  
+]
+
+{ #category : '*Coypu' }
+ByteSymbol >> level: aNumberOrAnrrayOrAstring [
+
+|seq |
+	seq := Performance uniqueInstance at: self.
+	seq level: aNumberOrAnrrayOrAstring .
+	^ seq.
 ]
 
 { #category : '*Coypu' }
