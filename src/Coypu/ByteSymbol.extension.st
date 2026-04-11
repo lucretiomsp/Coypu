@@ -98,12 +98,13 @@ d add: self -> anArray.
 { #category : '*Coypu' }
 ByteSymbol >> gates: aRhythm [
 
-| p seq |
-	p := Performance uniqueInstance .
-	seq := (p at: self ).
-	seq gates: aRhythm .
-	^ seq.
-	
+<onTheFlyEssentials>
+	| p seq condition |
+	condition := true.
+	p := Performance uniqueInstance.
+	seq := p at: self ifAbsent: [ condition := false ].
+	condition ifTrue: [seq gates: aRhythm].
+	^ seq
 ]
 
 { #category : '*Coypu' }
@@ -158,10 +159,12 @@ ByteSymbol >> mute [
 ByteSymbol >> notes: anArrayOfNotes [
 	" change the notes of a Sequencer at self key in a Performance"
 
-	| p seq |
+
+		| p seq condition |
+	condition := true.
 	p := Performance uniqueInstance.
-	seq := (p at: self).
-	seq notes: anArrayOfNotes.
+	seq := p at: self ifAbsent: [ condition := false ].
+	condition ifTrue: [  seq notes: anArrayOfNotes].
 	^ seq
 ]
 
@@ -180,10 +183,12 @@ ByteSymbol >> number: anArrayOfNumbers [
 { #category : '*Coypu' }
 ByteSymbol >> rhythm: aRhythmSymbol [
 
-	| seq |
-	seq := Performance uniqueInstance at: self.
-	seq gates: aRhythmSymbol asRhythm gates.
-	^ seq.
+		| p seq condition |
+	condition := true.
+	p := Performance uniqueInstance.
+	seq := p at: self ifAbsent: [ condition := false ].
+	condition ifTrue: [seq gates: aRhythmSymbol asRhythm gates].
+	^ seq
 ]
 
 { #category : '*Coypu' }
