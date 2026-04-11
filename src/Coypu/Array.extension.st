@@ -339,6 +339,11 @@ Array >> randomOctaves: anInteger [
 ]
 
 { #category : '*Coypu' }
+Array >> rhythm: aRhythmSymbol [
+self  do: [ :i | i gates: aRhythmSymbol asRhythm gates ]
+]
+
+{ #category : '*Coypu' }
 Array >> root: anIntegerRoot octaves: anIntegerOctave [
 | x |
 x := OrderedCollection new.
