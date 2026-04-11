@@ -232,3 +232,13 @@ seq := 16 downbeats .
 seq notes: '60 , 61 , 62 , 63'.
 self assert: seq notes equals: #(60 61 62 63).
 ]
+
+{ #category : 'tests' }
+SequencerTest >> testTranspose [
+
+	| seq |
+	seq := 16  downbeats.
+	seq transpose: 2.
+
+	self assert: seq notes equals: #( 62 62 62 62 )
+]

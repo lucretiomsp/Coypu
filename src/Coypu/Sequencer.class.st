@@ -1392,14 +1392,10 @@ Sequencer >> transportStep: anObject [
 Sequencer >> transpose: aNumberOfSemitones [
 
 	<onTheFlyEssentials>
-	| melody |
-	Object inform: 'TRANSPOSED'.
-	melody := self notes.
-	^ self class new
-		  gates: self gates;
-		  notes: melody + aNumberOfSemitones;
-		  durations: self durations;
-		  noteIndex: self noteIndex 
+	| transposed  |
+
+	transposed := self notes + aNumberOfSemitones .
+^ self notes: transposed 
 ]
 
 { #category : 'accessing' }
