@@ -109,12 +109,13 @@ ByteSymbol >> gates: aRhythm [
 { #category : '*Coypu' }
 ByteSymbol >> index: aStringOrAnArrayOrANumber [
 
-<onTheFlyEssentials>
-	| p seq |
+	<onTheFlyEssentials>
+	| p seq condition |
+	condition := true.
 	p := Performance uniqueInstance.
-	seq := p at: self.
-seq index: aStringOrAnArrayOrANumber.
-^ seq.
+	seq := p at: self ifAbsent: [condition := false].
+	condition ifTrue: [seq index: aStringOrAnArrayOrANumber].
+	^ seq
 ]
 
 { #category : '*Coypu' }
@@ -177,10 +178,12 @@ ByteSymbol >> number: anArrayOfNumbers [
 ]
 
 { #category : '*Coypu' }
-ByteSymbol >> rhythm: aRhythmSymbol [ 
-	| p |
-	p := Performance uniqueInstance .
-	(p at: self ) gates: aRhythmSymbol  asRhythm gates
+ByteSymbol >> rhythm: aRhythmSymbol [
+
+	| seq |
+	seq := Performance uniqueInstance at: self.
+	seq gates: aRhythmSymbol asRhythm gates.
+	^ seq.
 ]
 
 { #category : '*Coypu' }
