@@ -52,3 +52,15 @@ PerformanceTest >> testSetBpm [
 perf bpm: 240.
 self assert: perf freq equals: 1/16.
 ]
+
+{ #category : 'tests' }
+PerformanceTest >> testTranspose [
+
+	| p |
+	p := Performance uniqueInstance.
+	#downbeats to: #kick.
+	#upbeats to: #snare.
+	p transpose: 3.
+	self assert: (p at: #kick) notes equals: #( 63 63 63 63 ).
+	self assert: (p at: #snare) notes equals: #( 63 63 63 63 )
+]

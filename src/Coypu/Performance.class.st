@@ -664,6 +664,11 @@ Performance >> transportStep: anInteger [
 	transportStep := anInteger 
 ]
 
+{ #category : 'modifying' }
+Performance >> transpose: anInteger [ 
+	self valuesDo: [ :v | v transpose: anInteger ]
+]
+
 { #category : 'accessing' }
 Performance >> type [
 	^ self class type
