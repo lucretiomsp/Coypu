@@ -590,6 +590,12 @@ Performance >> restore [
 	p keysAndValuesRemove: [ :kp :vp | (p backup includesKey: kp) not ] 
 ]
 
+{ #category : 'modifying' }
+Performance >> rhythm: aRhythm [
+
+	self keysDo: [ :i | i rhythm: aRhythm ]
+]
+
 { #category : 'muting and soloing' }
 Performance >> solo: aKeyOrAnArrayOfKeys [
 
