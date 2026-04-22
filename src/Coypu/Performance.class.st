@@ -252,19 +252,18 @@ maxStepNumber := anInteger
 Performance >> mute: aKeyOrAnArrayOfKeys [
 	"remove all the keys in the arrayOfKeys from the Performance or remove just a single key"
 
-<onTheFlyEssentials>
-
+	<onTheFlyEssentials>
 	backup := self asDictionary.
 	aKeyOrAnArrayOfKeys isArray
 		ifTrue: [
-		aKeyOrAnArrayOfKeys do: [ :i | self removeKey: i ifAbsent: [  ] ] ]
+		aKeyOrAnArrayOfKeys do: [ :i | self removeKey: i ifAbsent: [ ] ] ]
 		ifFalse: [
-			self removeKey: aKeyOrAnArrayOfKeys.
-			self performanceType class = PerfTypeMooflod ifTrue: [
-				self performanceType visualizer cleanRow:
-					(self performanceType visualizer tracks at: aKeyOrAnArrayOfKeys).
-				self performanceType visualizer tracks removeKey:
-					aKeyOrAnArrayOfKeys ] ]
+				self  removeKey: aKeyOrAnArrayOfKeys ifAbsent: [ ].
+				self performanceType class = PerfTypeMooflod ifTrue: [
+						self performanceType visualizer cleanRow:
+							(self performanceType visualizer tracks at: aKeyOrAnArrayOfKeys).
+						self performanceType visualizer tracks removeKey:
+							aKeyOrAnArrayOfKeys ] ]
 ]
 
 { #category : 'muting and soloing' }
