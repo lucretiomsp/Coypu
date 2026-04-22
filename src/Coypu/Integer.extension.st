@@ -665,10 +665,9 @@ Integer >> semibreves [
 
 	<rhythmCreation>
 	<onTheFlyEssentials>
-	| result  |
-	
+	| result |
 	result := '8000' hexBeat * self.
-	result durations: 16.
+	result durations: #( 32 ).
 	result gateTimes: 0.9.
 	^ result
 ]
