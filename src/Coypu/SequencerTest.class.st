@@ -234,6 +234,27 @@ self assert: seq notes equals: #(60 61 62 63).
 ]
 
 { #category : 'tests' }
+SequencerTest >> testToIndex [
+
+	| seq |
+	seq := 16 downbeats to: #clap  index: '1 2 3 4'.
+
+
+	self assert: (seq extraParams at: #Index) equals: #( 1 2 3 4)
+]
+
+{ #category : 'tests' }
+SequencerTest >> testToIndexNotes [
+
+	| seq |
+	seq := 16 downbeats to: #clap  index: '1 2 3 4' notes:  '61 62 63 64'.
+
+
+	self assert: (seq extraParams at: #Index) equals: #( 1 2 3 4).
+	self assert: seq notes equals: #(61 62 63 64)
+]
+
+{ #category : 'tests' }
 SequencerTest >> testTranspose [
 
 	| seq |

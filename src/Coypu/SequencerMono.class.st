@@ -352,3 +352,15 @@ SequencerMono >> reverse [
    self gateTimes: self gateTimes reverse.	
 	
 ]
+
+{ #category : 'as yet unclassified' }
+SequencerMono >> to: aSymbol index: aStringOraNumberOrAnArray [ 
+"convenience method to avoid cascading messages"
+	(self to: aSymbol) index: aStringOraNumberOrAnArray 
+]
+
+{ #category : 'as yet unclassified' }
+SequencerMono >> to: aSymbol index: anIndexList notes: aNoteList [ 
+	"conveinence method to avoid cascading"
+	((self to: aSymbol ) index: anIndexList ) notes: aNoteList 
+]
