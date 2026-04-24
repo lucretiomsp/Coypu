@@ -229,6 +229,14 @@ ByteSymbol >> to: aSymbol [
 ]
 
 { #category : '*Coypu' }
+ByteSymbol >> to: aSymbol index: aListOfIndex [
+
+	<onTheFlyEssentials>
+	"convenience method to avoid cascading messages"
+	^ (self asRhythm to: aSymbol) index: aListOfIndex 
+]
+
+{ #category : '*Coypu' }
 ByteSymbol >> trigLocal [ 
 
 self asString trigLocal 
