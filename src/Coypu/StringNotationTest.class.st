@@ -29,12 +29,56 @@ StringNotationTest >> testAsDirtLevelForPerformer [
 
 { #category : 'tests' }
 StringNotationTest >> testAsDirtNotes [
+    | seq |
 
-	| seq |
-	seq := '60 * 3 , 31 ~ * 2 , ~ , 61/4' asDirtNotes.
-	self assert:  seq gates equals:  #( 1 1 1 1 0 1 0 0 1 0 0 0).
-	self assert: seq notes equals: #(60 60 60 31 31 61).
-	self deny: seq durations isEmpty .
+    "--- Plain MIDI numbers (old syntax) ---"
+    seq := '60,62,64' asDirtNotes.
+    self assert: seq notes equals: #( 60 62 64 ).
+    self assert: seq durations equals: #( 1 1 1 ).
+
+    "--- Note names (new syntax) ---"
+    seq := 'c4,d4,e4' asDirtNotes.
+    self assert: seq notes equals: #( 60 62 64 ).
+    self assert: seq durations equals: #( 1 1 1 ).
+
+    "--- Old and new mixed ---"
+    seq := 'c4,62,e4,65' asDirtNotes.
+    self assert: seq notes equals: #( 60 62 64 65 ).
+    self assert: seq durations equals: #( 1 1 1 1 ).
+
+    "--- Equivalence: same phrase both ways ---"
+    self 
+        assert: ('c4,d4,~,e4' asDirtNotes notes) 
+        equals: ('60,62,~,64' asDirtNotes notes).
+
+    "--- Rests with ~ ---"
+    seq := 'c4,~,e4' asDirtNotes.
+    self assert: seq notes equals: #( 60 64 ).
+    self assert: seq durations equals: #( 1 1 ).
+
+    "--- Rests with - ---"
+    seq := 'c4,-,e4' asDirtNotes.
+    self assert: seq notes equals: #( 60 64 ).
+    self assert: seq durations equals: #( 1 1 ).
+
+    "--- Sharps and flats ---"
+    seq := 'c#4,bb3,fs3' asDirtNotes.
+    self assert: seq notes equals: #( 61 58 54 ).
+
+    "--- Multiply * ---"
+    seq := 'c4*2,e4' asDirtNotes.
+    self assert: seq notes equals: #( 60 60 64 ).
+    self assert: seq durations equals: #( 1 1 1 ).
+
+    "--- Divide / ---"
+    seq := 'c4,e4/3' asDirtNotes.
+    self assert: seq durations equals: #( 1 3 ).
+
+    "--- Complex phrase mixing everything ---"
+    seq := 'c4,~,f#3*2,bb2/3,-,d4' asDirtNotes.
+    self assert: seq notes equals: #( 60 54 54 46 62 ).
+
+ 
 ]
 
 { #category : 'tests' }

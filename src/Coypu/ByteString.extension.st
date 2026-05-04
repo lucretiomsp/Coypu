@@ -132,41 +132,52 @@ ByteString >> asDirtLevel [
 
 { #category : '*Coypu' }
 ByteString >> asDirtNotes [
-	" returns a sequencer containing a trig for each integer and a rest for whatever other character and with the notes coresponding to the integeres inside the string - tokens must be separated by string"
+    "Returns a sequencer containing a trig for each note and a rest 
+     for ~ or - characters. Notes can be MIDI numbers ('60') or note 
+     names ('c4','f#3','bb2','cs5'). Tokens are separated by commas.
+     Supports * for multiply and / for divide."
+    <onTheFlyEssentials>
+    | seq tokens gates durs notesAsStrings notesAsNumbers dirtString |
+    gates := ''.
+    durs := OrderedCollection new.
+    tokens := self splitOn: ','.
+    dirtString := ''.
 
-	<onTheFlyEssentials>
-	| seq tokens gates durs notesAStrings notesAsNumbers dirtString |
-	gates := ''.
-	durs := OrderedCollection new.
-	tokens := self splitOn: ','.
-	dirtString := ''.
-	tokens do: [ :i |
-			(i includes: $*)
-				ifTrue: [
-						gates := gates , i multiplyStringsInString.
-						(i includes: $~) ifFalse: [ i getMultiplier timesRepeat: [ durs add: 1 ] ] ]
-				ifFalse: [
-						(i includes: $/)
-							ifTrue: [
-									gates := gates , i withNRests.
-									(i includes: $~) ifFalse: [ durs add: i getDivisor ] ]
-							ifFalse: [
-									gates := gates , i.
-									(i includes: $~) ifFalse: [ durs add: 1 ] ] ] ]. "tildes or - can be used as rests"
-	notesAStrings := ((gates copyReplaceAll: '~' with: '') copyReplaceAll: '-' with: '') findBetweenSubstrings: ' '.
+    tokens do: [ :i |
+        (i includes: $*)
+            ifTrue: [
+                gates := gates , i multiplyStringsInString , ' '.
+                ((i includes: $~) or: [ i includes: $- ])
+                    ifFalse: [ i getMultiplier timesRepeat: [ durs add: 1 ] ] ]
+            ifFalse: [
+                (i includes: $/)
+                    ifTrue: [
+                        gates := gates , i withNRests , ' '.
+                        ((i includes: $~) or: [ i includes: $- ])
+                            ifFalse: [ durs add: i getDivisor ] ]
+                    ifFalse: [
+                        gates := gates , i , ' '.
+                        ((i includes: $~) or: [ i includes: $- ])
+                            ifFalse: [ durs add: 1 ] ] ] ].
 
-	notesAsNumbers := notesAStrings collect: [ :i | "note cant be higher than higher MIDI note"
-		                  i ~= ' ' ifTrue: [ i asNumber min: 127 ] ].
+    "Extract note tokens, strip rests and empty strings"
+    notesAsStrings := ((gates copyReplaceAll: '~' with: '')
+        copyReplaceAll: '-' with: '') findBetweenSubstrings: ' '.
+    notesAsStrings := notesAsStrings reject: [ :i |
+        i isEmpty or: [ i = ' ' ] ].
 
-	notesAsNumbers do: [ :i | dirtString := dirtString , i asString , ' ' ].
+    "Convert to MIDI numbers — supports both '60' and 'c4'"
+    notesAsNumbers := notesAsStrings collect: [ :i | i asMidiNote ].
 
-	seq := gates asSeqGates asSeq.
-	seq dirtNotes: dirtString.
-	seq notes: notesAsNumbers asArray.
-	durs isEmpty ifTrue: [ durs add: 1 ].
-	seq durations: durs asArray.
+    notesAsNumbers do: [ :i |
+        dirtString := dirtString , i asString , ' ' ].
 
-	^ seq
+    seq := gates asSeqGates asSeq.
+    seq dirtNotes: dirtString.
+    seq notes: notesAsNumbers asArray.
+    durs isEmpty ifTrue: [ durs add: 1 ].
+    seq durations: durs asArray.
+    ^ seq
 ]
 
 { #category : '*Coypu' }
