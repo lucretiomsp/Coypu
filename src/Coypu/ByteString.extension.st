@@ -276,6 +276,62 @@ noteBaseNumber := Chord notesNamesToNumbers at: noteName .
 ]
 
 { #category : '*Coypu' }
+ByteString >> asMidiNote [
+	"Converts a note name ('c4','f#3','bb2','cs5') 
+     or a MIDI number string ('60') to a MIDI note number.
+     Supports: # s for sharp, b f for flat, ## x ss for double sharp, 
+     bb ff for double flat. c4 = 60.
+     TidalCycles-style notation (s for sharp, f for flat) is supported
+     alongside standard notation."
+
+	<onTheFlyEssentials>
+	| input noteChar rest accidental octaveStr semitones octave acc digitStart |
+	input := self trimBoth asLowercase.
+
+	"Plain number — just return it"
+	(input allSatisfy: [ :c | c isDigit ]) ifTrue: [
+		^ input asNumber min: 127 ].
+
+	semitones := Dictionary new.
+	semitones
+		at: $c put: 0;
+		at: $d put: 2;
+		at: $e put: 4;
+		at: $f put: 5;
+		at: $g put: 7;
+		at: $a put: 9;
+		at: $b put: 11.
+
+	"First character is always the note letter"
+	noteChar := input first.
+	(semitones includesKey: noteChar) ifFalse: [
+		Error signal: 'Unknown note: ' , noteChar asString ].
+
+	rest := input allButFirst.
+
+	"Octave is the trailing digit(s)"
+	digitStart := rest size.
+	[ digitStart > 0 and: [ (rest at: digitStart) isDigit ] ] whileTrue: [
+		digitStart := digitStart - 1 ].
+	octaveStr := rest copyFrom: digitStart + 1 to: rest size.
+	octaveStr isEmpty ifTrue: [octaveStr := 4].
+
+	"Accidental is whatever sits between note letter and octave"
+	accidental := rest copyFrom: 1 to: digitStart.
+
+	"Map accidental to semitone offset"
+	acc := 0.
+	(#( '##' 'x' 'ss' ) includes: accidental) ifTrue: [ acc := 2 ].
+	(#( '#' 's' ) includes: accidental) ifTrue: [ acc := 1 ].
+	(#( 'b' 'f' ) includes: accidental) ifTrue: [ acc := -1 ].
+	(#( 'bb' 'ff' ) includes: accidental) ifTrue: [ acc := -2 ].
+
+	octave := octaveStr asNumber.
+
+	^ octave + 1 * 12 + (semitones at: noteChar) + acc min: 127 max: 0
+]
+
+{ #category : '*Coypu' }
 ByteString >> asPacaAddress [
 
 
