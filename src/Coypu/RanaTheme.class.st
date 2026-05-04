@@ -9,6 +9,12 @@ Class {
 	#tag : 'UI-Themes'
 }
 
+{ #category : 'configuration' }
+RanaTheme class >> colorConfiguratorClass [
+
+	^ RanaThemeConfigurator
+]
+
 { #category : 'accessing' }
 RanaTheme class >> themeName [ 
 
