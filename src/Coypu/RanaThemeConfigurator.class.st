@@ -59,7 +59,7 @@ RanaThemeConfigurator >> menuBorderColor [
     ^ Color fromHexString: '1A3A1A'
 ]
 
-{ #category : 'colors' }
+{ #category : 'menus' }
 RanaThemeConfigurator >> menuColor [
     ^ Color fromHexString: '0F0F0F'
 ]
