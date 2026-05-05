@@ -36,7 +36,9 @@ Class {
 		'cycleLength',
 		'cycleLengths',
 		'slotIndex',
-		'subStep'
+		'subStep',
+		'phaustoGateDestinations',
+		'phaustoNoteDestinations'
 	],
 	#classInstVars : [
 		'orbit'
@@ -580,6 +582,9 @@ Sequencer >> initialize [
 	isPoly := false.
 	"by defaul gateTime is 0.9"
 	gateTimes := #( 0.9 ).
+	"for Phausto"
+	phaustoGateDestinations := OrderedCollection new.
+	phaustoNoteDestinations := OrderedCollection new.
 	dirtMessage := Dictionary new.
 	"cyclicalism"
 	transportStep := 0.
@@ -930,6 +935,12 @@ Sequencer >> phaustNoteDestination [
 Sequencer >> phaustNoteDestination: anObject [
 
 	phaustNoteDestination := anObject
+]
+
+{ #category : 'accessing' }
+Sequencer >> phaustoGateDestinations [
+
+	^ phaustoGateDestinations
 ]
 
 { #category : 'LiveCoding  - SuperDirt' }
