@@ -41,6 +41,28 @@ dsp start.
 dspCounter := dsp.
 ]
 
+{ #category : 'accessing' }
+PerformerPhausto >> oldplayEventAt: anIndex dsp: aDsp freq: aFrequency in: aSequencer [
+
+	| dur aParameterList |
+	dur := aSequencer durations asDirtArray wrap: anIndex.
+	aParameterList := self performance activeDSP allParameters.
+
+	aSequencer extraParams keysAndValuesDo: [ :k :v |
+			aParameterList
+				setValue: (v wrap: anIndex)
+				parameter: aSequencer seqKey , k asString
+				forDsp: aDsp ].
+	aParameterList
+		setValue: (aSequencer notes wrap: anIndex) midiNoteToFreq
+		parameter: aSequencer phaustNoteDestination
+		forDsp: aDsp.
+	aParameterList
+		trig: aSequencer phaustGateDestination
+		for: dur * aFrequency * (aSequencer gateTimes wrap: anIndex)
+		forDsp: aDsp
+]
+
 { #category : 'playing' }
 PerformerPhausto >> play [ 
 	"play a Phaust performance for 4 days at 120 bpm"
@@ -56,15 +78,18 @@ PerformerPhausto >> playEventAt: anIndex dsp: aDsp freq: aFrequency in: aSequenc
 	aParameterList := self performance activeDSP allParameters.
 
 	aSequencer extraParams keysAndValuesDo: [ :k :v |
-		aParameterList setValue: (v wrap: anIndex) parameter: aSequencer seqKey , k asString forDsp: aDsp ]. aParameterList
-		setValue: (aSequencer notes wrap: anIndex) midiNoteToFreq
-		parameter: aSequencer phaustNoteDestination
-		forDsp: aDsp. 
+			aParameterList
+				setValue: (v wrap: anIndex)
+				parameter: aSequencer seqKey , k asString
+				forDsp: aDsp ].
 	aParameterList
-		trig: aSequencer phaustGateDestination
-		for: dur * aFrequency * (aSequencer gateTimes wrap: anIndex)
+		setValue: (aSequencer notes wrap: anIndex) midiNoteToFreq
+		parameter: (aSequencer phaustoNoteDestinations wrap: anIndex)
 		forDsp: aDsp.
-
+	aParameterList
+		trig: (aSequencer phaustoGateDestinations wrap: anIndex)
+		for: dur * aFrequency * (aSequencer gateTimes wrap: anIndex)
+		forDsp: aDsp
 ]
 
 { #category : 'accessing' }
