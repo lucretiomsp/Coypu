@@ -31,7 +31,9 @@ Class {
 		'phaustNoteDestination',
 		'kymaMessage',
 		'transportStep',
-		'gateTimes'
+		'gateTimes',
+		'speed',
+		'cycleLength'
 	],
 	#classInstVars : [
 		'orbit'
@@ -133,6 +135,12 @@ Sequencer >> add: anAssociation [
 	" add an associtation of a parameter and a value or an array of values to the dirtMessage"
 	dirtMessage add: anAssociation 
 
+]
+
+{ #category : 'LiveCoding - sequencer' }
+Sequencer >> advanceStep [
+
+transportStep := transportStep + speed \\ cycleLength
 ]
 
 { #category : 'modifying' }
