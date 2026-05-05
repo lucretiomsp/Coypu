@@ -586,7 +586,7 @@ Sequencer >> initialize [
 	slotIndex := 0.
 	subStep := 0.
 	speed := 1.
-	cycleLength := #( 1 ).
+	cycleLengths := #( 1 ).
 	"for Super Dirt"
 	dirtMessage
 		at: 'cps'

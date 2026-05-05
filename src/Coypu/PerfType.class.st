@@ -17,13 +17,16 @@ PerfType >> addSequencer: aSequencer to: aSymbol [
 	aSequencer dirtMessage at: '_id' put: aSequencer seqKey.
 	aSequencer dirtMessage at: 'orbit' put: aSequencer orbit.
 
-	(aSequencer dirtMessage includesKey: 's') ifFalse: [ aSequencer dirtMessage at: 's' put: aSymbol asString asDirtArray ]. "For Polyphony"
+	(aSequencer dirtMessage includesKey: 's') ifFalse: [
+		aSequencer dirtMessage at: 's' put: aSymbol asString asDirtArray ]. "For Polyphony"
 	aSequencer seqChords
 		ifNil: [ Performance uniqueInstance at: aSymbol put: aSequencer ]
-		ifNotNil: [ Performance uniqueInstance at: aSymbol put: aSequencer asPolySeq ]. "For PerformerPhaust"
-	Performance uniqueInstance performer class = PerformerPhausto ifTrue: [
-			aSequencer phaustGateDestination: aSequencer seqKey , 'Trigger'.
-			aSequencer phaustNoteDestination: aSequencer seqKey , 'Freq' ]
+		ifNotNil: [
+		Performance uniqueInstance at: aSymbol put: aSequencer asPolySeq ]. "For PerformerPhaust"
+	Performance uniqueInstance performer class = PerformerPhausto
+		ifTrue: [
+				aSequencer phaustGateDestination: aSequencer seqKey , 'Trigger'.
+				aSequencer phaustNoteDestination: aSequencer seqKey , 'Freq' ]
 ]
 
 { #category : 'playing' }
