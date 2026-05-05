@@ -25,8 +25,15 @@ PerfType >> addSequencer: aSequencer to: aSymbol [
 		Performance uniqueInstance at: aSymbol put: aSequencer asPolySeq ]. "For PerformerPhaust"
 	Performance uniqueInstance performer class = PerformerPhausto
 		ifTrue: [
-				aSequencer phaustGateDestination: aSequencer seqKey , 'Trigger'.
-				aSequencer phaustNoteDestination: aSequencer seqKey , 'Freq' ]
+				| t f |
+				t := aSequencer seqKey , 'Trigger'.
+				f := aSequencer seqKey , 'Freq'.
+				aSequencer phaustGateDestination: t.
+				aSequencer phaustNoteDestination: f.
+				aSequencer phaustoGateDestinations: t.
+				aSequencer phaustoNoteDestinations: f.
+				
+				 ]
 ]
 
 { #category : 'playing' }

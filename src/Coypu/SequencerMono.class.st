@@ -100,6 +100,11 @@ SequencerMono >> isPolySeq [
 	^ false
 ]
 
+{ #category : 'accessing' }
+SequencerMono >> phaustoNoteDestinations [
+	^ phaustoNoteDestinations.
+]
+
 { #category : 'event playing' }
 SequencerMono >> playDirtEventAt: anIndex [
 

@@ -943,6 +943,18 @@ Sequencer >> phaustoGateDestinations [
 	^ phaustoGateDestinations
 ]
 
+{ #category : 'accessing' }
+Sequencer >> phaustoGateDestinations: aString [
+
+	phaustoGateDestinations add: aString 
+]
+
+{ #category : 'accessing' }
+Sequencer >> phaustoNoteDestinations: aString [
+
+	phaustoNoteDestinations add: aString
+]
+
 { #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> pitch: anIntOrAnArray [
 	" add speed pattern to the Sequencer - change speed of samples playback but in chromatic way!"

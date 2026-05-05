@@ -84,13 +84,15 @@ StringNotationTest >> testAsDirtNotes [
 { #category : 'tests' }
 StringNotationTest >> testAsDirtSounds [
 
-	| seq pgd |
+	| seq pgd psd |
 	seq := 'cp , sd , lt *2' asDirtSounds.
 	pgd := #( 'cpTrigger' 'sdTrigger' 'ltTrigger' 'ltTrigger' ).
+	psd := #( 'cpNote' 'sdNote' 'ltNote' 'ltNote' ).
 	self
 		assert: (seq soundPattern first findBetweenSubstrings: ' ')
 		equals: #( 'cp' 'sd' 'lt' 'lt' ) asOrderedCollection.
-	self assert: seq phaustoGateDestinations equals: pgd
+	self assert: seq phaustoGateDestinations asArray equals: pgd.
+	self assert: seq phaustoNoteDestinations asArray equals: psd
 ]
 
 { #category : 'tests' }

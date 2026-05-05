@@ -218,7 +218,7 @@ ByteString >> asDirtSounds [
 	" parse a String into a Sequencer containing information to end to the SuperDirt synth for SuperCollider"
 
 	<onTheFlyEssentials>
-	| seq tokens gates soundsAsStrings  soundsAndDirtNotesArray soundAndDirtNotes notesAsIndex |
+	| seq tokens gates soundsAsStrings soundsAndDirtNotesArray soundAndDirtNotes notesAsIndex |
 	gates := ''.
 	tokens := self splitOn: ','.
 
@@ -231,17 +231,26 @@ ByteString >> asDirtSounds [
 							ifFalse: [ gates := gates , i ] ] ]. "soundsAsStrings := (((gates copyReplaceAll: '~' with: '')
 		                    copyReplaceAll: '-'
 		                    with: '') copyReplaceAll: ':' with: '') findBetweenSubstrings: ' '."
-	soundsAsStrings := gates select: [ :ch | ch isLetter or: ch isSeparator ].
-	soundAndDirtNotes  := gates select: [ :ch | (ch isLetter or: ch isDigit) or: ch isSeparator ].
-soundsAndDirtNotesArray := soundAndDirtNotes findBetweenSubstrings: ' '.
-notesAsIndex := soundsAndDirtNotesArray collect: [ :i | i hasDigit asInteger].
-	
+	soundsAsStrings := gates select: [ :ch |
+		                   ch isLetter or: ch isSeparator ].
+	soundAndDirtNotes := gates select: [ :ch |
+		                     (ch isLetter or: ch isDigit) or: ch isSeparator ].
+	soundsAndDirtNotesArray := soundAndDirtNotes findBetweenSubstrings:
+		                           ' '.
+	notesAsIndex := soundsAndDirtNotesArray collect: [ :i |
+		                i hasDigit asInteger ].
+
 
 
 
 	seq := gates asSeqGates asSeq. "seq sound: (soundsAsStrings joinUsing: ' ')."
 	seq sound: soundsAsStrings.
-	seq notes: notesAsIndex asArray .
+
+	(soundsAsStrings findBetweenSubstrings: ' ') do: [ :i |
+		seq phaustoGateDestinations: i , 'Trigger' .
+		seq phaustoNoteDestinations: i , 'Note'.
+		].
+	seq notes: notesAsIndex asArray.
 
 	^ seq
 ]
