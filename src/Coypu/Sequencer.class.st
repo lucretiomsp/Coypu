@@ -33,7 +33,10 @@ Class {
 		'transportStep',
 		'gateTimes',
 		'speed',
-		'cycleLength'
+		'cycleLength',
+		'cycleLengths',
+		'slotIndex',
+		'subStep'
 	],
 	#classInstVars : [
 		'orbit'
@@ -139,8 +142,12 @@ Sequencer >> add: anAssociation [
 
 { #category : 'LiveCoding - sequencer' }
 Sequencer >> advanceStep [
-
-transportStep := transportStep + speed \\ cycleLength
+    | currentSlotLength |
+    currentSlotLength := cycleLengths wrap: slotIndex.
+    subStep := subStep + speed.
+    subStep >= currentSlotLength ifTrue: [
+        subStep := 0.
+        slotIndex := slotIndex + 1 \\ cycleLengths size ]
 ]
 
 { #category : 'modifying' }
@@ -572,9 +579,15 @@ Sequencer >> initialize [
 	super initialize.
 	isPoly := false.
 	"by defaul gateTime is 0.9"
-	gateTimes := #(0.9).
+	gateTimes := #( 0.9 ).
 	dirtMessage := Dictionary new.
+	"cyclicalism"
 	transportStep := 0.
+	slotIndex := 0.
+	subStep := 0.
+	speed := 1.
+	cycleLength := #( 1 ).
+	"for Super Dirt"
 	dirtMessage
 		at: 'cps'
 		put: (Performance uniqueInstance freq * 4) asFloat.
@@ -586,7 +599,6 @@ Sequencer >> initialize [
 	extraParams := Dictionary new
 
 	"dirtMessage addAll: { '_id' -> 1 . 'cps' -> 0.56 .  'orbit' -> 0 }"
-	
 ]
 
 { #category : 'accessing' }
@@ -1197,6 +1209,12 @@ Sequencer >> size: aFloatOrAnArray [
 		put:  aFloatOrAnArray   asDirtArray
 ]
 
+{ #category : 'accessing' }
+Sequencer >> slotIndex [
+
+^ slotIndex
+]
+
 { #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> sound: soundsAndIndexs [
 	"assign to a Sequencer an array with samples as string and one with samples index - intended to be used with the SuperDirt audioengine for SuperCollider for example: 
@@ -1318,6 +1336,11 @@ Sequencer >> squiz: aFloatOrAnArray [
 Sequencer >> stepIndex [
 
 	self at: 4 put: self noteIndex + 1
+]
+
+{ #category : 'accessing' }
+Sequencer >> subStep [ 
+^ subStep 
 ]
 
 { #category : 'replication' }

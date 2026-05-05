@@ -359,6 +359,29 @@ tokens do: [ :i | i = '~' ifTrue: [ gates add: 0]  ifFalse: [ gates add: 1  ]  ]
 ]
 
 { #category : '*Coypu' }
+ByteString >> asTidalNotes [
+    | topSlots cycleLengths gatesString allNotes seq |
+    topSlots := self splitTopLevelSlots.
+    cycleLengths := OrderedCollection new.
+    gatesString := ''.
+    allNotes := OrderedCollection new.
+    topSlots do: [ :slot |
+        | leaves |
+        leaves := slot parseTidalLeaves.
+        cycleLengths add: leaves size.
+        leaves do: [ :leaf |
+            ((leaf = '~') or: [ leaf = '-' ])
+                ifTrue: [ gatesString := gatesString , '~ ' ]
+                ifFalse: [
+                    gatesString := gatesString , leaf , ' '.
+                    allNotes add: leaf asMidiNote ] ] ].
+    seq := gatesString trimBoth asSeqGates asSeq.
+    seq notes: allNotes asArray.
+    seq cycleLengths: cycleLengths asArray.
+    ^ seq
+]
+
+{ #category : '*Coypu' }
 ByteString >> asVerticalFaderLocal: aRange [
 
 	| fader |
@@ -637,6 +660,30 @@ ByteString >> parseChordWithoutRoot [
 ]
 
 { #category : '*Coypu' }
+ByteString >> parseTidalLeaves [
+
+	  "Recursively flatten a slot into leaf tokens.
+     'bd' => #('bd')
+     '[sd*3]' => #('sd' 'sd' 'sd')
+     '[cp [ht lt]]' => #('cp' 'ht' 'lt')"
+    | inner slots leaves |
+    inner := self trimBoth.
+    (inner beginsWith: '[') ifTrue: [
+        inner := (inner copyFrom: 2 to: inner size - 1) trimBoth ].
+    slots := inner splitTopLevelSlots.
+    leaves := OrderedCollection new.
+    slots do: [ :s |
+        (s includes: $[)
+            ifTrue: [ leaves addAll: s parseTidalLeaves ]
+            ifFalse: [
+                (s includes: $*)
+                    ifTrue: [ s getMultiplier timesRepeat: [
+                        leaves add: (s copyUpTo: $*) ] ]
+                    ifFalse: [ leaves add: s ] ] ].
+    ^ leaves
+]
+
+{ #category : '*Coypu' }
 ByteString >> pattern [
 	" convert a string with an Hexadecimal number to the Kyma array corresponding to the expression  BinaryArray ofSize: (self size) fromInteger: (self asHex)"
 
@@ -718,6 +765,26 @@ ByteString >> splitRespectingQuotes [
     token position > 0 ifTrue: [ result add: token contents ].
     ^ result
 
+]
+
+{ #category : '*Coypu' }
+ByteString >> splitTopLevelSlots [
+    "Split into top-level tokens, keeping bracketed groups intact.
+     'bd [sd*3] [cp ht lt]' => #('bd' '[sd*3]' '[cp ht lt]')"
+    | slots current depth |
+    slots := OrderedCollection new.
+    current := ''.
+    depth := 0.
+    self do: [ :ch |
+        ch = $[ ifTrue: [ depth := depth + 1 ].
+        ch = $] ifTrue: [ depth := depth - 1 ].
+        (ch = Character space and: [ depth = 0 ])
+            ifTrue: [
+                current trimBoth isEmpty ifFalse: [ slots add: current trimBoth ].
+                current := '' ]
+            ifFalse: [ current := current , ch asString ] ].
+    current trimBoth isEmpty ifFalse: [ slots add: current trimBoth ].
+    ^ slots
 ]
 
 { #category : '*Coypu' }
