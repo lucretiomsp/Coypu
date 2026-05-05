@@ -34,7 +34,9 @@ RanaThemeConfigurator >> baseSelectionColor [
 
 { #category : 'colors' }
 RanaThemeConfigurator >> borderColor [
-    ^ Color fromHexString: '1A3A1A'
+
+
+	^ Color fromHexString: '1A3A1A'
 ]
 
 { #category : 'colors' }
@@ -56,7 +58,9 @@ RanaThemeConfigurator >> dangerTextColor [
 
 { #category : 'colors' }
 RanaThemeConfigurator >> desktopColor [
-    ^ Color fromHexString: '050505'
+	
+
+	^ Color fromHexString: '050505'
 ]
 
 { #category : 'colors' }
@@ -83,7 +87,8 @@ RanaThemeConfigurator >> menuBorderColor [
 
 { #category : 'menus' }
 RanaThemeConfigurator >> menuColor [
-    ^ Color fromHexString: '0F0F0F'
+
+	^ Color fromHexString: '0F0F0F'
 ]
 
 { #category : 'colors' }
@@ -94,7 +99,9 @@ RanaThemeConfigurator >> menuSelectionColor [
 
 { #category : 'colors' }
 RanaThemeConfigurator >> scrollbarColor [
-    ^ Color fromHexString: '143314'
+
+
+	^ Color fromHexString: '143314'
 ]
 
 { #category : 'colors' }
