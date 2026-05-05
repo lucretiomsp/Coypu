@@ -359,6 +359,29 @@ tokens do: [ :i | i = '~' ifTrue: [ gates add: 0]  ifFalse: [ gates add: 1  ]  ]
 ]
 
 { #category : '*Coypu' }
+ByteString >> asTidalIndex [
+    | topSlots cycleLengths gatesString allIndices seq |
+    topSlots := self splitTopLevelSlots.
+    cycleLengths := OrderedCollection new.
+    gatesString := ''.
+    allIndices := OrderedCollection new.
+    topSlots do: [ :slot |
+        | leaves |
+        leaves := slot parseTidalLeaves.
+        cycleLengths add: leaves size.
+        leaves do: [ :leaf |
+            ((leaf = '~') or: [ leaf = '-' ])
+                ifTrue: [ gatesString := gatesString , '~ ' ]
+                ifFalse: [
+                    gatesString := gatesString , leaf , ' '.
+                    allIndices add: leaf  ] ] ].
+    seq := gatesString trimBoth asSeqGates asSeq.
+    seq index: allIndices asArray.
+    seq cycleLengths: cycleLengths asArray.
+    ^ seq
+]
+
+{ #category : '*Coypu' }
 ByteString >> asTidalNotes [
     | topSlots cycleLengths gatesString allNotes seq |
     topSlots := self splitTopLevelSlots.
