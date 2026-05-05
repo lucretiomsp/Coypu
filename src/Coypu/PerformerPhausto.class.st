@@ -80,7 +80,8 @@ PerformerPhausto >> playEventAt: anIndex dsp: aDsp freq: aFrequency in: aSequenc
 	aSequencer extraParams keysAndValuesDo: [ :k :v |
 			aParameterList
 				setValue: (v wrap: anIndex)
-				parameter: aSequencer seqKey , k asString
+				"parameter: aSequencer seqKey , k asString"
+				parameter: ((aSequencer phaustoNoteDestinations wrap: anIndex) copyReplaceAll: 'Freq' with: k asString)
 				forDsp: aDsp ].
 	aParameterList
 		setValue: (aSequencer notes wrap: anIndex) midiNoteToFreq

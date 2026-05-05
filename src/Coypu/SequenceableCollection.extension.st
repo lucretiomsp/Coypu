@@ -14,3 +14,13 @@ SequenceableCollection >> asOSCMessageForSuperDirt [
 	
 	(OSCMessage for: values asDirtArray ) sendToAddressString: localAddress port: scLangPort 
 ]
+
+{ #category : '*Coypu' }
+SequenceableCollection >> wrap: anInteger [
+
+	"inspire by Cmajor language wrap<int> always wrap the index of the array to the array size"
+
+	| result |
+	result := self at: anInteger - 1 % self size + 1.
+	^ result
+]

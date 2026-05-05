@@ -247,10 +247,10 @@ ByteString >> asDirtSounds [
 	seq sound: soundsAsStrings.
 
 	(soundsAsStrings findBetweenSubstrings: ' ') do: [ :i |
-		seq phaustoGateDestinations: i , 'Trigger' .
-		seq phaustoNoteDestinations: i , 'Note'.
-		].
+			seq phaustoGateDestinations: i , 'Trigger'.
+			seq phaustoNoteDestinations: i , 'Freq' ].
 	seq notes: notesAsIndex asArray.
+	
 
 	^ seq
 ]

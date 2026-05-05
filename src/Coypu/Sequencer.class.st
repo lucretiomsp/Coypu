@@ -1165,6 +1165,12 @@ Sequencer >> rel: aFloatOrAnArray [
 		put:  aFloatOrAnArray   asDirtArray
 ]
 
+{ #category : 'modifying' }
+Sequencer >> removeIndexes [ 
+
+extraParams removeKey: #index ifAbsent: [ ] 
+]
+
 { #category : 'LiveCoding-ExtraParams' }
 Sequencer >> resonance: aStringOrAnArray [
 	"set the ratio to a collection of value in array or to to the number"
@@ -1272,7 +1278,7 @@ Sequencer >> sound: soundsAndIndexs [
 		at: 's' put: sounds asDirtArray;
 		at: 'n' put: indexes asDirtArray.
 
-	self extraParams add: #index -> indexes.
+	self extraParams add: #Index -> indexes.
 	"needs refactoring"
 	self soundPattern: sounds asDirtArray
 ]

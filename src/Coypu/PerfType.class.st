@@ -30,10 +30,9 @@ PerfType >> addSequencer: aSequencer to: aSymbol [
 				f := aSequencer seqKey , 'Freq'.
 				aSequencer phaustGateDestination: t.
 				aSequencer phaustNoteDestination: f.
-				aSequencer phaustoGateDestinations: t.
-				aSequencer phaustoNoteDestinations: f.
-				
-				 ]
+				aSequencer phaustoGateDestinations isEmpty ifTrue:
+				[aSequencer phaustoGateDestinations: t.
+				aSequencer phaustoNoteDestinations: f ]]
 ]
 
 { #category : 'playing' }
