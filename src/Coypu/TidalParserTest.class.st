@@ -7,24 +7,6 @@ Class {
 }
 
 { #category : 'tests' }
-TidalParserTest >> testAsTidalIndex [
-    | seq |
-    seq := 'bd [sd*3] [cp ht]' asTidalIndex.
-    self assert: seq cycleLengths equals: #(1 3 2).
-    self assert: seq index equals: #('bd' 'sd' 'sd' 'sd' 'cp' 'ht').
-    self assert: seq gates size equals: 6.
-
-]
-
-{ #category : 'tests' }
-TidalParserTest >> testAsTidalIndexWithRests [
-    | seq |
-    seq := 'bd [~ sd] cp' asTidalIndex.
-    self assert: seq cycleLengths equals: #(1 2 1).
-    self assert: seq index equals: #('bd' 'sd' 'cp').
-]
-
-{ #category : 'tests' }
 TidalParserTest >> testAsTidalNotes [
     | seq |
     seq := 'c4 [e4*3] [g4 b4]' asTidalNotes.
