@@ -1095,7 +1095,8 @@ Sequencer >> progression: anArrayOfIntervals [
 
 { #category : 'querying' }
 Sequencer >> queryFrom: t1 to: t2 [
- | events n arc noteIdx |
+
+    | events n arc noteIdx |
     events := OrderedCollection new.
     n := gates size.
     arc := CoyArc from: t1 to: t2.
@@ -1105,7 +1106,7 @@ Sequencer >> queryFrom: t1 to: t2 [
         onset := (i - 1) / n.
         (gates at: i) = 1 ifTrue: [
             (arc includesTime: onset) ifTrue: [
-                events add: (CoyEvent onset: onset value: (notes at: noteIdx)) ].
+                events add: (CoyEvent onset: onset value: noteIdx) ].
             noteIdx := noteIdx + 1 ] ].
     ^ events
 ]

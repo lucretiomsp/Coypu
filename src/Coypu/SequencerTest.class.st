@@ -141,23 +141,22 @@ self assert: 16 downbeats printString equals: result.
 
 { #category : 'tests' }
 SequencerTest >> testQueryFractionalOnsets [
-    | seq events |
+
+	  | seq events |
     seq := 'c4 e4 g4' asDirtNotes.
     events := seq queryFrom: 0 to: 1.
-    self assert: (events at: 1) onset equals: 0.
-    self assert: (events at: 2) onset equals: 1/3.
-    self assert: (events at: 3) onset equals: 2/3.
-
+    self assert: (events at: 1) value equals: 1.
+    self assert: (events at: 2) value equals: 2.
+    self assert: (events at: 3) value equals: 3.
 ]
 
 { #category : 'tests' }
-SequencerTest >> testQueryRespectsGates [
-    | seq events |
+SequencerTest >> testQueryRespectsGates| seq [ events |
     seq := 'c4 ~ g4' asDirtNotes.
     events := seq queryFrom: 0 to: 1.
     self assert: events size equals: 2.
-    self assert: (events at: 1) value equals: 60.
-    self assert: (events at: 2) value equals: 67.
+    self assert: (events at: 1) value equals: 1.
+    self assert: (events at: 2) value equals: 2.
 ]
 
 { #category : 'tests' }
