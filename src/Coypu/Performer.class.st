@@ -19,14 +19,14 @@ Class {
 	#tag : 'Performer'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Performer >> advanceTransportInBackground [
 
  [performance incrementTransportStep ] forkAt:
 			 Processor timingPriority
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Performer >> advanceTransportInBackgroundFor: aNumberOfSteps [
 
 	| updateInterval |
@@ -47,7 +47,7 @@ Performer >> advanceTransportInBackgroundFor: aNumberOfSteps [
 		updateInterval wait ] ] forkAt: Processor timingPriority"
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Performer >> checkStepFor: aSequencer [
 
 	| currentStep |
