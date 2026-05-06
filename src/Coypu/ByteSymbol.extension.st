@@ -237,6 +237,13 @@ ByteSymbol >> to: aSymbol index: aListOfIndex [
 ]
 
 { #category : '*Coypu' }
+ByteSymbol >> transpose: anInteger [
+  
+(Performance uniqueInstance includesKey: self) ifTrue: [  ^ Performance uniqueInstance transpose: anInteger] ifFalse: [ Object inform: self asString , ' is not in Performance'] .
+
+]
+
+{ #category : '*Coypu' }
 ByteSymbol >> trigLocal [ 
 
 self asString trigLocal 
