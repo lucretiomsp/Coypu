@@ -201,7 +201,7 @@ SequencerTest >> testSequencerSound [
 	seq := 16 downbeats sound: 'bd,cp:2'.
 
 	self assert: seq soundPattern equals: #( 'bd' 'cp' ).
-	self assert: (seq extraParams at: #index ) asArray equals: #( 0 2 )
+	self assert: (seq extraParams at: #Index) asArray equals: #( 0 2 )
 ]
 
 { #category : 'tests' }
