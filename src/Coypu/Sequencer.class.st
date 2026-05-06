@@ -1093,6 +1093,23 @@ Sequencer >> progression: anArrayOfIntervals [
 	^ newSeq
 ]
 
+{ #category : 'querying' }
+Sequencer >> queryFrom: t1 to: t2 [
+ | events n arc noteIdx |
+    events := OrderedCollection new.
+    n := gates size.
+    arc := CoyArc from: t1 to: t2.
+    noteIdx := 1.
+    1 to: n do: [ :i |
+        | onset |
+        onset := (i - 1) / n.
+        (gates at: i) = 1 ifTrue: [
+            (arc includesTime: onset) ifTrue: [
+                events add: (CoyEvent onset: onset value: (notes at: noteIdx)) ].
+            noteIdx := noteIdx + 1 ] ].
+    ^ events
+]
+
 { #category : 'Sequencer - transformation' }
 Sequencer >> randomCounterPoint [
 

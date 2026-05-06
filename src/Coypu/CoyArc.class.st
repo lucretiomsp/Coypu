@@ -71,6 +71,11 @@ CoyArc >> includeTime: aTimeFraction [
 ^ aTimeFraction >= begin and: (aTimeFraction < end )
 ]
 
+{ #category : 'testing' }
+CoyArc >> includesTime: aTimeFraction [
+	  ^ aTimeFraction >= begin and: [ aTimeFraction < end ]
+]
+
 { #category : 'printing' }
 CoyArc >> printOn: aStream [
   

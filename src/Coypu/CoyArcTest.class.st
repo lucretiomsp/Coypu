@@ -7,6 +7,23 @@ Class {
 }
 
 { #category : 'tests' }
+CoyArcTest >> testIncludesTimeAtEndIsExclusive [
+    self deny: ((CoyArc from: 0 to: 1) includesTime: 1).
+]
+
+{ #category : 'tests' }
+CoyArcTest >> testIncludesTimeAtStart [
+    self assert: ((CoyArc from: 0 to: 1) includesTime: 0).
+
+]
+
+{ #category : 'tests' }
+CoyArcTest >> testIncludesTimeInMiddle [
+    self assert: ((CoyArc from: 0 to: 1) includesTime: 1/2).
+
+]
+
+{ #category : 'tests' }
 CoyArcTest >> testInitialization [
     | arc |
     arc := CoyArc from: 0 to: 1.
