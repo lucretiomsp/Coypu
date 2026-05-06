@@ -73,12 +73,20 @@ CoyArc >> includeTime: aTimeFraction [
 
 { #category : 'printing' }
 CoyArc >> printOn: aStream [
-    aStream 
+  
+    | beginString endString |
+    beginString := begin isInteger
+        ifTrue: [ begin printString ]
+        ifFalse: [ begin numerator printString , '/' , begin denominator printString ].
+    endString := end isInteger
+        ifTrue: [ end printString ]
+        ifFalse: [ end numerator printString , '/' , end denominator printString ].
+    aStream
         nextPutAll: 'CoyArc(';
-        print: begin;
+        nextPutAll: beginString;
         nextPutAll: ', ';
-        print: end;
-        nextPut: $)
+        nextPutAll: endString;
+nextPut: $)
 ]
 
 { #category : 'querying' }

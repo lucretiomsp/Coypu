@@ -99,16 +99,16 @@ CoypuUtiltiesTest >> testAsMidiNote [
     self assert: 'e4' asMidiNote equals: 'fb4' asMidiNote.
     self assert: 'b3' asMidiNote equals: 'cb4' asMidiNote.
     self assert: 'f4' asMidiNote equals: 'e#4' asMidiNote.
+    self assert: 'c' asMidiNote equals: 60.
+    self assert: 'c#' asMidiNote equals: 61.
 
     "Range clamping"
     self assert: ('c0' asMidiNote >= 0).
     self assert: 'g9' asMidiNote equals: 127.
 
-    "Errors"
+    "check errors"
     self should: [ 'z4' asMidiNote ] raise: Error.
-    self should: [ 'c' asMidiNote ] raise: Error.
-    self should: [ 'c#' asMidiNote ] raise: Error.
-
+   
     "Chromatic scale — the ultimate check"
     self 
         assert: (#('c4' 'cs4' 'd4' 'ds4' 'e4' 'f4' 
@@ -125,7 +125,7 @@ self assert: 8 asRisingArray equals: #(1 2 3 4 5 6 7  8)
 ]
 
 { #category : 'as yet unclassified' }
-CoypuUtiltiesTest >> testTranposeKeyInSeq [
+CoypuUtiltiesTest >> testTransposeKeyInSeq [
 
 	16 downbeats to: #kick.
 	#kick transpose: 8.

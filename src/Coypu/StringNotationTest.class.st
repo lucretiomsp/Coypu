@@ -87,7 +87,7 @@ StringNotationTest >> testAsDirtSounds [
 	| seq pgd psd |
 	seq := 'cp , sd , lt *2' asDirtSounds.
 	pgd := #( 'cpTrigger' 'sdTrigger' 'ltTrigger' 'ltTrigger' ).
-	psd := #( 'cpNote' 'sdNote' 'ltNote' 'ltNote' ).
+	psd := #( 'cpFreq' 'sdFreq' 'ltFreq' 'ltFreq' ).
 	self
 		assert: (seq soundPattern first findBetweenSubstrings: ' ')
 		equals: #( 'cp' 'sd' 'lt' 'lt' ) asOrderedCollection.
