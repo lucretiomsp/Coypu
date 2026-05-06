@@ -100,31 +100,26 @@ Performer >> play [
 ]
 
 { #category : 'playing' }
-Performer >> playCyclicFor: aNumberOfSteps [
-
-	| nextStepMicros stepMicros nowMicros waitMicros waitMillis startMicros |
-	performance bpm: 60 / (performance freq * 4).
-	"Monotonic baseline time"
-	startMicros := Time microsecondClockValue.
-	performance activeProcess: ([
-			 nextStepMicros := startMicros.
-			 1 to: aNumberOfSteps do: [ :stepIndex | "Recompute step duration dynamically"
-					 stepMicros := (performance freq * 1_000_000) asInteger.
-					 "Accumulate next timestamp"
-					 nextStepMicros := nextStepMicros + stepMicros.
-					 nowMicros := Time microsecondClockValue.
-					 waitMicros := nextStepMicros - nowMicros max: 0.
-					 waitMillis := waitMicros // 1000.
-					 "Sleep until next step"
-					 (Delay forMilliseconds: waitMillis) wait.
-					 [
-						 performance valuesDo: [ :seq |
-								 (seq gates wrap: seq slotIndex) = 1 ifTrue: [
-										 self playEventAt: seq noteIndex in: seq.
-										 seq noteIndex: seq noteIndex + 1 ].
-								 "Each seq advances its own cyclic position"
-								 seq advanceStep ] ] forkAt: Processor timingPriority - 2 ] ]
-			 forkAt: Processor timingPriority - 1)
+Performer >> playCyclicFor: aNumberOfCycles [
+   
+    | cycleMicros startMicros cycleStart |
+    startMicros := Time microsecondClockValue.
+    performance activeProcess: ([
+        1 to: aNumberOfCycles do: [ :cycleIndex |
+            cycleMicros := (performance freq * 1_000_000 * 4) asInteger.
+            cycleStart := startMicros + ((cycleIndex - 1) * cycleMicros).
+            performance valuesDo: [ :seq |
+                | events |
+                events := seq queryFrom: cycleIndex - 1 to: cycleIndex.
+                events do: [ :event |
+                    [
+                        | waitMicros |
+                        waitMicros := (cycleStart + (event onset * cycleMicros) asInteger)
+                            - Time microsecondClockValue max: 0.
+                        (Delay forMilliseconds: waitMicros // 1000) wait.
+                        self playEventAt: event value in: seq
+                    ] forkAt: Processor timingPriority - 2 ] ] ]
+    ] forkAt: Processor timingPriority - 1)
 ]
 
 { #category : 'accessing' }

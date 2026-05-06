@@ -151,7 +151,8 @@ SequencerTest >> testQueryFractionalOnsets [
 ]
 
 { #category : 'tests' }
-SequencerTest >> testQueryRespectsGates| seq [ events |
+SequencerTest >> testQueryRespectsGates [
+    | seq events |
     seq := 'c4 ~ g4' asDirtNotes.
     events := seq queryFrom: 0 to: 1.
     self assert: events size equals: 2.
