@@ -75,8 +75,9 @@ Performance class >> uniqueInstance [
 			  uniqueInstance := super new
 				                    performanceType: PerfType new;
 				                    maxStepNumber: SmallInteger maxVal;
-				logger: MyoLogger new;
+				                    logger: MyoLogger new;
 				                    yourself ]
+		
 ]
 
 { #category : 'accessing' }

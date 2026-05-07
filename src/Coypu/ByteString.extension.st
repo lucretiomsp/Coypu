@@ -392,23 +392,30 @@ ByteString >> asTidalIndex [
 
 { #category : '*Coypu' }
 ByteString >> asTidalNotes [
-    | topSlots cycleLengths gatesString allNotes seq |
+    | topSlots cycleLengths gatesStream notesStream seq |
     topSlots := self splitTopLevelSlots.
     cycleLengths := OrderedCollection new.
-    gatesString := ''.
-    allNotes := OrderedCollection new.
+    gatesStream := WriteStream on: String new.
+    notesStream := OrderedCollection new.
     topSlots do: [ :slot |
-        | leaves |
+        | leaves slotCycleLength newNotes newCycleLengths |
         leaves := slot parseTidalLeaves.
-        cycleLengths add: leaves size.
+        slotCycleLength := topSlots size * leaves size.
+        newNotes := OrderedCollection new.
+        newCycleLengths := OrderedCollection new.
         leaves do: [ :leaf |
-            ((leaf = '~') or: [ leaf = '-' ])
-                ifTrue: [ gatesString := gatesString , '~ ' ]
+            newCycleLengths add: slotCycleLength.
+            (#('~' '-') includes: leaf)
+                ifTrue: [ gatesStream nextPutAll: '~ ' ]
                 ifFalse: [
-                    gatesString := gatesString , leaf , ' '.
-                    allNotes add: leaf asMidiNote ] ] ].
-    seq := gatesString trimBoth asSeqGates asSeq.
-    seq notes: allNotes asArray.
+                    newNotes add: leaf asMidiNote.
+                    gatesStream
+                        nextPutAll: leaf;
+                        nextPut: $  ] ].
+        cycleLengths addAllLast: newCycleLengths.
+        notesStream addAllLast: newNotes ].
+    seq := gatesStream contents trimBoth asSeqGates asSeq.
+    seq notes: notesStream asArray.
     seq cycleLengths: cycleLengths asArray.
     ^ seq
 ]
