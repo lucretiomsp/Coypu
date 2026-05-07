@@ -141,19 +141,19 @@ self assert: 16 downbeats printString equals: result.
 
 { #category : 'tests' }
 SequencerTest >> testQueryFractionalOnsets [
-
-	  | seq events |
-    seq := 'c4 e4 g4' asDirtNotes.
+    | seq events |
+    seq := 'c4 e4 g4' asTidalNotes.
     events := seq queryFrom: 0 to: 1.
-    self assert: (events at: 1) value equals: 1.
-    self assert: (events at: 2) value equals: 2.
-    self assert: (events at: 3) value equals: 3.
+    self assert: (events at: 1) onset equals: 0.
+    self assert: (events at: 2) onset equals: 1/3.
+    self assert: (events at: 3) onset equals: 2/3.
 ]
 
 { #category : 'tests' }
 SequencerTest >> testQueryRespectsGates [
-    | seq events |
-    seq := 'c4 ~ g4' asDirtNotes.
+
+	| seq events |
+    seq := 'c4 ~ g4' asTidalNotes.
     events := seq queryFrom: 0 to: 1.
     self assert: events size equals: 2.
     self assert: (events at: 1) value equals: 1.
@@ -163,9 +163,20 @@ SequencerTest >> testQueryRespectsGates [
 { #category : 'tests' }
 SequencerTest >> testQueryReturnsAllEvents [
     | seq events |
-    seq := 'c4 e4 g4' asDirtNotes.
+    seq := 'c4 e4 g4' asTidalNotes.
     events := seq queryFrom: 0 to: 1.
     self assert: events size equals: 3.
+]
+
+{ #category : 'tests' }
+SequencerTest >> testQuerySubdivision [
+    | seq events |
+    seq := 'c4 [e4 g4]' asTidalNotes.
+    events := seq queryFrom: 0 to: 1.
+    self assert: events size equals: 3.
+    self assert: (events at: 1) onset equals: 0.
+    self assert: (events at: 2) onset equals: 1/2.
+    self assert: (events at: 3) onset equals: 3/4.
 ]
 
 { #category : 'tests' }
