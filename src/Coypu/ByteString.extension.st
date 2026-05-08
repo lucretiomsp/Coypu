@@ -392,31 +392,36 @@ ByteString >> asTidalIndex [
 
 { #category : '*Coypu' }
 ByteString >> asTidalNotes [
-    | topSlots cycleLengths gatesStream notesStream seq |
+    | topSlots gatesStream cycleLengths notesStream divisorsStream seq |
     topSlots := self splitTopLevelSlots.
-    cycleLengths := OrderedCollection new.
     gatesStream := WriteStream on: String new.
+    cycleLengths := OrderedCollection new.
     notesStream := OrderedCollection new.
+    divisorsStream := OrderedCollection new.
     topSlots do: [ :slot |
-        | leaves slotCycleLength newNotes newCycleLengths |
+        | leaves slotCycleLength newNotes newCycleLengths newDivisors |
         leaves := slot parseTidalLeaves.
         slotCycleLength := topSlots size * leaves size.
         newNotes := OrderedCollection new.
         newCycleLengths := OrderedCollection new.
+        newDivisors := OrderedCollection new.
         leaves do: [ :leaf |
             newCycleLengths add: slotCycleLength.
-            (#('~' '-') includes: leaf)
+            newDivisors add: leaf value.
+            (#('~' '-') includes: leaf key)
                 ifTrue: [ gatesStream nextPutAll: '~ ' ]
                 ifFalse: [
-                    newNotes add: leaf asMidiNote.
+                    newNotes add: leaf key asMidiNote.
                     gatesStream
-                        nextPutAll: leaf;
+                        nextPutAll: leaf key;
                         nextPut: $  ] ].
         cycleLengths addAllLast: newCycleLengths.
-        notesStream addAllLast: newNotes ].
+        notesStream addAllLast: newNotes.
+        divisorsStream addAllLast: newDivisors ].
     seq := gatesStream contents trimBoth asSeqGates asSeq.
     seq notes: notesStream asArray.
     seq cycleLengths: cycleLengths asArray.
+    seq divisors: divisorsStream asArray.
     ^ seq
 ]
 
@@ -700,11 +705,11 @@ ByteString >> parseChordWithoutRoot [
 
 { #category : '*Coypu' }
 ByteString >> parseTidalLeaves [
-
-	  "Recursively flatten a slot into leaf tokens.
-     'bd' => #('bd')
-     '[sd*3]' => #('sd' 'sd' 'sd')
-     '[cp [ht lt]]' => #('cp' 'ht' 'lt')"
+    "Recursively flatten a slot into leaf tokens as Associations.
+     'bd' => #('bd'->1)
+     '[sd*3]' => #('sd'->1 'sd'->1 'sd'->1)
+     '60/4' => #('60'->4)
+     '[cp [ht lt]]' => #('cp'->1 'ht'->1 'lt'->1)"
     | inner slots leaves |
     inner := self trimBoth.
     (inner beginsWith: '[') ifTrue: [
@@ -716,9 +721,15 @@ ByteString >> parseTidalLeaves [
             ifTrue: [ leaves addAll: s parseTidalLeaves ]
             ifFalse: [
                 (s includes: $*)
-                    ifTrue: [ s getMultiplier timesRepeat: [
-                        leaves add: (s copyUpTo: $*) ] ]
-                    ifFalse: [ leaves add: s ] ] ].
+                    ifTrue: [
+                        s getMultiplier timesRepeat: [ 
+                            leaves add: (s copyUpTo: $*) -> 1 ] ]
+                    ifFalse: [
+                        (s includes: $/)
+                            ifTrue: [ | parts |
+                                parts := s substrings: $/.
+                                leaves add: parts first -> parts second asInteger ]
+                            ifFalse: [ leaves add: s -> 1 ] ] ] ].
     ^ leaves
 ]
 

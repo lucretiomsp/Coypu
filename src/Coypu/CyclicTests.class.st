@@ -1,5 +1,5 @@
 Class {
-	#name : 'CycleTests',
+	#name : 'CyclicTests',
 	#superclass : 'TestCase',
 	#category : 'Coypu-Tests',
 	#package : 'Coypu',
@@ -7,7 +7,7 @@ Class {
 }
 
 { #category : 'tests' }
-CycleTests >> testArrayAsCycleDuration [
+CyclicTests >> testArrayAsCycleDuration [
 
 	| array expectedResult |
 	array := #( 60 60 60 #( 60 #(60 60))).
@@ -16,7 +16,7 @@ CycleTests >> testArrayAsCycleDuration [
 ]
 
 { #category : 'tests' }
-CycleTests >> testCycleOf3QuarterNotesAnd2Quavers [
+CyclicTests >> testCycleOf3QuarterNotesAnd2Quavers [
 
 	| s expectedResult |
 	s := #( 60 60 60 #( 60 60 ) ).
@@ -32,7 +32,7 @@ CycleTests >> testCycleOf3QuarterNotesAnd2Quavers [
 ]
 
 { #category : 'tests' }
-CycleTests >> testCycleOfQuarterNotes [
+CyclicTests >> testCycleOfQuarterNotes [
 
 	| s expectedResult |
 	s := #( 48 59 76 88 ) asCycleDurations.

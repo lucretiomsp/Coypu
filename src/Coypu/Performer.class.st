@@ -101,16 +101,16 @@ Performer >> play [
 
 { #category : 'playing' }
 Performer >> playCyclicFor: aNumberOfCycles [
-   
+  
     | cycleMicros startMicros cycleStart waitNextCycle |
     startMicros := Time microsecondClockValue.
     performance activeProcess: ([
         1 to: aNumberOfCycles do: [ :cycleIndex |
-            cycleMicros := (performance freq * 1_000_000 * 4) asInteger.
+            cycleMicros := (performance freq * 1_000_000 * 16) asInteger.
             cycleStart := startMicros + ((cycleIndex - 1) * cycleMicros).
             performance valuesDo: [ :seq |
                 | events |
-                events := seq queryFrom: 0 to: 1.
+                events := seq queryFrom: 0 to: 1 cycle: cycleIndex.
                 events do: [ :event |
                     | eventMicros |
                     eventMicros := cycleStart + (event onset * cycleMicros) asInteger.
@@ -123,6 +123,17 @@ Performer >> playCyclicFor: aNumberOfCycles [
             waitNextCycle := (cycleStart + cycleMicros) - Time microsecondClockValue max: 0.
             (Delay forMilliseconds: waitNextCycle // 1000) wait ]
     ] forkAt: Processor timingPriority - 1)
+]
+
+{ #category : 'playing' }
+Performer >> playCyclicSyncFor: aNumberOfCycles [
+   
+    1 to: aNumberOfCycles do: [ :cycleIndex |
+        performance valuesDo: [ :seq |
+            | events |
+            events := seq queryFrom: 0 to: 1 cycle: cycleIndex.
+            events do: [ :event |
+                self playEventAt: event value in: seq ] ] ]
 ]
 
 { #category : 'accessing' }

@@ -38,7 +38,8 @@ Class {
 		'slotIndex',
 		'subStep',
 		'phaustoGateDestinations',
-		'phaustoNoteDestinations'
+		'phaustoNoteDestinations',
+		'divisors'
 	],
 	#classInstVars : [
 		'orbit'
@@ -369,6 +370,18 @@ Sequencer >> distortion: aStringOrAnArray [
 	self extra: #Distortion values: aStringOrAnArray asDirtArrayOfValues
 ]
 
+{ #category : 'accessing' }
+Sequencer >> divisors [
+
+^ divisors
+]
+
+{ #category : 'accessing' }
+Sequencer >> divisors: anArray [
+
+divisors := anArray 
+]
+
 { #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> djf: aFloatOrAnArray [
 	"Made by Alex McLean. A fun classic DJ Filter. Low pass filter for the first half of the range, high pass for the rest:"
@@ -592,6 +605,7 @@ Sequencer >> initialize [
 	subStep := 0.
 	speed := 1.
 	cycleLengths := #( 1 ).
+	divisors := #(1).
 	"for Super Dirt"
 	dirtMessage
 		at: 'cps'
@@ -1096,6 +1110,12 @@ Sequencer >> progression: anArrayOfIntervals [
 { #category : 'querying' }
 Sequencer >> queryFrom: t1 to: t2 [
 
+  ^ self queryFrom: t1 to: t2 cycle: 1
+]
+
+{ #category : 'querying' }
+Sequencer >> queryFrom: t1 to: t2 cycle: cycleIndex [
+  
     | events n arc noteIdx onset |
     events := OrderedCollection new.
     n := gates size.
@@ -1103,13 +1123,17 @@ Sequencer >> queryFrom: t1 to: t2 [
     noteIdx := 1.
     onset := 0.
     1 to: n do: [ :i |
-        | duration |
+        | duration divisor |
         duration := (cycleLengths isNil or: [ cycleLengths isEmpty ])
             ifTrue: [ 1 / n ]
             ifFalse: [ 1 / (cycleLengths at: i) ].
+        divisor := (divisors isNil or: [ divisors isEmpty ])
+            ifTrue: [ 1 ]
+            ifFalse: [ divisors at: i ].
         (gates at: i) = 1 ifTrue: [
-            (arc includesTime: onset) ifTrue: [
-                events add: (CoyEvent onset: onset value: noteIdx) ].
+            ((arc includesTime: onset) and: [ cycleIndex \\ divisor = 0 ])
+                ifTrue: [
+                    events add: (CoyEvent onset: onset value: noteIdx) ].
             noteIdx := noteIdx + 1 ].
         onset := onset + duration ].
     ^ events
