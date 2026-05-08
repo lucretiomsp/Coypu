@@ -722,12 +722,12 @@ ByteString >> parseTidalLeaves [
             ifFalse: [
                 (s includes: $*)
                     ifTrue: [
-                        s getMultiplier timesRepeat: [ 
+                        s getMultiplier timesRepeat: [
                             leaves add: (s copyUpTo: $*) -> 1 ] ]
                     ifFalse: [
                         (s includes: $/)
                             ifTrue: [ | parts |
-                                parts := s substrings: $/.
+                                parts := s splitOn: $/.
                                 leaves add: parts first -> parts second asInteger ]
                             ifFalse: [ leaves add: s -> 1 ] ] ] ].
     ^ leaves
