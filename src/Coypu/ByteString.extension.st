@@ -365,22 +365,23 @@ ByteString >> asMondoIndex [
 
 { #category : '*Coypu' }
 ByteString >> asMondoNotes [
-| performer |
-performer := Performance uniqueInstance performer.
- ^ self asMondoPatternDo: [ :leaf :sounds :index |
-        sounds add: leaf key asMidiNote.
-        index add: performer defaultNote ]
+
+	| performer |
+	performer := Performance uniqueInstance performer.
+	^ self asMondoPatternDo: [ :leaf :sounds :index |
+			  sounds add: leaf key asMidiNote.
+			  ]
 ]
 
 { #category : '*Coypu' }
 ByteString >> asMondoPatternDo: aBlock [
-    "Shared Tidal mini-notation parser. aBlock receives (leaf, notesCollection, indicesCollection)."
-    | topSlots cycleLengths gatesStream notesStream indicesStream divisorsStream seq |
+    "Shared Mondo mini-notation parser. aBlock receives (leaf, notesCollection, indexCollection)."
+    | topSlots cycleLengths gatesStream notesStream indexStream divisorsStream seq |
     topSlots := self splitTopLevelSlots.
     cycleLengths := OrderedCollection new.
     gatesStream := WriteStream on: String new.
     notesStream := OrderedCollection new.
-    indicesStream := OrderedCollection new.
+    indexStream := OrderedCollection new.
     divisorsStream := OrderedCollection new.
     topSlots do: [ :slot |
         | leaves slotCycleLength |
@@ -389,18 +390,18 @@ ByteString >> asMondoPatternDo: aBlock [
         leaves do: [ :leaf |
             cycleLengths add: slotCycleLength.
             divisorsStream add: leaf value.
-            (#('~' '-') includes: leaf key)
+            (#( '~' '-' ) includes: leaf key)
                 ifTrue: [ gatesStream nextPutAll: '~ ' ]
                 ifFalse: [
-                    aBlock value: leaf value: notesStream value: indicesStream.
+                    aBlock value: leaf value: notesStream value: indexStream.
                     gatesStream
                         nextPutAll: leaf key;
                         nextPut: $  ] ] ].
     seq := gatesStream contents trimBoth asSeqGates asSeq.
     seq notes: notesStream asArray.
-    seq index: indicesStream asArray.
     seq cycleLengths: cycleLengths asArray.
     seq divisors: divisorsStream asArray.
+    indexStream isEmpty ifFalse: [ seq index: indexStream asArray ].
     ^ seq
 ]
 
