@@ -100,6 +100,46 @@ Performer >> noteFromSoundToken: aString [
     ^ self defaultNote
 ]
 
+{ #category : 'playing' }
+Performer >> oldPlayFor: aNumberOfSteps [
+
+	| nextStepMicros stepMicros nowMicros waitMicros waitMillis startMicros |
+	"Initial BPM (will update automatically when freq changes)"
+	performance bpm: 60 / (performance freq * 4).
+	performance transportStep: 0.
+
+	"Monotonic baseline time"
+	startMicros := Time microsecondClockValue.
+	performance activeProcess: ([
+			 nextStepMicros := startMicros.
+
+			 1 to: aNumberOfSteps do: [ :stepIndex | "Recompute step duration dynamically"
+					 stepMicros := (performance freq * 1_000_000) asInteger.
+
+					 "Accumulate next timestamp"
+					 nextStepMicros := nextStepMicros + stepMicros.
+
+					 nowMicros := Time microsecondClockValue.
+					 waitMicros := nextStepMicros - nowMicros max: 0.
+					 waitMillis := waitMicros // 1000.
+
+					 "Sequencer scan"
+					 (Delay forMilliseconds: waitMillis) wait.
+
+					 [
+						 performance valuesDo: [ :seq |
+								 (seq gates wrap: performance transportStep) = 1 ifTrue: [
+										 self playEventAt: seq noteIndex in: seq.
+
+										 "increment note Index"
+										 seq noteIndex: seq noteIndex + 1 ] ] ] forkAt:
+						 Processor timingPriority - 2.
+
+					 "step is incremented anyway"
+					 performance incrementTransportStep ] ] forkAt:
+			 Processor timingPriority - 1)
+]
+
 { #category : 'accessing' }
 Performer >> performance [
 ^ performance
@@ -156,43 +196,24 @@ self subclassResponsibility
 
 { #category : 'playing' }
 Performer >> playFor: aNumberOfSteps [
-
-	| nextStepMicros stepMicros nowMicros waitMicros waitMillis startMicros |
-	"Initial BPM (will update automatically when freq changes)"
-	
-
-	performance bpm: 60 / (performance freq * 4).
-	performance transportStep: 0.
-
-	"Monotonic baseline time"
-	startMicros := Time microsecondClockValue.
-	performance activeProcess: ([
-			 nextStepMicros := startMicros.
-
-			 1 to: aNumberOfSteps do: [ :stepIndex | "Recompute step duration dynamically"
-					 stepMicros := (performance freq * 1_000_000) asInteger.
-
-					 "Accumulate next timestamp"
-					 nextStepMicros := nextStepMicros + stepMicros.
-
-					 nowMicros := Time microsecondClockValue.
-					 waitMicros := nextStepMicros - nowMicros max: 0.
-					 waitMillis := waitMicros // 1000.
-
-					 "Sequencer scan"
-					 (Delay forMilliseconds: waitMillis) wait.
-
-					 [
-						 performance valuesDo: [ :seq |
-								 (seq gates wrap: performance transportStep) = 1 ifTrue: [
-										 self playEventAt: seq noteIndex in: seq.
-
-										 "increment note Index"
-										 seq noteIndex: seq noteIndex + 1 ] ] ] forkAt:
-						 Processor timingPriority - 2.
-
-					 "step is incremented anyway" performance incrementTransportStep ] ] forkAt:
-			 Processor timingPriority - 1)
+    | nextStepMicros stepMicros nowMicros waitMicros waitMillis startMicros |
+    performance bpm: 60 / (performance freq * 4).
+    performance transportStep: 0.
+    startMicros := Time microsecondClockValue.
+    performance activeProcess: ([
+        nextStepMicros := startMicros.
+        1 to: aNumberOfSteps do: [ :stepIndex |
+            stepMicros := (performance freq * 1_000_000) asInteger.
+            nextStepMicros := nextStepMicros + stepMicros.
+            nowMicros := Time microsecondClockValue.
+            waitMicros := nextStepMicros - nowMicros max: 0.
+            waitMillis := waitMicros // 1000.
+            (Delay forMilliseconds: waitMillis) wait.
+            [ performance valuesDo: [ :seq |
+                seq player playStepOn: self with: seq at: performance transportStep ] ]
+                forkAt: Processor timingPriority - 2.
+            performance incrementTransportStep ] ]
+        forkAt: Processor timingPriority - 1)
 ]
 
 { #category : 'playing' }

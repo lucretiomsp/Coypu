@@ -39,7 +39,8 @@ Class {
 		'subStep',
 		'phaustoGateDestinations',
 		'phaustoNoteDestinations',
-		'divisors'
+		'divisors',
+		'player'
 	],
 	#classInstVars : [
 		'orbit'
@@ -592,6 +593,7 @@ Sequencer >> index: anArrayOfIndexes to: aKeyInPerformance [
 Sequencer >> initialize [
 
 	super initialize.
+	player := SequencerPlayerLinear new.
 	isPoly := false.
 	"by defaul gateTime is 0.9"
 	gateTimes := #( 0.9 ).
@@ -605,7 +607,7 @@ Sequencer >> initialize [
 	subStep := 0.
 	speed := 1.
 	cycleLengths := #( 1 ).
-	divisors := #(1).
+	divisors := #( 1 ).
 	"for Super Dirt"
 	dirtMessage
 		at: 'cps'
