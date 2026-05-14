@@ -18,8 +18,8 @@ PerformerLocal >> play [
 { #category : 'accessing' }
 PerformerLocal >> playEventAt: anIndex in: aSequencer [
 
-| aSequence gateTime value note |
-aSequence key asString
+|  gateTime value note |
+aSequencer seqKey asString
 								  toLocalAsGate: gateTime
 									  *
 									  (value durations at:

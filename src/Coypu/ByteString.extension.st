@@ -365,12 +365,12 @@ ByteString >> asMondoIndex [
 
 { #category : '*Coypu' }
 ByteString >> asMondoNotes [
-
 	| performer seq |
 	performer := Performance uniqueInstance performer.
-	"seq player: SequencerPlayerCyclic new."
-	^ self asMondoPatternDo: [ :leaf :sounds :index |
-		  sounds add: leaf key asMidiNote ]
+	seq := self asMondoPatternDo: [ :leaf :sounds :index |
+		sounds add: leaf key asMidiNote ].
+	seq player: SequencerPlayerCyclic new.
+	^ seq
 ]
 
 { #category : '*Coypu' }

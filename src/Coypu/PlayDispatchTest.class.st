@@ -1,17 +1,27 @@
 Class {
 	#name : 'PlayDispatchTest',
 	#superclass : 'TestCase',
+	#instVars : [
+		'perf'
+	],
 	#category : 'Coypu-Tests',
 	#package : 'Coypu',
 	#tag : 'Tests'
 }
 
+{ #category : 'running' }
+PlayDispatchTest >> setUp [
+
+	super setUp.
+	perf := Performance uniqueInstance performer: MockPerformer new.
+	perf removeAll
+]
+
 { #category : 'tests' }
 PlayDispatchTest >> testCyclicPlayerFiresOnQuery [
-	| seq perf |
-	perf := Performance uniqueInstance performer: PerformerLocal new.
-	seq := 'c4 e4 g4' asMondoNotes.  "cyclic"
-	seq to: perf.
+
+'c4 e4 g4' asMondoNotes to: #kick.
+	
 	perf performer playStepSync.
 	self assert: perf performer playedEvents size equals: 1
 ]
@@ -28,8 +38,8 @@ PlayDispatchTest >> testCyclicPlayerWiring [
 { #category : 'tests' }
 PlayDispatchTest >> testLinearPlayerFiresOnGate [
 
-	| seq perf |
-	perf := Performance uniqueInstance performer: PerformerLocal new.
+	| seq  |
+
 	seq := '60 62 64' asDirtNotes. "linear by default"
 	seq to: perf.
 	perf performer playStepSync.
