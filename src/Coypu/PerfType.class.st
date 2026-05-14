@@ -36,6 +36,18 @@ PerfType >> addSequencer: aSequencer to: aSymbol [
 ]
 
 { #category : 'playing' }
+PerfType >> playCyclicFor: aNumberOfSteps [
+	" reset all the Sequencers , just on performance at once"
+
+	| perf |
+	perf := Performance uniqueInstance.
+	perf activeProcess isTerminated ifTrue: [
+		perf performer playCyclicFor: aNumberOfSteps ].
+
+	perf resetAllSequencers
+]
+
+{ #category : 'playing' }
 PerfType >> playFor: aNumberOfSteps [
 	" reset all the Sequencers , just on performance at once"
 
