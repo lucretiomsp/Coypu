@@ -43,6 +43,18 @@ MondoParserTest >> testAsMondoSoundsDefaultIndex [
 ]
 
 { #category : 'tests' }
+MondoParserTest >> testAsMondoSoundsPhaustoDestinations [
+    | seq |
+    seq := 'bd [sd*3] cp' asMondoSounds.
+    self assert: (seq phaustoGateDestinations includes: 'bdTrigger').
+    self assert: (seq phaustoGateDestinations includes: 'sdTrigger').
+    self assert: (seq phaustoGateDestinations includes: 'cpTrigger').
+    self assert: (seq phaustoNoteDestinations includes: 'bdFreq').
+    self assert: (seq phaustoNoteDestinations includes: 'sdFreq').
+    self assert: (seq phaustoNoteDestinations includes: 'cpFreq').
+]
+
+{ #category : 'tests' }
 MondoParserTest >> testAsMondoSoundsWithDivisor [
     | seq |
     seq := 'bd sd/4 cp' asMondoSounds.

@@ -416,6 +416,11 @@ ByteString >> asMondoSounds [
         soundNames add: (name copyUpTo: $:).
         notes add: (performer noteFromSoundToken: name) ].
     seq sound: (soundNames asArray joinUsing: ' ').
+    soundNames do: [ :name |
+    seq phaustoGateDestinations: (String streamContents: [ :s |
+        s nextPutAll: name; nextPutAll: 'Trigger' ]).
+    seq phaustoNoteDestinations: (String streamContents: [ :s |
+        s nextPutAll: name; nextPutAll: 'Freq' ]) ].
     ^ seq
 ]
 
