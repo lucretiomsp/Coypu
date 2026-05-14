@@ -396,6 +396,17 @@ Performance >> play [
 ]
 
 { #category : 'playing' }
+Performance >> playCyclicFor: aNumberOfSteps [
+	"what happens depends on the Performance type! "
+
+	<onTheFlyEssentials>
+	self class performanceType playCyclicFor: aNumberOfSteps.
+	"self class performanceType asString traceCr"
+	self logger stream << 'UZU PERFORMANCE STARTED WITH: '
+	<< self class performanceType asString
+]
+
+{ #category : 'playing' }
 Performance >> playFor: aNumberOfSteps [
 	"what happens depends on the Performance type! "
 
