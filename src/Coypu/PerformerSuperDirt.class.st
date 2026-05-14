@@ -9,6 +9,12 @@ Class {
 	#tag : 'Performer'
 }
 
+{ #category : 'accessing' }
+PerformerSuperDirt >> defaultNote [ 
+
+^ 0
+]
+
 { #category : 'playing' }
 PerformerSuperDirt >> play [
 	"play the performance for almost 4 days at 120 bpm"

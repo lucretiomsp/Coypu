@@ -55,6 +55,12 @@ Performer >> checkStepFor: aSequencer [
 	(aSequencer gates wrap: currentStep) = 1 ifTrue: [ self playNoteFor: aSequencer ]
 ]
 
+{ #category : 'accessing' }
+Performer >> defaultNote [
+
+^ 60
+]
+
 { #category : 'LiveCoding-ExtraParams' }
 Performer >> index: aStringOrAnArray to: aSequencer [
 aSequencer extra: #Index values: aStringOrAnArray asDirtArrayOfValues.

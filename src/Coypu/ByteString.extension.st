@@ -426,6 +426,53 @@ ByteString >> asTidalNotes [
 ]
 
 { #category : '*Coypu' }
+ByteString >> asTidalPatternDo: aBlock [
+    "Shared Tidal mini-notation parser. aBlock receives (leaf, notesCollection, indicesCollection)."
+    | topSlots cycleLengths gatesStream notesStream indicesStream divisorsStream seq |
+    topSlots := self splitTopLevelSlots.
+    cycleLengths := OrderedCollection new.
+    gatesStream := WriteStream on: String new.
+    notesStream := OrderedCollection new.
+    indicesStream := OrderedCollection new.
+    divisorsStream := OrderedCollection new.
+    topSlots do: [ :slot |
+        | leaves slotCycleLength |
+        leaves := slot parseTidalLeaves.
+        slotCycleLength := topSlots size * leaves size.
+        leaves do: [ :leaf |
+            cycleLengths add: slotCycleLength.
+            divisorsStream add: leaf value.
+            (#('~' '-') includes: leaf key)
+                ifTrue: [ gatesStream nextPutAll: '~ ' ]
+                ifFalse: [
+                    aBlock value: leaf value: notesStream value: indicesStream.
+                    gatesStream
+                        nextPutAll: leaf key;
+                        nextPut: $  ] ] ].
+    seq := gatesStream contents trimBoth asSeqGates asSeq.
+    seq notes: notesStream asArray.
+    seq index: indicesStream asArray.
+    seq cycleLengths: cycleLengths asArray.
+    seq divisors: divisorsStream asArray.
+    ^ seq
+]
+
+{ #category : '*Coypu' }
+ByteString >> asTidalSounds [
+    ^ self asTidalPatternDo: [ :leaf :sounds :indices |
+        | name |
+        name := leaf key.
+        (name includes: $:)
+            ifTrue: [ | parts |
+                parts := name splitOn: $:.
+                sounds add: parts first.
+                indices add: parts second asInteger ]
+            ifFalse: [
+                sounds add: name.
+                indices add: 0 ] ]
+]
+
+{ #category : '*Coypu' }
 ByteString >> asVerticalFaderLocal: aRange [
 
 	| fader |
