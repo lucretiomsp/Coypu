@@ -228,6 +228,13 @@ Performer >> playNoteFor: aSequencer [
 	self subclassResponsibility
 ]
 
+{ #category : 'playing' }
+Performer >> playStepSync [
+	performance valuesDo: [ :seq |
+		seq player playStepOn: self with: seq at: performance transportStep ].
+	performance incrementTransportStep
+]
+
 { #category : 'initialization' }
 Performer >> resetPerformance [
 

@@ -366,11 +366,11 @@ ByteString >> asMondoIndex [
 { #category : '*Coypu' }
 ByteString >> asMondoNotes [
 
-	| performer |
+	| performer seq |
 	performer := Performance uniqueInstance performer.
+	"seq player: SequencerPlayerCyclic new."
 	^ self asMondoPatternDo: [ :leaf :sounds :index |
-			  sounds add: leaf key asMidiNote.
-			  ]
+		  sounds add: leaf key asMidiNote ]
 ]
 
 { #category : '*Coypu' }
@@ -407,21 +407,27 @@ ByteString >> asMondoPatternDo: aBlock [
 
 { #category : '*Coypu' }
 ByteString >> asMondoSounds [
-    | seq soundNames performer |
-    performer := Performance uniqueInstance performer.
-    soundNames := OrderedCollection new.
-    seq := self asMondoPatternDo: [ :leaf :notes :index |
-        | name |
-        name := leaf key.
-        soundNames add: (name copyUpTo: $:).
-        notes add: (performer noteFromSoundToken: name) ].
-    seq sound: (soundNames asArray joinUsing: ' ').
-    soundNames do: [ :name |
-    seq phaustoGateDestinations: (String streamContents: [ :s |
-        s nextPutAll: name; nextPutAll: 'Trigger' ]).
-    seq phaustoNoteDestinations: (String streamContents: [ :s |
-        s nextPutAll: name; nextPutAll: 'Freq' ]) ].
-    ^ seq
+
+	| seq soundNames performer |
+	performer := Performance uniqueInstance performer.
+	soundNames := OrderedCollection new.
+	seq := self asMondoPatternDo: [ :leaf :notes :index |
+			       | name |
+			       name := leaf key.
+			       soundNames add: (name copyUpTo: $:).
+			       notes add: (performer noteFromSoundToken: name) ].
+	seq sound: (soundNames asArray joinUsing: ' ').
+	soundNames do: [ :name |
+			seq phaustoGateDestinations: (String streamContents: [ :s |
+						 s
+							 nextPutAll: name;
+							 nextPutAll: 'Trigger' ]).
+			seq phaustoNoteDestinations: (String streamContents: [ :s |
+						 s
+							 nextPutAll: name;
+							 nextPutAll: 'Freq' ]) ].
+					seq player: SequencerPlayerCyclic new.
+	^ seq
 ]
 
 { #category : '*Coypu' }

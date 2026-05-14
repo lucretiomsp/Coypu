@@ -1084,6 +1084,17 @@ Sequencer >> playToDirt: aNumberOfSteps rate: aRateInSeconds [
 	^ process
 ]
 
+{ #category : 'accessing' }
+Sequencer >> player [ 
+^ player
+]
+
+{ #category : 'accessing' }
+Sequencer >> player: aSequencerPlayer [ 
+
+player := aSequencerPlayer 
+]
+
 { #category : 'printing' }
 Sequencer >> printOn: aStream [
 
