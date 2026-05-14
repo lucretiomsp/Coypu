@@ -412,16 +412,8 @@ ByteString >> asMondoSounds [
     seq := self asMondoPatternDo: [ :leaf :notes :index |
         | name |
         name := leaf key.
-        (name includes: $:)
-            ifTrue: [ | parts |
-                parts := name splitOn: $:.
-                soundNames add: parts first.
-                index add: parts second asInteger.
-                notes add: performer defaultNote ]
-            ifFalse: [
-                soundNames add: name.
-                index add: 0.
-                notes add: performer defaultNote ] ].
+        soundNames add: (name copyUpTo: $:).
+        notes add: (performer noteFromSoundToken: name) ].
     seq sound: (soundNames asArray joinUsing: ' ').
     ^ seq
 ]

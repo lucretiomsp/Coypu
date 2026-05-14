@@ -18,10 +18,9 @@ MondoParserTest >> setUp [
 MondoParserTest >> testAsMondoNotes [
     | seq |
     seq := 'c4 [e4*3] [g4 b4]' asMondoNotes.
-    self assert: seq cycleLengths equals: #(1 3 2).
+    self assert: seq cycleLengths equals: #(3 9 9 9 6 6).
     self assert: seq notes size equals: 6.
     self assert: seq gates size equals: 6.
-
 ]
 
 { #category : 'tests' }
@@ -53,10 +52,10 @@ MondoParserTest >> testAsMondoSoundsWithDivisor [
 
 { #category : 'tests' }
 MondoParserTest >> testParseMondoLeaves [
-    self assert: ('bd' parseMondoLeaves) asArray equals: #('bd').
-    self assert: ('[sd*3]' parseMondoLeaves) asArray equals: #('sd' 'sd' 'sd').
-    self assert: ('[cp [ht lt]]' parseMondoLeaves) asArray equals: #('cp' 'ht' 'lt').
-    self assert: ('[~ bd]' parseMondoLeaves) asArray equals: #('~' 'bd').
+    self assert: ('bd' parseMondoLeaves) asArray equals: { 'bd' -> 1 }.
+    self assert: ('[sd*3]' parseMondoLeaves) asArray equals: { 'sd' -> 1. 'sd' -> 1. 'sd' -> 1 }.
+    self assert: ('[cp [ht lt]]' parseMondoLeaves) asArray equals: { 'cp' -> 1. 'ht' -> 1. 'lt' -> 1 }.
+    self assert: ('[~ bd]' parseMondoLeaves) asArray equals: { '~' -> 1. 'bd' -> 1 }.
 ]
 
 { #category : 'tests' }

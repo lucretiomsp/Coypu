@@ -95,6 +95,12 @@ nextTargetMicros := aMicroSecondsValue
 ]
 
 { #category : 'accessing' }
+Performer >> noteFromSoundToken: aString [
+    "Standard performer ignores :n, always returns defaultNote"
+    ^ self defaultNote
+]
+
+{ #category : 'accessing' }
 Performer >> performance [
 ^ performance
 ]

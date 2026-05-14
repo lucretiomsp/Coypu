@@ -11,11 +11,9 @@ Class {
 
 { #category : 'running' }
 SequencerTest >> setUp [
-
+  super setUp.
 	sequencer := 8 downbeats.
-	
-
-	"Put here a common initialization logic for tests"
+	Performance uniqueInstance performer: Performer new.
 ]
 
 { #category : 'tests' }
@@ -101,7 +99,7 @@ SequencerTest >> testChords [
 { #category : 'tests' }
 SequencerTest >> testDivisorFiresOnCorrectCycle [
     | seq events |
-    seq := 'c4 e4/2 g4' asTidalNotes.
+    seq := 'c4 e4/2 g4' asMondoNotes.
     "cycle 1 - e4 should not fire"
     events := seq queryFrom: 0 to: 1 cycle: 1.
     self assert: events size equals: 2.
@@ -112,7 +110,7 @@ SequencerTest >> testDivisorFiresOnCorrectCycle [
 { #category : 'tests' }
 SequencerTest >> testDivisorFiresOnEvenCycle [
     | seq events |
-    seq := 'c4 e4/2 g4' asTidalNotes.
+    seq := 'c4 e4/2 g4' asMondoNotes.
     "cycle 2 - e4 should fire"
     events := seq queryFrom: 0 to: 1 cycle: 2.
     self assert: events size equals: 3.
@@ -124,7 +122,7 @@ SequencerTest >> testDivisorFiresOnEvenCycle [
 { #category : 'tests' }
 SequencerTest >> testDivisorOf4 [
     | seq events |
-    seq := 'c4 e4/4 g4' asTidalNotes.
+    seq := 'c4 e4/4 g4' asMondoNotes.
     "cycles 1,2,3 - e4 silent"
     self assert: (seq queryFrom: 0 to: 1 cycle: 1) size equals: 2.
     self assert: (seq queryFrom: 0 to: 1 cycle: 2) size equals: 2.
@@ -159,7 +157,7 @@ self assert: (Sequencer new orbit > 0) & (Sequencer new orbit < 12) equals: true
 { #category : 'tests' }
 SequencerTest >> testMultipleCyclesFireCorrectEvents [
     | seq |
-    seq := 'c4 e4 g4' asTidalNotes.
+    seq := 'c4 e4 g4' asMondoNotes.
     "same events every cycle"
     1 to: 4 do: [ :i |
         self assert: (seq queryFrom: 0 to: 1 cycle: i) size equals: 3 ].
@@ -168,13 +166,13 @@ SequencerTest >> testMultipleCyclesFireCorrectEvents [
 
 { #category : 'tests' }
 SequencerTest >> testNoDivisorDefaultsToOne [
-    | seq events |
-    seq := 'c4 e4 g4' asTidalNotes.
-    "all events fire every cycle"
-    self assert: (seq queryFrom: 0 to: 1 cycle: 1) size equals: 3.
-    self assert: (seq queryFrom: 0 to: 1 cycle: 2) size equals: 3.
-    self assert: (seq queryFrom: 0 to: 1 cycle: 5) size equals: 3.
 
+	| seq  |
+	seq := 'c4 e4 g4' asMondoNotes.
+	"all events fire every cycle"
+	self assert: (seq queryFrom: 0 to: 1 cycle: 1) size equals: 3.
+	self assert: (seq queryFrom: 0 to: 1 cycle: 2) size equals: 3.
+	self assert: (seq queryFrom: 0 to: 1 cycle: 5) size equals: 3
 ]
 
 { #category : 'tests' }
@@ -197,41 +195,45 @@ self assert: 16 downbeats printString equals: result.
 
 { #category : 'tests' }
 SequencerTest >> testQueryFractionalOnsets [
-    | seq events |
-    seq := 'c4 e4 g4' asTidalNotes.
-    events := seq queryFrom: 0 to: 1 cycle: 1.
-    self assert: (events at: 1) onset equals: 0.
-    self assert: (events at: 2) onset equals: 1/3.
-    self assert: (events at: 3) onset equals: 2/3.
+
+	| seq events |
+	seq := 'c4 e4 g4' asMondoNotes.
+	events := seq queryFrom: 0 to: 1 cycle: 1.
+	self assert: (events at: 1) onset equals: 0.
+	self assert: (events at: 2) onset equals: 1 / 3.
+	self assert: (events at: 3) onset equals: 2 / 3
 ]
 
 { #category : 'tests' }
 SequencerTest >> testQueryRespectsGates [
-    | seq events |
-    seq := 'c4 ~ g4' asTidalNotes.
-    events := seq queryFrom: 0 to: 1 cycle: 1.
-    self assert: events size equals: 2.
-    self assert: (events at: 1) value equals: 1.
-    self assert: (events at: 2) value equals: 2.
+
+	| seq events |
+	seq := 'c4 ~ g4' asMondoNotes.
+	events := seq queryFrom: 0 to: 1 cycle: 1.
+	self assert: events size equals: 2.
+	self assert: (events at: 1) value equals: 1.
+	self assert: (events at: 2) value equals: 2
 ]
 
 { #category : 'tests' }
 SequencerTest >> testQueryReturnsAllEvents [
-    | seq events |
-    seq := 'c4 e4 g4' asTidalNotes.
-    events := seq queryFrom: 0 to: 1 cycle: 1.
-    self assert: events size equals: 3.
+
+	| seq events |
+	seq := 'c4 e4 g4' asMondoNotes.
+	events := seq queryFrom: 0 to: 1 cycle: 1.
+	self assert: events size equals: 3
 ]
 
 { #category : 'tests' }
 SequencerTest >> testQuerySubdivision [
-    | seq events |
-    seq := 'c4 [e4 g4]' asTidalNotes.
-    events := seq queryFrom: 0 to: 1 cycle: 1.
-    self assert: events size equals: 3.
-    self assert: (events at: 1) onset equals: 0.
-    self assert: (events at: 2) onset equals: 1/2.
-    self assert: (events at: 3) onset equals: 3/4.
+
+	| seq events |
+	seq := 'c4 [e4 g4]' asMondoNotes.
+	events := seq queryFrom: 0 to: 1 cycle: 1.
+	self assert: events size equals: 3.
+	self assert: (events at: 1) onset equals: 0.
+	self assert: (events at: 2) onset equals: 1 / 2.
+	self assert: (events at: 3) onset equals: 3 / 4
 ]
 
 { #category : 'tests' }

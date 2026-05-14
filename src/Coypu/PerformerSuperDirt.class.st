@@ -15,6 +15,14 @@ PerformerSuperDirt >> defaultNote [
 ^ 0
 ]
 
+{ #category : 'accessing' }
+PerformerSuperDirt >> noteFromSoundToken: aString [
+    "SuperDirt uses :n as the note value"
+    (aString includes: $:)
+        ifTrue: [ ^ (aString splitOn: $:) second asInteger ].
+    ^ self defaultNote
+]
+
 { #category : 'playing' }
 PerformerSuperDirt >> play [
 	"play the performance for almost 4 days at 120 bpm"
