@@ -349,7 +349,7 @@ ByteString >> asMondoIndex [
     allIndices := OrderedCollection new.
     topSlots do: [ :slot |
         | leaves |
-        leaves := slot parseTidalLeaves.
+        leaves := slot parseMondoLeaves.
         cycleLengths add: leaves size.
         leaves do: [ :leaf |
             ((leaf = '~') or: [ leaf = '-' ])
@@ -384,7 +384,7 @@ ByteString >> asMondoPatternDo: aBlock [
     divisorsStream := OrderedCollection new.
     topSlots do: [ :slot |
         | leaves slotCycleLength |
-        leaves := slot parseTidalLeaves.
+        leaves := slot parseMondoLeaves.
         slotCycleLength := topSlots size * leaves size.
         leaves do: [ :leaf |
             cycleLengths add: slotCycleLength.
@@ -406,17 +406,24 @@ ByteString >> asMondoPatternDo: aBlock [
 
 { #category : '*Coypu' }
 ByteString >> asMondoSounds [
-    ^ self asMondoPatternDo: [ :leaf :sounds :indices |
+    | seq soundNames performer |
+    performer := Performance uniqueInstance performer.
+    soundNames := OrderedCollection new.
+    seq := self asMondoPatternDo: [ :leaf :notes :index |
         | name |
         name := leaf key.
         (name includes: $:)
             ifTrue: [ | parts |
                 parts := name splitOn: $:.
-                sounds add: parts first.
-                indices add: parts second asInteger ]
+                soundNames add: parts first.
+                index add: parts second asInteger.
+                notes add: performer defaultNote ]
             ifFalse: [
-                sounds add: name.
-                indices add: 0 ] ]
+                soundNames add: name.
+                index add: 0.
+                notes add: performer defaultNote ] ].
+    seq sound: (soundNames asArray joinUsing: ' ').
+    ^ seq
 ]
 
 { #category : '*Coypu' }
@@ -725,7 +732,7 @@ ByteString >> parseChordWithoutRoot [
 ]
 
 { #category : '*Coypu' }
-ByteString >> parseTidalLeaves [
+ByteString >> parseMondoLeaves [
     "Recursively flatten a slot into leaf tokens as Associations.
      'bd' => #('bd'->1)
      '[sd*3]' => #('sd'->1 'sd'->1 'sd'->1)
@@ -739,7 +746,7 @@ ByteString >> parseTidalLeaves [
     leaves := OrderedCollection new.
     slots do: [ :s |
         (s includes: $[)
-            ifTrue: [ leaves addAll: s parseTidalLeaves ]
+            ifTrue: [ leaves addAll: s parseMondoLeaves ]
             ifFalse: [
                 (s includes: $*)
                     ifTrue: [

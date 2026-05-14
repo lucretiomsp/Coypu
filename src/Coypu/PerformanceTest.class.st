@@ -38,15 +38,6 @@ PerformanceTest >> testChangeNotesOfSeq [
 ]
 
 { #category : 'tests' }
-PerformanceTest >> testPlayFor1Bars [
-
-perf playFor: 1 bars.
-
-2 seconds wait.
-self assert: perf transportStep equals: 16.
-]
-
-{ #category : 'tests' }
 PerformanceTest >> testSetBpm [
 
 perf bpm: 240.

@@ -6,10 +6,18 @@ Class {
 	#tag : 'Tests'
 }
 
+{ #category : 'running' }
+MondoParserTest >> setUp [
+
+	super setUp.
+	Performance uniqueInstance performer: PerformerLocal new
+	
+]
+
 { #category : 'tests' }
 MondoParserTest >> testAsMondoNotes [
     | seq |
-    seq := 'c4 [e4*3] [g4 b4]' asTidalNotes.
+    seq := 'c4 [e4*3] [g4 b4]' asMondoNotes.
     self assert: seq cycleLengths equals: #(1 3 2).
     self assert: seq notes size equals: 6.
     self assert: seq gates size equals: 6.
@@ -18,19 +26,20 @@ MondoParserTest >> testAsMondoNotes [
 
 { #category : 'tests' }
 MondoParserTest >> testAsMondoSounds [
-    | seq |
-    seq := 'bd [sd:2*3] [cp ht]' asMondoSounds.
-    self assert: seq notes size equals: 6.
-    self assert: (seq notes at: 1) equals: 0.
-    self assert: (seq notes at: 2) equals: 2.
-    self assert: seq cycleLengths equals: #(3 9 9 9 6 6).
+
+	| seq |
+	seq := 'bd [sd:2*3] [cp ht]' asMondoSounds.
+	self assert: seq notes size equals: 6.
+	self assert: seq notes  equals: #(60 60 60 60 60 60).
+	
+	self assert: seq cycleLengths equals: #( 3 9 9 9 6 6 )
 ]
 
 { #category : 'tests' }
 MondoParserTest >> testAsMondoSoundsDefaultIndex [
     | seq |
     seq := 'bd cp' asMondoSounds.
-    self assert: seq notes equals: #(0 0).
+    self assert: seq notes equals: #(60 60).
 
 ]
 
@@ -44,10 +53,10 @@ MondoParserTest >> testAsMondoSoundsWithDivisor [
 
 { #category : 'tests' }
 MondoParserTest >> testParseMondoLeaves [
-    self assert: ('bd' parseTidalLeaves) asArray equals: #('bd').
-    self assert: ('[sd*3]' parseTidalLeaves) asArray equals: #('sd' 'sd' 'sd').
-    self assert: ('[cp [ht lt]]' parseTidalLeaves) asArray equals: #('cp' 'ht' 'lt').
-    self assert: ('[~ bd]' parseTidalLeaves) asArray equals: #('~' 'bd').
+    self assert: ('bd' parseMondoLeaves) asArray equals: #('bd').
+    self assert: ('[sd*3]' parseMondoLeaves) asArray equals: #('sd' 'sd' 'sd').
+    self assert: ('[cp [ht lt]]' parseMondoLeaves) asArray equals: #('cp' 'ht' 'lt').
+    self assert: ('[~ bd]' parseMondoLeaves) asArray equals: #('~' 'bd').
 ]
 
 { #category : 'tests' }
