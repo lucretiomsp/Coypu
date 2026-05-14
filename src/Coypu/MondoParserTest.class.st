@@ -7,7 +7,7 @@ Class {
 }
 
 { #category : 'tests' }
-MondoParserTest >> testAsTidalNotes [
+MondoParserTest >> testAsMondoNotes [
     | seq |
     seq := 'c4 [e4*3] [g4 b4]' asTidalNotes.
     self assert: seq cycleLengths equals: #(1 3 2).
@@ -17,9 +17,9 @@ MondoParserTest >> testAsTidalNotes [
 ]
 
 { #category : 'tests' }
-MondoParserTest >> testAsTidalSounds [
+MondoParserTest >> testAsMondoSounds [
     | seq |
-    seq := 'bd [sd:2*3] [cp ht]' asTidalSounds.
+    seq := 'bd [sd:2*3] [cp ht]' asMondoSounds.
     self assert: seq notes size equals: 6.
     self assert: (seq notes at: 1) equals: 0.
     self assert: (seq notes at: 2) equals: 2.
@@ -27,23 +27,23 @@ MondoParserTest >> testAsTidalSounds [
 ]
 
 { #category : 'tests' }
-MondoParserTest >> testAsTidalSoundsDefaultIndex [
+MondoParserTest >> testAsMondoSoundsDefaultIndex [
     | seq |
-    seq := 'bd cp' asTidalSounds.
+    seq := 'bd cp' asMondoSounds.
     self assert: seq notes equals: #(0 0).
 
 ]
 
 { #category : 'tests' }
-MondoParserTest >> testAsTidalSoundsWithDivisor [
+MondoParserTest >> testAsMondoSoundsWithDivisor [
     | seq |
-    seq := 'bd sd/4 cp' asTidalSounds.
+    seq := 'bd sd/4 cp' asMondoSounds.
     self assert: seq divisors equals: #(1 4 1).
     self assert: seq notes size equals: 3.
 ]
 
 { #category : 'tests' }
-MondoParserTest >> testParseTidalLeaves [
+MondoParserTest >> testParseMondoLeaves [
     self assert: ('bd' parseTidalLeaves) asArray equals: #('bd').
     self assert: ('[sd*3]' parseTidalLeaves) asArray equals: #('sd' 'sd' 'sd').
     self assert: ('[cp [ht lt]]' parseTidalLeaves) asArray equals: #('cp' 'ht' 'lt').

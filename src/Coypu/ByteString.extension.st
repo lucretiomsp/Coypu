@@ -341,34 +341,7 @@ ByteString >> asMidiNote [
 ]
 
 { #category : '*Coypu' }
-ByteString >> asPacaAddress [
-
-
-	"set the pacaAddress globally from the corresponding Paca(rana) serial number"
-| serialNumber |
-serialNumber := 'beslime-51.local'.
-	Smalltalk at: #pacaAddress put: (NetNameResolver stringFromAddress:
-			 (NetNameResolver addressForName: serialNumber )).
-	^ NetNameResolver stringFromAddress:
-		  (NetNameResolver addressForName: serialNumber )
-]
-
-{ #category : '*Coypu' }
-ByteString >> asSeqGates [
-	
-| gates tokens|
-
-" return an array of gates and rests, rests corrresponding to the ~ characters in the string"
-gates := OrderedCollection new.
-tokens := self findBetweenSubstrings: ' '.
-tokens do: [ :i | i = '~' ifTrue: [ gates add: 0]  ifFalse: [ gates add: 1  ]  ].
-
-^ gates asArray.
-
-]
-
-{ #category : '*Coypu' }
-ByteString >> asTidalIndex [
+ByteString >> asMondoIndex [
     | topSlots cycleLengths gatesString allIndices seq |
     topSlots := self splitTopLevelSlots.
     cycleLengths := OrderedCollection new.
@@ -391,42 +364,16 @@ ByteString >> asTidalIndex [
 ]
 
 { #category : '*Coypu' }
-ByteString >> asTidalNotes [
-    | topSlots gatesStream cycleLengths notesStream divisorsStream seq |
-    topSlots := self splitTopLevelSlots.
-    gatesStream := WriteStream on: String new.
-    cycleLengths := OrderedCollection new.
-    notesStream := OrderedCollection new.
-    divisorsStream := OrderedCollection new.
-    topSlots do: [ :slot |
-        | leaves slotCycleLength newNotes newCycleLengths newDivisors |
-        leaves := slot parseTidalLeaves.
-        slotCycleLength := topSlots size * leaves size.
-        newNotes := OrderedCollection new.
-        newCycleLengths := OrderedCollection new.
-        newDivisors := OrderedCollection new.
-        leaves do: [ :leaf |
-            newCycleLengths add: slotCycleLength.
-            newDivisors add: leaf value.
-            (#('~' '-') includes: leaf key)
-                ifTrue: [ gatesStream nextPutAll: '~ ' ]
-                ifFalse: [
-                    newNotes add: leaf key asMidiNote.
-                    gatesStream
-                        nextPutAll: leaf key;
-                        nextPut: $  ] ].
-        cycleLengths addAllLast: newCycleLengths.
-        notesStream addAllLast: newNotes.
-        divisorsStream addAllLast: newDivisors ].
-    seq := gatesStream contents trimBoth asSeqGates asSeq.
-    seq notes: notesStream asArray.
-    seq cycleLengths: cycleLengths asArray.
-    seq divisors: divisorsStream asArray.
-    ^ seq
+ByteString >> asMondoNotes [
+| performer |
+performer := Performance uniqueInstance performer.
+ ^ self asMondoPatternDo: [ :leaf :sounds :index |
+        sounds add: leaf key asMidiNote.
+        index add: performer defaultNote ]
 ]
 
 { #category : '*Coypu' }
-ByteString >> asTidalPatternDo: aBlock [
+ByteString >> asMondoPatternDo: aBlock [
     "Shared Tidal mini-notation parser. aBlock receives (leaf, notesCollection, indicesCollection)."
     | topSlots cycleLengths gatesStream notesStream indicesStream divisorsStream seq |
     topSlots := self splitTopLevelSlots.
@@ -458,8 +405,8 @@ ByteString >> asTidalPatternDo: aBlock [
 ]
 
 { #category : '*Coypu' }
-ByteString >> asTidalSounds [
-    ^ self asTidalPatternDo: [ :leaf :sounds :indices |
+ByteString >> asMondoSounds [
+    ^ self asMondoPatternDo: [ :leaf :sounds :indices |
         | name |
         name := leaf key.
         (name includes: $:)
@@ -470,6 +417,33 @@ ByteString >> asTidalSounds [
             ifFalse: [
                 sounds add: name.
                 indices add: 0 ] ]
+]
+
+{ #category : '*Coypu' }
+ByteString >> asPacaAddress [
+
+
+	"set the pacaAddress globally from the corresponding Paca(rana) serial number"
+| serialNumber |
+serialNumber := 'beslime-51.local'.
+	Smalltalk at: #pacaAddress put: (NetNameResolver stringFromAddress:
+			 (NetNameResolver addressForName: serialNumber )).
+	^ NetNameResolver stringFromAddress:
+		  (NetNameResolver addressForName: serialNumber )
+]
+
+{ #category : '*Coypu' }
+ByteString >> asSeqGates [
+	
+| gates tokens|
+
+" return an array of gates and rests, rests corrresponding to the ~ characters in the string"
+gates := OrderedCollection new.
+tokens := self findBetweenSubstrings: ' '.
+tokens do: [ :i | i = '~' ifTrue: [ gates add: 0]  ifFalse: [ gates add: 1  ]  ].
+
+^ gates asArray.
+
 ]
 
 { #category : '*Coypu' }
