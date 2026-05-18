@@ -737,32 +737,36 @@ ByteString >> parseChordWithoutRoot [
 
 { #category : '*Coypu' }
 ByteString >> parseMondoLeaves [
-    "Recursively flatten a slot into leaf tokens as Associations.
-     'bd' => #('bd'->1)
-     '[sd*3]' => #('sd'->1 'sd'->1 'sd'->1)
-     '60/4' => #('60'->4)
-     '[cp [ht lt]]' => #('cp'->1 'ht'->1 'lt'->1)"
-    | inner slots leaves |
-    inner := self trimBoth.
-    (inner beginsWith: '[') ifTrue: [
-        inner := (inner copyFrom: 2 to: inner size - 1) trimBoth ].
-    slots := inner splitTopLevelSlots.
-    leaves := OrderedCollection new.
-    slots do: [ :s |
-        (s includes: $[)
-            ifTrue: [ leaves addAll: s parseMondoLeaves ]
-            ifFalse: [
-                (s includes: $*)
-                    ifTrue: [
-                        s getMultiplier timesRepeat: [
-                            leaves add: (s copyUpTo: $*) -> 1 ] ]
-                    ifFalse: [
-                        (s includes: $/)
-                            ifTrue: [ | parts |
-                                parts := s splitOn: $/.
-                                leaves add: parts first -> parts second asInteger ]
-                            ifFalse: [ leaves add: s -> 1 ] ] ] ].
-    ^ leaves
+	| inner slots leaves |
+	inner := self trimBoth.
+	((inner beginsWith: '[') and: [ inner endsWith: ']' ]) ifTrue: [
+		inner := (inner copyFrom: 2 to: inner size - 1) trimBoth ].
+	slots := inner splitTopLevelSlots.
+	leaves := OrderedCollection new.
+	slots do: [ :s |
+		(s includes: $[)
+			ifTrue: [
+				| starIdx innerPart multiplier subLeaves |
+				starIdx := s indexOf: $*.
+				starIdx = 0
+					ifTrue: [ leaves addAll: s parseMondoLeaves ]
+					ifFalse: [
+						innerPart := s copyFrom: 1 to: starIdx - 1.
+						multiplier := (s copyFrom: starIdx + 1 to: s size) asInteger.
+						subLeaves := innerPart parseMondoLeaves.
+						multiplier timesRepeat: [ leaves addAll: subLeaves ] ] ]
+			ifFalse: [
+				(s includes: $*)
+					ifTrue: [
+						s getMultiplier timesRepeat: [
+							leaves add: (s copyUpTo: $*) -> 1 ] ]
+					ifFalse: [
+						(s includes: $/)
+							ifTrue: [ | parts |
+								parts := s splitOn: $/.
+								leaves add: parts first -> parts second asInteger ]
+							ifFalse: [ leaves add: s -> 1 ] ] ] ].
+	^ leaves
 ]
 
 { #category : '*Coypu' }

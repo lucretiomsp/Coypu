@@ -15,11 +15,14 @@ Class {
 
 { #category : 'playing' }
 SequencerPlayerCyclic >> playStepOn: aPerformer with: seq at: transportStep [
-    | cycleIndex stepInCycle events |
-    cycleIndex := (transportStep // seq gates size) + 1.
-    stepInCycle := transportStep \\ seq gates size.
-    events := seq queryFrom: stepInCycle / seq gates size 
-                  to: (stepInCycle + 1) / seq gates size 
-                  cycle: cycleIndex.
-    events do: [ :ev | aPerformer playEventAt: ev value in: seq ]
+	| stepsPerCycle cycleIndex stepInCycle events |
+	stepsPerCycle := seq stepsPerCycle.
+	cycleIndex := (transportStep // stepsPerCycle) + 1.
+	stepInCycle := transportStep \\ stepsPerCycle.
+	events := seq
+		queryFrom: stepInCycle / stepsPerCycle
+		to: (stepInCycle + 1) / stepsPerCycle
+		cycle: cycleIndex.
+	Transcript show: transportStep printString , ' -> ' , events size printString; cr.
+	events do: [ :ev | aPerformer playEventAt: ev value in: seq ]
 ]

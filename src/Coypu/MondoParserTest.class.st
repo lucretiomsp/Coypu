@@ -71,6 +71,14 @@ MondoParserTest >> testParseMondoLeaves [
 ]
 
 { #category : 'tests' }
+MondoParserTest >> testParseMondoLeavesBracketMultiply [
+	self assert: ('[sd lt]*3' parseMondoLeaves) asArray
+		equals: { 'sd'->1. 'lt'->1. 'sd'->1. 'lt'->1. 'sd'->1. 'lt'->1 }.
+	self assert: ('cp [sd lt]*3' parseMondoLeaves) asArray
+		equals: { 'cp'->1. 'sd'->1. 'lt'->1. 'sd'->1. 'lt'->1. 'sd'->1. 'lt'->1 }
+]
+
+{ #category : 'tests' }
 MondoParserTest >> testSplitTopLevelSlots [
     self assert: ('bd sd cp' splitTopLevelSlots) asArray equals: #('bd' 'sd' 'cp').
     self assert: ('bd [sd*3] cp' splitTopLevelSlots) asArray equals: #('bd' '[sd*3]' 'cp').

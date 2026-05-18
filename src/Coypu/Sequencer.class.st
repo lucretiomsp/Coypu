@@ -1427,6 +1427,12 @@ Sequencer >> stepIndex [
 ]
 
 { #category : 'accessing' }
+Sequencer >> stepsPerCycle [
+
+^ 64
+]
+
+{ #category : 'accessing' }
 Sequencer >> subStep [ 
 ^ subStep 
 ]
