@@ -40,7 +40,10 @@ Class {
 		'phaustoGateDestinations',
 		'phaustoNoteDestinations',
 		'divisors',
-		'player'
+		'player',
+		'rawNotes',
+		'lastResolvedCycle',
+		'resolvedCycles'
 	],
 	#classInstVars : [
 		'orbit'
@@ -595,6 +598,8 @@ Sequencer >> initialize [
 	super initialize.
 	player := SequencerPlayerLinear new.
 	isPoly := false.
+	rawNotes := Array new.
+	notes := Array new.
 	"by defaul gateTime is 0.9"
 	gateTimes := #( 0.9 ).
 	"for Phausto"
@@ -656,6 +661,12 @@ Sequencer >> kymaMessage [
 Sequencer >> kymaMessage: anObject [
 
 	kymaMessage := anObject
+]
+
+{ #category : 'accessing' }
+Sequencer >> lastResolvedCycle [
+
+^ lastResolvedCycle
 ]
 
 { #category : 'LiveCoding-ExtraParams' }
@@ -1126,7 +1137,7 @@ Sequencer >> queryFrom: t1 to: t2 [
   ^ self queryFrom: t1 to: t2 cycle: 1
 ]
 
-{ #category : 'querying' }
+{ #category : 'uzu' }
 Sequencer >> queryFrom: t1 to: t2 cycle: cycleIndex [
   
     | events n arc noteIdx onset |
@@ -1216,6 +1227,19 @@ Sequencer >> ratio: aStringOrAnArray [
 	self extra: #Ratio values: aStringOrAnArray asDirtArrayOfValues 
 ]
 
+{ #category : 'initialization' }
+Sequencer >> rawNotes [ 
+
+^ rawNotes
+]
+
+{ #category : 'initialization' }
+Sequencer >> rawNotes: anArray [
+
+rawNotes := anArray.
+notes := anArray 
+]
+
 { #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> rel: aFloatOrAnArray [
 	" add release ASR envelope pattern to the Sequencer"
@@ -1228,6 +1252,24 @@ Sequencer >> rel: aFloatOrAnArray [
 Sequencer >> removeIndexes [ 
 
 extraParams removeKey: #index ifAbsent: [ ] 
+]
+
+{ #category : 'LiveCoding - sequencer' }
+Sequencer >> resolveCycle: cycleIndex [
+	resolvedCycles ifNotNil: [
+		notes := resolvedCycles at: (cycleIndex - 1) \\ resolvedCycles size + 1.
+		lastResolvedCycle := cycleIndex ]
+]
+
+{ #category : 'accessing' }
+Sequencer >> resolvedCycles [ 
+^ resolvedCycles 
+]
+
+{ #category : 'accessing' }
+Sequencer >> resolvedCycles: anArray [
+
+	resolvedCycles := anArray 
 ]
 
 { #category : 'LiveCoding-ExtraParams' }

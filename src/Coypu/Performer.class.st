@@ -153,28 +153,28 @@ Performer >> play [
 
 { #category : 'playing' }
 Performer >> playCyclicFor: aNumberOfCycles [
-  
-    | cycleMicros startMicros cycleStart waitNextCycle |
-    startMicros := Time microsecondClockValue.
-    performance activeProcess: ([
-        1 to: aNumberOfCycles do: [ :cycleIndex |
-            cycleMicros := (performance freq * 1_000_000 * 16) asInteger.
-            cycleStart := startMicros + ((cycleIndex - 1) * cycleMicros).
-            performance valuesDo: [ :seq |
-                | events |
-                events := seq queryFrom: 0 to: 1 cycle: cycleIndex.
-                events do: [ :event |
-                    | eventMicros |
-                    eventMicros := cycleStart + (event onset * cycleMicros) asInteger.
-                    [
-                        | waitMicros |
-                        waitMicros := eventMicros - Time microsecondClockValue max: 0.
-                        (Delay forMilliseconds: waitMicros // 1000) wait.
-                        self playEventAt: event value in: seq
-                    ] forkAt: Processor timingPriority - 2 ] ].
-            waitNextCycle := (cycleStart + cycleMicros) - Time microsecondClockValue max: 0.
-            (Delay forMilliseconds: waitNextCycle // 1000) wait ]
-    ] forkAt: Processor timingPriority - 1)
+	| cycleMicros startMicros cycleStart waitNextCycle |
+	startMicros := Time microsecondClockValue.
+	performance activeProcess: ([
+		1 to: aNumberOfCycles do: [ :cycleIndex |
+			cycleMicros := (performance freq * 1_000_000 * 16) asInteger.
+			cycleStart := startMicros + (cycleIndex - 1 * cycleMicros).
+			performance valuesDo: [ :seq |
+				| events |
+				seq resolveCycle: cycleIndex.
+				events := seq queryFrom: 0 to: 1 cycle: cycleIndex.
+				events do: [ :event |
+					| eventMicros |
+					eventMicros := cycleStart + (event onset * cycleMicros) asInteger.
+					[
+						| waitMicros |
+						waitMicros := eventMicros - Time microsecondClockValue max: 0.
+						(Delay forMilliseconds: waitMicros // 1000) wait.
+						self playEventAt: event value in: seq ] forkAt:
+						Processor timingPriority - 2 ] ].
+			waitNextCycle := cycleStart + cycleMicros - Time microsecondClockValue max: 0.
+			(Delay forMilliseconds: waitNextCycle // 1000) wait ] ] forkAt:
+		Processor timingPriority - 1)
 ]
 
 { #category : 'playing' }

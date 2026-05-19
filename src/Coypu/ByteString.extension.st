@@ -368,65 +368,68 @@ ByteString >> asMondoNotes [
 	| performer seq |
 	performer := Performance uniqueInstance performer.
 	seq := self asMondoPatternDo: [ :leaf :sounds :index |
-		sounds add: leaf key asMidiNote ].
+		(leaf value isArray and: [ leaf value first class = MondoAlternation ])
+			ifTrue: [ sounds add: leaf value ]
+			ifFalse: [ sounds add: leaf key asMidiNote ] ].
 	seq player: SequencerPlayerCyclic new.
 	^ seq
 ]
 
 { #category : '*Coypu' }
 ByteString >> asMondoPatternDo: aBlock [
-    "Shared Mondo mini-notation parser. aBlock receives (leaf, notesCollection, indexCollection)."
-    | topSlots cycleLengths gatesStream notesStream indexStream divisorsStream seq |
-    topSlots := self splitTopLevelSlots.
-    cycleLengths := OrderedCollection new.
-    gatesStream := WriteStream on: String new.
-    notesStream := OrderedCollection new.
-    indexStream := OrderedCollection new.
-    divisorsStream := OrderedCollection new.
-    topSlots do: [ :slot |
-        | leaves slotCycleLength |
-        leaves := slot parseMondoLeaves.
-        slotCycleLength := topSlots size * leaves size.
-        leaves do: [ :leaf |
-            cycleLengths add: slotCycleLength.
-            divisorsStream add: leaf value.
-            (#( '~' '-' ) includes: leaf key)
-                ifTrue: [ gatesStream nextPutAll: '~ ' ]
-                ifFalse: [
-                    aBlock value: leaf value: notesStream value: indexStream.
-                    gatesStream
-                        nextPutAll: leaf key;
-                        nextPut: $  ] ] ].
-    seq := gatesStream contents trimBoth asSeqGates asSeq.
-    seq notes: notesStream asArray.
-    seq cycleLengths: cycleLengths asArray.
-    seq divisors: divisorsStream asArray.
-    indexStream isEmpty ifFalse: [ seq index: indexStream asArray ].
-    ^ seq
+	"Shared Mondo mini-notation parser. aBlock receives (leaf, notesCollection, indexCollection)."
+	| topSlots cycleLengths gatesStream notesStream indexStream divisorsStream seq |
+	topSlots := self splitTopLevelSlots.
+	cycleLengths := OrderedCollection new.
+	gatesStream := WriteStream on: String new.
+	notesStream := OrderedCollection new.
+	indexStream := OrderedCollection new.
+	divisorsStream := OrderedCollection new.
+	topSlots do: [ :slot |
+		| leaves slotCycleLength |
+		leaves := slot parseMondoLeaves.
+		slotCycleLength := topSlots size * leaves size.
+		leaves do: [ :leaf |
+			cycleLengths add: slotCycleLength.
+			divisorsStream add: (leaf value isInteger ifTrue: [ leaf value ] ifFalse: [ 1 ]).
+			(#( '~' '-' ) includes: leaf key)
+				ifTrue: [ gatesStream nextPutAll: '~ ' ]
+				ifFalse: [
+					aBlock value: leaf value: notesStream value: indexStream.
+					gatesStream
+						nextPutAll: leaf key;
+						nextPut: $  ] ] ].
+	seq := gatesStream contents trimBoth asSeqGates asSeq.
+	seq rawNotes: notesStream asArray.
+	seq cycleLengths: cycleLengths asArray.
+	seq divisors: divisorsStream asArray.
+	indexStream isEmpty ifFalse: [ seq index: indexStream asArray ].
+	self precomputeResolvedCyclesFor: seq.
+	^ seq
 ]
 
 { #category : '*Coypu' }
 ByteString >> asMondoSounds [
-
 	| seq soundNames performer |
 	performer := Performance uniqueInstance performer.
 	soundNames := OrderedCollection new.
 	seq := self asMondoPatternDo: [ :leaf :notes :index |
-			       | name |
-			       name := leaf key.
-			       soundNames add: (name copyUpTo: $:).
-			       notes add: (performer noteFromSoundToken: name) ].
+		| name |
+		leaf value class = MondoAlternation
+			ifTrue: [
+				soundNames add: '<alt>'.
+				notes add: leaf value ]
+			ifFalse: [
+				name := leaf key.
+				soundNames add: (name copyUpTo: $:).
+				notes add: (performer noteFromSoundToken: name) ] ].
 	seq sound: (soundNames asArray joinUsing: ' ').
 	soundNames do: [ :name |
-			seq phaustoGateDestinations: (String streamContents: [ :s |
-						 s
-							 nextPutAll: name;
-							 nextPutAll: 'Trigger' ]).
-			seq phaustoNoteDestinations: (String streamContents: [ :s |
-						 s
-							 nextPutAll: name;
-							 nextPutAll: 'Freq' ]) ].
-					seq player: SequencerPlayerCyclic new.
+		seq phaustoGateDestinations: (String streamContents: [ :s |
+			s nextPutAll: name; nextPutAll: 'Trigger' ]).
+		seq phaustoNoteDestinations: (String streamContents: [ :s |
+			s nextPutAll: name; nextPutAll: 'Freq' ]) ].
+	seq player: SequencerPlayerCyclic new.
 	^ seq
 ]
 
@@ -736,6 +739,29 @@ ByteString >> parseChordWithoutRoot [
 ]
 
 { #category : '*Coypu' }
+ByteString >> parseMondoAlternation [
+	"Parse '<bd cp>' or '<bd cp hh>*4' into N leaves.
+	 Each leaf's value is Array(alternation, slotIndex).
+	 Without *N: one leaf at slot 1. With *N: N leaves at slots 1..N."
+	| s starIdx innerPart speed choices alt leaves |
+	s := self trimBoth.
+	starIdx := s indexOf: $*.
+	starIdx = 0
+		ifTrue: [
+			innerPart := s copyFrom: 2 to: s size - 1.
+			speed := 1 ]
+		ifFalse: [
+			innerPart := s copyFrom: 2 to: starIdx - 2.
+			speed := (s copyFrom: starIdx + 1 to: s size) asInteger ].
+	choices := innerPart splitTopLevelSlots.
+	alt := MondoAlternation choices: choices asArray speed: speed.
+	leaves := OrderedCollection new.
+	1 to: speed do: [ :slotIdx |
+		leaves add: '<alt>' -> (Array with: alt with: slotIdx) ].
+	^ leaves
+]
+
+{ #category : '*Coypu' }
 ByteString >> parseMondoLeaves [
 	| inner slots leaves |
 	inner := self trimBoth.
@@ -744,28 +770,33 @@ ByteString >> parseMondoLeaves [
 	slots := inner splitTopLevelSlots.
 	leaves := OrderedCollection new.
 	slots do: [ :s |
-		(s includes: $[)
-			ifTrue: [
-				| starIdx innerPart multiplier subLeaves |
-				starIdx := s indexOf: $*.
-				starIdx = 0
-					ifTrue: [ leaves addAll: s parseMondoLeaves ]
-					ifFalse: [
-						innerPart := s copyFrom: 1 to: starIdx - 1.
-						multiplier := (s copyFrom: starIdx + 1 to: s size) asInteger.
-						subLeaves := innerPart parseMondoLeaves.
-						multiplier timesRepeat: [ leaves addAll: subLeaves ] ] ]
-			ifFalse: [
-				(s includes: $*)
-					ifTrue: [
-						s getMultiplier timesRepeat: [
-							leaves add: (s copyUpTo: $*) -> 1 ] ]
-					ifFalse: [
-						(s includes: $/)
-							ifTrue: [ | parts |
-								parts := s splitOn: $/.
-								leaves add: parts first -> parts second asInteger ]
-							ifFalse: [ leaves add: s -> 1 ] ] ] ].
+			(s beginsWith: '<')
+				ifTrue: [ leaves addAll: s parseMondoAlternation ]
+				ifFalse: [
+						(s includes: $[)
+							ifTrue: [
+									| starIdx innerPart multiplier subLeaves |
+									starIdx := s indexOf: $*.
+									starIdx = 0
+										ifTrue: [ leaves addAll: s parseMondoLeaves ]
+										ifFalse: [
+												innerPart := s copyFrom: 1 to: starIdx - 1.
+												multiplier := (s copyFrom: starIdx + 1 to: s size)
+													              asInteger.
+												subLeaves := innerPart parseMondoLeaves.
+												multiplier timesRepeat: [ leaves addAll: subLeaves ] ] ]
+							ifFalse: [
+									(s includes: $*)
+										ifTrue: [
+										s getMultiplier timesRepeat: [
+											leaves add: (s copyUpTo: $*) -> 1 ] ]
+										ifFalse: [
+												(s includes: $/)
+													ifTrue: [
+															| parts |
+															parts := s splitOn: $/.
+															leaves add: parts first -> parts second asInteger ]
+													ifFalse: [ leaves add: s -> 1 ] ] ] ] ].
 	^ leaves
 ]
 
@@ -816,6 +847,29 @@ ByteString >> pattern: anArrayOfNoteNumbers and: anArrayOfDurations [
 ]
 
 { #category : '*Coypu' }
+ByteString >> precomputeResolvedCyclesFor: seq [
+	"Compute the LCM-period of alternations in seq rawNotes,
+	 and pre-resolve all cycles in that period. Sets seq resolvedCycles
+	 to nil if no alternation is present."
+	| raw alts period cycles |
+	raw := seq rawNotes.
+	alts := raw select: [ :each |
+		each isArray and: [ each first class = MondoAlternation ] ].
+	alts isEmpty ifTrue: [ ^ seq resolvedCycles: nil ].
+	period := alts inject: 1 into: [ :acc :each |
+		| altPeriod |
+		altPeriod := each first choices size / (each first speed gcd: each first choices size).
+		acc lcm: altPeriod ].
+	cycles := (1 to: period) collect: [ :cycleIdx |
+		raw collect: [ :each |
+			(each isArray and: [ each first class = MondoAlternation ])
+				ifTrue: [ (each first chooseForCycle: cycleIdx slot: each second) asMidiNote ]
+				ifFalse: [ each ] ] ].
+	seq resolvedCycles: cycles asArray.
+	seq resolveCycle: 1
+]
+
+{ #category : '*Coypu' }
 ByteString >> randomNotesFromFolder [
 "returns a random number (between 2 and 512) of indexes from the folder wit self name"
 | randIndex folder folderSize|
@@ -855,22 +909,24 @@ ByteString >> splitRespectingQuotes [
 
 { #category : '*Coypu' }
 ByteString >> splitTopLevelSlots [
-    "Split into top-level tokens, keeping bracketed groups intact.
-     'bd [sd*3] [cp ht lt]' => #('bd' '[sd*3]' '[cp ht lt]')"
-    | slots current depth |
-    slots := OrderedCollection new.
-    current := ''.
-    depth := 0.
-    self do: [ :ch |
-        ch = $[ ifTrue: [ depth := depth + 1 ].
-        ch = $] ifTrue: [ depth := depth - 1 ].
-        (ch = Character space and: [ depth = 0 ])
-            ifTrue: [
-                current trimBoth isEmpty ifFalse: [ slots add: current trimBoth ].
-                current := '' ]
-            ifFalse: [ current := current , ch asString ] ].
-    current trimBoth isEmpty ifFalse: [ slots add: current trimBoth ].
-    ^ slots
+	| slots current depth |
+	(self occurrencesOf: $[) = (self occurrencesOf: $]) ifFalse: [
+		Error signal: 'Unbalanced [ ] in: ' , self ].
+	(self occurrencesOf: $<) = (self occurrencesOf: $>) ifFalse: [
+		Error signal: 'Unbalanced < > in: ' , self ].
+	slots := OrderedCollection new.
+	current := WriteStream on: String new.
+	depth := 0.
+	self do: [ :ch |
+		('[<' includes: ch) ifTrue: [ depth := depth + 1 ].
+		(']>' includes: ch) ifTrue: [ depth := depth - 1 ].
+		(ch = Character space and: [ depth = 0 ])
+			ifTrue: [
+				current contents trimBoth isEmpty ifFalse: [ slots add: current contents trimBoth ].
+				current := WriteStream on: String new ]
+			ifFalse: [ current nextPut: ch ] ].
+	current contents trimBoth isEmpty ifFalse: [ slots add: current contents trimBoth ].
+	^ slots
 ]
 
 { #category : '*Coypu' }

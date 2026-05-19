@@ -15,12 +15,108 @@ MondoParserTest >> setUp [
 ]
 
 { #category : 'tests' }
+MondoParserTest >> testAlternationChoice [
+	| alt |
+	alt := MondoAlternation choices: #('a' 'b' 'c').
+	self assert: (alt chooseForCycle: 1 slot: 1) equals: 'a'.
+	self assert: (alt chooseForCycle: 2 slot: 1) equals: 'b'.
+	self assert: (alt chooseForCycle: 4 slot: 1) equals: 'a'.
+]
+
+{ #category : 'tests' }
+MondoParserTest >> testAlternationDivisorIsOne [
+	"alternation leaves should produce divisor = 1, not the alternation object"
+	| seq |
+	seq := '<60 70>' asMondoNotes.
+	self assert: seq divisors equals: #(1).
+]
+
+{ #category : 'tests' }
+MondoParserTest >> testAlternationInContext [
+	| seq |
+	seq := '60 <70 80> 90' asMondoNotes.
+	seq resolveCycle: 1.
+	self assert: seq notes equals: #(60 70 90).
+	seq resolveCycle: 2.
+	self assert: seq notes equals: #(60 80 90).
+]
+
+{ #category : 'tests' }
+MondoParserTest >> testAlternationLCM [
+	| seq |
+	seq := '<60 70> <80 90 100>' asMondoNotes.
+	self assert: seq resolvedCycles size equals: 6
+]
+
+{ #category : 'tests' }
+MondoParserTest >> testAlternationPeriod [
+
+	| seq |
+	seq := '<60 70>' asMondoNotes.
+	self assert: seq resolvedCycles size equals: 2.
+	self assert: seq resolvedCycles first equals: #( 60 ).
+	self assert: (seq resolvedCycles at: 2) equals: #( 70 )
+]
+
+{ #category : 'tests' }
+MondoParserTest >> testAlternationResolvesNotesAcrossCycles [
+	| seq |
+	seq := '<60 70 80>' asMondoNotes.
+	seq resolveCycle: 1.
+	self assert: (seq notes at: 1) equals: 60.
+	seq resolveCycle: 2.
+	self assert: (seq notes at: 1) equals: 70.
+	seq resolveCycle: 3.
+	self assert: (seq notes at: 1) equals: 80.
+	seq resolveCycle: 4.
+	self assert: (seq notes at: 1) equals: 60.  "wraps"
+]
+
+{ #category : 'tests' }
+MondoParserTest >> testAlternationSpeed [
+	| seq |
+	seq := '<60 70>*4' asMondoNotes.
+	self assert: seq resolvedCycles size equals: 1.
+	self assert: (seq resolvedCycles at: 1) equals: #(60 70 60 70)
+]
+
+{ #category : 'tests' }
+MondoParserTest >> testAlternationSpeedShift [
+	| seq |
+	seq := '<60 70>*3' asMondoNotes.
+	self assert: seq resolvedCycles size equals: 2.
+	self assert: (seq resolvedCycles at: 1) equals: #(60 70 60).
+	self assert: (seq resolvedCycles at: 2) equals: #(70 60 70)
+]
+
+{ #category : 'tests' }
+MondoParserTest >> testAlternationWithSpeed [
+	| alt |
+	alt := MondoAlternation choices: #('a' 'b' 'c') speed: 3.
+	self assert: (alt chooseForCycle: 1 slot: 1) equals: 'a'.
+	self assert: (alt chooseForCycle: 1 slot: 2) equals: 'b'.
+	self assert: (alt chooseForCycle: 1 slot: 3) equals: 'c'.
+]
+
+{ #category : 'tests' }
 MondoParserTest >> testAsMondoNotes [
     | seq |
     seq := 'c4 [e4*3] [g4 b4]' asMondoNotes.
     self assert: seq cycleLengths equals: #(3 9 9 9 6 6).
     self assert: seq notes size equals: 6.
     self assert: seq gates size equals: 6.
+]
+
+{ #category : 'tests' }
+MondoParserTest >> testAsMondoNotesWithAlternation [
+	| seq |
+	seq := '<60 70>' asMondoNotes.
+	seq resolveCycle: 1.
+	self assert: (seq notes at: 1) equals: 60.
+	seq resolveCycle: 2.
+	self assert: (seq notes at: 1) equals: 70.
+	seq resolveCycle: 3.
+	self assert: (seq notes at: 1) equals: 60
 ]
 
 { #category : 'tests' }
@@ -63,6 +159,32 @@ MondoParserTest >> testAsMondoSoundsWithDivisor [
 ]
 
 { #category : 'tests' }
+MondoParserTest >> testNoAlternationSkipsResolution [
+	| seq |
+	seq := '60 70 80' asMondoNotes.
+	self assert: seq resolvedCycles isNil
+]
+
+{ #category : 'tests' }
+MondoParserTest >> testParseAlternation [
+	| leaves alt |
+	leaves := '<bd cp>' parseMondoLeaves.
+	self assert: leaves size equals: 1.
+	alt := leaves first value.
+	self assert: alt class equals: MondoAlternation.
+	self assert: alt choices equals: #('bd' 'cp').
+	self assert: alt speed equals: 1.
+]
+
+{ #category : 'tests' }
+MondoParserTest >> testParseAlternationWithSpeed [
+	| alt |
+	alt := '<bd cp hh>*8' parseMondoLeaves first value.
+	self assert: alt choices equals: #('bd' 'cp' 'hh').
+	self assert: alt speed equals: 8.
+]
+
+{ #category : 'tests' }
 MondoParserTest >> testParseMondoLeaves [
     self assert: ('bd' parseMondoLeaves) asArray equals: { 'bd' -> 1 }.
     self assert: ('[sd*3]' parseMondoLeaves) asArray equals: { 'sd' -> 1. 'sd' -> 1. 'sd' -> 1 }.
@@ -76,6 +198,16 @@ MondoParserTest >> testParseMondoLeavesBracketMultiply [
 		equals: { 'sd'->1. 'lt'->1. 'sd'->1. 'lt'->1. 'sd'->1. 'lt'->1 }.
 	self assert: ('cp [sd lt]*3' parseMondoLeaves) asArray
 		equals: { 'cp'->1. 'sd'->1. 'lt'->1. 'sd'->1. 'lt'->1. 'sd'->1. 'lt'->1 }
+]
+
+{ #category : 'tests' }
+MondoParserTest >> testResolveLookup [
+	| seq |
+	seq := '<60 70 80>' asMondoNotes.
+	seq resolveCycle: 1.
+	self assert: (seq notes at: 1) equals: 60.
+	seq resolveCycle: 5.
+	self assert: (seq notes at: 1) equals: 70
 ]
 
 { #category : 'tests' }

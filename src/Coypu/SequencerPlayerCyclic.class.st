@@ -15,14 +15,17 @@ Class {
 
 { #category : 'playing' }
 SequencerPlayerCyclic >> playStepOn: aPerformer with: seq at: transportStep [
+
 	| stepsPerCycle cycleIndex stepInCycle events |
+
 	stepsPerCycle := seq stepsPerCycle.
-	cycleIndex := (transportStep // stepsPerCycle) + 1.
+	cycleIndex := transportStep // stepsPerCycle + 1.
 	stepInCycle := transportStep \\ stepsPerCycle.
+	cycleIndex = seq lastResolvedCycle ifFalse: [
+		seq resolveCycle: cycleIndex ].
 	events := seq
-		queryFrom: stepInCycle / stepsPerCycle
-		to: (stepInCycle + 1) / stepsPerCycle
-		cycle: cycleIndex.
-	Transcript show: transportStep printString , ' -> ' , events size printString; cr.
+		          queryFrom: stepInCycle / stepsPerCycle
+		          to: stepInCycle + 1 / stepsPerCycle
+		          cycle: cycleIndex.
 	events do: [ :ev | aPerformer playEventAt: ev value in: seq ]
 ]

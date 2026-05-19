@@ -15,8 +15,9 @@ Class {
 
 { #category : 'playing' }
 SequencerPlayerLinear >> playStepOn: aPerformer with: seq at: transportStep [
-    (seq gates wrap: transportStep) = 1 ifTrue: [
-        aPerformer playEventAt: seq noteIndex in: seq.
-        seq noteIndex: seq noteIndex + 1 ]
 
+
+	(seq gates wrap: transportStep) = 1 ifFalse: [ ^ self ].
+	aPerformer playEventAt: seq noteIndex in: seq.
+	seq noteIndex: seq noteIndex + 1
 ]
