@@ -415,7 +415,7 @@ ByteString >> asMondoSounds [
 	soundNames := OrderedCollection new.
 	seq := self asMondoPatternDo: [ :leaf :notes :index |
 		| name |
-		leaf value class = MondoAlternation
+		(leaf value isArray and: [ leaf value first class = MondoAlternation ])
 			ifTrue: [
 				soundNames add: '<alt>'.
 				notes add: leaf value ]
