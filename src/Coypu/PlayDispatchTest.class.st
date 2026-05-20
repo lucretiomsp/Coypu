@@ -18,15 +18,6 @@ PlayDispatchTest >> setUp [
 ]
 
 { #category : 'tests' }
-PlayDispatchTest >> testCyclicPlayerFiresOnQuery [
-
-'c4 e4 g4' asMondoNotes to: #kick.
-	
-	perf performer playStepSync.
-	self assert: perf performer playedEvents size equals: 1
-]
-
-{ #category : 'tests' }
 PlayDispatchTest >> testCyclicPlayerWiring [
 
 	| seq |

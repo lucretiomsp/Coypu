@@ -264,6 +264,16 @@ Sequencer >> cycleDurations: anArrayOfFractions [
 	cycleDurations := anArrayOfFractions 
 ]
 
+{ #category : 'uzu' }
+Sequencer >> cycleLengths [
+	^ cycleLengths .
+]
+
+{ #category : 'uzu' }
+Sequencer >> cycleLengths: aCollection [ 
+	cycleLengths := aCollection 
+]
+
 { #category : 'LiveCoding-ExtraParams' }
 Sequencer >> decay: aStringOrAnArray [
 	"set the decay to a collection of value in array or to to the numbe"
@@ -596,6 +606,9 @@ Sequencer >> index: anArrayOfIndexes to: aKeyInPerformance [
 Sequencer >> initialize [
 
 	super initialize.
+	cycleLengths := Array new: 16 withAll: 16.
+	divisors := Array new: 16 withAll: 1.
+	
 	player := SequencerPlayerLinear new.
 	isPoly := false.
 	rawNotes := Array new.
@@ -611,8 +624,6 @@ Sequencer >> initialize [
 	slotIndex := 0.
 	subStep := 0.
 	speed := 1.
-	cycleLengths := #( 1 ).
-	divisors := #( 1 ).
 	"for Super Dirt"
 	dirtMessage
 		at: 'cps'

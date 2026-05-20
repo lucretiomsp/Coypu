@@ -85,7 +85,7 @@ MondoParserTest >> testAlternationSpeedShift [
 	| seq |
 	seq := '<60 70>*3' asMondoNotes.
 	self assert: seq resolvedCycles size equals: 2.
-	self assert: (seq resolvedCycles at: 1) equals: #(60 70 60).
+	self assert: (seq resolvedCycles first) equals: #(60 70 60).
 	self assert: (seq resolvedCycles at: 2) equals: #(70 60 70)
 ]
 
@@ -159,6 +159,13 @@ MondoParserTest >> testAsMondoSoundsWithDivisor [
 ]
 
 { #category : 'tests' }
+MondoParserTest >> testMondoOverridesDefaults [
+	| seq |
+	seq := 'c4 [e4*3] [g4 b4]' asMondoNotes.
+	self assert: seq cycleLengths equals: #(3 9 9 9 6 6)
+]
+
+{ #category : 'tests' }
 MondoParserTest >> testNoAlternationSkipsResolution [
 	| seq |
 	seq := '60 70 80' asMondoNotes.
@@ -167,21 +174,26 @@ MondoParserTest >> testNoAlternationSkipsResolution [
 
 { #category : 'tests' }
 MondoParserTest >> testParseAlternation [
-	| leaves alt |
+	| leaves leafValue alt |
 	leaves := '<bd cp>' parseMondoLeaves.
 	self assert: leaves size equals: 1.
-	alt := leaves first value.
+	leafValue := leaves first value.
+	self assert: leafValue isArray.
+	alt := leafValue first.
 	self assert: alt class equals: MondoAlternation.
-	self assert: alt choices equals: #('bd' 'cp').
+	self assert: alt choices equals: #( 'bd' 'cp' ).
 	self assert: alt speed equals: 1.
+	self assert: leafValue second equals: 1   "slot index"
 ]
 
 { #category : 'tests' }
 MondoParserTest >> testParseAlternationWithSpeed [
-	| alt |
-	alt := '<bd cp hh>*8' parseMondoLeaves first value.
+	| leaves alt |
+	leaves := '<bd cp hh>*8' parseMondoLeaves.
+	self assert: leaves size equals: 8.   "speed=8 produces 8 leaves"
+	alt := leaves first value first.
 	self assert: alt choices equals: #('bd' 'cp' 'hh').
-	self assert: alt speed equals: 8.
+	self assert: alt speed equals: 8
 ]
 
 { #category : 'tests' }
@@ -208,6 +220,32 @@ MondoParserTest >> testResolveLookup [
 	self assert: (seq notes at: 1) equals: 60.
 	seq resolveCycle: 5.
 	self assert: (seq notes at: 1) equals: 70
+]
+
+{ #category : 'tests' }
+MondoParserTest >> testRhythmBuilderInheritsDefaults [
+	| seq |
+	seq := 8 adowa.
+	self assert: seq cycleLengths size equals: 16.
+	self assert: (seq cycleLengths allSatisfy: [ :each | each = 16 ]).
+	self assert: (seq divisors allSatisfy: [ :each | each = 1 ])
+]
+
+{ #category : 'tests' }
+MondoParserTest >> testRhythmBuilderPlaysCyclically [
+	"A rhythm builder seq with default cycleLengths should produce events when queried"
+	| seq events |
+	seq := 8 adowa.
+	events := seq queryFrom: 0 to: 1 cycle: 1.
+	self assert: events notEmpty
+]
+
+{ #category : 'tests' }
+MondoParserTest >> testSequencerDefaultCycleLengths [
+	| seq |
+	seq := Sequencer new.
+	self assert: seq cycleLengths equals: (Array new: 16 withAll: 16).
+	self assert: seq divisors equals: (Array new: 16 withAll: 1)
 ]
 
 { #category : 'tests' }

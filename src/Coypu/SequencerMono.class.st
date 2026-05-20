@@ -77,16 +77,6 @@ SequencerMono >> asRhythm [
 	^ self
 ]
 
-{ #category : 'accessing' }
-SequencerMono >> cycleLengths [
-	^ cycleLengths .
-]
-
-{ #category : 'accessing' }
-SequencerMono >> cycleLengths: aCollection [ 
-	cycleLengths := aCollection 
-]
-
 { #category : 'LiveCoding' }
 SequencerMono >> extra: anArray [
 
