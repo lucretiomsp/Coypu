@@ -73,6 +73,18 @@ MondoParserTest >> testAlternationResolvesNotesAcrossCycles [
 ]
 
 { #category : 'tests' }
+MondoParserTest >> testAlternationRestWithSpeed [
+	| seq |
+	seq := '<c6 ~>*4' asMondoNotes.
+	seq resolveCycle: 1.
+	self assert: seq gates equals: #(1 0 1 0).
+	self assert: (seq notes first) equals: 84.
+	seq resolveCycle: 2.
+	"speed 4, choices 2 → period collapses; cycle 2 == cycle 1"
+	self assert: seq gates equals: #(1 0 1 0)
+]
+
+{ #category : 'tests' }
 MondoParserTest >> testAlternationSpeed [
 	| seq |
 	seq := '<60 70>*4' asMondoNotes.
@@ -87,6 +99,17 @@ MondoParserTest >> testAlternationSpeedShift [
 	self assert: seq resolvedCycles size equals: 2.
 	self assert: (seq resolvedCycles first) equals: #(60 70 60).
 	self assert: (seq resolvedCycles at: 2) equals: #(70 60 70)
+]
+
+{ #category : 'tests' }
+MondoParserTest >> testAlternationWithRest [
+	| seq |
+	seq := '<c6 ~>' asMondoNotes.
+	seq resolveCycle: 1.
+	self assert: (seq gates at: 1) equals: 1.
+	self assert: (seq notes at: 1) equals: 84.   "c6 = 84"
+	seq resolveCycle: 2.
+	self assert: (seq gates at: 1) equals: 0.   "rest, no fire"
 ]
 
 { #category : 'tests' }

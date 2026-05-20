@@ -43,7 +43,8 @@ Class {
 		'player',
 		'rawNotes',
 		'lastResolvedCycle',
-		'resolvedCycles'
+		'resolvedCycles',
+		'resolvedGates'
 	],
 	#classInstVars : [
 		'orbit'
@@ -1265,10 +1266,12 @@ Sequencer >> removeIndexes [
 extraParams removeKey: #index ifAbsent: [ ] 
 ]
 
-{ #category : 'LiveCoding - sequencer' }
+{ #category : 'uzu' }
 Sequencer >> resolveCycle: cycleIndex [
 	resolvedCycles ifNotNil: [
 		notes := resolvedCycles at: (cycleIndex - 1) \\ resolvedCycles size + 1.
+		resolvedGates ifNotNil: [
+			gates := resolvedGates at: (cycleIndex - 1) \\ resolvedGates size + 1 ].
 		lastResolvedCycle := cycleIndex ]
 ]
 
@@ -1277,10 +1280,21 @@ Sequencer >> resolvedCycles [
 ^ resolvedCycles 
 ]
 
-{ #category : 'accessing' }
+{ #category : 'uzu' }
 Sequencer >> resolvedCycles: anArray [
 
 	resolvedCycles := anArray 
+]
+
+{ #category : 'accessing' }
+Sequencer >> resolvedGates [ 
+^ resolvedGates 
+]
+
+{ #category : 'accessing' }
+Sequencer >> resolvedGates: anArray [ 
+
+resolvedGates := anArray
 ]
 
 { #category : 'LiveCoding-ExtraParams' }

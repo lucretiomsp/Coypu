@@ -848,24 +848,43 @@ ByteString >> pattern: anArrayOfNoteNumbers and: anArrayOfDurations [
 
 { #category : '*Coypu' }
 ByteString >> precomputeResolvedCyclesFor: seq [
-	"Compute the LCM-period of alternations in seq rawNotes,
-	 and pre-resolve all cycles in that period. Sets seq resolvedCycles
-	 to nil if no alternation is present."
-	| raw alts period cycles |
+	| raw alts period notesCycles gatesCycles baseGates |
 	raw := seq rawNotes.
 	alts := raw select: [ :each |
 		each isArray and: [ each first class = MondoAlternation ] ].
 	alts isEmpty ifTrue: [ ^ seq resolvedCycles: nil ].
 	period := alts inject: 1 into: [ :acc :each |
 		| altPeriod |
-		altPeriod := each first choices size / (each first speed gcd: each first choices size).
+		altPeriod := each first choices size /
+			(each first speed gcd: each first choices size).
 		acc lcm: altPeriod ].
-	cycles := (1 to: period) collect: [ :cycleIdx |
-		raw collect: [ :each |
+	baseGates := seq gates.
+	notesCycles := OrderedCollection new.
+	gatesCycles := OrderedCollection new.
+	1 to: period do: [ :cycleIdx |
+		| notesCycle gatesCycle |
+		notesCycle := OrderedCollection new.
+		gatesCycle := OrderedCollection new.
+		raw doWithIndex: [ :each :i |
+			| baseGate chosen |
+			baseGate := baseGates at: i.
 			(each isArray and: [ each first class = MondoAlternation ])
-				ifTrue: [ (each first chooseForCycle: cycleIdx slot: each second) asMidiNote ]
-				ifFalse: [ each ] ] ].
-	seq resolvedCycles: cycles asArray.
+				ifTrue: [
+					chosen := each first chooseForCycle: cycleIdx slot: each second.
+					(#('~' '-') includes: chosen)
+						ifTrue: [
+							notesCycle add: 0.   "placeholder"
+							gatesCycle add: 0 ]
+						ifFalse: [
+							notesCycle add: chosen asMidiNote.
+							gatesCycle add: baseGate ] ]
+				ifFalse: [
+					notesCycle add: each.
+					gatesCycle add: baseGate ] ].
+		notesCycles add: notesCycle asArray.
+		gatesCycles add: gatesCycle asArray ].
+	seq resolvedCycles: notesCycles asArray.
+	seq resolvedGates: gatesCycles asArray.
 	seq resolveCycle: 1
 ]
 

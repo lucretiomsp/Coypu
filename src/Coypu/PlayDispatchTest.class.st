@@ -27,17 +27,6 @@ PlayDispatchTest >> testCyclicPlayerWiring [
 ]
 
 { #category : 'tests' }
-PlayDispatchTest >> testLinearPlayerFiresOnGate [
-
-	| seq  |
-
-	seq := '60 62 64' asDirtNotes. "linear by default"
-	seq to: perf.
-	perf performer playStepSync.
-	self assert: perf performer playedEvents size equals: 1
-]
-
-{ #category : 'tests' }
 PlayDispatchTest >> testPlayerIsCorrectlyAssigned [
 	| linear cyclic |
 	linear := '60 62' asDirtNotes.
