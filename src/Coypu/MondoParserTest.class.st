@@ -154,11 +154,52 @@ MondoParserTest >> testAsMondoSounds [
 ]
 
 { #category : 'tests' }
+MondoParserTest >> testAsMondoSoundsAlternationResolves [
+
+	| seq |
+	seq := '<bd cp>' asMondoSounds.
+	seq resolveCycle: 1.
+	self assert: (seq phaustoGateDestinations first) equals: 'bdTrigger'.
+	seq resolveCycle: 2.
+	self assert: (seq phaustoGateDestinations first) equals: 'cpTrigger'
+]
+
+{ #category : 'tests' }
+MondoParserTest >> testAsMondoSoundsAlternationWithRest [
+	| seq |
+	seq := '<bd ~>' asMondoSounds.
+	seq resolveCycle: 1.
+	self assert: (seq gates at: 1) equals: 1.
+	self assert: (seq phaustoGateDestinations at: 1) equals: 'bdTrigger'.
+	seq resolveCycle: 2.
+	self assert: (seq gates at: 1) equals: 0
+]
+
+{ #category : 'tests' }
+MondoParserTest >> testAsMondoSoundsAlternationWithSpeed [
+	| seq |
+	seq := '<bd cp>*4' asMondoSounds.
+	seq resolveCycle: 1.
+	self assert: seq phaustoGateDestinations equals: #('bdTrigger' 'cpTrigger' 'bdTrigger' 'cpTrigger')
+
+]
+
+{ #category : 'tests' }
 MondoParserTest >> testAsMondoSoundsDefaultIndex [
     | seq |
     seq := 'bd cp' asMondoSounds.
     self assert: seq notes equals: #(60 60).
 
+]
+
+{ #category : 'tests' }
+MondoParserTest >> testAsMondoSoundsMixedFixedAndAlternation [
+	| seq |
+	seq := 'bd <cp sn>' asMondoSounds.
+	seq resolveCycle: 1.
+	self assert: seq phaustoGateDestinations equals: #('bdTrigger' 'cpTrigger').
+	seq resolveCycle: 2.
+	self assert: seq phaustoGateDestinations equals: #('bdTrigger' 'snTrigger')
 ]
 
 { #category : 'tests' }

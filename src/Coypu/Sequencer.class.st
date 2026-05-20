@@ -44,7 +44,9 @@ Class {
 		'rawNotes',
 		'lastResolvedCycle',
 		'resolvedCycles',
-		'resolvedGates'
+		'resolvedGates',
+		'resolvedGateDestinations',
+		'resolvedNoteDestinations'
 	],
 	#classInstVars : [
 		'orbit'
@@ -663,6 +665,11 @@ Sequencer >> isSequencer [
 	^ true
 ]
 
+{ #category : 'testing' }
+Sequencer >> isSoundMode [
+	^ phaustoGateDestinations notEmpty
+]
+
 { #category : 'accessing' }
 Sequencer >> kymaMessage [
 
@@ -1269,9 +1276,14 @@ extraParams removeKey: #index ifAbsent: [ ]
 { #category : 'uzu' }
 Sequencer >> resolveCycle: cycleIndex [
 	resolvedCycles ifNotNil: [
-		notes := resolvedCycles at: (cycleIndex - 1) \\ resolvedCycles size + 1.
-		resolvedGates ifNotNil: [
-			gates := resolvedGates at: (cycleIndex - 1) \\ resolvedGates size + 1 ].
+		| idx |
+		idx := (cycleIndex - 1) \\ resolvedCycles size + 1.
+		notes := resolvedCycles at: idx.
+		resolvedGates ifNotNil: [ gates := resolvedGates at: idx ].
+		resolvedGateDestinations ifNotNil: [
+			phaustoGateDestinations := resolvedGateDestinations at: idx ].
+		resolvedNoteDestinations ifNotNil: [
+			phaustoNoteDestinations := resolvedNoteDestinations at: idx ].
 		lastResolvedCycle := cycleIndex ]
 ]
 
@@ -1280,10 +1292,21 @@ Sequencer >> resolvedCycles [
 ^ resolvedCycles 
 ]
 
-{ #category : 'uzu' }
+{ #category : 'accessing' }
 Sequencer >> resolvedCycles: anArray [
 
 	resolvedCycles := anArray 
+]
+
+{ #category : 'accessing' }
+Sequencer >> resolvedGateDestinations [ 
+^ resolvedGateDestinations
+]
+
+{ #category : 'accessing' }
+Sequencer >> resolvedGateDestinations: anArray [
+
+	resolvedGateDestinations := anArray 
 ]
 
 { #category : 'accessing' }
@@ -1295,6 +1318,16 @@ Sequencer >> resolvedGates [
 Sequencer >> resolvedGates: anArray [ 
 
 resolvedGates := anArray
+]
+
+{ #category : 'accessing' }
+Sequencer >> resolvedNoteDestinations [
+]
+
+{ #category : 'accessing' }
+Sequencer >> resolvedNoteDestinations: anArray [
+
+	resolvedNoteDestinations := anArray 
 ]
 
 { #category : 'LiveCoding-ExtraParams' }

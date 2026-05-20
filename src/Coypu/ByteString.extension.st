@@ -372,12 +372,14 @@ ByteString >> asMondoNotes [
 			ifTrue: [ sounds add: leaf value ]
 			ifFalse: [ sounds add: leaf key asMidiNote ] ].
 	seq player: SequencerPlayerCyclic new.
+	self precomputeResolvedCyclesFor: seq.
 	^ seq
 ]
 
 { #category : '*Coypu' }
 ByteString >> asMondoPatternDo: aBlock [
-	"Shared Mondo mini-notation parser. aBlock receives (leaf, notesCollection, indexCollection)."
+	"Shared Mondo mini-notation parser. aBlock receives (leaf, notesCollection, indexCollection).
+	 Callers are responsible for calling precomputeResolvedCyclesFor: after configuring the seq."
 	| topSlots cycleLengths gatesStream notesStream indexStream divisorsStream seq |
 	topSlots := self splitTopLevelSlots.
 	cycleLengths := OrderedCollection new.
@@ -404,7 +406,6 @@ ByteString >> asMondoPatternDo: aBlock [
 	seq cycleLengths: cycleLengths asArray.
 	seq divisors: divisorsStream asArray.
 	indexStream isEmpty ifFalse: [ seq index: indexStream asArray ].
-	self precomputeResolvedCyclesFor: seq.
 	^ seq
 ]
 
@@ -430,6 +431,7 @@ ByteString >> asMondoSounds [
 		seq phaustoNoteDestinations: (String streamContents: [ :s |
 			s nextPutAll: name; nextPutAll: 'Freq' ]) ].
 	seq player: SequencerPlayerCyclic new.
+	self precomputeResolvedCyclesFor: seq.
 	^ seq
 ]
 
@@ -848,6 +850,13 @@ ByteString >> pattern: anArrayOfNoteNumbers and: anArrayOfDurations [
 
 { #category : '*Coypu' }
 ByteString >> precomputeResolvedCyclesFor: seq [
+	seq isSoundMode
+		ifTrue: [ ^ self precomputeResolvedCyclesForSounds: seq ]
+		ifFalse: [ ^ self precomputeResolvedCyclesForNotes: seq ]
+]
+
+{ #category : '*Coypu' }
+ByteString >> precomputeResolvedCyclesForNotes: seq [
 	| raw alts period notesCycles gatesCycles baseGates |
 	raw := seq rawNotes.
 	alts := raw select: [ :each |
@@ -866,17 +875,17 @@ ByteString >> precomputeResolvedCyclesFor: seq [
 		notesCycle := OrderedCollection new.
 		gatesCycle := OrderedCollection new.
 		raw doWithIndex: [ :each :i |
-			| baseGate chosen |
+			| baseGate resolved |
 			baseGate := baseGates at: i.
 			(each isArray and: [ each first class = MondoAlternation ])
 				ifTrue: [
-					chosen := each first chooseForCycle: cycleIdx slot: each second.
-					(#('~' '-') includes: chosen)
+					resolved := each first resolveForNotes: cycleIdx slot: each second.
+					resolved isNil
 						ifTrue: [
-							notesCycle add: 0.   "placeholder"
+							notesCycle add: 0.
 							gatesCycle add: 0 ]
 						ifFalse: [
-							notesCycle add: chosen asMidiNote.
+							notesCycle add: resolved.
 							gatesCycle add: baseGate ] ]
 				ifFalse: [
 					notesCycle add: each.
@@ -885,6 +894,66 @@ ByteString >> precomputeResolvedCyclesFor: seq [
 		gatesCycles add: gatesCycle asArray ].
 	seq resolvedCycles: notesCycles asArray.
 	seq resolvedGates: gatesCycles asArray.
+	seq resolveCycle: 1
+]
+
+{ #category : '*Coypu' }
+ByteString >> precomputeResolvedCyclesForSounds: seq [
+	| raw alts period notesCycles gatesCycles gateDestsCycles noteDestsCycles baseGates baseGateDests baseNoteDests |
+	raw := seq rawNotes.
+	alts := raw select: [ :each |
+		each isArray and: [ each first class = MondoAlternation ] ].
+	alts isEmpty ifTrue: [ ^ seq resolvedCycles: nil ].
+	period := alts inject: 1 into: [ :acc :each |
+		| altPeriod |
+		altPeriod := each first choices size /
+			(each first speed gcd: each first choices size).
+		acc lcm: altPeriod ].
+	baseGates := seq gates.
+	baseGateDests := seq phaustoGateDestinations.
+	baseNoteDests := seq phaustoNoteDestinations.
+	notesCycles := OrderedCollection new.
+	gatesCycles := OrderedCollection new.
+	gateDestsCycles := OrderedCollection new.
+	noteDestsCycles := OrderedCollection new.
+	1 to: period do: [ :cycleIdx |
+		| notesCycle gatesCycle gateDestsCycle noteDestsCycle |
+		notesCycle := OrderedCollection new.
+		gatesCycle := OrderedCollection new.
+		gateDestsCycle := OrderedCollection new.
+		noteDestsCycle := OrderedCollection new.
+		raw doWithIndex: [ :each :i |
+			| baseGate resolved |
+			baseGate := baseGates at: i.
+			(each isArray and: [ each first class = MondoAlternation ])
+				ifTrue: [
+					resolved := each first resolveForSounds: cycleIdx slot: each second.
+					resolved isNil
+						ifTrue: [
+							notesCycle add: 0.
+							gatesCycle add: 0.
+							gateDestsCycle add: 'silentTrigger'.
+							noteDestsCycle add: 'silentFreq' ]
+						ifFalse: [
+							notesCycle add: resolved second.
+							gatesCycle add: baseGate.
+							gateDestsCycle add: (String streamContents: [ :s |
+								s nextPutAll: resolved first; nextPutAll: 'Trigger' ]).
+							noteDestsCycle add: (String streamContents: [ :s |
+								s nextPutAll: resolved first; nextPutAll: 'Freq' ]) ] ]
+				ifFalse: [
+					notesCycle add: each.
+					gatesCycle add: baseGate.
+					gateDestsCycle add: (baseGateDests at: i).
+					noteDestsCycle add: (baseNoteDests at: i) ] ].
+		notesCycles add: notesCycle asArray.
+		gatesCycles add: gatesCycle asArray.
+		gateDestsCycles add: gateDestsCycle asArray.
+		noteDestsCycles add: noteDestsCycle asArray ].
+	seq resolvedCycles: notesCycles asArray.
+	seq resolvedGates: gatesCycles asArray.
+	seq resolvedGateDestinations: gateDestsCycles asArray.
+	seq resolvedNoteDestinations: noteDestsCycles asArray.
 	seq resolveCycle: 1
 ]
 
