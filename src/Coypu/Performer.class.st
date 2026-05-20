@@ -196,24 +196,26 @@ self subclassResponsibility
 
 { #category : 'playing' }
 Performer >> playFor: aNumberOfSteps [
-    | nextStepMicros stepMicros nowMicros waitMicros waitMillis startMicros |
-    performance bpm: 60 / (performance freq * 4).
-    performance transportStep: 0.
-    startMicros := Time microsecondClockValue.
-    performance activeProcess: ([
-        nextStepMicros := startMicros.
-        1 to: aNumberOfSteps do: [ :stepIndex |
-            stepMicros := (performance freq * 1_000_000) asInteger.
-            nextStepMicros := nextStepMicros + stepMicros.
-            nowMicros := Time microsecondClockValue.
-            waitMicros := nextStepMicros - nowMicros max: 0.
-            waitMillis := waitMicros // 1000.
-            (Delay forMilliseconds: waitMillis) wait.
-            [ performance valuesDo: [ :seq |
-                seq player playStepOn: self with: seq at: performance transportStep ] ]
-                forkAt: Processor timingPriority - 2.
-            performance incrementTransportStep ] ]
-        forkAt: Processor timingPriority - 1)
+	| nextStepMicros stepMicros nowMicros waitMicros waitMillis startMicros |
+	performance bpm: 60 / (performance freq * 4).
+	performance transportStep: 0.
+	startMicros := Time microsecondClockValue.
+	performance activeProcess: ([
+		nextStepMicros := startMicros.
+		1 to: aNumberOfSteps do: [ :stepIndex |
+			stepMicros := (performance freq * 1_000_000) asInteger.
+			nextStepMicros := nextStepMicros + stepMicros.
+			nowMicros := Time microsecondClockValue.
+			waitMicros := nextStepMicros - nowMicros max: 0.
+			waitMillis := waitMicros // 1000.
+			(Delay forMilliseconds: waitMillis) wait.
+			[ performance valuesDo: [ :seq |
+				(seq gates wrap: performance transportStep) = 1 ifTrue: [
+					self playEventAt: seq noteIndex in: seq.
+					seq noteIndex: seq noteIndex + 1 ] ] ]
+				forkAt: Processor timingPriority - 2.
+			performance incrementTransportStep ] ]
+		forkAt: Processor timingPriority - 1)
 ]
 
 { #category : 'playing' }
