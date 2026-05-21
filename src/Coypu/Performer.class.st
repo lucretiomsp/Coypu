@@ -210,9 +210,7 @@ Performer >> playFor: aNumberOfSteps [
 			waitMillis := waitMicros // 1000.
 			(Delay forMilliseconds: waitMillis) wait.
 			[ performance valuesDo: [ :seq |
-				(seq gates wrap: performance transportStep) = 1 ifTrue: [
-					self playEventAt: seq noteIndex in: seq.
-					seq noteIndex: seq noteIndex + 1 ] ] ]
+				seq player playStepOn: self with: seq at: performance transportStep ] ]
 				forkAt: Processor timingPriority - 2.
 			performance incrementTransportStep ] ]
 		forkAt: Processor timingPriority - 1)

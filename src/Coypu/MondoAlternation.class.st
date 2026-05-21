@@ -78,6 +78,16 @@ MondoAlternation >> chooseForCycle: cycleIndex slot: slotIndex [
 	^ choices at: effectiveIndex
 ]
 
+{ #category : 'as yet unclassified' }
+MondoAlternation >> resolveForNotes: cycleIndex slot: slotIdx [
+	"Return MIDI int or nil for rest"
+	| chosen |
+	chosen := self chooseForCycle: cycleIndex slot: slotIdx.
+	^ (#('~' '-') includes: chosen)
+		ifTrue: [ nil ]
+		ifFalse: [ chosen asMidiNote ]
+]
+
 { #category : 'resolving' }
 MondoAlternation >> resolveForSounds: cycleIndex slot: slotIdx [
 	"Return Array(soundName, midiNote) or nil for rest"
