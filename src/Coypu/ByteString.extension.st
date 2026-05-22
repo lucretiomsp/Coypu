@@ -871,9 +871,10 @@ ByteString >> precomputeResolvedCyclesForNotes: seq [
 	notesCycles := OrderedCollection new.
 	gatesCycles := OrderedCollection new.
 	1 to: period do: [ :cycleIdx |
-		| notesCycle gatesCycle |
+		| notesCycle gatesCycle lastNote |
 		notesCycle := OrderedCollection new.
 		gatesCycle := OrderedCollection new.
+		lastNote := 60.
 		raw doWithIndex: [ :each :i |
 			| baseGate resolved |
 			baseGate := baseGates at: i.
@@ -882,12 +883,14 @@ ByteString >> precomputeResolvedCyclesForNotes: seq [
 					resolved := each first resolveForNotes: cycleIdx slot: each second.
 					resolved isNil
 						ifTrue: [
-							notesCycle add: 0.
+							notesCycle add: lastNote.
 							gatesCycle add: 0 ]
 						ifFalse: [
+							lastNote := resolved.
 							notesCycle add: resolved.
 							gatesCycle add: baseGate ] ]
 				ifFalse: [
+					lastNote := each.
 					notesCycle add: each.
 					gatesCycle add: baseGate ] ].
 		notesCycles add: notesCycle asArray.

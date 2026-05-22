@@ -49,6 +49,16 @@ MondoParserTest >> testAlternationLCM [
 ]
 
 { #category : 'tests' }
+MondoParserTest >> testAlternationLeadingRestHoldsDefault [
+	"slot 1 = rest → holds 60 (default), slot 2 = c3 = 48"
+	| seq |
+	seq := '<~ c3>*2' asMondoNotes.
+	seq resolveCycle: 1.
+	self assert: seq notes equals: #(60 48).
+	self assert: seq gates equals: #(0 1)
+]
+
+{ #category : 'tests' }
 MondoParserTest >> testAlternationPeriod [
 
 	| seq |
@@ -70,6 +80,26 @@ MondoParserTest >> testAlternationResolvesNotesAcrossCycles [
 	self assert: (seq notes at: 1) equals: 80.
 	seq resolveCycle: 4.
 	self assert: (seq notes at: 1) equals: 60.  "wraps"
+]
+
+{ #category : 'tests' }
+MondoParserTest >> testAlternationRestGateStillZero [
+	"Held note must never fire — gate stays 0 at rest positions"
+	| seq |
+	seq := '<c4 ~>*4' asMondoNotes.
+	seq resolveCycle: 1.
+	"c4=60 at slot 1, rest holds 60 at slot 2, etc."
+	self assert: seq notes equals: #(60 60 60 60).
+	self assert: seq gates equals: #(1 0 1 0)
+]
+
+{ #category : 'tests' }
+MondoParserTest >> testAlternationRestHoldsPreviousNote [
+	| seq |
+	seq := '<c4 ~ c3 ~>*8' asMondoNotes.
+	seq resolveCycle: 1.
+	self assert: seq notes equals: #(60 60 48 48 60 60 48 48).
+	self assert: seq gates equals: #(1 0 1 0 1 0 1 0)
 ]
 
 { #category : 'tests' }
