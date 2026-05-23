@@ -41,6 +41,7 @@ PerfType >> playCyclicFor: aNumberOfSteps [
 
 	| perf |
 	perf := Performance uniqueInstance.
+	perf stop.
 	perf activeProcess isTerminated ifTrue: [
 		perf performer playCyclicFor: aNumberOfSteps ].
 
@@ -54,6 +55,7 @@ PerfType >> playFor: aNumberOfSteps [
 	| perf |
 
 	perf := Performance uniqueInstance.
+	perf stop..
 	perf activeProcess isTerminated ifTrue: [
 		perf performer playFor: aNumberOfSteps ].
 

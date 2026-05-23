@@ -154,6 +154,7 @@ Performer >> play [
 { #category : 'playing' }
 Performer >> playCyclicFor: aNumberOfCycles [
 	| cycleMicros startMicros cycleStart waitNextCycle |
+	performance stop.
 	startMicros := Time microsecondClockValue.
 	performance activeProcess: ([
 		1 to: aNumberOfCycles do: [ :cycleIndex |
@@ -197,8 +198,10 @@ self subclassResponsibility
 { #category : 'playing' }
 Performer >> playFor: aNumberOfSteps [
 	| nextStepMicros stepMicros nowMicros waitMicros waitMillis startMicros |
+
 	performance bpm: 60 / (performance freq * 4).
 	performance transportStep: 0.
+	
 	startMicros := Time microsecondClockValue.
 	performance activeProcess: ([
 		nextStepMicros := startMicros.
