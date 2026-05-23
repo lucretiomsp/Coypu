@@ -203,14 +203,16 @@ Performer >> playFor: aNumberOfSteps [
 	performance activeProcess: ([
 		nextStepMicros := startMicros.
 		1 to: aNumberOfSteps do: [ :stepIndex |
+			| currentStep |
 			stepMicros := (performance freq * 1_000_000) asInteger.
 			nextStepMicros := nextStepMicros + stepMicros.
 			nowMicros := Time microsecondClockValue.
 			waitMicros := nextStepMicros - nowMicros max: 0.
 			waitMillis := waitMicros // 1000.
 			(Delay forMilliseconds: waitMillis) wait.
+			currentStep := performance transportStep.
 			[ performance valuesDo: [ :seq |
-				seq player playStepOn: self with: seq at: performance transportStep ] ]
+				seq player playStepOn: self with: seq at: currentStep ] ]
 				forkAt: Processor timingPriority - 2.
 			performance incrementTransportStep ] ]
 		forkAt: Processor timingPriority - 1)
