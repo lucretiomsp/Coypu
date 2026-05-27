@@ -602,9 +602,13 @@ Performance >> restore [
 ]
 
 { #category : 'modifying' }
-Performance >> rhythm: aRhythm [
-
-	self keysDo: [ :i | i rhythm: aRhythm ]
+Performance >> rhythm: aRhythmOrSeq [
+	"Set every sequencer's gates to the gates of the given rhythm or sequencer,
+	 keeping each track's key and other state."
+	| theGates |
+	theGates := aRhythmOrSeq gates.
+	self valuesDo: [ :seq | seq gates: theGates copy ].
+	^ self
 ]
 
 { #category : 'muting and soloing' }
