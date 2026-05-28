@@ -60,7 +60,7 @@ Integer >> aksak: aStringOfNotes [
 { #category : '*Coypu' }
 Integer >> asRisingArray [ 
 
-^ ( 1to: self) asArray
+^ ( 1 to: self) asArray
 ]
 
 { #category : '*Coypu' }
