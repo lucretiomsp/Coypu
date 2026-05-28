@@ -278,6 +278,13 @@ Sequencer >> cycleLengths: aCollection [
 ]
 
 { #category : 'LiveCoding-ExtraParams' }
+Sequencer >> damping: aStringOrAnArray [
+	"set the accent to a collection of value in array or to to the number"
+
+	self extra: #Damping values: aStringOrAnArray asDirtArrayOfValues
+]
+
+{ #category : 'LiveCoding-ExtraParams' }
 Sequencer >> decay: aStringOrAnArray [
 	"set the decay to a collection of value in array or to to the numbe"
 
