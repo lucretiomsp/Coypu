@@ -194,6 +194,28 @@ self assert: 16 downbeats printString equals: result.
 ]
 
 { #category : 'tests' }
+SequencerTest >> testProgressionCascade [ 
+    | seq |
+    seq := '68 ~ 67 * 4' asDirtNotes to: #psgPlus; progression: #(1 2).
+    self assert: seq notes equals: #(69 68 69 68 69 68 69 68 70 69 70 69 70 69 70 69).
+    self assert: seq gates size equals: 24.
+]
+
+{ #category : 'tests' }
+SequencerTest >> testProgressionNotes [ 
+    | seq |
+    seq := '68 ~ 67 * 4' asDirtNotes progression: #(1 2).
+    self assert: seq notes equals: #(69 68 69 68 69 68 69 68 70 69 70 69 70 69 70 69).
+]
+
+{ #category : 'tests' }
+SequencerTest >> testProgressionSeqKeyPreserved [ 
+    | seq |
+    seq := '68 ~ 67 * 4' asDirtNotes to: #psgPlus; progression: #(1 2).
+    self assert: seq seqKey equals: #psgPlus.
+]
+
+{ #category : 'tests' }
 SequencerTest >> testQueryFractionalOnsets [
 
 	| seq events |
