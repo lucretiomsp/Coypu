@@ -5,5 +5,5 @@ StDebugger >> open [
 
 	super open.
 	"prevents debugs explosion"
-	"Performance uniqueInstance stop."
+	Performance uniqueInstance stop.
 ]

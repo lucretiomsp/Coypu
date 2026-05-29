@@ -1146,15 +1146,14 @@ Sequencer >> printOn: aStream [
 
 { #category : 'progressions' }
 Sequencer >> progression: anArrayOfIntervals [
-
-	"return a new Sequencer that join together the original sequencer with as many transpositions of self  for as many intervals in anArrayOfIntervals"
-
-	| oldSeq newSeq |
-	oldSeq := self.
-	newSeq := self.
-	(1 to: anArrayOfIntervals size) do: [ :i | 
-		newSeq := newSeq , (oldSeq transpose: (anArrayOfIntervals at: i)) ].
-	^ newSeq
+    "Concatenate copies of self with notes shifted by each interval in anArrayOfIntervals."
+    | originalNotes |
+    originalNotes := self notes copy.
+    ^ anArrayOfIntervals inject: nil into: [ :acc :interval |
+        | copy |
+        copy := self copy.
+        copy notes: (originalNotes + interval).
+        acc isNil ifTrue: [ copy ] ifFalse: [ acc , copy ] ]
 ]
 
 { #category : 'querying' }
