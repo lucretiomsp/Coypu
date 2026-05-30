@@ -124,6 +124,15 @@ CoypuUtiltiesTest >> testAsRisingArray [
 self assert: 8 asRisingArray equals: #(1 2 3 4 5 6 7  8)
 ]
 
+{ #category : 'tests' }
+CoypuUtiltiesTest >> testMinDurationBetweenGates [
+    "8888 = #(1 0 0 0 1 0 0 0 1 0 0 0 1 0 0 0) -> min distance = 4"
+    self assert: '8888' hexBeat gates minDurationBetweenGates equals: 4.
+
+    "8020 = #(1 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0) -> min distance = 6 (wraparound)"
+    self assert: '8020' hexBeat gates minDurationBetweenGates equals: 6.
+]
+
 { #category : 'as yet unclassified' }
 CoypuUtiltiesTest >> testTransposeKeyInSeq [
 

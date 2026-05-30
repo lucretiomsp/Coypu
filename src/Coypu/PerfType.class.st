@@ -55,7 +55,7 @@ PerfType >> playFor: aNumberOfSteps [
 	| perf |
 
 	perf := Performance uniqueInstance.
-	perf stop..
+	perf stop.
 	perf activeProcess isTerminated ifTrue: [
 		perf performer playFor: aNumberOfSteps ].
 
