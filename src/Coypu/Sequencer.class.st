@@ -502,6 +502,13 @@ value := anArrayWithASymbolAndAnrrayOfValues at: 2.
 	extraParams at: parameter put: value asDirtArray 
 ]
 
+{ #category : 'trait' }
+Sequencer >> fb: aStringOrAnArray [
+	"set the feedbackto a collection of value in array or to to the number"
+
+	self extra: #Fb values: aStringOrAnArray asDirtArrayOfValues
+]
+
 { #category : 'accessing' }
 Sequencer >> fillNotes: anArray [
 
@@ -1544,6 +1551,13 @@ Sequencer >> stepsPerCycle [
 { #category : 'accessing' }
 Sequencer >> subStep [ 
 ^ subStep 
+]
+
+{ #category : 'trait' }
+Sequencer >> time: aStringOrAnArray [
+	"set the time to a collection of value in array or to to the number"
+
+	self extra: #Time values: aStringOrAnArray asDirtArrayOfValues
 ]
 
 { #category : 'replication' }
