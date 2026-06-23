@@ -131,6 +131,18 @@ ByteSymbol >> indexes: aStringOfIndexes [
 ]
 
 { #category : '*Coypu' }
+ByteSymbol >> injectInto: aSeqKeyInPerf [
+
+	| source |
+	source := Performance uniqueInstance at: self.
+	source gates asSeq
+		notes: source notes;
+		durations: source durations;
+		to: aSeqKeyInPerf.
+		^ source
+]
+
+{ #category : '*Coypu' }
 ByteSymbol >> level: aNumberOrAnrrayOrAstring [
 
 |seq |

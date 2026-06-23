@@ -90,6 +90,20 @@ SequencerMono >> isPolySeq [
 	^ false
 ]
 
+{ #category : 'as yet unclassified' }
+SequencerMono >> palindrome [
+
+	| pNotes pGates pDurs |
+	pNotes := self notes , self notes reverse.
+	pGates := self gates , self gates reverse.
+	pDurs := self durations ,self durations reverse.
+
+	^ self
+		  gates: pGates;
+		  notes: pNotes;
+		  durations: pDurs
+]
+
 { #category : 'accessing' }
 SequencerMono >> phaustoNoteDestinations [
 	^ phaustoNoteDestinations.
