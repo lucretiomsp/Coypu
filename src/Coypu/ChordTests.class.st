@@ -7,6 +7,12 @@ Class {
 }
 
 { #category : 'tests' }
+ChordTests >> testChordInitialization [
+
+self assert: Chord new root equals: 60.
+]
+
+{ #category : 'tests' }
 ChordTests >> testChordsToArrays [
 
 	| result |

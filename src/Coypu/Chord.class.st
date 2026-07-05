@@ -7,7 +7,8 @@ Class {
 	#type : 'variable',
 	#instVars : [
 		'list',
-		'ChordLists'
+		'ChordLists',
+		'root'
 	],
 	#classInstVars : [
 		'ChordLists'
@@ -118,6 +119,13 @@ self list keysDo:  [ :i | i traceCr ].
 Transcript open.
 ]
 
+{ #category : 'initialization' }
+Chord >> initialize [
+
+	super initialize.
+	root := 60.
+]
+
 { #category : 'generating' }
 Chord >> randomize: aNumber [
 	
@@ -168,8 +176,13 @@ Chord >> randomize: aNumber withRoot: aRoot [
 ]
 
 { #category : 'accessing' }
+Chord >> root [
+	^ root
+]
+
+{ #category : 'accessing' }
 Chord >> root: aNumber [
 	"return a Chord with aNumber nn as root"
 
-	^ (self + aNumber)
+	^ self root + aNumber
 ]
