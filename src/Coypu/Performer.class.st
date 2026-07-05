@@ -147,7 +147,7 @@ Performer >> performance [
 
 { #category : 'playing' }
 Performer >> play [
-
+	"play a Phaust performance for 4 days at 120 bpm"
 	self playFor: fourDaysAt120BPM
 ]
 

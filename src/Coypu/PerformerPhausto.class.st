@@ -63,13 +63,6 @@ PerformerPhausto >> oldplayEventAt: anIndex dsp: aDsp freq: aFrequency in: aSequ
 		forDsp: aDsp
 ]
 
-{ #category : 'playing' }
-PerformerPhausto >> play [ 
-	"play a Phaust performance for 4 days at 120 bpm"
-
-	self playFor: fourDaysAt120BPM 
-]
-
 { #category : 'accessing' }
 PerformerPhausto >> playEventAt: anIndex dsp: aDsp freq: aFrequency in: aSequencer [
 

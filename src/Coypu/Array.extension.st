@@ -339,13 +339,14 @@ x := OrderedCollection new.
 
 { #category : '*Coypu' }
 Array >> times: aNumber [
-"returns an Array containing aNumber repetition of self"
+	"returns an Array containing aNumber repetition of self"
 
-| newSize newArray  |
-newSize := aNumber * self size.
-newArray := Array new: newSize.
-(1 to: newSize) do: [ :i | newArray  at: i put: (self at: ((i ) modulo: (self size )) ) ].
-^ newArray
+	| newSize newArray |
+	newSize := aNumber * self size.
+	newArray := self className new: newSize.
+	1 to: newSize do: [ :i |
+		newArray at: i put: (self at: (i modulo: self size)) ].
+	^ newArray
 ]
 
 { #category : '*Coypu' }
