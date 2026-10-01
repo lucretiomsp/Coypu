@@ -40,8 +40,9 @@ Class {
 
 { #category : 'accessing' }
 PerformerPhuck >> knows: aString [
+
 	(performance activePhuckVM globalTypeOf: aString ifAbsent: [ nil ]) ifNotNil: [ ^ true ].
-	self inform: 'Phuck: no global ' , aString.
+	InformativeNotification signal: 'Phuck: no global ' , aString.
 	^ false
 ]
 
