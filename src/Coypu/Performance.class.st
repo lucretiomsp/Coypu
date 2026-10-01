@@ -17,7 +17,8 @@ Class {
 		'activeDSP',
 		'stepAdvancement',
 		'maxStepNumber',
-		'logger'
+		'logger',
+		'activePhuckVM'
 	],
 	#classInstVars : [
 		'uniqueInstance',
@@ -88,6 +89,16 @@ Performance >> activeDSP [
 { #category : 'accessing' }
 Performance >> activeDSP: aDSP [
 	activeDSP := aDSP
+]
+
+{ #category : 'accessing' }
+Performance >> activePhuckVM [
+	^ activePhuckVM
+]
+
+{ #category : 'accessing' }
+Performance >> activePhuckVM: aPhuckVM [
+	activePhuckVM := aPhuckVM
 ]
 
 { #category : 'accessing' }
@@ -172,6 +183,14 @@ p performer: PerformerPhausto new.
 p activeDSP: aDsp.
 
 ^ p
+]
+
+{ #category : 'accessing' }
+Performance >> forPhuck: aPhuckVM [
+	self
+		performer: PerformerPhuck new;
+		activePhuckVM: aPhuckVM.
+	^ self
 ]
 
 { #category : 'accessing' }
