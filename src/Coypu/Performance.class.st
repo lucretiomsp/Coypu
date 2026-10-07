@@ -43,7 +43,7 @@ instance activeDSP: aDsp.
 ]
 
 { #category : 'assignments' }
-Performance class >> forOsc [
+Performance class >> forLocal [
 
 ^  self uniqueInstance performer: PerformerLocal new.
 
@@ -216,7 +216,7 @@ p activeDSP: aDsp.
 ]
 
 { #category : 'assignments' }
-Performance >> forOsc [
+Performance >> forLocal [
 
 | p |
 

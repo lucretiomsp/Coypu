@@ -343,7 +343,7 @@ Array >> times: aNumber [
 
 	| newSize newArray |
 	newSize := aNumber * self size.
-	newArray := self className new: newSize.
+	newArray := Array new: newSize.
 	1 to: newSize do: [ :i |
 		newArray at: i put: (self at: (i modulo: self size)) ].
 	^ newArray
