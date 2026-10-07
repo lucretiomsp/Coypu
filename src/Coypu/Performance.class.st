@@ -186,6 +186,8 @@ Performance >> bpm [
 { #category : 'accessing' }
 Performance >> bpm: aBpm [
 	freq := 60 / 4 / aBpm.
+	"also send an OSC message if anybody listening"
+	aBpm toLocal: 'performanceBPM'
 	
 
 
