@@ -173,7 +173,7 @@ Performance >> dirtMIDIDevice: aString [
 	dirtMIDIDevice := aString
 ]
 
-{ #category : 'accessing' }
+{ #category : 'assignments' }
 Performance >> forDsp: aDsp [
 
 | p |
@@ -185,7 +185,18 @@ p activeDSP: aDsp.
 ^ p
 ]
 
-{ #category : 'accessing' }
+{ #category : 'assignments' }
+Performance >> forOsc: aDsp [
+
+| p |
+
+p := self class uniqueInstance .
+p performer: PerformerLocal new.
+
+^ p
+]
+
+{ #category : 'assignments' }
 Performance >> forPhuck: aPhuckVM [
 	self
 		performer: PerformerPhuck new;
