@@ -30,6 +30,36 @@ Class {
 	#tag : 'Performance'
 }
 
+{ #category : 'assignments' }
+Performance class >> forDsp: aDsp [
+
+| instance |
+
+instance := self  uniqueInstance .
+instance performer: PerformerPhausto new.
+instance activeDSP: aDsp.
+
+^ instance
+]
+
+{ #category : 'assignments' }
+Performance class >> forOsc [
+
+^  self uniqueInstance performer: PerformerLocal new.
+
+
+]
+
+{ #category : 'assignments' }
+Performance class >> forPhuck: aPhuckVM [
+
+
+	| instance |
+	instance :=  uniqueInstance performer:  PerformerPhuck new;
+		activePhuckVM: aPhuckVM.
+	^ instance
+]
+
 { #category : 'instance creation' }
 Performance class >> new [ 
 
@@ -186,7 +216,7 @@ p activeDSP: aDsp.
 ]
 
 { #category : 'assignments' }
-Performance >> forOsc: aDsp [
+Performance >> forOsc [
 
 | p |
 
