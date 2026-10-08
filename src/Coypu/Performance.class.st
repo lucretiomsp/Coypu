@@ -57,6 +57,23 @@ Performance class >> forMIDI [
 ]
 
 { #category : 'assignments' }
+Performance class >> forMIDIDevice: aMIDIDevice [
+
+| mout p |
+mout := MIDISender new.
+
+
+mout  openWithDevice: aMIDIDevice .
+
+p := Performance uniqueInstance .
+p performer: PerformerMIDI new.
+
+
+
+	^ p
+]
+
+{ #category : 'assignments' }
 Performance class >> forPhuck: aPhuckVM [
 
 

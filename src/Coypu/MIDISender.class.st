@@ -140,21 +140,21 @@ MIDISender >> openWithDeviceID: aDeviceID [
 	| err |
 	aDeviceID = -1 ifTrue: [ ^ -1 ].
 	self close.
-	(self class openDevices at: aDeviceID ifAbsent: [ nil ])
-		ifNotNil: [ :previous | previous close ].
+	(self class openDevices at: aDeviceID ifAbsent: [ nil ]) ifNotNil: [ :previous | previous close ].
 	instance := PortMidiLibrary uniqueInstance.
 	self midiOut: (instance createNewPointerForStreamWithType: 'void**').
 	err := instance
-		  openOutputForStream: midiOut
-		  withDevice: aDeviceID
-		  withOutputDriverInfos: nil
-		  withBufferSize: 512
-		  withTimeProcedure: nil
-		  withTimeInfos: nil
-		  andLatency: 0.
+		       openOutputForStream: midiOut
+		       withDevice: aDeviceID
+		       withOutputDriverInfos: nil
+		       withBufferSize: 512
+		       withTimeProcedure: nil
+		       withTimeInfos: nil
+		       andLatency: 0.
 	err = 0 ifTrue: [
-		deviceID := aDeviceID.
-		self class openDevices at: aDeviceID put: self ].
+			deviceID := aDeviceID.
+			self class openDevices at: aDeviceID put: self.
+			PerformerMIDI midiOut: self ].
 	^ err
 ]
 
