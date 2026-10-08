@@ -167,17 +167,15 @@ Array >> asSeq [
 	| numberOfNotes dur seq gts |
 	numberOfNotes := self class new: self trigs withAll: 60.
 	"all notes last 1 step by default"
-	dur := Array new: self trigs withAll: 1.
+	dur := self class new: self trigs withAll: 1.
 
 	"with an 80% gate Time"
 	gts := self class new: self trigs withAll: 0.8.
 	seq := SequencerMono new
-		       gates: self;
-		       notes: numberOfNotes;
-		       noteIndex: 1;
-		       midiChannel: 1.
-	seq numberOfTrigs > 1 ifTrue: [
-		dur := Array new: self trigs withAll: self minDurationBetweenGates ].
+	       gates: self;
+	       notes: numberOfNotes;
+	       noteIndex: 1.
+	seq numberOfTrigs > 1 ifTrue: [ dur := self class new: self trigs withAll: self minDurationBetweenGates ].
 
 	seq durations: dur.
 	seq gateTimes: gts.

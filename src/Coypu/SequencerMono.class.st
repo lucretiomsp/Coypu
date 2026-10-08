@@ -90,7 +90,7 @@ SequencerMono >> isPolySeq [
 	^ false
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'LiveCoding' }
 SequencerMono >> palindrome [
 
 	| pNotes pGates pDurs |
@@ -197,17 +197,12 @@ SequencerMono >> playMIDIEvent2At: anIndex [
 	freq := Performance uniqueInstance freq.
 	gateTime := 0.9. "must be changeable"
 	midiSender := PerformerMIDI midiOut.
-	mch := self midiChannel.
+	mch := Performance uniqueInstance performer channelFor: self.
 	stepDuration := Performance uniqueInstance freq.
 	midiNote := self notes asDirtArray wrap: anIndex.
 	dur := self durations asDirtArray wrap: anIndex.
-	midiSender
-		playNote: midiNote
-		onChannel: mch
-		duration: dur * freq * gateTime.
-	self extraParams keysAndValuesDo: [ :k :v |
-		midiSender sendCC: self seqKey  asInteger withValue: (v wrap: anIndex)  onChannel: mch
-			].
+	midiSender playNote: midiNote onChannel: mch duration: dur * freq * gateTime.
+	self extraParams keysAndValuesDo: [ :k :v | midiSender sendCC: self seqKey asInteger withValue: (v wrap: anIndex) onChannel: mch ].
 
 	^ true
 ]
@@ -215,22 +210,16 @@ SequencerMono >> playMIDIEvent2At: anIndex [
 { #category : 'event playing' }
 SequencerMono >> playMIDIEventAt: anIndex [
 
-
 	| gateTime dur midiNote mch stepDuration midiSender freq |
 	freq := Performance uniqueInstance freq.
 	gateTime := 0.9. "must be changeable"
 	midiSender := PerformerMIDI midiOut.
-	mch := self midiChannel.
+	mch := Performance uniqueInstance performer channelFor: self.
 	stepDuration := Performance uniqueInstance freq.
 	midiNote := self notes asDirtArray wrap: anIndex.
 	dur := self durations asDirtArray wrap: anIndex.
-	midiSender
-		playNote: midiNote
-		onChannel: mch
-		duration: dur * freq * gateTime.
-	self extraParams keysAndValuesDo: [ :k :v |
-	midiSender sendCC: k  withValue: (v wrap: anIndex)  onChannel: mch.
-].
+	midiSender playNote: midiNote onChannel: mch duration: dur * freq * gateTime.
+	self extraParams keysAndValuesDo: [ :k :v | midiSender sendCC: k withValue: (v wrap: anIndex) onChannel: mch ].
 
 	^ true
 ]
@@ -372,13 +361,13 @@ SequencerMono >> reverse [
 	
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'LiveCoding' }
 SequencerMono >> to: aSymbol index: aStringOraNumberOrAnArray [ 
 "convenience method to avoid cascading messages"
 	(self to: aSymbol) index: aStringOraNumberOrAnArray 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'LiveCoding' }
 SequencerMono >> to: aSymbol index: anIndexList notes: aNoteList [ 
 	"conveinence method to avoid cascading"
 	((self to: aSymbol ) index: anIndexList ) notes: aNoteList 

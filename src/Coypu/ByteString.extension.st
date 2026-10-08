@@ -713,6 +713,13 @@ ByteString >> onceAtSpeed: aFloat withNote: aNote [
 ]
 
 { #category : '*Coypu' }
+ByteString >> openMidiStream: aMidiStream [
+
+	^ aMidiStream openWithDeviceID:
+		  (PortMidi deviceIDNamed: self for: aMidiStream)
+]
+
+{ #category : '*Coypu' }
 ByteString >> parseChord [
 	"chords can be xpressed both with letteres or with MIDI NoteNumbers"
 
@@ -846,6 +853,12 @@ ByteString >> pattern: anArrayOfNoteNumbers and: anArrayOfDurations [
 	flat := strings flatCollect: [ :each | each ].
 	^ ((1 to: flat size) collect: [ :i | (flat at: i) digitValue ])
 		  asRhythm and: anArrayOfNoteNumbers and: anArrayOfDurations
+]
+
+{ #category : '*Coypu' }
+ByteString >> penMidiStream: aMidiStream [
+
+	^ aMidiStream openWithDeviceID: (PortMidiLibrary deviceIDNamed: self)
 ]
 
 { #category : '*Coypu' }

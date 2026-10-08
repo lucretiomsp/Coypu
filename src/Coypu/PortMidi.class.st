@@ -12,7 +12,7 @@ Class {
 	#tag : 'MIDI'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'logging' }
 PortMidi class >> countDevices [
 ^ self ffiCall: #(int Pm_CountDevices()) library: '//Users/domenicocipriani/MyStuff/portmidi-master/Release/libportmidi.2.0.3.dylib'
 ]
@@ -26,17 +26,56 @@ PortMidi class >> createNewPointerForStreamWithType: pointerType [
 	^ midiStream tfPointerAddress.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'logging' }
+PortMidi class >> deviceIDNamed: aString [
+	"Answer the id of the device named aString, or -1 if none matches."
+
+	^ (0 to: self countDevices - 1)
+		  detect: [ :i | (self uniqueInstance getDeviceNameid: i) = aString ]
+		  ifNone: [ -1 ]
+]
+
+{ #category : 'logging' }
+PortMidi class >> deviceIDNamed: aString direction: aDirection [
+	"aDirection is 'INPUT' or 'OUTPUT'. Answer the device id, or -1."
+
+	| target |
+	target := String streamContents: [ :stream |
+		          stream
+			          nextPutAll: aString;
+			          nextPutAll: ' is ';
+			          nextPutAll: aDirection ].
+	^ (0 to: self countDevices - 1)
+		  detect: [ :i | (self uniqueInstance getDeviceNameid: i) = target ]
+		  ifNone: [ -1 ]s
+]
+
+{ #category : 'logging' }
+PortMidi class >> deviceIDNamed: aString for: aMidiStream [
+	"Answer the id of the device named aString in aMidiStream's direction, or -1."
+
+	| target |
+	target := String streamContents: [ :stream |
+		          stream
+			          nextPutAll: aString;
+			          nextPutAll: ' is ';
+			          nextPutAll: aMidiStream portDirection ].
+	^ (0 to: self countDevices - 1)
+		  detect: [ :i | (self uniqueInstance getDeviceNameid: i) = target ]
+		  ifNone: [ -1 ]
+]
+
+{ #category : 'logging' }
 PortMidi class >> getDeviceInfo: aDeviceID [
 ^ self ffiCall: #(PmDeviceInfo * Pm_GetDeviceInfo (int aDeviceID)) library: '/Users/domenicocipriani/MyStuff/portmidi-master/Release/libportmidi.2.0.3.dylib'
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'system startup' }
 PortMidi class >> malloc: aSize [
 ^ self ffiCall: #(void * malloc (size_t aSize)) library: LibC
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'messages' }
 PortMidi class >> message: status and: data1 and: data2 [
 | result|
 
@@ -45,14 +84,14 @@ result := (((data2 bitShift: 16) bitAnd: 16rFF0000) bitOr: ((data1 bitShift: 8) 
 ^ result
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'system startup' }
 PortMidi class >> openOutput: aDeviceIntID on: aPortMidiStream [
 self ffiCall: 
 #(PmError Pm_OpenOutput #(void ** aPortMidiStream, int aDeviceIntID, NULL, int 512, NULL, NULL, int 0))
 library: '/Users/domenicocipriani/MyStuff/portmidi-master/Release/libportmidi.2.0.3.dylib'
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'system startup' }
 PortMidi class >> pm_Initialize [
 self ffiCall: #(PmError Pm_Initialize ()) library: '/Users/domenicocipriani/MyStuff/portmidi-master/Release/libportmidi.2.0.3.dylib'
 ]
@@ -68,7 +107,7 @@ PortMidi class >> terminate [
 ^ self ffiCall: #(PmError Pm_Terminate()) library: '/Users/domenicocipriani/MyStuff/portmidi-master/Release/libportmidi.2.0.3.dylib'
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'logging' }
 PortMidi class >> traceAllDevices [
 	" return an array of MIDI devices"
 
@@ -90,7 +129,7 @@ PortMidi class >> writeShortOn: aPointerToAStream for: aPmMessage [
  library: '/Users/domenicocipriani/MyStuff/portmidi-master/Release/libportmidi.2.0.3.dylib'
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'open/close' }
 PortMidi >> close: aMIDIStream [
 	^ self ffiCall: #(PmError Pm_Close(void* aMIDIStream))
 ]
@@ -109,7 +148,7 @@ PortMidi >> createNewPointerForStreamWithType: pointerType [
 	^ midiStream tfPointerAddress.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'initialization' }
 PortMidi >> createOutStream [
 
 	outStream  := self class createNewPointerForStreamWithType: 'void**'.
@@ -150,7 +189,7 @@ PortMidi >> macModuleName [
 	^ 'libportmidi.2.0.3.dylib'
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'messages' }
 PortMidi >> message: status and: data1 and: data2 [
 	
 	| result|
@@ -159,24 +198,24 @@ PortMidi >> message: status and: data1 and: data2 [
 	^ result
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'open/close' }
 PortMidi >> openOutput: aDeviceIntID [ 
 	self ffiCall: 
 #(PmError Pm_OpenOutput #(void ** outStream, int aDeviceIntID, NULL, int 0, NULL, NULL, int 0))
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'open/close' }
 PortMidi >> openOutput: aDeviceIntID on: aPortMidiStream [
 	self ffiCall: 
 #(PmError Pm_OpenOutput #(void ** aPortMidiStream, int aDeviceIntID, NULL, int 0, NULL, NULL, int 0))
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing - platform' }
 PortMidi >> outStream [ 
 	^ outStream
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'messages' }
 PortMidi >> playNote: aNoteNumber onChannel: aMIDIChannel [
 	" play aNoteNumber on channel aChannel for a standard duration of 250 ms"
 	| noteOn noteOff channel|
@@ -187,17 +226,17 @@ PortMidi >> playNote: aNoteNumber onChannel: aMIDIChannel [
 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'initialization' }
 PortMidi >> pm_Initialize [
 	self ffiCall: #(PmError Pm_Initialize ()) 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'initialization' }
 PortMidi >> start [
 	^ self ffiCall:  #(PtError Pt_Start(int 1, NULL, NULL))
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'initialization' }
 PortMidi >> terminate [
 	^ self ffiCall: #(PmError Pm_Terminate()) 
 ]
@@ -207,7 +246,7 @@ PortMidi >> writeOn: aPointerToStream event: aBuffer length: aLength [
 	^ self ffiCall: #(PmError Pm_Write(void * aPointerToStream, PmEvent* aBuffer, int aLength))
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'messages' }
 PortMidi >> writeShortOn: aPointerToAStream for: aPmMessage [
 	"messages is sent out immediately, so timestamp is 0"
 	^ self ffiCall: #(PmError Pm_WriteShort (void *aPointerToAStream, int -1, int aPmMessage))

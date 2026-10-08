@@ -4,6 +4,9 @@ Performer for external MIDI hardware
 Class {
 	#name : 'PerformerMIDI',
 	#superclass : 'Performer',
+	#instVars : [
+		'channelMap'
+	],
 	#classInstVars : [
 		'midiOut',
 		'defaultChannels'
@@ -14,8 +17,22 @@ Class {
 }
 
 { #category : 'accessing' }
+PerformerMIDI class >> defaultChannelAt: aKey [
+
+	^ (defaultChannels ifNil: [ Dictionary new ])
+		  at: aKey
+		  ifAbsent: [ self factoryChannels at: aKey ifAbsent: [ 1 ] ]
+]
+
+{ #category : 'accessing' }
 PerformerMIDI class >> defaultChannels [
 ^ defaultChannels ifNil: [ defaultChannels := self factoryChannels ]
+]
+
+{ #category : 'accessing' }
+PerformerMIDI class >> defaultChannels: anArrayOfAssociations [
+
+	defaultChannels := anArrayOfAssociations asDictionary
 ]
 
 { #category : 'accessing' }
@@ -56,6 +73,39 @@ PerformerMIDI class >> midiOut: aMIDISender [
 	midiOut := aMIDISender 
 ]
 
+{ #category : 'accessing' }
+PerformerMIDI class >> resetDefaultChannels [
+
+	defaultChannels := nil
+]
+
+{ #category : 'accessing' }
+PerformerMIDI >> channelFor: aSequencer [
+
+	| key |
+	aSequencer midiChannel ifNotNil: [ :ch | ^ ch ].
+	key := (aSequencer seqKey ifNil: [ ^ 1 ]) asSymbol.
+	^ (channelMap ifNil: [ Dictionary new ])
+		  at: key
+		  ifAbsent: [ self class defaultChannelAt: key ]
+]
+
+{ #category : 'accessing' }
+PerformerMIDI >> channels [
+	"The effective map: class defaults overridden by this performer's entries."
+
+	^ self class defaultChannels copy
+		  addAll: (channelMap ifNil: [ Dictionary new ]);
+		  yourself
+]
+
+{ #category : 'accessing' }
+PerformerMIDI >> channels: anArrayOfAssociations [
+
+	channelMap ifNil: [ channelMap := Dictionary new ].
+	channelMap addAll: anArrayOfAssociations asDictionary
+]
+
 { #category : 'LiveCoding-ExtraParams' }
 PerformerMIDI >> index: aStringOrAnArray to: aSequencer [
 
@@ -79,22 +129,18 @@ PerformerMIDI >> play [
 	self playFor: fourDaysAt120BPM
 ]
 
-{ #category : 'accessing' }
+{ #category : 'playing' }
 PerformerMIDI >> playEventAt: anIndex in: aSequencer [
 
-	| gateTime dur midiNote mch stepDuration midiSender freq |
+	| gateTime dur midiNote mch stepDuration midiSender  |
 	freq := Performance uniqueInstance freq.
 	gateTime := 0.9. "must be changeable"
-	midiSender := PerformerMIDI midiOut.
-	mch := aSequencer midiChannel.
+	midiSender := self class midiOut.
+	mch := self channelFor: aSequencer.
 	stepDuration := Performance uniqueInstance freq.
 	midiNote := aSequencer notes asDirtArray wrap: anIndex.
 	dur := aSequencer durations asDirtArray wrap: anIndex.
-	midiSender
-		playNote: midiNote
-		onChannel: mch
-		duration: dur * freq * gateTime.
-
+	midiSender playNote: midiNote onChannel: mch duration: dur * freq * gateTime
 ]
 
 { #category : 'playing' }

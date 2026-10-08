@@ -77,25 +77,30 @@ MIDISender >> midiOut: anOutputStream [
 ]
 
 { #category : 'initialization' }
-MIDISender >> openWithDevice: aDeviceID [
-	"Opens a new MidiOUT Stream with output device id aDeviceID to play notes.
-	aDeviceID is an integer. PortMidi traceAllDevices / displays all available devices
-	"
-	
+MIDISender >> openWithDevice: aDeviceIDOrName [
+	"Open a MIDI out stream on a device given by id (Integer) or name (String).
+	PortMidi traceAllDevices displays all available devices."
+
+	^ aDeviceIDOrName openMidiStream: self
+]
+
+{ #category : 'initialization' }
+MIDISender >> openWithDeviceID: aDeviceID [
+	"Open a MIDI out stream with output device id aDeviceID."
+
+	aDeviceID = -1 ifTrue: [ ^ -1 ].
 	self instance: PortMidiLibrary uniqueInstance.
-	
 	"assign the MIDISender to the PerformerMIDI"
 	PerformerMIDI midiOut: self.
-	
 	self midiOut: (instance createNewPointerForStreamWithType: 'void**').
-	^ (aDeviceID = -1) ifFalse: 
-		[instance openOutputForStream: midiOut  
-															withDevice: aDeviceID 
-															withOutputDriverInfos: nil 
-															withBufferSize: 512 
-															withTimeProcedure: nil 
-															withTimeInfos: nil 
-															andLatency: 0 ] ifTrue: [ ^ -1 ]
+	^ instance
+		  openOutputForStream: midiOut
+		  withDevice: aDeviceID
+		  withOutputDriverInfos: nil
+		  withBufferSize: 512
+		  withTimeProcedure: nil
+		  withTimeInfos: nil
+		  andLatency: 0
 ]
 
 { #category : 'initialization' }
@@ -198,6 +203,12 @@ MIDISender >> playNote: aNoteNumber onChannel: aMIDIChannel duration: aDurationI
 	(Delay forSeconds: aDurationInSeconds) wait.
 	instance writeShortOn: self midiOut value when: 0 theMessage: noteOff ]
 		fork
+]
+
+{ #category : 'accessing' }
+MIDISender >> portDirection [
+
+	^ 'OUTPUT'
 ]
 
 { #category : 'sending' }
