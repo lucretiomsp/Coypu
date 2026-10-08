@@ -12,12 +12,27 @@ Class {
 	#instVars : [
 		'midiOut',
 		'defaultOutput',
-		'instance'
+		'instance',
+		'deviceID'
+	],
+	#classVars : [
+		'OpenDevices'
 	],
 	#category : 'Coypu-MIDI',
 	#package : 'Coypu',
 	#tag : 'MIDI'
 }
+
+{ #category : 'open/close' }
+MIDISender class >> closeAll [
+	self openDevices values copy do: [ :each | each close ]
+]
+
+{ #category : 'open/close' }
+MIDISender class >> openDevices [
+	^ OpenDevices ifNil: [ OpenDevices := Dictionary new ]
+
+]
 
 { #category : 'sending' }
 MIDISender >> allNotesOff [
@@ -26,7 +41,17 @@ MIDISender >> allNotesOff [
 		self sendCC: 123 withValue: 0 onChannel: i]
 ]
 
-{ #category : 'initialization' }
+{ #category : 'open/close' }
+MIDISender >> close [
+
+	midiOut ifNil: [ ^ self ].
+	PortMidiLibrary uniqueInstance closeStream: midiOut.
+	self class openDevices removeKey: deviceID ifAbsent: [ ].
+	midiOut := nil.
+	deviceID := nil
+]
+
+{ #category : 'open/close' }
 MIDISender >> closeMidiOut [
 	"Close the MidiOUT stream (where the score sends notes)."
 	^ PortMidiLibrary uniqueInstance portMidiCloseIOStream: midiOut value
@@ -64,6 +89,12 @@ MIDISender >> instance: aPortMIDIInstance [
 instance := PortMidiLibrary uniqueInstance.
 ]
 
+{ #category : 'testing' }
+MIDISender >> isOpen [
+	^ midiOut notNil
+
+]
+
 { #category : 'initialization' }
 MIDISender >> midiOut [
 	"Gets the MidiOUT stream that is used to write the melody."
@@ -76,7 +107,12 @@ MIDISender >> midiOut: anOutputStream [
 	midiOut := anOutputStream
 ]
 
-{ #category : 'initialization' }
+{ #category : 'open/close' }
+MIDISender >> openDevices [
+	^ self class openDevices
+]
+
+{ #category : 'open/close' }
 MIDISender >> openWithDevice: aDeviceIDOrName [
 	"Open a MIDI out stream on a device given by id (Integer) or name (String).
 	PortMidi traceAllDevices displays all available devices."
@@ -84,23 +120,28 @@ MIDISender >> openWithDevice: aDeviceIDOrName [
 	^ aDeviceIDOrName openMidiStream: self
 ]
 
-{ #category : 'initialization' }
+{ #category : 'outputManagement' }
 MIDISender >> openWithDeviceID: aDeviceID [
-	"Open a MIDI out stream with output device id aDeviceID."
 
+	| err |
 	aDeviceID = -1 ifTrue: [ ^ -1 ].
-	self instance: PortMidiLibrary uniqueInstance.
-	"assign the MIDISender to the PerformerMIDI"
-	PerformerMIDI midiOut: self.
+	self close.
+	(self class openDevices at: aDeviceID ifAbsent: [ nil ])
+		ifNotNil: [ :previous | previous close ].
+	instance := PortMidiLibrary uniqueInstance.
 	self midiOut: (instance createNewPointerForStreamWithType: 'void**').
-	^ instance
+	err := instance
 		  openOutputForStream: midiOut
 		  withDevice: aDeviceID
 		  withOutputDriverInfos: nil
 		  withBufferSize: 512
 		  withTimeProcedure: nil
 		  withTimeInfos: nil
-		  andLatency: 0
+		  andLatency: 0.
+	err = 0 ifTrue: [
+		deviceID := aDeviceID.
+		self class openDevices at: aDeviceID put: self ].
+	^ err
 ]
 
 { #category : 'initialization' }
