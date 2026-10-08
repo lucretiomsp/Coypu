@@ -51,6 +51,12 @@ Performance class >> forLocal [
 ]
 
 { #category : 'assignments' }
+Performance class >> forMIDI [
+
+	^ self uniqueInstance performer: PerformerMIDI new
+]
+
+{ #category : 'assignments' }
 Performance class >> forPhuck: aPhuckVM [
 
 
@@ -226,6 +232,15 @@ p := self class uniqueInstance .
 p performer: PerformerLocal new.
 
 ^ p
+]
+
+{ #category : 'assignments' }
+Performance >> forMIDI [
+
+	| p |
+p := Performance uniqueInstance .
+p performer: PerformerMIDI new.
+	^ p
 ]
 
 { #category : 'assignments' }

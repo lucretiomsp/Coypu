@@ -5,12 +5,44 @@ Class {
 	#name : 'PerformerMIDI',
 	#superclass : 'Performer',
 	#classInstVars : [
-		'midiOut'
+		'midiOut',
+		'defaultChannels'
 	],
 	#category : 'Coypu-Performer',
 	#package : 'Coypu',
 	#tag : 'Performer'
 }
+
+{ #category : 'accessing' }
+PerformerMIDI class >> defaultChannels [
+^ defaultChannels ifNil: [ defaultChannels := self factoryChannels ]
+]
+
+{ #category : 'accessing' }
+PerformerMIDI class >> factoryChannels [
+
+	^ {
+		  (#kick -> 1).
+		  (#snare -> 2).
+		  (#bass -> 3).
+		  (#rim -> 4).
+		  (#ch -> 5).
+		  (#oh -> 6) .
+(#pad -> 7) .
+(#lead -> 8) .
+(#vox -> 9) 	.	
+			  (#perc -> 10) .
+(#drums -> 11) .
+(#percLoop -> 12) 	.	
+		(#bassLoop -> 13) 	.	
+				(#chordLoop -> 14) 	.	
+		(#synthLoop -> 15) 	.	
+		
+		}
+		
+		
+		 asDictionary
+]
 
 { #category : 'accessing' }
 PerformerMIDI class >> midiOut [
