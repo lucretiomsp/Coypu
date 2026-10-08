@@ -9,12 +9,28 @@ Class {
 	#tag : 'Tests'
 }
 
+{ #category : 'asserting' }
+MIDISenderTest >> assertNoError: err [
+	self
+		assert: err = 0
+		description: [ PortMidiLibrary uniqueInstance getErrorText: err ]
+]
+
 { #category : 'running' }
 MIDISenderTest >> setUp [
 	super setUp.
 	deviceName := 'IAC Driver Bus 1'.
-	(PortMidi deviceIDNamed: deviceName for: MIDISender new) = -1
-		ifTrue: [ self skip: deviceName , ' not available' ].
+	(PortMidiLibrary uniqueInstance outputPortNames includes: deviceName)
+		ifFalse: [ self skip: deviceName , ' not available' ].
+	MIDISender closeAll
+]
+
+{ #category : 'running' }
+MIDISenderTest >> setup [ 
+super setUp.
+	deviceName := 'IAC Driver Bus 1'.
+	(PortMidiLibrary uniqueInstance outputPortNames includes: deviceName)
+		ifFalse: [ self skip: deviceName , ' not available' ].
 	MIDISender closeAll
 ]
 
@@ -24,24 +40,29 @@ MIDISenderTest >> tearDown [
 	super tearDown
 ]
 
-{ #category : 'running' }
+{ #category : 'asserting' }
 MIDISenderTest >> testCloseAll [
-	(MIDISender new) openWithDevice: deviceName.
+	MIDISender new openWithDevice: deviceName.
 	MIDISender closeAll.
 	self assert: MIDISender openDevices isEmpty
 ]
 
-{ #category : 'running' }
+{ #category : 'asserting' }
 MIDISenderTest >> testCloseTwiceIsHarmless [
-
 	| sender |
 	sender := MIDISender new.
 	sender openWithDevice: deviceName.
 	sender close.
-	sender close
+	self shouldnt: [ sender close ] raise: Error
 ]
 
-{ #category : 'running' }
+{ #category : 'asserting' }
+MIDISenderTest >> testCloseUnopenedIsHarmless [
+
+	MIDISender new close
+]
+
+{ #category : 'asserting' }
 MIDISenderTest >> testCloseUnregisters [
 	| sender |
 	sender := MIDISender new.
@@ -51,46 +72,70 @@ MIDISenderTest >> testCloseUnregisters [
 	self assert: MIDISender openDevices isEmpty
 ]
 
-{ #category : 'running' }
+{ #category : 'asserting' }
+MIDISenderTest >> testInvalidID [
+	self assert: (MIDISender new openWithDevice: -1) equals: -1.
+	self assert: MIDISender openDevices isEmpty
+]
+
+{ #category : 'asserting' }
 MIDISenderTest >> testNewInstanceTakesOverDevice [
 	| first second |
 	first := MIDISender new.
 	first openWithDevice: deviceName.
 	second := MIDISender new.
-	self assert: (second openWithDevice: deviceName) equals: 0.
+	self assertNoError: (second openWithDevice: deviceName).
 	self deny: first isOpen.
 	self assert: second isOpen.
 	self assert: MIDISender openDevices size equals: 1
 ]
 
-{ #category : 'running' }
+{ #category : 'asserting' }
+MIDISenderTest >> testNewSenderIsClosed [
+	self deny: MIDISender new isOpen
+]
+
+{ #category : 'asserting' }
+MIDISenderTest >> testOpenByID [
+	| sender id |
+	id := PortMidiLibrary uniqueInstance idOfOutputPortNamed: deviceName.
+	sender := MIDISender new.
+	self assertNoError: (sender openWithDevice: id).
+	self assert: sender isOpen
+
+]
+
+{ #category : 'asserting' }
 MIDISenderTest >> testOpenByName [
 	| sender |
 	sender := MIDISender new.
-	self assert: (sender openWithDevice: deviceName) equals: 0.
+	self assertNoError: (sender openWithDevice: deviceName).
 	self assert: sender isOpen.
 	self assert: (MIDISender openDevices includes: sender)
 ]
 
-{ #category : 'running' }
+{ #category : 'asserting' }
 MIDISenderTest >> testReopenAfterClose [
 	| sender |
 	sender := MIDISender new.
 	sender openWithDevice: deviceName.
 	sender close.
-	self assert: (MIDISender new openWithDevice: deviceName) equals: 0
+	self assertNoError: (MIDISender new openWithDevice: deviceName)
+
 ]
 
-{ #category : 'running' }
+{ #category : 'asserting' }
 MIDISenderTest >> testReopenSameInstance [
 	| sender |
 	sender := MIDISender new.
 	sender openWithDevice: deviceName.
-	self assert: (sender openWithDevice: deviceName) equals: 0.
+	self assertNoError: (sender openWithDevice: deviceName).
+	self assert: sender isOpen.
 	self assert: MIDISender openDevices size equals: 1
+
 ]
 
-{ #category : 'running' }
+{ #category : 'asserting' }
 MIDISenderTest >> testUnknownName [
 	self
 		assert: (MIDISender new openWithDevice: 'No Such Device')

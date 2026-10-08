@@ -715,8 +715,7 @@ ByteString >> onceAtSpeed: aFloat withNote: aNote [
 { #category : '*Coypu' }
 ByteString >> openMidiStream: aMidiStream [
 
-	^ aMidiStream openWithDeviceID:
-		  (PortMidi deviceIDNamed: self for: aMidiStream)
+	^ aMidiStream openWithDeviceID: (aMidiStream deviceIDNamed: self)
 ]
 
 { #category : '*Coypu' }

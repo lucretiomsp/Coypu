@@ -28,10 +28,20 @@ MIDISender class >> closeAll [
 	self openDevices values copy do: [ :each | each close ]
 ]
 
+{ #category : 'class initialization' }
+MIDISender class >> initialize [
+	SessionManager default registerUserClassNamed: self name
+]
+
 { #category : 'open/close' }
 MIDISender class >> openDevices [
 	^ OpenDevices ifNil: [ OpenDevices := Dictionary new ]
 
+]
+
+{ #category : 'system startup' }
+MIDISender class >> startUp: resuming [
+	resuming ifTrue: [ OpenDevices := nil ]
 ]
 
 { #category : 'sending' }
@@ -41,13 +51,11 @@ MIDISender >> allNotesOff [
 		self sendCC: 123 withValue: 0 onChannel: i]
 ]
 
-{ #category : 'open/close' }
+{ #category : 'initialization' }
 MIDISender >> close [
-
-	midiOut ifNil: [ ^ self ].
-	PortMidiLibrary uniqueInstance closeStream: midiOut.
+	deviceID ifNil: [ ^ self ].
+	PortMidiLibrary uniqueInstance portMidiCloseIOStream: midiOut value.
 	self class openDevices removeKey: deviceID ifAbsent: [ ].
-	midiOut := nil.
 	deviceID := nil
 ]
 
@@ -67,6 +75,13 @@ MIDISender >> defaultOutput [
 MIDISender >> defaultOutput: aDevice [
 	"Sets the new default output for the score."
 	defaultOutput := aDevice
+]
+
+{ #category : 'logging' }
+MIDISender >> deviceIDNamed: aString [
+	^ [ PortMidiLibrary uniqueInstance idOfOutputPortNamed: aString ]
+		  on: Error
+		  do: [ -1 ]
 ]
 
 { #category : 'initialization' }
@@ -91,8 +106,7 @@ instance := PortMidiLibrary uniqueInstance.
 
 { #category : 'testing' }
 MIDISender >> isOpen [
-	^ midiOut notNil
-
+	^ deviceID notNil
 ]
 
 { #category : 'initialization' }

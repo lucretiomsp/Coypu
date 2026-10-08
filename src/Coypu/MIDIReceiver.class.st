@@ -9,7 +9,8 @@ Class {
 		'midiIn',
 		'defaultInput',
 		'receivingProcess',
-		'deviceID'
+		'deviceID',
+		'deviceName'
 	],
 	#classVars : [
 		'OpenDevices'
@@ -37,27 +38,44 @@ MIDIReceiver class >> close [
 	deviceID := nil
 ]
 
-{ #category : 'open/close' }
+{ #category : 'class initialization' }
 MIDIReceiver class >> closeAll [
 	self openDevices values copy do: [ :each | each close ]
+
 ]
 
-{ #category : 'open/close' }
+{ #category : 'class initialization' }
+MIDIReceiver class >> initialize [
+	SessionManager default registerUserClassNamed: self name
+
+]
+
+{ #category : 'class initialization' }
 MIDIReceiver class >> openDevices [
 	^ OpenDevices ifNil: [ OpenDevices := Dictionary new ]
 ]
 
-{ #category : 'outputManagement' }
-MIDIReceiver >> close [
+{ #category : 'class initialization' }
+MIDIReceiver class >> shutDown: quitting [
+	quitting ifTrue: [ self closeAll ]
+]
 
-	midiIn ifNil: [ ^ self ].
+{ #category : 'class initialization' }
+MIDIReceiver class >> startUp: resuming [
+	resuming ifTrue: [ OpenDevices := nil ]
+]
+
+{ #category : 'initialization' }
+MIDIReceiver >> close [
+	| err |
+	deviceID ifNil: [ ^ 0 ].
 	receivingProcess ifNotNil: [ :p |
-			p terminate.
-			receivingProcess := nil ].
-	PortMidiLibrary uniqueInstance closeStream: midiIn.
+		p terminate.
+		receivingProcess := nil ].
+	err := PortMidiLibrary uniqueInstance portMidiCloseIOStream: midiIn value.
 	self class openDevices removeKey: deviceID ifAbsent: [ ].
-	midiIn := nil.
-	deviceID := nil
+	deviceID := nil.
+	^ err
 ]
 
 { #category : 'accessing' }
@@ -71,18 +89,33 @@ MIDIReceiver >> defaultInput: anInput [
 ]
 
 { #category : 'initialization' }
-MIDIReceiver >> initialize [
-	| instance |
-	instance := PortMidiLibrary uniqueInstance.
-	self defaultInput: instance getDefaultOutputDeviceID.
-	self midiInput: (instance createNewPointerForStreamWithType: 'void**').
-	
+MIDIReceiver >> deviceIDNamed: aString [
+	^ [ PortMidiLibrary uniqueInstance idOfInputPortNamed: aString ]
+		  on: Error
+		  do: [ -1 ]
+
 ]
 
-{ #category : 'testing' }
-MIDIReceiver >> isOpen [
-	^ midiIn notNil
+{ #category : 'as yet unclassified' }
+MIDIReceiver >> eviceIDNamed: aString [
+	^ [ PortMidiLibrary uniqueInstance idOfInputPortNamed: aString ]
+		  on: Error
+		  do: [ -1 ]
+]
 
+{ #category : 'initialization' }
+MIDIReceiver >> initialize [
+	| lib |
+	super initialize.
+	lib := PortMidiLibrary uniqueInstance.
+	defaultInput := lib getDefaultInputDeviceID.
+	midiIn := lib createNewPointerForStreamWithType: 'void**'
+
+]
+
+{ #category : 'initialization' }
+MIDIReceiver >> isOpen [
+	^ deviceID notNil
 ]
 
 { #category : 'accessing' }
@@ -180,38 +213,43 @@ MIDIReceiver >> receivinProcess: aProcess [
 	receivingProcess := aProcess
 ]
 
-{ #category : 'logging' }
-MIDIReceiver >> traceIncomingMessage [
+{ #category : 'initialization' }
+MIDIReceiver >> receivingProcess [
+	^ receivingProcess
 
-	| instance buffer |
-	instance := PortMidiLibrary uniqueInstance.
+]
+
+{ #category : 'initialization' }
+MIDIReceiver >> receivingProcess: aProcess [
+	receivingProcess := aProcess
+]
+
+{ #category : 'initialization' }
+MIDIReceiver >> traceIncomingMessage [
+	| lib buffer |
+	lib := PortMidiLibrary uniqueInstance.
 	buffer := PortMidiEvent new.
 	receivingProcess := [
-		                   [
-			                   instance advancedReadOn: self midiInput value inBuffer: buffer withSize: 512.
-			                   ('I am the buffer message' , buffer message asString) traceCr.
-			                   (instance portMidiGetStatusFromMessage: buffer message) traceCr.
-			                   (instance portMidiGetFirstDataFromMessage: buffer message) traceCr.
-			                   (instance portMidiGetSecondDataFromMessage: buffer message) traceCr ] repeat ] fork.
+		[
+			lib advancedReadOn: midiIn value inBuffer: buffer withSize: 1.
+			(lib portMidiGetStatusFromMessage: buffer message) traceCr.
+			(lib portMidiGetFirstDataFromMessage: buffer message) traceCr.
+			(lib portMidiGetSecondDataFromMessage: buffer message) traceCr ]
+			repeat ] fork.
 	^ receivingProcess
 ]
 
-{ #category : 'messages' }
+{ #category : 'initialization' }
 MIDIReceiver >> trig: aDsp [
-
-	| instance buffer proc |
-	instance := PortMidiLibrary uniqueInstance.
+	| lib buffer |
+	lib := PortMidiLibrary uniqueInstance.
 	buffer := PortMidiEvent new.
-	proc := [
-	        [ 1 > 0 ] whileTrue: [
-		        instance
-			        advancedReadOn: self midiInput value
-			        inBuffer: buffer
-			        withSize: 512.
-		        
-		        aDsp setValue: ((instance portMidiGetFirstDataFromMessage: buffer message) /100)
-			        parameter: 'TrigMe'.
-		        (instance portMidiGetSecondDataFromMessage: buffer message)
-			        traceCr ] ] fork.
-	^ proc
+	receivingProcess := [
+		[
+			lib advancedReadOn: midiIn value inBuffer: buffer withSize: 1.
+			aDsp
+				setValue: (lib portMidiGetFirstDataFromMessage: buffer message) / 100
+				parameter: 'TrigMe' ]
+			repeat ] fork.
+	^ receivingProcess
 ]
