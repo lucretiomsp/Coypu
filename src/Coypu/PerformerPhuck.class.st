@@ -39,14 +39,6 @@ Class {
 }
 
 { #category : 'accessing' }
-PerformerPhuck >> knows: aString [
-
-	(performance activePhuckVM globalTypeOf: aString ifAbsent: [ nil ]) ifNotNil: [ ^ true ].
-	InformativeNotification signal: 'Phuck: no global ' , aString.
-	^ false
-]
-
-{ #category : 'accessing' }
 PerformerPhuck >> playCyclicFor: aNumberOfCycles [
 	performance activePhuckVM ifNil: [
 		^ Error signal: 'There must be an active PhuckVM for this performance' ].
@@ -63,8 +55,7 @@ PerformerPhuck >> playEventAt: anIndex in: aSequencer [
 	aSequencer extraParams keysAndValuesDo: [ :k :v |
 		self setValue: (v wrap: anIndex) parameter: key , k asString ].
 	self setValue: (aSequencer notes wrap: anIndex) parameter: key , 'Note'.
-	(self knows: key , 'Gate') ifTrue: [
-		performance activePhuckVM trig: key , 'Gate' for: gateDur ]
+	performance activePhuckVM trig: key , 'Gate' for: gateDur
 ]
 
 { #category : 'accessing' }
@@ -82,6 +73,5 @@ PerformerPhuck >> playNoteFor: aSequencer [
 
 { #category : 'accessing' }
 PerformerPhuck >> setValue: aNumber parameter: aString [
-	(self knows: aString) ifFalse: [ ^ self ].
 	performance activePhuckVM setValue: aNumber parameter: aString
 ]

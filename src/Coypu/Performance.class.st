@@ -59,18 +59,16 @@ Performance class >> forMIDI [
 { #category : 'assignments' }
 Performance class >> forMIDIDevice: aMIDIDevice [
 
-| mout p |
+| mout  |
 mout := MIDISender new.
 
 
 mout  openWithDevice: aMIDIDevice .
 
-p := Performance uniqueInstance .
-p performer: PerformerMIDI new.
+^ self uniqueInstance  performer: PerformerMIDI new.
 
 
 
-	^ p
 ]
 
 { #category : 'assignments' }
