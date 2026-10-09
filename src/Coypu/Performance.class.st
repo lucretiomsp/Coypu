@@ -682,15 +682,12 @@ Performance >> resetAllSequencers [
 ]
 
 { #category : 'LiveCoding - Performance' }
-Performance >> restore [
-
-	"restore what the performance was before receiveing messages muteAll or solo"
-
-	| p |
+Performance >> restore [ 
+| p |
 	p := Performance uniqueInstance.
-	self backup keysAndValuesDo: [ :k :v | 
-		p at: k put: v].
-	p keysAndValuesRemove: [ :kp :vp | (p backup includesKey: kp) not ] 
+	self backup keysAndValuesDo: [ :k :v | p at: k put: v ].
+	p keysAndValuesRemove: [ :kp :vp | (p backup includesKey: kp) not ].
+	self bpm: 60 / 4 / backup freq
 ]
 
 { #category : 'modifying' }
@@ -758,7 +755,10 @@ Performance >> swap: firstKey with: secondKey [
 { #category : 'modifying' }
 Performance >> temporarySave [
 
-backup := self asDictionary 
+"a copy keeps the tracks (with fresh associations) and settings like freq"
+
+	backup := self copy.
+	backup backup: nil
 ]
 
 { #category : 'accessing' }
