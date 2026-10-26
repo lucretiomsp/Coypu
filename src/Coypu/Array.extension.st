@@ -374,8 +374,8 @@ Array >> toLocal: aString [
 	| localAddress message floats |
 	localAddress := '127.0.0.1'.
 	floats := self collect: [ :i | i asFloat ].
-	message := floats asOrderedCollection.
-	message addFirst: '/' , aString.
+	message :=  {'/' , aString} , floats.
+	
 	
 	(OSCMessage for: message asArray)
 		sendToAddressString: localAddress
