@@ -375,6 +375,12 @@ Integer >> modulo: anInteger [
 ]
 
 { #category : '*Coypu' }
+Integer >> openMidiStream: aMidiStream [
+
+	^ aMidiStream openWithDeviceID: self
+]
+
+{ #category : '*Coypu' }
 Integer >> pattern [ 
 "to create hexBeat, use hexBeat instead"
 	| arrayOfCharacters s|

@@ -17,7 +17,8 @@ Class {
 		'activeDSP',
 		'stepAdvancement',
 		'maxStepNumber',
-		'logger'
+		'logger',
+		'activePhuckVM'
 	],
 	#classInstVars : [
 		'uniqueInstance',
@@ -28,6 +29,57 @@ Class {
 	#package : 'Coypu',
 	#tag : 'Performance'
 }
+
+{ #category : 'assignments' }
+Performance class >> forDsp: aDsp [
+
+| instance |
+
+instance := self  uniqueInstance .
+instance performer: PerformerPhausto new.
+instance activeDSP: aDsp.
+
+^ instance
+]
+
+{ #category : 'assignments' }
+Performance class >> forLocal [
+
+^  self uniqueInstance performer: PerformerLocal new.
+
+
+]
+
+{ #category : 'assignments' }
+Performance class >> forMIDI [
+
+	^ self uniqueInstance performer: PerformerMIDI new
+]
+
+{ #category : 'assignments' }
+Performance class >> forMIDIDevice: aMIDIDevice [
+
+| mout  |
+mout := MIDISender new.
+
+
+mout  openWithDevice: aMIDIDevice .
+
+^ self uniqueInstance  performer: PerformerMIDI new.
+
+
+
+]
+
+{ #category : 'assignments' }
+Performance class >> forPhuck: aPhuckVM [
+
+
+	| instance |
+	instance :=  uniqueInstance performer:  PerformerPhuck new;
+		activePhuckVM: aPhuckVM.
+	^ instance
+]
 
 { #category : 'instance creation' }
 Performance class >> new [ 
@@ -91,6 +143,16 @@ Performance >> activeDSP: aDSP [
 ]
 
 { #category : 'accessing' }
+Performance >> activePhuckVM [
+	^ activePhuckVM
+]
+
+{ #category : 'accessing' }
+Performance >> activePhuckVM: aPhuckVM [
+	activePhuckVM := aPhuckVM
+]
+
+{ #category : 'accessing' }
 Performance >> activeProcess [
 
 	^ activeProcess
@@ -145,6 +207,8 @@ Performance >> bpm [
 { #category : 'accessing' }
 Performance >> bpm: aBpm [
 	freq := 60 / 4 / aBpm.
+	"also send an OSC message if anybody listening"
+	aBpm toLocal: 'performanceBPM'
 	
 
 
@@ -162,7 +226,7 @@ Performance >> dirtMIDIDevice: aString [
 	dirtMIDIDevice := aString
 ]
 
-{ #category : 'accessing' }
+{ #category : 'assignments' }
 Performance >> forDsp: aDsp [
 
 | p |
@@ -172,6 +236,34 @@ p performer: PerformerPhausto new.
 p activeDSP: aDsp.
 
 ^ p
+]
+
+{ #category : 'assignments' }
+Performance >> forLocal [
+
+| p |
+
+p := self class uniqueInstance .
+p performer: PerformerLocal new.
+
+^ p
+]
+
+{ #category : 'assignments' }
+Performance >> forMIDI [
+
+	| p |
+p := Performance uniqueInstance .
+p performer: PerformerMIDI new.
+	^ p
+]
+
+{ #category : 'assignments' }
+Performance >> forPhuck: aPhuckVM [
+	self
+		performer: PerformerPhuck new;
+		activePhuckVM: aPhuckVM.
+	^ self
 ]
 
 { #category : 'accessing' }
@@ -590,15 +682,12 @@ Performance >> resetAllSequencers [
 ]
 
 { #category : 'LiveCoding - Performance' }
-Performance >> restore [
-
-	"restore what the performance was before receiveing messages muteAll or solo"
-
-	| p |
+Performance >> restore [ 
+| p |
 	p := Performance uniqueInstance.
-	self backup keysAndValuesDo: [ :k :v | 
-		p at: k put: v].
-	p keysAndValuesRemove: [ :kp :vp | (p backup includesKey: kp) not ] 
+	self backup keysAndValuesDo: [ :k :v | p at: k put: v ].
+	p keysAndValuesRemove: [ :kp :vp | (p backup includesKey: kp) not ].
+	self bpm: 60 / 4 / backup freq
 ]
 
 { #category : 'modifying' }
@@ -666,7 +755,10 @@ Performance >> swap: firstKey with: secondKey [
 { #category : 'modifying' }
 Performance >> temporarySave [
 
-backup := self asDictionary 
+"a copy keeps the tracks (with fresh associations) and settings like freq"
+
+	backup := self copy.
+	backup backup: nil
 ]
 
 { #category : 'accessing' }

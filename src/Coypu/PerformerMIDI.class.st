@@ -4,13 +4,62 @@ Performer for external MIDI hardware
 Class {
 	#name : 'PerformerMIDI',
 	#superclass : 'Performer',
+	#instVars : [
+		'channelMap'
+	],
 	#classInstVars : [
-		'midiOut'
+		'midiOut',
+		'defaultChannels'
 	],
 	#category : 'Coypu-Performer',
 	#package : 'Coypu',
 	#tag : 'Performer'
 }
+
+{ #category : 'accessing' }
+PerformerMIDI class >> defaultChannelAt: aKey [
+
+	^ (defaultChannels ifNil: [ Dictionary new ])
+		  at: aKey
+		  ifAbsent: [ self factoryChannels at: aKey ifAbsent: [ 1 ] ]
+]
+
+{ #category : 'accessing' }
+PerformerMIDI class >> defaultChannels [
+^ defaultChannels ifNil: [ defaultChannels := self factoryChannels ]
+]
+
+{ #category : 'accessing' }
+PerformerMIDI class >> defaultChannels: anArrayOfAssociations [
+
+	defaultChannels := anArrayOfAssociations asDictionary
+]
+
+{ #category : 'accessing' }
+PerformerMIDI class >> factoryChannels [
+
+	^ {
+		  (#kick -> 1).
+		  (#snare -> 2).
+		  (#bass -> 3).
+		  (#rim -> 4).
+		  (#ch -> 5).
+		  (#oh -> 6) .
+(#pad -> 7) .
+(#lead -> 8) .
+(#vox -> 9) 	.	
+			  (#perc -> 10) .
+(#drums -> 11) .
+(#percLoop -> 12) 	.	
+		(#bassLoop -> 13) 	.	
+				(#chordLoop -> 14) 	.	
+		(#synthLoop -> 15) 	.	
+		
+		}
+		
+		
+		 asDictionary
+]
 
 { #category : 'accessing' }
 PerformerMIDI class >> midiOut [
@@ -22,6 +71,39 @@ PerformerMIDI class >> midiOut [
 PerformerMIDI class >> midiOut: aMIDISender [
 
 	midiOut := aMIDISender 
+]
+
+{ #category : 'accessing' }
+PerformerMIDI class >> resetDefaultChannels [
+
+	defaultChannels := nil
+]
+
+{ #category : 'accessing' }
+PerformerMIDI >> channelFor: aSequencer [
+
+	| key |
+	aSequencer midiChannel ifNotNil: [ :ch | ^ ch ].
+	key := (aSequencer seqKey ifNil: [ ^ 1 ]) asSymbol.
+	^ (channelMap ifNil: [ Dictionary new ])
+		  at: key
+		  ifAbsent: [ self class defaultChannelAt: key ]
+]
+
+{ #category : 'accessing' }
+PerformerMIDI >> channels [
+	"The effective map: class defaults overridden by this performer's entries."
+
+	^ self class defaultChannels copy
+		  addAll: (channelMap ifNil: [ Dictionary new ]);
+		  yourself
+]
+
+{ #category : 'accessing' }
+PerformerMIDI >> channels: anArrayOfAssociations [
+
+	channelMap ifNil: [ channelMap := Dictionary new ].
+	channelMap addAll: anArrayOfAssociations asDictionary
 ]
 
 { #category : 'LiveCoding-ExtraParams' }
@@ -47,22 +129,18 @@ PerformerMIDI >> play [
 	self playFor: fourDaysAt120BPM
 ]
 
-{ #category : 'accessing' }
+{ #category : 'playing' }
 PerformerMIDI >> playEventAt: anIndex in: aSequencer [
 
-	| gateTime dur midiNote mch stepDuration midiSender freq |
+	| gateTime dur midiNote mch stepDuration midiSender  |
 	freq := Performance uniqueInstance freq.
 	gateTime := 0.9. "must be changeable"
-	midiSender := PerformerMIDI midiOut.
-	mch := aSequencer midiChannel.
+	midiSender := self class midiOut.
+	mch := self channelFor: aSequencer.
 	stepDuration := Performance uniqueInstance freq.
 	midiNote := aSequencer notes asDirtArray wrap: anIndex.
 	dur := aSequencer durations asDirtArray wrap: anIndex.
-	midiSender
-		playNote: midiNote
-		onChannel: mch
-		duration: dur * freq * gateTime.
-
+	midiSender playNote: midiNote onChannel: mch duration: dur * freq * gateTime
 ]
 
 { #category : 'playing' }

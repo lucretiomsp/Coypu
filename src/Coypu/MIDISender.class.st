@@ -12,12 +12,37 @@ Class {
 	#instVars : [
 		'midiOut',
 		'defaultOutput',
-		'instance'
+		'instance',
+		'deviceID'
+	],
+	#classVars : [
+		'OpenDevices'
 	],
 	#category : 'Coypu-MIDI',
 	#package : 'Coypu',
 	#tag : 'MIDI'
 }
+
+{ #category : 'open/close' }
+MIDISender class >> closeAll [
+	self openDevices values copy do: [ :each | each close ]
+]
+
+{ #category : 'class initialization' }
+MIDISender class >> initialize [
+	SessionManager default registerUserClassNamed: self name
+]
+
+{ #category : 'open/close' }
+MIDISender class >> openDevices [
+	^ OpenDevices ifNil: [ OpenDevices := Dictionary new ]
+
+]
+
+{ #category : 'system startup' }
+MIDISender class >> startUp: resuming [
+	resuming ifTrue: [ OpenDevices := nil ]
+]
 
 { #category : 'sending' }
 MIDISender >> allNotesOff [
@@ -27,6 +52,14 @@ MIDISender >> allNotesOff [
 ]
 
 { #category : 'initialization' }
+MIDISender >> close [
+	deviceID ifNil: [ ^ self ].
+	PortMidiLibrary uniqueInstance portMidiCloseIOStream: midiOut value.
+	self class openDevices removeKey: deviceID ifAbsent: [ ].
+	deviceID := nil
+]
+
+{ #category : 'open/close' }
 MIDISender >> closeMidiOut [
 	"Close the MidiOUT stream (where the score sends notes)."
 	^ PortMidiLibrary uniqueInstance portMidiCloseIOStream: midiOut value
@@ -42,6 +75,13 @@ MIDISender >> defaultOutput [
 MIDISender >> defaultOutput: aDevice [
 	"Sets the new default output for the score."
 	defaultOutput := aDevice
+]
+
+{ #category : 'logging' }
+MIDISender >> deviceIDNamed: aString [
+	^ [ PortMidiLibrary uniqueInstance idOfOutputPortNamed: aString ]
+		  on: Error
+		  do: [ -1 ]
 ]
 
 { #category : 'initialization' }
@@ -64,6 +104,11 @@ MIDISender >> instance: aPortMIDIInstance [
 instance := PortMidiLibrary uniqueInstance.
 ]
 
+{ #category : 'testing' }
+MIDISender >> isOpen [
+	^ deviceID notNil
+]
+
 { #category : 'initialization' }
 MIDISender >> midiOut [
 	"Gets the MidiOUT stream that is used to write the melody."
@@ -76,26 +121,41 @@ MIDISender >> midiOut: anOutputStream [
 	midiOut := anOutputStream
 ]
 
-{ #category : 'initialization' }
-MIDISender >> openWithDevice: aDeviceID [
-	"Opens a new MidiOUT Stream with output device id aDeviceID to play notes.
-	aDeviceID is an integer. PortMidi traceAllDevices / displays all available devices
-	"
-	
-	self instance: PortMidiLibrary uniqueInstance.
-	
-	"assign the MIDISender to the PerformerMIDI"
-	PerformerMIDI midiOut: self.
-	
+{ #category : 'open/close' }
+MIDISender >> openDevices [
+	^ self class openDevices
+]
+
+{ #category : 'open/close' }
+MIDISender >> openWithDevice: aDeviceIDOrName [
+	"Open a MIDI out stream on a device given by id (Integer) or name (String).
+	PortMidi traceAllDevices displays all available devices."
+
+	^ aDeviceIDOrName openMidiStream: self
+]
+
+{ #category : 'outputManagement' }
+MIDISender >> openWithDeviceID: aDeviceID [
+
+	| err |
+	aDeviceID = -1 ifTrue: [ ^ -1 ].
+	self close.
+	(self class openDevices at: aDeviceID ifAbsent: [ nil ]) ifNotNil: [ :previous | previous close ].
+	instance := PortMidiLibrary uniqueInstance.
 	self midiOut: (instance createNewPointerForStreamWithType: 'void**').
-	^ (aDeviceID = -1) ifFalse: 
-		[instance openOutputForStream: midiOut  
-															withDevice: aDeviceID 
-															withOutputDriverInfos: nil 
-															withBufferSize: 512 
-															withTimeProcedure: nil 
-															withTimeInfos: nil 
-															andLatency: 0 ] ifTrue: [ ^ -1 ]
+	err := instance
+		       openOutputForStream: midiOut
+		       withDevice: aDeviceID
+		       withOutputDriverInfos: nil
+		       withBufferSize: 512
+		       withTimeProcedure: nil
+		       withTimeInfos: nil
+		       andLatency: 0.
+	err = 0 ifTrue: [
+			deviceID := aDeviceID.
+			self class openDevices at: aDeviceID put: self.
+			PerformerMIDI midiOut: self ].
+	^ err
 ]
 
 { #category : 'initialization' }
@@ -198,6 +258,12 @@ MIDISender >> playNote: aNoteNumber onChannel: aMIDIChannel duration: aDurationI
 	(Delay forSeconds: aDurationInSeconds) wait.
 	instance writeShortOn: self midiOut value when: 0 theMessage: noteOff ]
 		fork
+]
+
+{ #category : 'accessing' }
+MIDISender >> portDirection [
+
+	^ 'OUTPUT'
 ]
 
 { #category : 'sending' }
