@@ -369,6 +369,20 @@ Array >> toKyma: aString [
 ]
 
 { #category : '*Coypu' }
+Array >> toLocal: aString [
+
+	| localAddress message floats |
+	localAddress := '127.0.0.1'.
+	floats := self collect: [ :i | i asFloat ].
+	message :=  {'/' , aString} , floats.
+	
+	
+	(OSCMessage for: message asArray)
+		sendToAddressString: localAddress
+		port: 57120
+]
+
+{ #category : '*Coypu' }
 Array >> trigs [
 
 	"return the number of trigs (value  = 1),  of the array"
