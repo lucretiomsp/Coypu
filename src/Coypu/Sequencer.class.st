@@ -1353,6 +1353,13 @@ Sequencer >> resonance: aStringOrAnArray [
 	self extra: #Resonance values: aStringOrAnArray asDirtArrayOfValues
 ]
 
+{ #category : 'LiveCoding-ExtraParams' }
+Sequencer >> reverse: aStringOrAnArray [
+	"set the reverse to a  collection of value in array or to to the number"
+
+	self extra: #Reverse values: aStringOrAnArray asDirtArrayOfValues
+]
+
 { #category : 'LiveCoding  - SuperDirt' }
 Sequencer >> room: aFloatOrAnArray [
 	" add room size reverb pattern to the Sequencer"

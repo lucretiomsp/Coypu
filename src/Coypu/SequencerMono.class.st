@@ -334,6 +334,13 @@ SequencerMono >> playPhaustMooflodEventAt: anIndex [
 	^ true
 ]
 
+{ #category : 'accessing' }
+SequencerMono >> position: aStringOrAnArray [
+	"set the positions to a  collection of value in array or to to the number"
+
+	self extra: #Position values: aStringOrAnArray asDirtArrayOfValues
+]
+
 { #category : 'random' }
 SequencerMono >> randomNotesFrom: anArrayOfNotes octaves: anInteger [
 
@@ -359,6 +366,13 @@ SequencerMono >> reverse [
 	"reverse gateTimes"
    self gateTimes: self gateTimes reverse.	
 	
+]
+
+{ #category : 'public' }
+SequencerMono >> slice: aStringOrAnArray [
+	"set the slice to a  collection of value in array or to to the number"
+
+	self extra: #Slice values: aStringOrAnArray asDirtArrayOfValues
 ]
 
 { #category : 'LiveCoding' }
