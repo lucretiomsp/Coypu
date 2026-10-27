@@ -111,6 +111,21 @@ Number >> toLocal: aString [
 ]
 
 { #category : '*Coypu' }
+Number >> toLocalAsInt: aString [
+	"comment stating purpose of instance-side message"
+
+	"scope: class-variables  &  instance-variables"
+
+	| localAddress |
+	localAddress := '127.0.0.1'.
+
+
+	(OSCMessage for: {
+			 ('/' , aString).
+			 self asInteger }) sendToAddressString: localAddress port: 57120
+]
+
+{ #category : '*Coypu' }
 Number >> wait [ 
 ^ (Delay forSeconds: self) wait.
 ]
