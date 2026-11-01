@@ -354,6 +354,19 @@ Integer >> jungleSnare [
 ]
 
 { #category : '*Coypu' }
+Integer >> longa [
+	" returns self number of longa in the first position of the bars"
+
+	<rhythmCreation>
+	<onTheFlyEssentials>
+	| result |
+	result := '8000000000000000' hexBeat * self.
+	result durations: #(64).
+	result gateTimes: 0.8.
+	^ result
+]
+
+{ #category : '*Coypu' }
 Integer >> melodyFrom: aScale [
 
 	| array |
