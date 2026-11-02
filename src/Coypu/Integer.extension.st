@@ -360,8 +360,8 @@ Integer >> longa [
 	<rhythmCreation>
 	<onTheFlyEssentials>
 	| result |
-	result := '800000000000800000000000' hexBeat * self.
-	result durations: #(32).
+	result := '8000000000000000' hexBeat  * self.
+	result durations: #(64).
 	result gateTimes: 0.98.
 	^ result
 ]
