@@ -29,6 +29,15 @@ SmallInteger >> bars [
 ]
 
 { #category : '*Coypu' }
+SmallInteger >> barsFermata [
+		"One note 60 on the first step, lasting self bars"
+
+	<rhythmCreation>
+	<onTheFlyEssentials>
+	^ self bars stepsFermata
+]
+
+{ #category : '*Coypu' }
 SmallInteger >> isNoteOn [
 
 "test if corresponging MIDI status byte is a Note On message"
@@ -71,6 +80,21 @@ SmallInteger >> sawCC: aRange [
 	arrayOfFloats := (min to: max by: range / (self - 1)) asDirtArray.
 	result := arrayOfFloats collect: [ :i | i rounded ].
 ^ result
+]
+
+{ #category : '*Coypu' }
+SmallInteger >> stepsFermata [
+	"One note 60 on the first step, lasting self steps"
+
+	<rhythmCreation>
+	<onTheFlyEssentials>
+	| gates |
+	gates := Array new: self withAll: 0.
+	gates at: 1 put: 1.
+	^ gates asRhythm asSeq
+		  durations: { self };
+		  gateTimes: 1;
+		  yourself
 ]
 
 { #category : '*Coypu' }
