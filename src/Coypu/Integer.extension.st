@@ -195,7 +195,7 @@ Integer >> breves [
 	| result |
 	result := '80000000' hexBeat * self.
 	result durations: #(32).
-	result gateTimes: 0.8.
+	result gateTimes: 0.97.
 	^ result
 ]
 
@@ -355,14 +355,27 @@ Integer >> jungleSnare [
 
 { #category : '*Coypu' }
 Integer >> longa [
-	" returns self number of longa in the first position of the bars"
+	" returns self number of maxima in the first position of the bars"
 
 	<rhythmCreation>
 	<onTheFlyEssentials>
 	| result |
-	result := '8000000000000000' hexBeat * self.
-	result durations: #(64).
-	result gateTimes: 0.8.
+	result := '800000000000800000000000' hexBeat * self.
+	result durations: #(32).
+	result gateTimes: 0.98.
+	^ result
+]
+
+{ #category : '*Coypu' }
+Integer >> maxima [
+	" returns self number of maxima in the first position of the bars"
+
+	<rhythmCreation>
+	<onTheFlyEssentials>
+	| result |
+	result := '80000000000000000000000000000000' hexBeat * self.
+	result durations: #(128).
+	result gateTimes: 0.99.
 	^ result
 ]
 
@@ -686,8 +699,8 @@ Integer >> semibreves [
 	<onTheFlyEssentials>
 	| result |
 	result := '8000' hexBeat * self.
-	result durations: #( 32 ).
-	result gateTimes: 0.9.
+	result durations: #( 16 ).
+	result gateTimes: 0.98.
 	^ result
 ]
 
