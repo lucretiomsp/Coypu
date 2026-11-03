@@ -695,7 +695,7 @@ Performance >> rhythm: aRhythmOrSeq [
 	"Set every sequencer's gates to the gates of the given rhythm or sequencer,
 	 keeping each track's key and other state."
 	| theGates |
-	theGates := aRhythmOrSeq gates.
+	theGates := aRhythmOrSeq asRhythm gates.
 	self valuesDo: [ :seq | seq gates: theGates copy ].
 	^ self
 ]

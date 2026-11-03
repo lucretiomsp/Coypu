@@ -204,9 +204,7 @@ Integer >> breves: aStringOfNotes [
 	" returns self number of brevesin the first position of the bars"
 
 	| result |
-	result := '80000000' hexBeat *  self.
-	result durations: 32.
-	result notes: aStringOfNotes asDirtPureNotes.
+	result := self breves notes: aStringOfNotes .
 	^ result
 ]
 
