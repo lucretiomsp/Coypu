@@ -1170,18 +1170,22 @@ Sequencer >> printOn: aStream
 ]
 
 { #category : 'progressions' }
-Sequencer >> progression: anArrayOfIntervals [
-    "Extend self by concatenating copies with notes shifted by each interval."
-    | originalNotes result |
-    originalNotes := self notes copy.
-    result := anArrayOfIntervals inject: nil into: [ :acc :interval |
-        | copy |
-        copy := self copy.
-        copy notes: (originalNotes + interval).
-        acc isNil ifTrue: [ copy ] ifFalse: [ acc , copy ] ].
-    self notes: result notes.
-    self gates: result gates.
-    ^ self
+Sequencer >> progression: aStringOrAnArray [
+	"Extend self by concatenating copies with notes shifted by each interval.
+	Intervals can be a string like '0 2 3 4', an array or a single number."
+
+	| originalNotes result |
+	originalNotes := self notes copy.
+	result := aStringOrAnArray asDirtArrayOfValues inject: nil into: [ :acc :interval |
+			          | copy |
+			          copy := self copy.
+			          copy notes: originalNotes + interval.
+			          acc isNil
+				          ifTrue: [ copy ]
+				          ifFalse: [ acc , copy ] ].
+	self notes: result notes.
+	self gates: result gates.
+	^ self
 ]
 
 { #category : 'querying' }
