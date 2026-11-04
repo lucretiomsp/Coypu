@@ -436,8 +436,7 @@ Sequencer >> durations [
 { #category : 'accessing' }
 Sequencer >> durations: anArray [
 
-	durations := #( 1 ).
-	anArray isNotEmpty ifTrue: [ durations := anArray asDirtPureNotes ]
+	durations := anArray asDirtPureNotes 
 ]
 
 { #category : 'accessing' }
@@ -1145,12 +1144,29 @@ player := aSequencerPlayer
 Sequencer >> printOn: aStream [
 
 	super printOn: aStream.
-	aStream nextPutAll: ' with gates: '.
-	aStream nextPutAll: gates printString.
+	aStream
+	nextPutAll: ' - ';
+		print: self numberOfTrigs;
+		nextPutAll: ' gates - ';
+		nextPutAll: ' with gates: ';
+		print: gates;
+		nextPutAll: ' with notes: ';
+		print: notes
+]
 
-	aStream nextPutAll: ' with notes: '.
-	aStream nextPutAll: notes printString
-	
+{ #category : 'printing' }
+Sequencer >> printOn: aStream
+
+	printOn: aStream [
+
+	super printOn: aStream.
+	aStream
+	   print: self numberOfTrigs ;
+	   nextPutAll: ' gates;';
+		nextPutAll: ' with gates: ';
+		print: gates;
+		nextPutAll: ' with notes: ';
+		print: notes
 ]
 
 { #category : 'progressions' }
