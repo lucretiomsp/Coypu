@@ -526,11 +526,13 @@ Sequencer >> flip [
 ]
 
 { #category : 'LiveCoding  - SuperDirt' }
-Sequencer >> gain: aFloatOrAnArray [
+Sequencer >> gain: aStringOrAnArray [
 	" add gain pattern to the Sequencer"
+	self extra: #Gain values: aStringOrAnArray asDirtArrayOfValues.
+	"and for superDirt"
 	self dirtMessage 
 		at: 'gain' 
-		put: aFloatOrAnArray asDirtArray
+		put: aStringOrAnArray asDirtArray
 ]
 
 { #category : 'accessing' }

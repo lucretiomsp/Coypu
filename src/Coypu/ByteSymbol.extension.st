@@ -193,6 +193,22 @@ ByteSymbol >> number: anArrayOfNumbers [
 ]
 
 { #category : '*Coypu' }
+ByteSymbol >> qPlay [
+"quantized play: starts on the next bar. transportStep is already the next step, so 0 = the last step of the bar just played, 1 = the first step of the new bar just played. If the performance is not running, the process just ends"
+	| perf vm gate waitFor |
+	perf := Performance uniqueInstance.
+	vm := PhuckVM uniqueInstance.
+	gate := self asString , 'Gate'.
+	waitFor := [ :step |
+		[ perf activeProcess isTerminated ifTrue: [ Processor activeProcess terminate ].
+		perf transportStep \\ 16 = step ] whileFalse: [ (Delay forMilliseconds: 1) wait ] ].
+	[ waitFor value: 0.
+	vm setValue: 0 parameter: gate.
+	waitFor value: 1.
+	vm setValue: 1 parameter: gate ] forkAt: Processor timingPriority
+]
+
+{ #category : '*Coypu' }
 ByteSymbol >> rhythm: aRhythmSymbol [
 
 		| p seq condition |
