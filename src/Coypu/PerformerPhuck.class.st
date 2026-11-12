@@ -48,7 +48,10 @@ PerformerPhuck >> playCyclicFor: aNumberOfCycles [
 { #category : 'accessing' }
 PerformerPhuck >> playEventAt: anIndex in: aSequencer [
 	| key gateDur |
-	key := aSequencer seqKey.
+	"asDirtSounds sequencers play each event on its own sound, e.g. sdGate"
+	key := aSequencer isSoundMode
+		ifTrue: [ (aSequencer phaustoGateDestinations wrap: anIndex) withoutSuffix: 'Gate' ]
+		ifFalse: [ aSequencer seqKey ].
 	gateDur := (aSequencer durations asDirtArray wrap: anIndex)
 		* performance freq
 		* (aSequencer gateTimes wrap: anIndex).
@@ -74,4 +77,15 @@ PerformerPhuck >> playNoteFor: aSequencer [
 { #category : 'accessing' }
 PerformerPhuck >> setValue: aNumber parameter: aString [
 	performance activePhuckVM setValue: aNumber parameter: aString
+]
+
+{ #category : 'as yet unclassified' }
+PerformerPhuck >> sounds: aCollectionOfNames indexes: anArrayOfIndexes to: aSequencer [
+	"asDirtSounds: each event plays its own TurboPhuck sound, the :n indexes go to <sound>Index, notes keep the asSeq default (60)"
+
+	aCollectionOfNames do: [ :each |
+		aSequencer
+			phaustoGateDestinations: each , 'Gate';
+			phaustoNoteDestinations: each , 'Note' ].
+	self index: anArrayOfIndexes to: aSequencer
 ]

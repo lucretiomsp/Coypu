@@ -240,17 +240,13 @@ ByteString >> asDirtSounds [
 	notesAsIndex := soundsAndDirtNotesArray collect: [ :i |
 		                i hasDigit asInteger ].
 
-
-
-
 	seq := gates asSeqGates asSeq. "seq sound: (soundsAsStrings joinUsing: ' ')."
 	seq sound: soundsAsStrings.
-
-	(soundsAsStrings findBetweenSubstrings: ' ') do: [ :i |
-			seq phaustoGateDestinations: i , 'Trigger'.
-			seq phaustoNoteDestinations: i , 'Freq' ].
-	seq notes: notesAsIndex asArray.
-	
+	"the performer fills destinations, notes and sample indexes"
+	Performance uniqueInstance performer
+		sounds: (soundsAsStrings findBetweenSubstrings: ' ')
+		indexes: notesAsIndex asArray
+		to: seq.
 
 	^ seq
 ]
@@ -852,12 +848,6 @@ ByteString >> pattern: anArrayOfNoteNumbers and: anArrayOfDurations [
 	flat := strings flatCollect: [ :each | each ].
 	^ ((1 to: flat size) collect: [ :i | (flat at: i) digitValue ])
 		  asRhythm and: anArrayOfNoteNumbers and: anArrayOfDurations
-]
-
-{ #category : '*Coypu' }
-ByteString >> penMidiStream: aMidiStream [
-
-	^ aMidiStream openWithDeviceID: (PortMidiLibrary deviceIDNamed: self)
 ]
 
 { #category : '*Coypu' }
