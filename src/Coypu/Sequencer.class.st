@@ -136,6 +136,14 @@ Sequencer >> > aKeyInPerformance [
 self to: aKeyInPerformance 
 ]
 
+{ #category : 'modifying' }
+Sequencer >> ? aPercentage [
+
+"binary polysemic version of mutate:   16 bossa ? 30 > #kick"
+
+	^ self mutate: aPercentage
+]
+
 { #category : 'LiveCoding-ExtraParams' }
 Sequencer >> accent: aStringOrAnArray [
 	"set the accent to a collection of value in array or to to the number"
@@ -822,6 +830,32 @@ Sequencer >> mode: aStringOrAnArray [
 	"convenience method to avoid extra typing when we want to modify the mode"
 
 	self extra: #Mode values: aStringOrAnArray asDirtArrayOfValues
+]
+
+{ #category : 'modifying' }
+Sequencer >> mutate: aPercentage [ 
+	"Blend the rhythm with randomness: each step is re-rolled with aPercentage (0-100) probability, at the rhythm's own density. 0 = untouched, 100 = fully random"
+
+	<onTheFlyEssentials>
+	^ self mutate: aPercentage density: self trigs * 100 / self gates size
+]
+
+{ #category : 'modifying' }
+Sequencer >> mutate: aPercentage density: aDensity [ 
+	"Re-roll each step with probability aPercentage (0-100) into a trig with probability aDensity (0-100). Works in place, so cascades work: 16 bossa mutate: 30; to: #kick"
+
+	<onTheFlyEssentials>
+	| r newGates gap |
+	r := Random new.
+	newGates := self gates collect: [ :g |
+		            r next < (aPercentage / 100)
+			            ifTrue: [ (r next < (aDensity / 100)) asBit ]
+			            ifFalse: [ g ] ].
+	self gates: newGates asRhythm.
+	"as in asSeq: no duration longer than the shortest gap, so mono voices never overlap"
+	gap := newGates minDurationBetweenGates.
+	(gap > 0 and: [ self durations notNil ]) ifTrue: [
+		self durations: (self durations collect: [ :d | d min: gap ]) ]
 ]
 
 { #category : 'accessing' }

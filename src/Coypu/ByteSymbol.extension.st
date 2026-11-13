@@ -159,6 +159,14 @@ ByteSymbol >> midiCh: aMidiCh to: aSymbol [
 ]
 
 { #category : '*Coypu' }
+ByteSymbol >> mutate: aPercentage [ 
+	"mutate the Sequencer playing at self. Evaluate again to drift further"
+
+	<onTheFlyEssentials>
+	^ (Performance uniqueInstance at: self) mutate: aPercentage
+]
+
+{ #category : '*Coypu' }
 ByteSymbol >> mute [
 	" remove the key from the Performance, if any active key in the Performance correspond to the symbol"
 

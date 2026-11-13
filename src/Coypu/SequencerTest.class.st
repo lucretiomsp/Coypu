@@ -165,6 +165,27 @@ SequencerTest >> testMultipleCyclesFireCorrectEvents [
 ]
 
 { #category : 'tests' }
+SequencerTest >> testMutateClampsDurations [ 
+	"bossa notes last 3 steps, all trigs leave a 1 step gp"
+
+	self assert: (16 bossa mutate: 100 density: 100)  durations   equals: #( 1 1 1 1 1) asRhythm
+
+]
+
+{ #category : 'tests' }
+SequencerTest >> testMutateFullFollowsDensity [ 
+
+	self assert: (16 rests mutate: 100 density: 100) gates equals: 16 trigs gates.
+	self assert: (16 trigs mutate: 100 density: 0) gates equals: 16 rests gates
+]
+
+{ #category : 'tests' }
+SequencerTest >> testMutateZeroKeepsRhythm [ 
+
+	self assert: (16 bossa mutate: 0) gates equals: 16 bossa gates
+]
+
+{ #category : 'tests' }
 SequencerTest >> testNoDivisorDefaultsToOne [
 
 	| seq  |
