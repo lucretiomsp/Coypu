@@ -23,7 +23,8 @@ Class {
 	#classInstVars : [
 		'uniqueInstance',
 		'orbit',
-		'performanceType'
+		'performanceType',
+		'scale'
 	],
 	#category : 'Coypu-Performance',
 	#package : 'Coypu',
@@ -116,6 +117,20 @@ Performance class >> reset [
 
 	<script>
 	uniqueInstance := nil
+]
+
+{ #category : 'accessing' }
+Performance class >> scale [
+	"The scale used by fillWithRandomNotesFromScale. Chromatic from middle C until you set one: Performance scale: (Scale minor: 62)"
+
+	^ scale ifNil: [ scale := Scale chromatic: 60 ]
+]
+
+{ #category : 'accessing' }
+Performance class >> scale: aScale [
+	"Set the scale before starting, for example: Performance scale: (Scale minor: 62)"
+
+	scale := aScale
 ]
 
 { #category : 'instance creation' }
@@ -698,6 +713,20 @@ Performance >> rhythm: aRhythmOrSeq [
 	theGates := aRhythmOrSeq asRhythm gates.
 	self valuesDo: [ :seq | seq gates: theGates copy ].
 	^ self
+]
+
+{ #category : 'accessing' }
+Performance >> scale [
+	"The scale of the performance, kept on the class side so it can be set before the performance starts"
+
+	^ self class scale
+]
+
+{ #category : 'accessing' }
+Performance >> scale: aScale [
+	"p scale: (Scale minor: 62) is the same as Performance scale: (Scale minor: 62)"
+
+	self class scale: aScale
 ]
 
 { #category : 'muting and soloing' }

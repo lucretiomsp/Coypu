@@ -522,6 +522,14 @@ Sequencer >> fillNotes: anArray [
 	notes := anArray
 ]
 
+{ #category : 'random' }
+Sequencer >> fillWithRandomNotesFromScale [
+	"One random note of the Performance scale for each trig: Performance scale: (Scale minor: 62). 16 quavers fillWithRandomNotesFromScale > #bass"
+
+	<onTheFlyEssentials>
+	^ self randomNotesFrom: Performance scale
+]
+
 { #category : 'Sequencer - transformation' }
 Sequencer >> flip [
 	"Inverts the gate/rest pattern of the sequence — turning active steps (gates) into rests and vice versa."
