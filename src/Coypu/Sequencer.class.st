@@ -751,17 +751,10 @@ Sequencer >> lock: aFloatOrAnArray [
 
 { #category : 'modifying' }
 Sequencer >> melodyFrom: aScale [
+	"One note of aScale per gate, chosen for where the gate falls in the bar (see GenPitchPool): 16 claveSon melodyFrom: Performance scale"
 
-	| array |
-	array := self numberOfGates randomNotesFrom: aScale.
-	array at: 1 put: (aScale at: 1).
-	2 to: array size do: [ :i | 
-		((array at: i) rem: 12) = 0 ifTrue: [ 
-			array at: i - 1 put: (aScale at: 6) ].
-		((array at: i) rem: 12) = 2 ifTrue: [ 
-			array at: i - 1 put: (aScale at: 5) ] ].
-	"last note is mediante or dominante"
-	^ self notes: array
+	<onTheFlyEssentials>
+	^ self notes: ((GenPitchPool withAll: aScale) notesForGates: self gates random: Random new)
 ]
 
 { #category : 'LiveCoding - Performance' }

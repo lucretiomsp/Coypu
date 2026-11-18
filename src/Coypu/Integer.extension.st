@@ -379,15 +379,10 @@ Integer >> maxima [
 
 { #category : '*Coypu' }
 Integer >> melodyFrom: aScale [
+	"A melody of self notes taken from aScale (any collection of MIDI notes, e.g. Performance scale): chord tones on strong beats, steps rather than leaps, a loop that closes. See GenPitchPool. randomNotesFrom: stays truly random."
 
-	| array |
-	array := self randomNotesFrom: aScale.
-	array at: 1 put: (aScale at: 1).
-	2 to: array size do: [ :i | 
-		((array at: i) rem: 12)= 0 ifTrue: [ array at: i - 1 put: (aScale at: 6) ].
-		((array at: i) rem: 12)= 2 ifTrue: [ array at: i - 1 put: (aScale at: 5) ] ].
-	"last note is mediante or dominante"
-	^ array
+	<onTheFlyEssentials>
+	^ (GenPitchPool withAll: aScale) generate: self random: Random new
 ]
 
 { #category : '*Coypu' }
