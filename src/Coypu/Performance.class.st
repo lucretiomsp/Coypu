@@ -306,8 +306,8 @@ Performance >> initialize: aSize [
 
 	super initialize: aSize.
 	activeProcess := Process new terminate.
-	self muteAll.
 	freq := 132 bpm.
+	self muteAll
 ]
 
 { #category : 'testing' }
@@ -361,7 +361,7 @@ Performance >> mute: aKeyOrAnArrayOfKeys [
 	"remove all the keys in the arrayOfKeys from the Performance or remove just a single key"
 
 	<onTheFlyEssentials>
-	backup := self asDictionary.
+	self temporarySave.
 	aKeyOrAnArrayOfKeys isArray
 		ifTrue: [
 		aKeyOrAnArrayOfKeys do: [ :i | self removeKey: i ifAbsent: [ ] ] ]
@@ -378,9 +378,8 @@ Performance >> mute: aKeyOrAnArrayOfKeys [
 Performance >> muteAll [
 	" remove all keys from the Performance"
 
-
-	backup := self asDictionary.
-	self keysDo: [ :i | self removeKey: i ifAbsent: [ nil ] ]
+	self temporarySave.
+	self keys do: [ :i | self removeKey: i ifAbsent: [ nil ] ]
 ]
 
 { #category : 'LiveCoding - satelliteEvent' }
@@ -697,11 +696,12 @@ Performance >> resetAllSequencers [
 ]
 
 { #category : 'LiveCoding - Performance' }
-Performance >> restore [ 
-| p |
-	p := Performance uniqueInstance.
-	self backup keysAndValuesDo: [ :k :v | p at: k put: v ].
-	p keysAndValuesRemove: [ :kp :vp | (p backup includesKey: kp) not ].
+Performance >> restore [
+	"put back the tracks and the tempo saved by temporarySave, mute:, muteAll or solo:"
+
+	backup ifNil: [ ^ self ].
+	backup keysAndValuesDo: [ :k :v | self at: k put: v ].
+	self keysAndValuesRemove: [ :k :v | (backup includesKey: k) not ].
 	self bpm: 60 / 4 / backup freq
 ]
 
@@ -734,7 +734,7 @@ Performance >> solo: aKeyOrAnArrayOfKeys [
 
 <onTheFlyEssentials>
 	| anArrayOfKeys "tracks" |
-	backup := self asDictionary.
+	self temporarySave.
 	anArrayOfKeys := self keys.
 	aKeyOrAnArrayOfKeys isArray
 		ifTrue: [
