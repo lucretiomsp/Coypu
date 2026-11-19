@@ -378,14 +378,6 @@ Integer >> maxima [
 ]
 
 { #category : '*Coypu' }
-Integer >> melodyFrom: aScale [
-	"A melody of self notes taken from aScale (any collection of MIDI notes, e.g. Performance scale): chord tones on strong beats, steps rather than leaps, a loop that closes. See GenPitchPool. randomNotesFrom: stays truly random."
-
-	<onTheFlyEssentials>
-	^ (GenPitchPool withAll: aScale) generate: self random: Random new
-]
-
-{ #category : '*Coypu' }
 Integer >> modulo: anInteger [
 
 	"convenience method to index arrays after incrementing"
@@ -470,6 +462,14 @@ Integer >> randomInts: aNumber [
 floatsArray := (self randoms) * aNumber.
 result := floatsArray collect: [ :i | i rounded ].
 ^ result
+]
+
+{ #category : '*Coypu' }
+Integer >> randomMelodyFrom: aScale [
+	"A melody of self notes taken from aScale (any collection of MIDI notes, e.g. Performance scale): different at every call, but always with chord tones on strong beats, steps rather than leaps and a loop that closes. See GenPitchPool. randomNotesFrom: stays truly random."
+
+	<onTheFlyEssentials>
+	^ (GenPitchPool withAll: aScale) generate: self random: Random new
 ]
 
 { #category : '*Coypu' }

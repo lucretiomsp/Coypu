@@ -7,6 +7,28 @@ Class {
 }
 
 { #category : 'tests' }
+ParsingTests >> testAsDescendingrrayBy [
+
+| case1 case2 |
+case1 := 4 asFallingArrayBy: 3.
+case2 := 5 asFallingArrayBy: 6.
+
+self assert: case1 equals: #(10 7 4 1).
+self assert: case2 equals: #(25 19 13 7 1)
+]
+
+{ #category : 'tests' }
+ParsingTests >> testAsRisingArrayBy [
+
+| case1 case2 |
+case1 := 4 asRisingArrayBy: 3. 
+case2 := 5 asRisingArrayBy: 6.
+
+self assert: case1 equals: #(1 4 7 10).
+self assert: case2 equals: #(1 7 13 19 25)
+]
+
+{ #category : 'tests' }
 ParsingTests >> testCharacterMultiplication [
 
 	self assert: 'a' * 3 equals: 'a a a'.

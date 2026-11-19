@@ -1,5 +1,5 @@
 "
-I turn a plain collection of notes into a melody (the engine behind melodyFrom: on Integer and Sequencer).
+I turn a plain collection of notes into a melody (the engine behind randomMelodyFrom: on Integer and Sequencer, and fillWithRandomMelody).
 
 The lowest note is taken as the tonic; the pool notes that sound most like a third and a fifth above it make the tonic chord. Then the melody rules apply: chord tones on strong beats, steps rather than leaps, leap recovery, no dull repeats and a loop that closes. Only notes of the pool are used, in their own octaves. Bars are 16 steps, as everywhere in Coypu.
 

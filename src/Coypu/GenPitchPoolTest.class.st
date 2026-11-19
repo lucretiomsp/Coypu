@@ -1,5 +1,5 @@
 "
-Tests for GenPitchPool and the melodyFrom: it powers (on Integer and Sequencer). randomNotesFrom: stays truly random.
+Tests for GenPitchPool and the randomMelodyFrom: it powers (on Integer and Sequencer). randomNotesFrom: stays truly random.
 "
 Class {
 	#name : 'GenPitchPoolTest',
@@ -24,9 +24,24 @@ GenPitchPoolTest >> testDuplicatesAreIgnored [
 { #category : 'tests' }
 GenPitchPoolTest >> testEveryCountWorks [
 
-	self assert: (0 melodyFrom: #( 60 64 67 )) isEmpty.
-	self assert: (1 melodyFrom: #( 60 64 67 )) size equals: 1.
-	self assert: (5 melodyFrom: #( 60 )) equals: #( 60 60 60 60 60 )
+	self assert: (0 randomMelodyFrom: #( 60 64 67 )) isEmpty.
+	self assert: (1 randomMelodyFrom: #( 60 64 67 )) size equals: 1.
+	self assert: (5 randomMelodyFrom: #( 60 )) equals: #( 60 60 60 60 60 )
+]
+
+{ #category : 'tests' }
+GenPitchPoolTest >> testFillWithRandomMelodyUsesThePerformanceScale [
+
+	| previous scale seq |
+	previous := Performance scale.
+	scale := Scale sakura: 60.
+	[
+	Performance scale: scale.
+	seq := 16 rumba.
+	seq fillWithRandomMelody.
+	self assert: seq notes size equals: seq numberOfGates.
+	self assert: (seq notes allSatisfy: [ :each | scale includes: each ]) ]
+		ensure: [ Performance scale: previous ]
 ]
 
 { #category : 'tests' }
@@ -34,7 +49,7 @@ GenPitchPoolTest >> testNotesComeFromThePool [
 
 	| scale notes |
 	scale := Scale minor: 60.
-	notes := 16 melodyFrom: scale.
+	notes := 16 randomMelodyFrom: scale.
 	self assert: notes size equals: 16.
 	self assert: (notes allSatisfy: [ :each | scale includes: each ])
 ]
@@ -75,7 +90,7 @@ GenPitchPoolTest >> testSequencerNotesFollowItsGates [
 	| scale seq |
 	scale := Scale minor: 60.
 	seq := 16 claveSon.
-	seq melodyFrom: scale.
+	seq randomMelodyFrom: scale.
 	self assert: seq notes size equals: seq numberOfGates.
 	self assert: (seq notes allSatisfy: [ :each | scale includes: each ])
 ]
@@ -110,7 +125,7 @@ GenPitchPoolTest >> testTrigsOnDownbeatsLandOnChordTones [
 	hits := (1 to: 20) count: [ :each |
 		        | seq |
 		        seq := 16 claveSon.
-		        seq melodyFrom: scale.
+		        seq randomMelodyFrom: scale.
 		        #( 60 64 67 ) includes: seq notes first ].
 	self assert: hits >= 15
 ]

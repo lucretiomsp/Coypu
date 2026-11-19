@@ -121,7 +121,7 @@ Performance class >> reset [
 
 { #category : 'accessing' }
 Performance class >> scale [
-	"The scale used by fillWithRandomNotesFromScale. Chromatic from middle C until you set one: Performance scale: (Scale minor: 62)"
+	"The scale used by fillWithRandomNotesFromScale and fillWithRandomMelody. Chromatic from middle C until you set one: Performance scale: (Scale minor: 62)"
 
 	^ scale ifNil: [ scale := Scale chromatic: 60 ]
 ]

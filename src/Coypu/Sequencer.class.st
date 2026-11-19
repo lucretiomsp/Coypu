@@ -523,6 +523,14 @@ Sequencer >> fillNotes: anArray [
 ]
 
 { #category : 'random' }
+Sequencer >> fillWithRandomMelody [
+	"A melody from the Performance scale, one note per gate, following the melody rules (see randomMelodyFrom:): Performance scale: (Scale minor: 62). 16 rumba fillWithRandomMelody > #superpiano"
+
+	<onTheFlyEssentials>
+	^ self randomMelodyFrom: Performance scale
+]
+
+{ #category : 'random' }
 Sequencer >> fillWithRandomNotesFromScale [
 	"One random note of the Performance scale for each trig: Performance scale: (Scale minor: 62). 16 quavers fillWithRandomNotesFromScale > #bass"
 
@@ -747,14 +755,6 @@ Sequencer >> lock: aFloatOrAnArray [
 	self dirtMessage 
 		at: 'lock' 
 		put:  aFloatOrAnArray   asDirtArray
-]
-
-{ #category : 'modifying' }
-Sequencer >> melodyFrom: aScale [
-	"One note of aScale per gate, chosen for where the gate falls in the bar (see GenPitchPool): 16 claveSon melodyFrom: Performance scale"
-
-	<onTheFlyEssentials>
-	^ self notes: ((GenPitchPool withAll: aScale) notesForGates: self gates random: Random new)
 ]
 
 { #category : 'LiveCoding - Performance' }
@@ -1267,6 +1267,14 @@ self shouldBeImplemented .
 				            ifTrue: [ 0 ]
 				            ifFalse: [ rand nextTrig ] ].
 	^ newGates asSeq"
+]
+
+{ #category : 'random' }
+Sequencer >> randomMelodyFrom: aScale [
+	"One note of aScale per gate, different at every call but chosen for where the gate falls in the bar (see GenPitchPool): 16 rumba randomMelodyFrom: (Scale sakura: 60)"
+
+	<onTheFlyEssentials>
+	^ self notes: ((GenPitchPool withAll: aScale) notesForGates: self gates random: Random new)
 ]
 
 { #category : 'random' }
