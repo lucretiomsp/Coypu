@@ -243,7 +243,7 @@ ByteSymbol >> solo [
 
 { #category : '*Coypu' }
 ByteSymbol >> swapWith: aSymbol [
-	"swap the current sequencer sound to the sound represented by a symbol . or viceversa! please refer to Coypu performer for connecting sequencer names to actual audio server sounds"
+	"swap the current sequencer sound to the sound represented by a symbol . or viceversa! please refer to Coypu performer for connecting sequencer names to actual audio server sounds - IT RETURNS AN ARRAY WITH THE TWO SYMBOLS"
 
 	| p |
 	p := Performance uniqueInstance.
@@ -255,7 +255,9 @@ ByteSymbol >> swapWith: aSymbol [
 				tempSeq to: self  ]
 		ifFalse: [
 				(p at: aSymbol) to: self.
-				(p at: self) to: aSymbol  ]
+				(p at: self) to: aSymbol  ].
+
+^ Array  with: self with: aSymbol
 ]
 
 { #category : '*Coypu' }

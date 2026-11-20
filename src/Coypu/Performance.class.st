@@ -821,6 +821,11 @@ Performance >> unloop [
 self maxStepNumber: SmallInteger maxVal 
 ]
 
+{ #category : 'as yet unclassified' }
+Performance >> unloop: anInteger [ 
+	self unloop .
+]
+
 { #category : 'LiveCoding - Performance' }
 Performance >> unmute: aKeyInPerformance [
 	"convenience method to unsolo a key in the performance"
