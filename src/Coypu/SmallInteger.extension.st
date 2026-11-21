@@ -7,6 +7,11 @@ SmallInteger >> asFallingArray [
 ]
 
 { #category : '*Coypu' }
+SmallInteger >> asFallingArrayBy: anInteger [ 
+	^ (self asRisingArrayBy: anInteger ) reverse
+]
+
+{ #category : '*Coypu' }
 SmallInteger >> asInt8 [
 
 	| bitArray firsComplement binaryString secondComplementAsString secondComplement result |
@@ -20,6 +25,17 @@ SmallInteger >> asInt8 [
 		                    secondComplementAsString.
 	result := firsComplement + secondComplement.
 	^ result
+]
+
+{ #category : '*Coypu' }
+SmallInteger >> asRisingArrayBy: anInteger [ 
+	
+| result value |
+result  := Array new: self.
+value := 1.
+1 to: self  do: [ :i | result at: i put: value. value := value + anInteger].
+
+^ result
 ]
 
 { #category : '*Coypu' }
