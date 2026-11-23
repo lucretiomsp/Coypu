@@ -105,9 +105,7 @@ SuperDirt class >> openListOfSynths [
 
 { #category : 'SuperDirt-List' }
 SuperDirt class >> samplesFolder [
-	"return the path to the folder where the superdirt samples are located"
-	| home folder |
-	home := FileLocator home.
-	folder := (home / 'Library') / 'Application Support/SuperCollider/downloaded-quarks/Dirt-Samples/'.
-	^ folder 
+	"return the path to the folder where the superdirt samples are located, on macOS, Linux or Windows"
+
+	^ SuperColliderFileLocator directoryOfSamples
 ]
